@@ -7,11 +7,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/create-crash/create-crash.module').then(mod => mod.CreateCrashModule),
   },
   {
-    path: 'crash/:sessionId',
+    path: 'crash/:crashId',
     loadChildren: () => import('./pages/crash/crash.module').then(mod => mod.CrashModule),
   },
   {
-    path: 'crash/:sessionId/cars/:carId',
+    path: 'crash/:crashId/cars/:carId',
     loadChildren: () => import('./pages/car/car.module').then(mod => mod.CarModule),
   }
 ];

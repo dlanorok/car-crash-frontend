@@ -19,6 +19,10 @@ export class CarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getData();
+  }
+
+  getData(): void {
     this.route.paramMap
       .pipe(
         map(params => params.get('carId')),
