@@ -1,10 +1,11 @@
-export class Crash {
-  id!: number;
-  created_at!: string;
-  session_id!: string;
-  closed!: boolean;
+import { BaseModel } from "./base.model";
 
-  constructor(data?: any) {
-    Object.assign(this, data);
-  }
+export class Crash extends BaseModel {
+  id!: number;
+  session_id!: string;
+
+  created_at?: string;
+  closed?: boolean;
+
+  cars?: number[];
 }

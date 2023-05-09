@@ -6,7 +6,6 @@ import { MatButtonModule } from "@angular/material/button";
 import { ApiModule } from "../../../shared/api/api.module";
 
 
-
 @NgModule({
   declarations: [
     CrashComponent
