@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { Crash } from "../../shared/models/crash.model";
-import { addCar, createCrash, loadCrash, loadCrashSuccessful } from "./crash-action";
+import { addCar, createCrash, createCrashSuccessful, loadCrash, loadCrashSuccessful } from "./crash-action";
 
 export interface CrashState {
   crash?: Crash
@@ -12,8 +12,12 @@ export const initialState: CrashState = {
 
 export const crashReducer = createReducer(
   initialState,
-  on(createCrash, (state, { crash }) => {
-    localStorage.setItem('session_id', crash.session_id);
+  on(createCrash, (state) => {
+    return {
+      ...state
+    }
+  }),
+  on(createCrashSuccessful, (state, { crash }) => {
     return {
       ...state,
       crash: crash
@@ -27,7 +31,6 @@ export const crashReducer = createReducer(
     ...state
   })),
   on(loadCrashSuccessful, (state, { crash }) => {
-    localStorage.setItem('session_id', crash.session_id);
     return {
       ...state,
       crash: crash

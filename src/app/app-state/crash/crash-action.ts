@@ -2,7 +2,11 @@ import { createAction, props } from '@ngrx/store';
 import { Crash } from "../../shared/models/crash.model";
 
 export const createCrash = createAction(
-  '[CreateCrash Component] Create',
+  '[CreateCrash Component] Create'
+);
+
+export const createCrashSuccessful = createAction(
+  '[Crash Api] Create Crash Successful',
   props<{crash: Crash}>()
 );
 
@@ -17,6 +21,6 @@ export const loadCrashSuccessful = createAction(
 );
 
 export const addCar = createAction(
-  '[Crash Component] Add Car',
+  '[Car store] Add Car',
   props<{carId: number}>()
 );

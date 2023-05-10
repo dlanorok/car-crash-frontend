@@ -1,11 +1,10 @@
 import { Crash } from "./crash.model";
 
-export class Car {
+export class CarModel {
   id!: number;
   crash!: Crash;
-  driver?: any;
-  name?: string;
-  registration_plate?: string;
+
+  policy_holder: any
 
   constructor(data: any) {
     Object.assign(this, data);

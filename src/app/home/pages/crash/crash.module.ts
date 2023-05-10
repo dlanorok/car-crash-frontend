@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CrashComponent } from "./crash.component";
 import { RouterModule } from "@angular/router";
-import { MatButtonModule } from "@angular/material/button";
 import { ApiModule } from "../../../shared/api/api.module";
 
 
@@ -19,7 +18,6 @@ import { ApiModule } from "../../../shared/api/api.module";
         component: CrashComponent
       }
     ]),
-    MatButtonModule
   ]
 })
 export class CrashModule { }

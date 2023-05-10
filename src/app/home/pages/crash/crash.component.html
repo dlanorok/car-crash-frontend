@@ -1,4 +1,17 @@
-<div>
-  {{ crash$ | async | json}}
+<button type="button" class="btn btn-primary" (click)="createCar()">Create car</button>
+
+<div style="display: flex; flex-wrap: wrap">
+  <ng-template ngFor [ngForOf]="cars$ | async" let-car>
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Car ID: {{ car.id }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+        <p class="card-text">
+          Policy holder: {{ car.policy_holder }}
+        </p>
+        <a [routerLink]="'cars/' + car.id" class="card-link">View car</a>
+      </div>
+    </div>
+  </ng-template>
+
 </div>
-<button mat-raised-button (click)="createCar()">Create car</button>

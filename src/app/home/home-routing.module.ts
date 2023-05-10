@@ -13,6 +13,10 @@ const routes: Routes = [
   {
     path: 'crash/:sessionId/cars/:carId',
     loadChildren: () => import('./pages/car/car.module').then(mod => mod.CarModule),
+  },
+  {
+    path: 'crash/:sessionId/cars/:carId/policy-holder',
+    loadChildren: () => import('./pages/policy-holder/policy-holder.module').then(mod => mod.PolicyHolderModule),
   }
 ];
 

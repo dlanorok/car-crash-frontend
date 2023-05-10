@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CarsApiService } from "../../../shared/api/cars/cars-api.service";
-import { ActivatedRoute } from "@angular/router";
-import { Car } from "../../../shared/models/car.model";
+import { ActivatedRoute, Router } from "@angular/router";
+import { CarModel } from "../../../shared/models/car.model";
 import { first, map, mergeMap, Observable, switchMap, take, tap } from "rxjs";
 import { Crash } from "../../../shared/models/crash.model";
 import { CrashesApiService } from "../../../shared/api/crashes/crashes-api.service";
 import { Store } from "@ngrx/store";
 import { addCar, loadCrash } from "../../../app-state/crash/crash-action";
 import { selectCrash } from "../../../app-state/crash/crash-selector";
+import { selectCars } from "../../../app-state/car/car-selector";
+import { createCar } from "../../../app-state/car/car-action";
 
 @Component({
   selector: 'app-crash',
@@ -16,10 +18,13 @@ import { selectCrash } from "../../../app-state/crash/crash-selector";
 })
 export class CrashComponent implements OnInit {
   crash$: Observable<(Crash | undefined)> = this.store.select(selectCrash);
+  cars$: Observable<CarModel[]> = this.store.select(selectCars);
+
   constructor(
     private readonly carsApiService: CarsApiService,
     private readonly crashesApiService: CrashesApiService,
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly store: Store
   ) {}
 
@@ -32,15 +37,12 @@ export class CrashComponent implements OnInit {
     this.crash$
       .pipe(
         take(1),
-        switchMap((crash: Crash | undefined) => {
+        tap((crash: Crash | undefined) => {
           if (!crash) {
             throw new Error("Crash undefined");
           }
-          return this.carsApiService.create(new Car({crash: crash.id}));
+          this.store.dispatch(createCar({crashSessionId: crash?.id}))
         }),
-        tap((car: Car) => {
-          this.store.dispatch(addCar({ carId: car.id }))
-        })
       ).subscribe()
   }
 

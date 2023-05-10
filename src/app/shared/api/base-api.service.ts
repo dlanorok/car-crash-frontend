@@ -17,9 +17,24 @@ export abstract class BaseApiService<T> {
   }
 
   getSingle(id: number | string): Observable<T> {
-    return this.httpClient.get(`${this.endpoint}${id}`)
+    return this.httpClient.get(`${this.endpoint}${id}/`)
       .pipe(
         map((data) => new this.model(data))
+      );
+  }
+
+  getList(): Observable<T[]> {
+    return this.httpClient.get(`${this.endpoint}/`)
+      .pipe(
+        map((models) => {
+          if (!Array.isArray(models)) {
+            return [];
+          }
+
+          return models.map(model => {
+            return new this.model(model)
+          })
+        })
       );
   }
 }

@@ -1,0 +1,29 @@
+<form *ngIf="form" [formGroup]="form" (ngSubmit)="submitForm()">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input id="name" class="form-control" placeholder="Janez" formControlName="name">
+  </div>
+
+  <div class="form-group">
+    <label for="surname">Surname</label>
+    <input id="surname" class="form-control" placeholder="Novak" formControlName="surname">
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email address</label>
+    <input id="email" type="email" class="form-control" placeholder="name@example.com" formControlName="email">
+  </div>
+
+  <div class="form-group">
+    <label for="post-number">Post number</label>
+    <input id="post-number" class="form-control" placeholder="1000" formControlName="post_number">
+  </div>
+
+  <div class="form-group">
+    <label for="country_code">Country code</label>
+    <input id="country_code" class="form-control" placeholder="SI" formControlName="country_code">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
