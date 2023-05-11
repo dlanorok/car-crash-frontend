@@ -9,7 +9,7 @@ import { Store } from "@ngrx/store";
 import { addCar, loadCrash } from "../../../app-state/crash/crash-action";
 import { selectCrash } from "../../../app-state/crash/crash-selector";
 import { selectCars } from "../../../app-state/car/car-selector";
-import { createCar } from "../../../app-state/car/car-action";
+import { createCar, deleteCar } from "../../../app-state/car/car-action";
 
 @Component({
   selector: 'app-crash',
@@ -42,6 +42,19 @@ export class CrashComponent implements OnInit {
             throw new Error("Crash undefined");
           }
           this.store.dispatch(createCar({crashSessionId: crash?.id}))
+        }),
+      ).subscribe()
+  }
+
+  deleteCar(carId: number) {
+    this.crash$
+      .pipe(
+        take(1),
+        tap((crash: Crash | undefined) => {
+          if (!crash) {
+            throw new Error("Crash undefined");
+          }
+          this.store.dispatch(deleteCar({carId: carId}))
         }),
       ).subscribe()
   }

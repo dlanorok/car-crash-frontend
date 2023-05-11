@@ -1,0 +1,52 @@
+<div class="row justify-content-center">
+  <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitForm()">
+    <div class="form-group">
+      <label for="name">{{ 'car-crash.home.driver.name.label' | transloco }}</label>
+      <input
+        id="name"
+        class="form-control"
+        [placeholder]="'car-crash.home.driver.name.placeholder' | transloco"
+        formControlName="name">
+    </div>
+
+    <div class="form-group">
+      <label for="surname">{{ 'car-crash.home.driver.surname.label' | transloco }}</label>
+      <input
+        id="surname"
+        class="form-control"
+        [placeholder]="'car-crash.home.driver.surname.placeholder' | transloco"
+        formControlName="surname">
+    </div>
+
+    <div class="form-group">
+      <label for="address">{{ 'car-crash.home.driver.address.label' | transloco }}</label>
+      <input
+        id="address"
+        class="form-control"
+        [placeholder]="'car-crash.home.driver.address.placeholder' | transloco"
+        formControlName="address">
+    </div>
+
+    <div class="form-group">
+      <label for="driving_licence_number">{{ 'car-crash.home.driver.driving-licence-number.label' | transloco }}</label>
+      <input
+        id="driving_licence_number"
+        class="form-control"
+        [placeholder]="'car-crash.home.driver.driving-licence-number.placeholder' | transloco"
+        formControlName="driving_licence_number">
+    </div>
+
+    <div class="form-group">
+      <label for="driving_licence_valid_to">{{ 'car-crash.home.driver.driving-licence-valid-to.label' | transloco }}</label>
+      <input
+        id="driving_licence_valid_to"
+        class="form-control"
+        [placeholder]="'car-crash.home.driver.driving-licence-valid-to.placeholder' | transloco"
+        formControlName="driving_licence_valid_to">
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">
+      {{ 'car-crash.shared.button.submit' | transloco }}
+    </button>
+  </form>
+</div>

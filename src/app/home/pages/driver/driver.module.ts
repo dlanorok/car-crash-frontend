@@ -1,21 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CrashComponent } from "./crash.component";
-import { RouterModule } from "@angular/router";
+import { DriverComponent } from './driver.component';
 import { ApiModule } from "../../../shared/api/api.module";
-import { TranslocoModule } from "@ngneat/transloco";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 import { MainLayoutComponent } from "../../../shared/layout/main-layout.component";
-import { FormModalModule } from "../../../shared/components/form-modal/form-modal.module";
+import { TranslocoModule } from "@ngneat/transloco";
 
 
 @NgModule({
   declarations: [
-    CrashComponent
+    DriverComponent
   ],
   imports: [
     CommonModule,
     ApiModule,
-    TranslocoModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild([
       {
         path: "",
@@ -23,12 +24,12 @@ import { FormModalModule } from "../../../shared/components/form-modal/form-moda
         children: [
           {
             path: '',
-            component: CrashComponent
+            component: DriverComponent
           }
         ]
       }
     ]),
-    FormModalModule
+    TranslocoModule
   ]
 })
-export class CrashModule { }
+export class DriverModule { }

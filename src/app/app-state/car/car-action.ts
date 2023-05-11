@@ -20,3 +20,13 @@ export const loadCarsSuccessful = createAction(
   props<{cars: CarModel[]}>()
 );
 
+export const deleteCar = createAction(
+  '[Crash Component] Delete car',
+  props<{carId: number}>()
+);
+
+export const deleteCarSuccessful = createAction(
+  '[Car API] Delete car successful',
+  props<{carId: number}>()
+);
+

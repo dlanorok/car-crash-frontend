@@ -12,15 +12,19 @@ import { ApiModule } from "./shared/api/api.module";
 import { carReducer } from "./app-state/car/car-reducer";
 import { CarEffects } from "./app-state/car/car-effects";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { TranslocoRootModule } from "./i18n/transloco-root.module";
+import { MainLayoutComponent } from './shared/layout/main-layout.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MainLayoutComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    TranslocoRootModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable

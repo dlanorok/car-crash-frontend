@@ -1,0 +1,47 @@
+{
+  "car-crash.shared.button.submit": "Submit",
+  "car-crash.shared.button.delete": "Delete",
+
+
+  "car-crash.home.create-crash.create": "Create crash",
+
+  "car-crash.home.car.create": "Create car",
+  "car-crash.home.car.view": "View car",
+  "car-crash.home.car.delete": "Delete car",
+  "car-crash.home.car.edit": "Edit car",
+  "car-crash.home.car.set-policy-holder": "Set policy holder",
+  "car-crash.home.car.set-driver": "Set driver",
+
+  "car-crash.home.car.registration-plate.label": "Registration plate",
+  "car-crash.home.car.registration-plate.placeholder": "LJ-RU-567",
+  "car-crash.home.car.make-type.label": "Make/type",
+  "car-crash.home.car.make-type.placeholder": "Audi A6",
+
+
+  "car-crash.home.car.id.label": "Car id",
+  "car-crash.home.car.policy-holder.label": "Policy holder",
+
+
+  "car-crash.home.policy-holder.name.label": "Name",
+  "car-crash.home.policy-holder.name.placeholder": "John",
+  "car-crash.home.policy-holder.surname.label": "Surname",
+  "car-crash.home.policy-holder.surname.placeholder": "Smith",
+  "car-crash.home.policy-holder.email.label": "Email",
+  "car-crash.home.policy-holder.email.placeholder": "john.smith@example.com",
+  "car-crash.home.policy-holder.post-number.label": "Post number",
+  "car-crash.home.policy-holder.post-number.placeholder": "10000",
+  "car-crash.home.policy-holder.country-code.label": "Country code",
+  "car-crash.home.policy-holder.country-code.placeholder": "En",
+
+
+  "car-crash.home.driver.name.label": "Name",
+  "car-crash.home.driver.name.placeholder": "John",
+  "car-crash.home.driver.surname.label": "Surname",
+  "car-crash.home.driver.surname.placeholder": "Smith",
+  "car-crash.home.driver.address.label": "Address",
+  "car-crash.home.driver.address.placeholder": "580 whiff Oaf Lane",
+  "car-crash.home.driver.driving-licence-number.label": "Driving licence number",
+  "car-crash.home.driver.driving-licence-number.placeholder": "10000",
+  "car-crash.home.driver.driving-licence-valid-to.label": "Driving licence valid to",
+  "car-crash.home.driver.driving-licence-valid-to.placeholder": "10000"
+}

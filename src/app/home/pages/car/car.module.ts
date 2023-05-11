@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { CarComponent } from './car.component';
 import { RouterModule } from "@angular/router";
 import { ApiModule } from "../../../shared/api/api.module";
+import { ReactiveFormsModule } from "@angular/forms";
+import { TranslocoModule } from "@ngneat/transloco";
+import { MainLayoutComponent } from "../../../shared/layout/main-layout.component";
 
 
 @NgModule({
@@ -15,9 +18,17 @@ import { ApiModule } from "../../../shared/api/api.module";
     RouterModule.forChild([
       {
         path: "",
-        component: CarComponent
+        component: MainLayoutComponent,
+        children: [
+          {
+            path: '',
+            component: CarComponent
+          }
+        ]
       }
-    ])
+    ]),
+    ReactiveFormsModule,
+    TranslocoModule
   ]
 })
 export class CarModule { }

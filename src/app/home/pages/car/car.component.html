@@ -1,3 +1,25 @@
-<div *ngIf="car">
-  {{ car.id }}
+<div class="row justify-content-center">
+  <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitForm()">
+    <div class="form-group">
+      <label for="registration_plate">{{ 'car-crash.home.car.registration-plate.label' | transloco }}</label>
+      <input
+        id="registration_plate"
+        class="form-control"
+        [placeholder]="'car-crash.home.car.registration-plate.placeholder' | transloco"
+        formControlName="registration_plate">
+    </div>
+
+    <div class="form-group">
+      <label for="make-type">{{ 'car-crash.home.car.make-type.label' | transloco }}</label>
+      <input
+        id="make-type"
+        class="form-control"
+        [placeholder]="'car-crash.home.car.make-type.placeholder' | transloco"
+        formControlName="make_type">
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">
+      {{ 'car-crash.shared.button.submit' | transloco }}
+    </button>
+  </form>
 </div>

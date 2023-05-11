@@ -7,6 +7,8 @@ export interface PolicyHolder {
   address?: string;
   post_number?: string;
   country_code?: string;
+
+  car?: string;
 }
 
 export class PolicyHolderModel extends BaseModel implements PolicyHolder {
@@ -16,4 +18,6 @@ export class PolicyHolderModel extends BaseModel implements PolicyHolder {
   name?: string;
   post_number?: string;
   surname?: string;
+
+  car?: string;
 }

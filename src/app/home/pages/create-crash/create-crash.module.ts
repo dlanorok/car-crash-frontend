@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CreateCrashComponent } from "./create-crash.component";
 import { RouterModule } from "@angular/router";
 import { ApiModule } from "../../../shared/api/api.module";
+import { TranslocoModule } from "@ngneat/transloco";
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { ApiModule } from "../../../shared/api/api.module";
         path: "",
         component: CreateCrashComponent
       }
-    ])
+    ]),
+    TranslocoModule
   ],
 })
 export class CreateCrashModule { }
