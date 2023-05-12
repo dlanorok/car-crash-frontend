@@ -10,7 +10,7 @@ import {
   deleteCar,
   deleteCarSuccessful,
   loadCars,
-  loadCarsSuccessful
+  loadCarsSuccessful, updateCar, updateCarSuccessful
 } from "./car-action";
 import { CarModel } from "../../shared/models/car.model";
 import { addCar } from "../crash/crash-action";
@@ -21,7 +21,7 @@ export class CarEffects {
 
   createCar$ = createEffect(() => this.actions$.pipe(
       ofType(createCar),
-      exhaustMap((action) => this.carApiService.create(new CarModel({crash: action.crashSessionId}))
+      exhaustMap((action) => this.carApiService.create(action.car)
         .pipe(
           tap((car: CarModel) => this.store.dispatch(addCar({ carId: car.id }))),
           map(car => ({ type: createCarSuccessful.type, car })),
@@ -46,6 +46,17 @@ export class CarEffects {
         this.carApiService.delete(action.carId)
           .pipe(
             map(() => ({ type: deleteCarSuccessful.type, carId: action.carId })),
+            catchError(() => EMPTY)
+          ))
+    )
+  );
+
+  updateCar$ = createEffect(() => this.actions$.pipe(
+      ofType(updateCar),
+      exhaustMap((action) =>
+        this.carApiService.put(action.car)
+          .pipe(
+            map(() => ({ type: updateCarSuccessful.type, car: action.car })),
             catchError(() => EMPTY)
           ))
     )

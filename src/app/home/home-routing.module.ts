@@ -21,6 +21,10 @@ const routes: Routes = [
   {
     path: 'crash/:sessionId/cars/:carId/driver',
     loadChildren: () => import('./pages/driver/driver.module').then(mod => mod.DriverModule),
+  },
+  {
+    path: 'crash/:sessionId/cars/:carId/insurance-company',
+    loadChildren: () => import('./pages/insurance/insurance.module').then(mod => mod.InsuranceModule),
   }
 ];
 

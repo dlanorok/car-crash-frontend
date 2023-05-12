@@ -1,0 +1,18 @@
+<div class="modal-content" (keyup.enter)="submitForm()">
+  <div class="modal-header">
+    <h5 class="modal-title">{{ (options$ | async)?.title }}</h5>
+    <button type="button" class="btn-close" (click)="closeModal()"></button>
+  </div>
+  <div class="modal-body">
+    <div #formContainer>
+    </div>
+    <div class="d-flex justify-content-end gap-2">
+      <button (click)="closeModal()" class="btn btn-secondary mt-3">
+        {{ 'car-crash.shared.button.back' | transloco }}
+      </button>
+      <button (click)="submitForm()" class="btn btn-primary mt-3">
+        {{ 'car-crash.shared.button.submit' | transloco }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { CarsApiService } from "../../../shared/api/cars/cars-api.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CarModel } from "../../../shared/models/car.model";
-import { first, map, mergeMap, Observable, switchMap, take, tap } from "rxjs";
+import { map, Observable, take, tap } from "rxjs";
 import { Crash } from "../../../shared/models/crash.model";
-import { CrashesApiService } from "../../../shared/api/crashes/crashes-api.service";
 import { Store } from "@ngrx/store";
-import { addCar, loadCrash } from "../../../app-state/crash/crash-action";
+import { loadCrash } from "../../../app-state/crash/crash-action";
 import { selectCrash } from "../../../app-state/crash/crash-selector";
 import { selectCars } from "../../../app-state/car/car-selector";
-import { createCar, deleteCar } from "../../../app-state/car/car-action";
+import { createCar, deleteCar, updateCar } from "../../../app-state/car/car-action";
+import { ModalService } from "../../../shared/services/modal.service";
+import { BaseFormModalComponent } from "../../../shared/components/modals/base-form-modal/base-form-modal.component";
+import { CarFormComponent } from "../../../shared/components/forms/car-form/car-form.component";
+import { CarFormModule } from "../../../shared/components/forms/car-form/car-form.module";
 
 @Component({
   selector: 'app-crash',
@@ -21,11 +23,10 @@ export class CrashComponent implements OnInit {
   cars$: Observable<CarModel[]> = this.store.select(selectCars);
 
   constructor(
-    private readonly carsApiService: CarsApiService,
-    private readonly crashesApiService: CrashesApiService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -34,16 +35,49 @@ export class CrashComponent implements OnInit {
 
 
   createCar() {
-    this.crash$
-      .pipe(
-        take(1),
-        tap((crash: Crash | undefined) => {
-          if (!crash) {
-            throw new Error("Crash undefined");
-          }
-          this.store.dispatch(createCar({crashSessionId: crash?.id}))
-        }),
-      ).subscribe()
+    this.modalService.open(BaseFormModalComponent, {
+      formComponent: {
+        component: CarFormComponent,
+        module: CarFormModule,
+      },
+      model: new CarModel(),
+      title: 'Create car',
+      afterSubmit$: (car: CarModel) =>
+        this.crash$
+          .pipe(
+            take(1),
+            tap((crash: Crash | undefined) => {
+              if (!crash) {
+                throw new Error("Crash undefined");
+              }
+              car.crash = crash.id
+              this.store.dispatch(createCar({car: car}))
+            }),
+          )
+    });
+  }
+
+  editCar(car: CarModel) {
+    this.modalService.open(BaseFormModalComponent, {
+      formComponent: {
+        component: CarFormComponent,
+        module: CarFormModule,
+      },
+      model: car,
+      title: 'Edit car',
+      afterSubmit$: (car: CarModel) =>
+        this.crash$
+          .pipe(
+            take(1),
+            tap((crash: Crash | undefined) => {
+              if (!crash) {
+                throw new Error("Crash undefined");
+              }
+              car.crash = crash.id
+              this.store.dispatch(updateCar({car: car}))
+            }),
+          )
+    });
   }
 
   deleteCar(carId: number) {

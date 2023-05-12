@@ -56,7 +56,7 @@ export class DriverComponent implements OnInit{
         surname: [this.driver?.surname],
         address: [this.driver?.address],
         driving_licence_number: [this.driver?.driving_licence_number],
-        driving_licence_valid_to: [this.driver?.driving_licence_valid_to],
+        driving_licence_valid_to: [new Date(this.driver?.driving_licence_valid_to || '')],
       }
     )
     this.subscribeToFormChange()

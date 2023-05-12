@@ -1,3 +1,13 @@
 .card {
-  min-width: 300px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  width: 100%;
+}
+
+
+.add-button {
+  font-size: 50px;
+  color: var(--);
+  position: absolute;
+  bottom: 0;
+  right: 20px;
 }

@@ -1,0 +1,51 @@
+<form *ngIf="form" [formGroup]="form" (ngSubmit)="submitForm()" (keyup.enter)="submitForm()">
+  <div class="form-group">
+    <label for="name">{{ 'car-crash.home.insurance-company.name.label' | transloco }}</label>
+    <input
+      id="name"
+      class="form-control"
+      [placeholder]="'car-crash.home.insurance-company.name.placeholder' | transloco"
+      formControlName="name">
+  </div>
+
+  <div class="form-group">
+    <label for="policy_number">{{ 'car-crash.home.insurance-company.policy-number.label' | transloco }}</label>
+    <input
+      id="policy_number"
+      class="form-control"
+      [placeholder]="'car-crash.home.insurance-company.policy-number.placeholder' | transloco"
+      formControlName="policy_number">
+  </div>
+
+  <div class="form-group">
+    <label for="green_card">{{ 'car-crash.home.insurance-company.green-card.label' | transloco }}</label>
+    <input
+      id="green_card"
+      class="form-control"
+      [placeholder]="'car-crash.home.insurance-company.green-card.placeholder' | transloco"
+      formControlName="green_card">
+  </div>
+
+  <div class="form-group">
+    <label for="valid_until">{{ 'car-crash.home.insurance-company.valid-until.label' | transloco }}</label>
+    <input
+      id="valid_until"
+      class="form-control"
+      name="dp"
+      ngbDatepicker
+      [placeholder]="'car-crash.home.insurance-company.valid-until.placeholder' | transloco"
+      (click)="d.toggle()"
+      #d="ngbDatepicker"
+      formControlName="valid_until"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="damaged_insured">{{ 'car-crash.home.insurance-company.damaged-insured.label' | transloco }}</label>
+    <input
+      id="damaged_insured"
+      class="form-control"
+      [placeholder]="'car-crash.home.insurance-company.damaged-insured.placeholder' | transloco"
+      formControlName="damaged_insured">
+  </div>
+</form>

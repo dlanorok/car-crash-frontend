@@ -3,7 +3,7 @@ import { CarModel } from "../../shared/models/car.model";
 
 export const createCar = createAction(
   '[Crash Component] Create car',
-  props<{crashSessionId: number}>()
+  props<{car: CarModel}>()
 );
 
 export const createCarSuccessful = createAction(
@@ -28,5 +28,15 @@ export const deleteCar = createAction(
 export const deleteCarSuccessful = createAction(
   '[Car API] Delete car successful',
   props<{carId: number}>()
+);
+
+export const updateCar = createAction(
+  '[Crash Component] Update car',
+  props<{car: CarModel}>()
+);
+
+export const updateCarSuccessful = createAction(
+  '[Car API] Update car successful',
+  props<{car: CarModel}>()
 );
 

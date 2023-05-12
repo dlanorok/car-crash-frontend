@@ -41,10 +41,17 @@
       <input
         id="driving_licence_valid_to"
         class="form-control"
+        name="dp"
+        ngbDatepicker
         [placeholder]="'car-crash.home.driver.driving-licence-valid-to.placeholder' | transloco"
-        formControlName="driving_licence_valid_to">
+        (click)="d.toggle()"
+        #d="ngbDatepicker"
+        formControlName="driving_licence_valid_to"
+      />
     </div>
-
+    <button class="btn btn-secondary mt-3 me-3">
+      {{ 'car-crash.shared.button.back' | transloco }}
+    </button>
     <button type="submit" class="btn btn-primary mt-3">
       {{ 'car-crash.shared.button.submit' | transloco }}
     </button>

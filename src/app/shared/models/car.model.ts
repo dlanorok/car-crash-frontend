@@ -1,10 +1,8 @@
-import { Crash } from "./crash.model";
 import { BaseModel } from "./base.model";
 import { PolicyHolderModel } from "./policy-holder.model";
 
 export class CarModel extends BaseModel {
-  crash!: Crash;
-
+  crash!: number;
 
   registration_plate?: string;
   registration_country?: string;
