@@ -3,7 +3,7 @@ import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, } from '@ng-boot
 
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
-  readonly DELIMITER = '/';
+  readonly DELIMITER = '.';
 
   parse(value: string): NgbDateStruct | null {
     if (value) {

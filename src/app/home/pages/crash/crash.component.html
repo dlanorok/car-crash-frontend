@@ -1,33 +1,33 @@
 <i class="add-button bi bi-plus-circle-fill" (click)="createCar()"></i>
-<div class="row justify-content-center me-3 ms-3">
+<div class="cars row justify-content-center me-3 ms-3">
   <ng-template ngFor [ngForOf]="cars$ | async" let-car>
-    <div class="card mt-3 col-3" (click)="editCar(car)">
+    <div class="car card mt-3 col-3" (click)="editCar(car)">
       <div class="card-body d-flex">
-        <div class="d-flex align-items-center">
-          <i class="bi bi-car-front" style="font-size: 50px"></i>
+        <div class="d-none align-items-center d-sm-flex">
+          <i class="bi bi-car-front" style="font-size: clamp(16px, 7vw, 70px)"></i>
         </div>
-        <div class="ms-5 d-flex justify-content-between w-100 align-items-center">
-          <div class="align-items-center">
+        <div class="ms-0 ms-sm-5 d-flex justify-content-between w-100 align-items-center flex-wrap">
+          <div class="car-detail align-items-center">
             <div>
               <h4>
                 {{ car.car_type }}
               </h4>
             </div>
             <div *ngIf="car.registration_plate" class="mt-3">
-              {{ 'car-crash.home.car.registration-plate.label' | transloco }}: <b>{{ car.registration_plate }}</b>
+              {{ 'car-crash.home.car.registration-plate.label' | transloco }}: <br><b>{{ car.registration_plate }}</b>
             </div>
             <div *ngIf="car.registration_country">
-              {{ 'car-crash.home.car.registration-country.label' | transloco }}: <b>{{ car.registration_country }}</b>
+              {{ 'car-crash.home.car.registration-country.label' | transloco }}: <br><b>{{ car.registration_country }}</b>
             </div>
           </div>
-          <div class="flex-column d-flex gap-3">
-            <button type="button" class="btn btn-sm btn-outline-secondary me-3" [routerLink]="'cars/' + car.id + '/policy-holder'">
+          <div class="flex-row flex-sm-column d-flex gap-3 flex-wrap mt-3 mt-sm-0">
+            <button type="button" class="btn btn-sm btn-primary me-2" [routerLink]="'cars/' + car.id + '/policy-holder'">
               {{ 'car-crash.home.car.set-policy-holder' | transloco }}
             </button>
-            <button type="button" class="btn btn-sm btn-outline-secondary me-3" [routerLink]="'cars/' + car.id + '/driver'">
+            <button type="button" class="btn btn-sm btn-primary me-2" [routerLink]="'cars/' + car.id + '/driver'">
               {{ 'car-crash.home.car.set-driver' | transloco }}
             </button>
-            <button type="button" class="btn btn-sm btn-outline-secondary me-3" [routerLink]="'cars/' + car.id + '/insurance-company'">
+            <button type="button" class="btn btn-sm btn-primary me-2" [routerLink]="'cars/' + car.id + '/insurance-company'">
               {{ 'car-crash.home.car.set-insurance' | transloco }}
             </button>
           </div>

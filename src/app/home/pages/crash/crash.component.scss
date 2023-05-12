@@ -10,4 +10,19 @@
   position: absolute;
   bottom: 0;
   right: 20px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.car-detail {
+  flex: 1 0 160px;
+}
+
+.cars {
+  .car:first-child {
+    background-color: #a1e1ff;
+  }
+  .car:nth-child(2) {
+    background-color: #f5f5bf;
+  }
 }
