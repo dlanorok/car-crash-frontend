@@ -32,7 +32,7 @@ export class InsuranceFormComponent extends BaseFormComponent<InsuranceModel> {
       policy_number: value.policy_number,
       agent: value.agent,
       green_card: value.green_card,
-      valid_until: new Date(value.valid_until ?? ''),
+      valid_until: value.valid_until ? new Date(value.valid_until) : '',
       damaged_insured: value.damaged_insured,
     })
   }

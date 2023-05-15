@@ -1,0 +1,11 @@
+<div class="form-group">
+  <label>{{ label }}</label>
+  <input
+    class="form-control"
+    name="dp"
+    ngbDatepicker
+    (click)="d.toggle()"
+    #d="ngbDatepicker"
+    [formControl]="formControl"
+  />
+</div>

@@ -35,17 +35,10 @@
       formControlName="driving_licence_number">
   </div>
 
-  <div class="form-group">
-    <label for="driving_licence_valid_to">{{ 'car-crash.home.driver.driving-licence-valid-to.label' | transloco }}</label>
-    <input
-      id="driving_licence_valid_to"
-      class="form-control"
-      name="dp"
-      ngbDatepicker
-      [placeholder]="'car-crash.home.driver.driving-licence-valid-to.placeholder' | transloco"
-      (click)="d.toggle()"
-      #d="ngbDatepicker"
-      formControlName="driving_licence_valid_to"
-    />
-  </div>
+  <app-date-control
+    *ngIf="form.get('driving_licence_valid_to')"
+    [label]="'car-crash.home.driver.driving-licence-valid-to.label' | transloco"
+    [placeholder]="'car-crash.home.driver.driving-licence-valid-to.placeholder' | transloco"
+    [formControl]="$any(form.controls['driving_licence_valid_to'])">
+  </app-date-control>
 </form>

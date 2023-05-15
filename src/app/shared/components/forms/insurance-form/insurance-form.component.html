@@ -26,19 +26,12 @@
       formControlName="green_card">
   </div>
 
-  <div class="form-group">
-    <label for="valid_until">{{ 'car-crash.home.insurance-company.valid-until.label' | transloco }}</label>
-    <input
-      id="valid_until"
-      class="form-control"
-      name="dp"
-      ngbDatepicker
-      [placeholder]="'car-crash.home.insurance-company.valid-until.placeholder' | transloco"
-      (click)="d.toggle()"
-      #d="ngbDatepicker"
-      formControlName="valid_until"
-    />
-  </div>
+  <app-date-control
+    [formControl]="$any(form.controls['valid_until'])"
+    [placeholder]="'car-crash.home.insurance-company.valid-until.placeholder' | transloco"
+    [label]="'car-crash.home.insurance-company.valid-until.label' | transloco">
+
+  </app-date-control>
 
   <div class="form-group">
     <label for="damaged_insured">{{ 'car-crash.home.insurance-company.damaged-insured.label' | transloco }}</label>

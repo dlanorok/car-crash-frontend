@@ -2,15 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TranslocoModule } from "@ngneat/transloco";
-import {
-  NgbDateAdapter,
-  NgbDateNativeAdapter,
-  NgbDateParserFormatter,
-  NgbDatepicker,
-  NgbInputDatepicker
-} from "@ng-bootstrap/ng-bootstrap";
-import { CustomDateParserFormatter } from 'src/app/shared/common/date/ngb-date-adapter';
 import { DriverFormComponent } from "./driver-form.component";
+import { DateControlModule } from "../../../form-controls/date-control/date-control.module";
 
 
 @NgModule({
@@ -25,12 +18,7 @@ import { DriverFormComponent } from "./driver-form.component";
     FormsModule,
     ReactiveFormsModule,
     TranslocoModule,
-    NgbDatepicker,
-    NgbInputDatepicker,
-  ],
-  providers: [
-    { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
-    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }
+    DateControlModule
   ]
 })
 export class DriverFormModule { }

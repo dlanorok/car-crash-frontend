@@ -20,7 +20,7 @@ export class DriverFormComponent extends BaseFormComponent<DriverModel> {
         surname: [''],
         address: [''],
         driving_licence_number: [''],
-        driving_licence_valid_to: [''],
+        driving_licence_valid_to: [null],
       }
     );
   }

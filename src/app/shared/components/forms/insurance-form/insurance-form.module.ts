@@ -3,14 +3,7 @@ import { CommonModule } from '@angular/common';
 import { InsuranceFormComponent } from './insurance-form.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TranslocoModule } from "@ngneat/transloco";
-import {
-  NgbDateAdapter,
-  NgbDateNativeAdapter,
-  NgbDateParserFormatter,
-  NgbDatepicker,
-  NgbInputDatepicker
-} from "@ng-bootstrap/ng-bootstrap";
-import { CustomDateParserFormatter } from 'src/app/shared/common/date/ngb-date-adapter';
+import { DateControlModule } from "../../../form-controls/date-control/date-control.module";
 
 
 @NgModule({
@@ -25,12 +18,7 @@ import { CustomDateParserFormatter } from 'src/app/shared/common/date/ngb-date-a
     FormsModule,
     ReactiveFormsModule,
     TranslocoModule,
-    NgbDatepicker,
-    NgbInputDatepicker,
-  ],
-  providers: [
-    { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
-    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }
+    DateControlModule
   ]
 })
 export class InsuranceFormModule { }

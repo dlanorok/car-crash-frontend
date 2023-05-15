@@ -12,7 +12,6 @@ import {
   NgbDateParserFormatter,
   NgbInputDatepicker
 } from "@ng-bootstrap/ng-bootstrap";
-import { CustomDateParserFormatter } from "../../../shared/common/date/ngb-date-adapter";
 import { DriverFormModule } from "../../../shared/components/forms/driver-form/driver-form.module";
 
 
@@ -38,12 +37,7 @@ import { DriverFormModule } from "../../../shared/components/forms/driver-form/d
       }
     ]),
     TranslocoModule,
-    NgbInputDatepicker,
     DriverFormModule
   ],
-  providers: [
-    {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter},
-    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
-  ]
 })
 export class DriverModule { }
