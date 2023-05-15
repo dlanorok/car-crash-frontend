@@ -13,6 +13,7 @@ import {
   NgbInputDatepicker
 } from "@ng-bootstrap/ng-bootstrap";
 import { CustomDateParserFormatter } from "../../../shared/common/date/ngb-date-adapter";
+import { DriverFormModule } from "../../../shared/components/forms/driver-form/driver-form.module";
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { CustomDateParserFormatter } from "../../../shared/common/date/ngb-date-
       }
     ]),
     TranslocoModule,
-    NgbInputDatepicker
+    NgbInputDatepicker,
+    DriverFormModule
   ],
   providers: [
     {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter},

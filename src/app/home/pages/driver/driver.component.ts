@@ -1,19 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, UntypedFormGroup } from "@angular/forms";
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { debounceTime, distinctUntilChanged, EMPTY, finalize, map, mergeMap, Observable, tap } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { DriversApiService } from "../../../shared/api/drivers/drivers-api.service";
 import { DriverModel } from "../../../shared/models/driver.model";
+import { DriverFormComponent } from "../../../shared/components/forms/driver-form/driver-form.component";
+import { InsuranceModel } from "../../../shared/models/insurance.model";
 
 @Component({
   selector: 'app-driver',
   templateUrl: './driver.component.html',
   styleUrls: ['./driver.component.scss']
 })
-export class DriverComponent implements OnInit{
+export class DriverComponent implements OnInit, AfterViewInit {
+  @ViewChild('driverForm', { static: false }) protected driverForm?: DriverFormComponent;
+
   driver?: DriverModel;
-  form!: UntypedFormGroup;
 
   constructor(
     private readonly driversApiService: DriversApiService,
@@ -43,47 +46,36 @@ export class DriverComponent implements OnInit{
                 this.driver = new DriverModel({car: carId});
                 return EMPTY;
               }),
-              finalize(() => this.setForm())
+              finalize(() => {
+                if (!this.driver) {
+                  return;
+                }
+
+                this.driverForm?.setDefaults(this.driver);
+              })
             );
         }),
       ).subscribe()
   }
 
-  private setForm(): void {
-    this.form = this.formBuilder.group(
-      {
-        name: [this.driver?.name],
-        surname: [this.driver?.surname],
-        address: [this.driver?.address],
-        driving_licence_number: [this.driver?.driving_licence_number],
-        driving_licence_valid_to: [new Date(this.driver?.driving_licence_valid_to || '')],
-      }
-    )
-    this.subscribeToFormChange()
-  }
-
-  private subscribeToFormChange() {
-    this.form.valueChanges
-      .pipe(
-        debounceTime(1000),
-        distinctUntilChanged(),
-        mergeMap(() => this.saveDriver())
-      ).subscribe()
-  }
-
-  private saveDriver(): Observable<DriverModel> {
-    const driver = new DriverModel({
-        ...this.driver,
-        ...this.form.value,
-      }
-    )
-
-    return this.driversApiService.create(driver);
+  ngAfterViewInit(): void {
+    this.subscribeAfterFormSubmit()
   }
 
   submitForm() {
-    this.saveDriver()
+    this.driverForm?.submitForm();
+  }
+
+  private subscribeAfterFormSubmit() {
+    this.driverForm?.formSubmit
       .pipe(
+        mergeMap((model: DriverModel) => {
+          this.driver = {
+            ...this.driver,
+            ...model
+          }
+          return this.driversApiService.create(this.driver);
+        }),
         tap(() => {
           this.router.navigate(
             [this.router.url.replace(/\/cars\/\d+\/driver$/, '')]

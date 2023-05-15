@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder } from "@angular/forms";
 import { BaseFormComponent } from "../base-form.component";
 import { InsuranceModel } from "../../../models/insurance.model";
-import { CarModel } from "../../../models/car.model";
-import { InsuranceComponent } from "../../../../home/pages/insurance/insurance.component";
 
 @Component({
   selector: 'app-insurance-form',
@@ -11,7 +9,6 @@ import { InsuranceComponent } from "../../../../home/pages/insurance/insurance.c
   styleUrls: ['./insurance-form.component.scss']
 })
 export class InsuranceFormComponent extends BaseFormComponent<InsuranceModel> {
-  model: any;
   constructor(private readonly formBuilder: FormBuilder) {
     super()
   }
