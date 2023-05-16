@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./pages/create-crash/create-crash.module').then(mod => mod.CreateCrashModule),
+    loadChildren: () => import('./pages/welcome/welcome.module').then(mod => mod.WelcomeModule),
   },
   {
     path: 'crash/:sessionId',

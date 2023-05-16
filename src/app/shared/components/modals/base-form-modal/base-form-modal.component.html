@@ -4,8 +4,7 @@
     <button type="button" class="btn-close" (click)="closeModal()"></button>
   </div>
   <div class="modal-body">
-    <div #formContainer>
-    </div>
+    <ng-template formHost></ng-template>
     <div class="d-flex justify-content-end gap-2">
       <button (click)="closeModal()" class="btn btn-secondary mt-3">
         {{ 'car-crash.shared.button.back' | transloco }}

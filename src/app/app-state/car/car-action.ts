@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { CarModel } from "../../shared/models/car.model";
 
 export const createCar = createAction(
-  '[Crash Component] Create car',
+  '[CrashModel Component] Create car',
   props<{car: CarModel}>()
 );
 
@@ -12,7 +12,7 @@ export const createCarSuccessful = createAction(
 );
 
 export const loadCars = createAction(
-  '[Crash Store] Load cars'
+  '[CrashModel Store] Load cars'
 );
 
 export const loadCarsSuccessful = createAction(
@@ -21,7 +21,7 @@ export const loadCarsSuccessful = createAction(
 );
 
 export const deleteCar = createAction(
-  '[Crash Component] Delete car',
+  '[CrashModel Component] Delete car',
   props<{carId: number}>()
 );
 
@@ -31,7 +31,7 @@ export const deleteCarSuccessful = createAction(
 );
 
 export const updateCar = createAction(
-  '[Crash Component] Update car',
+  '[CrashModel Component] Update car',
   props<{car: CarModel}>()
 );
 

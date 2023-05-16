@@ -1,0 +1,41 @@
+<form *ngIf="form" [formGroup]="form" (ngSubmit)="submitForm()">
+  <app-date-control
+    [formControl]="$any(form.controls['date_of_accident'])"
+    [placeholder]="'car-crash.home.crash.date-of-accident.placeholder' | transloco"
+    [label]="'car-crash.home.crash.date-of-accident.label' | transloco">
+
+  </app-date-control>
+
+  <div class="form-group">
+    <label for="country">{{ 'car-crash.home.crash.country.label' | transloco }}</label>
+    <input
+      id="country"
+      class="form-control"
+      [placeholder]="'car-crash.home.crash.country.placeholder' | transloco"
+      formControlName="country">
+  </div>
+
+  <div class="form-group">
+    <label for="place">{{ 'car-crash.home.crash.place.label' | transloco }}</label>
+    <input
+      id="place"
+      class="form-control"
+      [placeholder]="'car-crash.home.crash.place.placeholder' | transloco"
+      formControlName="place">
+  </div>
+
+  <div class="form-group form-check form-switch mt-3">
+    <label for="injuries">{{ 'car-crash.home.crash.injuries.label' | transloco }}</label>
+    <input class="form-check-input" type="checkbox" role="switch" formControlName="injuries" id="injuries">
+  </div>
+
+  <div class="form-group form-check form-switch mt-3">
+    <label for="vehicle_material_damage">{{ 'car-crash.home.crash.vehicle-material-damage.label' | transloco }}</label>
+    <input class="form-check-input" type="checkbox" role="switch" formControlName="vehicle_material_damage" id="vehicle_material_damage">
+  </div>
+
+  <div class="form-group form-check form-switch mt-3">
+    <label for="other_material_damage">{{ 'car-crash.home.crash.other-material-damage.label' | transloco }}</label>
+    <input class="form-check-input" type="checkbox" role="switch" formControlName="other_material_damage" id="other_material_damage">
+  </div>
+</form>

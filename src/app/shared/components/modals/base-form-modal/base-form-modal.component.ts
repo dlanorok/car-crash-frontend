@@ -6,31 +6,32 @@ import {
   createNgModule,
   Injector,
   Input,
-  ViewChild,
-  ViewContainerRef
+  ViewChild
 } from '@angular/core';
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { FormModalData } from "../interfaces/form-modal-data";
 import { BaseFormComponent } from "../../forms/base-form.component";
 import { combineLatest, filter, map, Observable, of, ReplaySubject, shareReplay, switchMap, take } from "rxjs";
+import { FormDirective } from "../directives/form.directive";
+import { DateControlComponent } from "../../../form-controls/date-control/date-control.component";
 
 @Component({
   selector: 'app-base-form-modal',
   templateUrl: './base-form-modal.component.html'
 })
 export class BaseFormModalComponent<T, C extends BaseFormComponent<T>, R> implements AfterViewInit {
-  @ViewChild('formContainer', {read: ViewContainerRef}) formContainer!: ViewContainerRef;
+  @ViewChild(FormDirective, {static: true}) formHost!: FormDirective;
 
   readonly options$: ReplaySubject<FormModalData<T, C, R>> = new ReplaySubject<FormModalData<T, C, R>>(1);
   tplInit$: ReplaySubject<void> = new ReplaySubject<void>();
 
   private readonly componentRef$: Observable<ComponentRef<C>> = combineLatest([this.options$, this.tplInit$]).pipe(
     map(([options, tpl]) => {
-      const componentRef: ComponentRef<C> = this.formContainer.createComponent(options.formComponent.component, {
+      const componentRef: ComponentRef<C> = this.formHost.viewContainerRef.createComponent(options.formComponent.component, {
         ngModuleRef: createNgModule(
           options.formComponent.module,
           options.formComponent.parentInjector ?? this.injector,
-        ),
+        )
       });
 
       componentRef.changeDetectorRef.detectChanges();
@@ -53,8 +54,8 @@ export class BaseFormModalComponent<T, C extends BaseFormComponent<T>, R> implem
 
   constructor(
     private readonly activeModal: NgbActiveModal,
-    private readonly injector: Injector)
-  {
+    private readonly injector: Injector
+  ) {
     this.componentRef$.subscribe();
     this.observeDefaultValuesChanges();
   }

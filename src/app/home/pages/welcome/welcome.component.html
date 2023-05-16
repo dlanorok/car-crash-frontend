@@ -1,0 +1,52 @@
+<div class="d-flex justify-content-center">
+  <img class="logo-img" src="./assets/images/crashed-car-transparent-20.png" width="75%"/>
+</div>
+
+<!--<app-crash-form></app-crash-form>-->
+<div class="card d-flex flex-row gap-4 p-3" (click)="createCrash()">
+  <i class="bi bi-plus d-flex align-items-center" style="font-size: 60px"></i>
+  <div class="d-flex flex-column justify-content-center">
+    <div>
+      <h3>Create new crash</h3>
+    </div>
+    <div>
+      My vehicle was involved in a collision and I am the first starting this flow.
+    </div>
+  </div>
+  <div class="ps-3 ms-auto d-flex align-items-center">
+    <i class="bi bi-chevron-right" style="font-size: clamp(16px, 7vw, 20px)"></i>
+  </div>
+</div>
+
+<div class="card d-flex flex-row gap-4 p-3 mt-5">
+  <i class="bi bi-qr-code-scan d-flex align-items-center" style="font-size: 60px"></i>
+  <div class="d-flex flex-column justify-content-center">
+    <div>
+      <h3>Join crash</h3>
+    </div>
+    <div>
+      My vehicle was involved in a collision and I am the first starting this flow.
+    </div>
+  </div>
+  <div class="ps-3 ms-auto d-flex align-items-center">
+    <i class="bi bi-chevron-right" style="font-size: clamp(16px, 7vw, 20px)"></i>
+  </div>
+</div>
+
+<div
+  *ngIf="localStorageCrash"
+  [routerLink]="['crash/' + localStorageCrash]"
+  class="card d-flex flex-row gap-4 p-3 mt-5">
+  <i class="bi bi-pen d-flex align-items-center" style="font-size: 60px"></i>
+  <div class="d-flex flex-column justify-content-center">
+    <div>
+      <h3>Edit existing</h3>
+    </div>
+    <div>
+      You did not finish previous flow, click to continue.
+    </div>
+  </div>
+  <div class="ps-3 ms-auto d-flex align-items-center">
+    <i class="bi bi-chevron-right" style="font-size: clamp(16px, 7vw, 20px)"></i>
+  </div>
+</div>

@@ -14,6 +14,14 @@ import { CarEffects } from "./app-state/car/car-effects";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { TranslocoRootModule } from "./i18n/transloco-root.module";
 import { MainLayoutComponent } from './shared/layout/main-layout.component';
+import {
+  NgbDateAdapter,
+  NgbDateNativeAdapter,
+  NgbDateParserFormatter,
+  NgbDatepickerI18n
+} from "@ng-bootstrap/ng-bootstrap";
+import { CustomDateParserFormatter } from "./shared/form-controls/date-control/ngb-date-adapter";
+import { CustomDatepickerI18n } from "./shared/form-controls/date-control/date-control-i18n";
 
 @NgModule({
   declarations: [
@@ -35,7 +43,11 @@ import { MainLayoutComponent } from './shared/layout/main-layout.component';
     EffectsModule.forRoot(CrashEffects, CarEffects),
     ApiModule
   ],
-  providers: [],
+  providers: [
+    {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter},
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},
+    {provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

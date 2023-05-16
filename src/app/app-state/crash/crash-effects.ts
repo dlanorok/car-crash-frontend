@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EMPTY, pipe, tap } from 'rxjs';
+import { EMPTY, mergeMap, pipe, tap } from 'rxjs';
 import { map, exhaustMap, catchError } from 'rxjs/operators';
 import { CrashesApiService } from "../../shared/api/crashes/crashes-api.service";
 import { createCrash, createCrashSuccessful, loadCrash, loadCrashSuccessful } from "./crash-action";
-import { Crash } from "../../shared/models/crash.model";
+import { CrashModel } from "../../shared/models/crash.model";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { loadCars } from "../car/car-action";
+import { CarsApiService } from "../../shared/api/cars/cars-api.service";
 
 @Injectable()
 export class CrashEffects {
@@ -25,9 +26,9 @@ export class CrashEffects {
 
   createCrash$ = createEffect(() => this.actions$.pipe(
       ofType(createCrash),
-      exhaustMap((action) => this.crashesApiService.create(new Crash())
+      exhaustMap((action) => this.crashesApiService.create(action.crash)
         .pipe(
-          tap((crash: Crash) => {
+          tap((crash: CrashModel) => {
             this.router.navigate([`/crash/${crash.session_id}`])
           }),
           map(crash => ({ type: createCrashSuccessful.type, crash })),
@@ -39,6 +40,7 @@ export class CrashEffects {
   constructor(
     private actions$: Actions,
     private crashesApiService: CrashesApiService,
+    private carsApiService: CarsApiService,
     private router: Router,
     private store: Store
   ) {}

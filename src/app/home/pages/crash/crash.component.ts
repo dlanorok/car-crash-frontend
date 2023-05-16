@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { CarModel } from "../../../shared/models/car.model";
 import { map, Observable, take, tap } from "rxjs";
-import { Crash } from "../../../shared/models/crash.model";
+import { CrashModel } from "../../../shared/models/crash.model";
 import { Store } from "@ngrx/store";
 import { loadCrash } from "../../../app-state/crash/crash-action";
 import { selectCrash } from "../../../app-state/crash/crash-selector";
@@ -19,7 +19,7 @@ import { CarFormModule } from "../../../shared/components/forms/car-form/car-for
   styleUrls: ['./crash.component.scss']
 })
 export class CrashComponent implements OnInit {
-  crash$: Observable<(Crash | undefined)> = this.store.select(selectCrash);
+  crash$: Observable<(CrashModel | undefined)> = this.store.select(selectCrash);
   cars$: Observable<CarModel[]> = this.store.select(selectCars);
 
   constructor(
@@ -46,9 +46,9 @@ export class CrashComponent implements OnInit {
         this.crash$
           .pipe(
             take(1),
-            tap((crash: Crash | undefined) => {
+            tap((crash: CrashModel | undefined) => {
               if (!crash) {
-                throw new Error("Crash undefined");
+                throw new Error("CrashModel undefined");
               }
               car.crash = crash.id
               this.store.dispatch(createCar({car: car}))
@@ -69,9 +69,9 @@ export class CrashComponent implements OnInit {
         this.crash$
           .pipe(
             take(1),
-            tap((crash: Crash | undefined) => {
+            tap((crash: CrashModel | undefined) => {
               if (!crash) {
-                throw new Error("Crash undefined");
+                throw new Error("CrashModel undefined");
               }
               car.crash = crash.id
               this.store.dispatch(updateCar({car: car}))
@@ -84,9 +84,9 @@ export class CrashComponent implements OnInit {
     this.crash$
       .pipe(
         take(1),
-        tap((crash: Crash | undefined) => {
+        tap((crash: CrashModel | undefined) => {
           if (!crash) {
-            throw new Error("Crash undefined");
+            throw new Error("CrashModel undefined");
           }
           this.store.dispatch(deleteCar({carId: carId}))
         }),

@@ -1,7 +1,4 @@
 {
-  "car-crash.shared.crash-accident": "Accident report",
-  "car-crash.shared.crash-accident-detail": "You should fill out a Crash Incident Report if you are involved in a road accident within the EU that results in injury, involves more than one vehicle, involves a non-motorized road user, or results in damage to property",
-
   "car-crash.shared.button.submit": "Submit",
   "car-crash.shared.button.back": "Back",
   "car-crash.shared.button.delete": "Delete",
@@ -9,6 +6,16 @@
 
 
   "car-crash.home.create-crash.create": "Create crash",
+
+  "car-crash.home.crash.date-of-accident.label": "Time of accident",
+  "car-crash.home.crash.date-of-accident.placeholder": "",
+  "car-crash.home.crash.country.label": "Country",
+  "car-crash.home.crash.country.placeholder": "SI",
+  "car-crash.home.crash.place.label": "Place",
+  "car-crash.home.crash.place.placeholder": "Brezovica pri Borovnici",
+  "car-crash.home.crash.injuries.label": "Injuries",
+  "car-crash.home.crash.vehicle-material-damage.label": "Vehicle material damage",
+  "car-crash.home.crash.other-material-damage.label": "Other material damage",
 
   "car-crash.home.car.create": "Create car",
   "car-crash.home.car.view": "View car",

@@ -1,23 +1,24 @@
 import { createAction, props } from '@ngrx/store';
-import { Crash } from "../../shared/models/crash.model";
+import { CrashModel } from "../../shared/models/crash.model";
 
 export const createCrash = createAction(
-  '[CreateCrash Component] Create'
+  '[CreateCrash Component] Create',
+  props<{crash: CrashModel}>()
 );
 
 export const createCrashSuccessful = createAction(
-  '[Crash Api] Create Crash Successful',
-  props<{crash: Crash}>()
+  '[CrashModel Api] Create CrashModel Successful',
+  props<{crash: CrashModel}>()
 );
 
 export const loadCrash = createAction(
-  '[Crash Component] Load',
+  '[CrashModel Component] Load',
   props<{sessionId: string}>()
 );
 
 export const loadCrashSuccessful = createAction(
-  '[Crash API] Crash Load Success',
-  props<{crash: Crash}>()
+  '[CrashModel API] CrashModel Load Success',
+  props<{crash: CrashModel}>()
 );
 
 export const addCar = createAction(
