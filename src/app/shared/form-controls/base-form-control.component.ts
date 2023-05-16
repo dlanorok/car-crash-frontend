@@ -9,6 +9,7 @@ import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from "@angular/f
 export abstract class BaseFormControlComponent<T> implements ControlValueAccessor {
   @Input() label?: string;
   @Input() placeholder?: string;
+  @Input() submitted?: boolean;
 
   @Input() formControl!: FormControl;
   value?: T;

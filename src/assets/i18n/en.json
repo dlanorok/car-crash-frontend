@@ -8,7 +8,7 @@
   "car-crash.home.create-crash.create": "Create crash",
 
   "car-crash.home.crash.date-of-accident.label": "Time of accident",
-  "car-crash.home.crash.date-of-accident.placeholder": "",
+  "car-crash.home.crash.date-of-accident.placeholder": "12.5.2022",
   "car-crash.home.crash.country.label": "Country",
   "car-crash.home.crash.country.placeholder": "SI",
   "car-crash.home.crash.place.label": "Place",
@@ -107,5 +107,11 @@
   "car-crash.date-picker.month-full.8": "September",
   "car-crash.date-picker.month-full.9": "October",
   "car-crash.date-picker.month-full.10": "November",
-  "car-crash.date-picker.month-full.11": "December"
+  "car-crash.date-picker.month-full.11": "December",
+
+
+  "shared.forms/validators.labels.max_length.val": "The maximum number of characters is { maxLength, number }.",
+  "shared.forms/validators.labels.min_length.val": "The minimum number of characters is { minLength, number }.",
+  "shared.forms/validators.labels.control_required.val": "This item is required.",
+  "shared.forms/validators.labels.date_invalid.val": "Date must be DD.MM.YYYY"
 }

@@ -13,8 +13,6 @@ import { FormModalData } from "../interfaces/form-modal-data";
 import { BaseFormComponent } from "../../forms/base-form.component";
 import { combineLatest, filter, map, Observable, of, ReplaySubject, shareReplay, switchMap, take } from "rxjs";
 import { FormDirective } from "../directives/form.directive";
-import { DateControlComponent } from "../../../form-controls/date-control/date-control.component";
-
 @Component({
   selector: 'app-base-form-modal',
   templateUrl: './base-form-modal.component.html'
@@ -50,6 +48,12 @@ export class BaseFormModalComponent<T, C extends BaseFormComponent<T>, R> implem
     return this.componentRef$.pipe(
       switchMap(c => c.instance.formSubmit)
     );
+  }
+
+  parseApiValidationError(invalidFields?: any): void {
+    this.componentRef$
+      .pipe(take(1))
+      .subscribe(comp => comp.instance.parseApiValidationError(invalidFields));
   }
 
   constructor(

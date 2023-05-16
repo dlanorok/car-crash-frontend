@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { ComponentRef, Injectable } from '@angular/core';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormModalData } from "../components/modals/interfaces/form-modal-data";
 import { BaseFormComponent } from "../components/forms/base-form.component";
 import { BaseFormModalComponent } from "../components/modals/base-form-modal/base-form-modal.component";
-import { mergeMap, of } from "rxjs";
+import { EMPTY, first, map, mergeMap, of, tap } from "rxjs";
+import { catchError } from "rxjs/operators";
+import { handleApiValidationErrors } from "../components/forms/common/helpers/handle-api-validation-errors";
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +28,17 @@ export class ModalService {
     (modalRef.componentInstance as BaseFormModalComponent<T,C,R>).formSubmit
       .pipe(
         mergeMap((value: T) => {
+          return data.afterSubmit$(value)
+            .pipe(
+              first(),
+              handleApiValidationErrors(modalRef.componentInstance as BaseFormModalComponent<T, C, R>),
+              catchError((err) => {
+                return EMPTY;
+              }),
+            )
+        }),
+        tap(() => {
           modalRef.dismiss();
-          return value ? data.afterSubmit$(value) : of(undefined)
         })
       ).subscribe()
   }

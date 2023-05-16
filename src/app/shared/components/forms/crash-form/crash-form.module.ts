@@ -4,6 +4,7 @@ import { CrashFormComponent } from './crash-form.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TranslocoModule } from "@ngneat/transloco";
 import { DateControlModule } from "../../../form-controls/date-control/date-control.module";
+import { FormErrorsModule } from "../shell/form-errors/form-errors.module";
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { DateControlModule } from "../../../form-controls/date-control/date-cont
     ReactiveFormsModule,
     TranslocoModule,
     DateControlModule,
+    FormErrorsModule,
   ],
 })
 export class CrashFormModule { }

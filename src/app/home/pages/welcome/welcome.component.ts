@@ -10,6 +10,7 @@ import { CrashModel } from "../../../shared/models/crash.model";
 import { ModalService } from "../../../shared/services/modal.service";
 import { CrashFormComponent } from "../../../shared/components/forms/crash-form/crash-form.component";
 import { CrashFormModule } from "../../../shared/components/forms/crash-form/crash-form.module";
+import { CrashesApiService } from "../../../shared/api/crashes/crashes-api.service";
 
 @Component({
   selector: 'app-welcome',
@@ -22,7 +23,7 @@ export class WelcomeComponent implements OnInit {
   constructor(
     private readonly modalService: ModalService,
     private readonly store: Store,
-    private readonly componentFactoryResolver: ComponentFactoryResolver
+    private readonly crashesApiService: CrashesApiService
   ) {
   }
 
@@ -35,7 +36,7 @@ export class WelcomeComponent implements OnInit {
       model: new CrashModel(),
       title: 'Create crash',
       afterSubmit$: (crash: CrashModel) => {
-        return of(this.store.dispatch(createCrash({crash})))
+        return this.crashesApiService.create(crash)
       }
     });
   }

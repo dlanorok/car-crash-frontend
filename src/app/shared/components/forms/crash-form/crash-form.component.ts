@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { FormBuilder } from "@angular/forms";
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormBuilder, Validators } from "@angular/forms";
 import { CrashModel } from "../../../models/crash.model";
 import { BaseFormComponent } from "../base-form.component";
 
@@ -18,8 +18,8 @@ export class CrashFormComponent extends BaseFormComponent<CrashModel>{
     this.form = this.formBuilder.group(
       {
         date_of_accident: [''],
-        country: [''],
-        place: [''],
+        country: ['', Validators.required],
+        place: ['', Validators.required],
         injuries: [''],
         vehicle_material_damage: [''],
         other_material_damage: ['']
@@ -40,6 +40,12 @@ export class CrashFormComponent extends BaseFormComponent<CrashModel>{
   }
 
   submitForm() {
+    this.validateForm();
+
+    if (!this.form.valid) {
+      return;
+    }
+
     const crash = new CrashModel({
       ...this.crash,
       ...this.form.value

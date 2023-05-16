@@ -7,5 +7,8 @@
     (click)="d.toggle()"
     #d="ngbDatepicker"
     [formControl]="formControl"
+    [class.is-invalid]="submitted && formControl.errors"
   />
+
+  <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
 </div>
