@@ -5,6 +5,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TranslocoModule } from "@ngneat/transloco";
 import { DateControlModule } from "../../../form-controls/date-control/date-control.module";
 import { FormErrorsModule } from "../shell/form-errors/form-errors.module";
+import { TextControlModule } from "../../../form-controls/text-control/text-control.module";
+import { CheckboxControlModule } from "../../../form-controls/checkbox-control/checkbox-control.module";
 
 
 @NgModule({
@@ -21,6 +23,8 @@ import { FormErrorsModule } from "../shell/form-errors/form-errors.module";
     TranslocoModule,
     DateControlModule,
     FormErrorsModule,
+    TextControlModule,
+    CheckboxControlModule,
   ],
 })
 export class CrashFormModule { }

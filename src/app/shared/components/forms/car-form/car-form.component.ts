@@ -35,7 +35,9 @@ export class CarFormComponent extends BaseFormComponent<CarModel> {
     })
   }
 
-  submitForm() {
+  override submitForm() {
+    super.submitForm();
+
     const car = new CarModel({
       ...this.car,
       ...this.form.value

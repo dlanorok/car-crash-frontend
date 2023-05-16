@@ -15,7 +15,6 @@ import { FormErrorsModule } from "../../components/forms/shell/form-errors/form-
     CommonModule,
     NgbDatepicker,
     NgbInputDatepicker,
-    TranslocoModule,
     NgbDatepickerModule,
     ReactiveFormsModule,
     FormErrorsModule

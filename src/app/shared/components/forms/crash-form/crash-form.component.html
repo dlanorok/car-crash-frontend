@@ -7,40 +7,39 @@
 
   </app-date-control>
 
-  <div class="form-group">
-    <label for="country">{{ 'car-crash.home.crash.country.label' | transloco }}</label>
-    <input
-      id="country"
-      class="form-control"
-      [placeholder]="'car-crash.home.crash.country.placeholder' | transloco"
-      [class.is-invalid]="submitted && form.controls['country'].errors"
-      formControlName="country">
-    <app-form-errors *ngIf="submitted" [control]="form.controls['country']"></app-form-errors>
-  </div>
+  <app-text-control
+    [formControl]="$any(form.controls['country'])"
+    [placeholder]="'car-crash.home.crash.country.placeholder' | transloco"
+    [label]="'car-crash.home.crash.country.label' | transloco"
+    [submitted]="submitted">
+  </app-text-control>
 
-  <div class="form-group">
-    <label for="place">{{ 'car-crash.home.crash.place.label' | transloco }}</label>
-    <input
-      id="place"
-      class="form-control"
-      [class.is-invalid]="submitted && form.controls['place'].errors"
-      [placeholder]="'car-crash.home.crash.place.placeholder' | transloco"
-      formControlName="place">
-    <app-form-errors *ngIf="submitted" [control]="form.controls['place']"></app-form-errors>
-  </div>
+  <app-text-control
+    [formControl]="$any(form.controls['place'])"
+    [placeholder]="'car-crash.home.crash.place.placeholder' | transloco"
+    [label]="'car-crash.home.crash.place.label' | transloco"
+    [submitted]="submitted">
+  </app-text-control>
 
-  <div class="form-group form-check form-switch mt-3">
-    <label for="injuries">{{ 'car-crash.home.crash.injuries.label' | transloco }}</label>
-    <input class="form-check-input" type="checkbox" role="switch" formControlName="injuries" id="injuries">
-  </div>
+  <app-checkbox-control
+    [formControl]="$any(form.controls['injuries'])"
+    [label]="'car-crash.home.crash.injuries.label' | transloco"
+    [submitted]="submitted">
 
-  <div class="form-group form-check form-switch mt-3">
-    <label for="vehicle_material_damage">{{ 'car-crash.home.crash.vehicle-material-damage.label' | transloco }}</label>
-    <input class="form-check-input" type="checkbox" role="switch" formControlName="vehicle_material_damage" id="vehicle_material_damage">
-  </div>
+  </app-checkbox-control>
 
-  <div class="form-group form-check form-switch mt-3">
-    <label for="other_material_damage">{{ 'car-crash.home.crash.other-material-damage.label' | transloco }}</label>
-    <input class="form-check-input" type="checkbox" role="switch" formControlName="other_material_damage" id="other_material_damage">
-  </div>
+  <app-checkbox-control
+    [formControl]="$any(form.controls['vehicle_material_damage'])"
+    [label]="'car-crash.home.crash.vehicle-material-damage.label' | transloco"
+    [submitted]="submitted">
+
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['other_material_damage'])"
+    [label]="'car-crash.home.crash.other-material-damage.label' | transloco"
+    [submitted]="submitted">
+
+  </app-checkbox-control>
+
 </form>

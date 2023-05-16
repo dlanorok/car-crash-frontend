@@ -1,6 +1,6 @@
 import { Component, ComponentFactoryResolver, Injector, OnInit } from '@angular/core';
 import { Store } from "@ngrx/store";
-import { createCrash } from "../../../app-state/crash/crash-action";
+import { createCrash, createCrashSuccessful } from "../../../app-state/crash/crash-action";
 import { BaseFormModalComponent } from "../../../shared/components/modals/base-form-modal/base-form-modal.component";
 import { CarFormComponent } from "../../../shared/components/forms/car-form/car-form.component";
 import { CarFormModule } from "../../../shared/components/forms/car-form/car-form.module";
@@ -11,6 +11,7 @@ import { ModalService } from "../../../shared/services/modal.service";
 import { CrashFormComponent } from "../../../shared/components/forms/crash-form/crash-form.component";
 import { CrashFormModule } from "../../../shared/components/forms/crash-form/crash-form.module";
 import { CrashesApiService } from "../../../shared/api/crashes/crashes-api.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-welcome',
@@ -23,7 +24,8 @@ export class WelcomeComponent implements OnInit {
   constructor(
     private readonly modalService: ModalService,
     private readonly store: Store,
-    private readonly crashesApiService: CrashesApiService
+    private readonly crashesApiService: CrashesApiService,
+    private readonly router: Router
   ) {
   }
 
@@ -37,6 +39,11 @@ export class WelcomeComponent implements OnInit {
       title: 'Create crash',
       afterSubmit$: (crash: CrashModel) => {
         return this.crashesApiService.create(crash)
+          .pipe(
+            tap((crash: CrashModel) => {
+              this.router.navigate([`/crash/${crash.session_id}`])
+            })
+          )
       }
     });
   }

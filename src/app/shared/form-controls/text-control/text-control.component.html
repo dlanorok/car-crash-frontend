@@ -1,0 +1,12 @@
+<div class="form-group">
+  <label>{{ label }}</label>
+
+  <input
+    [id]="_id"
+    class="form-control"
+    [placeholder]="placeholder"
+    [formControl]="formControl"
+    [class.is-invalid]="submitted && formControl.errors">
+
+  <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
+</div>

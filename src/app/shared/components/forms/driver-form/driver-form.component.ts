@@ -35,7 +35,9 @@ export class DriverFormComponent extends BaseFormComponent<DriverModel> {
     })
   }
 
-  submitForm() {
+  override submitForm() {
+    super.submitForm();
+
     const driver = new DriverModel({
       ...this.form.value
     })

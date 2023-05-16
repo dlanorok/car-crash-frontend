@@ -1,5 +1,6 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { customAlphabet } from 'nanoid';
 
 @Component(
   {
@@ -12,7 +13,10 @@ export abstract class BaseFormControlComponent<T> implements ControlValueAccesso
   @Input() submitted?: boolean;
 
   @Input() formControl!: FormControl;
+
   value?: T;
+
+  readonly _id: string = customAlphabet('abcdefgijz', 12)();
 
   constructor() {}
 

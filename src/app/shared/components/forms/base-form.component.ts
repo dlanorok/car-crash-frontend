@@ -17,11 +17,13 @@ export abstract class BaseFormComponent<T> implements OnInit {
   }
 
   protected abstract initForm(): void;
-  abstract submitForm(): void;
-
-  protected validateForm(formGroup: UntypedFormGroup = this.form): void {
+  submitForm() {
     this.submitted = true;
-  }
+
+    if (!this.form.valid) {
+      return;
+    }
+  };
 
   protected emitValue(value: T): void {
     this.formSubmit.emit(value);

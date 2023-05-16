@@ -37,7 +37,9 @@ export class InsuranceFormComponent extends BaseFormComponent<InsuranceModel> {
     })
   }
 
-  submitForm() {
+  override submitForm() {
+    super.submitForm();
+
     const insurance = new InsuranceModel({
       ...this.form.value
     })

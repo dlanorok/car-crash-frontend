@@ -39,12 +39,8 @@ export class CrashFormComponent extends BaseFormComponent<CrashModel>{
     })
   }
 
-  submitForm() {
-    this.validateForm();
-
-    if (!this.form.valid) {
-      return;
-    }
+  override submitForm() {
+    super.submitForm();
 
     const crash = new CrashModel({
       ...this.crash,

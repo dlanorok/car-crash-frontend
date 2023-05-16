@@ -24,16 +24,11 @@ export class CrashEffects {
     )
   );
 
-  createCrash$ = createEffect(() => this.actions$.pipe(
-      ofType(createCrash),
-      exhaustMap((action) => this.crashesApiService.create(action.crash)
-        .pipe(
-          tap((crash: CrashModel) => {
-            this.router.navigate([`/crash/${crash.session_id}`])
-          }),
-          map(crash => ({ type: createCrashSuccessful.type, crash })),
-          catchError(() => EMPTY)
-        ))
+  createCrashSuccessful$ = createEffect(() => this.actions$.pipe(
+      ofType(createCrashSuccessful),
+      tap((action) => {
+        this.router.navigate([`/crash/${action.crash.session_id}`])
+      })
     )
   );
 

@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TranslocoModule } from "@ngneat/transloco";
 import { DriverFormComponent } from "./driver-form.component";
 import { DateControlModule } from "../../../form-controls/date-control/date-control.module";
+import { TextControlModule } from "../../../form-controls/text-control/text-control.module";
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { DateControlModule } from "../../../form-controls/date-control/date-cont
     FormsModule,
     ReactiveFormsModule,
     TranslocoModule,
-    DateControlModule
+    DateControlModule,
+    TextControlModule
   ]
 })
 export class DriverFormModule { }

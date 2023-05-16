@@ -4,7 +4,6 @@ import { CarModel } from "../../../shared/models/car.model";
 import { debounceTime, distinctUntilChanged, EMPTY, finalize, map, mergeMap, of, switchMap, tap } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormBuilder, UntypedFormGroup } from "@angular/forms";
-import { PolicyHolderModel } from "../../../shared/models/policy-holder.model";
 import { catchError } from "rxjs/operators";
 
 @Component({

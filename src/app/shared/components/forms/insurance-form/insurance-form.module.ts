@@ -4,6 +4,8 @@ import { InsuranceFormComponent } from './insurance-form.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TranslocoModule } from "@ngneat/transloco";
 import { DateControlModule } from "../../../form-controls/date-control/date-control.module";
+import { TextControlModule } from "../../../form-controls/text-control/text-control.module";
+import { CheckboxControlModule } from "../../../form-controls/checkbox-control/checkbox-control.module";
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { DateControlModule } from "../../../form-controls/date-control/date-cont
     FormsModule,
     ReactiveFormsModule,
     TranslocoModule,
-    DateControlModule
+    DateControlModule,
+    TextControlModule,
+    CheckboxControlModule
   ]
 })
 export class InsuranceFormModule { }

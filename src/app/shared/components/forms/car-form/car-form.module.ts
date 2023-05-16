@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CarFormComponent } from './car-form.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TranslocoModule } from "@ngneat/transloco";
+import { TextControlModule } from "../../../form-controls/text-control/text-control.module";
 
 
 
@@ -18,6 +19,7 @@ import { TranslocoModule } from "@ngneat/transloco";
     FormsModule,
     ReactiveFormsModule,
     TranslocoModule,
+    TextControlModule,
   ]
 })
 export class CarFormModule { }
