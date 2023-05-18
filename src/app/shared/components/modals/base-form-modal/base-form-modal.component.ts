@@ -69,12 +69,12 @@ export class BaseFormModalComponent<T, C extends BaseFormComponent<T>, R> implem
       this.componentRef$.pipe(
         take(1),
         map(
-          (dynamicComponentRef): BaseFormComponent<T> & { setDefaults?(value: T): void } => {
+          (dynamicComponentRef): BaseFormComponent<T> => {
             return dynamicComponentRef.instance
           }
         ),
         filter(
-          (componentInstance): componentInstance is BaseFormComponent<T> & { setDefaults(value: T): void } =>
+          (componentInstance): componentInstance is BaseFormComponent<T> =>
             !!componentInstance.setDefaults,
         ),
       );

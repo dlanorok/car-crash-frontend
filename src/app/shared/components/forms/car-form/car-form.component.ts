@@ -25,7 +25,7 @@ export class CarFormComponent extends BaseFormComponent<CarModel> {
     );
   }
 
-  setDefaults(value: CarModel) {
+  override setDefaults(value: CarModel): void {
     this.car = value;
     this.form.patchValue({
       car_type: value.car_type,
