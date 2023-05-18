@@ -3,9 +3,14 @@
   "car-crash.shared.button.back": "Back",
   "car-crash.shared.button.delete": "Delete",
   "car-crash.shared.button.fill-form": "Film form",
-
+  "car-crash.shared.button.edit": "Edit",
+  "car-crash.shared.button.next": "Next",
 
   "car-crash.home.create-crash.create": "Create crash",
+  "car-crash.home.crash.overview.title": "Crash overview",
+  "car-crash.home.crash.crash.data": "Crash data",
+  "car-crash.home.crash.crash.edit-title": "Edit Crash",
+  "car-crash.home.crash.cars.data": "Cars summary",
 
   "car-crash.home.crash.date-of-accident.label": "Time of accident",
   "car-crash.home.crash.date-of-accident.placeholder": "12.5.2022",
@@ -18,6 +23,7 @@
   "car-crash.home.crash.other-material-damage.label": "Other material damage",
 
   "car-crash.home.car.create": "Create car",
+  "car-crash.home.car.invite": "Invite",
   "car-crash.home.car.view": "View car",
   "car-crash.home.car.delete": "Delete car",
   "car-crash.home.car.edit": "Edit car",

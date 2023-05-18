@@ -14,6 +14,7 @@ import { catchError } from "rxjs/operators";
 export class CarComponent implements OnInit {
   car?: CarModel
   form!: UntypedFormGroup;
+  step: number = 1;
 
   constructor(
     private readonly carsApiService: CarsApiService,
@@ -80,14 +81,11 @@ export class CarComponent implements OnInit {
   }
 
   submitForm() {
-    this.saveCar()
-      .pipe(
-        tap(() => {
-          this.router.navigate(
-            [this.router.url.replace(/\/cars\/\d+/, '')]
-          )
-        })
-      ).subscribe()
+    this.step++;
+  }
+
+  readonly onHeadBackClick: () => void = () => {
+    this.step--;
   }
 
 }

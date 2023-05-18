@@ -3,11 +3,11 @@ import { CrashModel } from "../../shared/models/crash.model";
 import { addCar, createCrash, createCrashSuccessful, loadCrash, loadCrashSuccessful } from "./crash-action";
 
 export interface CrashState {
-  crash?: CrashModel
+  crash: CrashModel
 }
 
 export const initialState: CrashState = {
-  crash: undefined,
+  crash: new CrashModel(),
 };
 
 export const crashReducer = createReducer(

@@ -1,52 +1,5 @@
-<div class="row justify-content-center">
-  <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitForm()">
-    <div class="form-group">
-      <label for="name">{{ 'car-crash.home.policy-holder.name.label' | transloco }}</label>
-      <input
-        id="name"
-        class="form-control"
-        [placeholder]="'car-crash.home.policy-holder.name.placeholder' | transloco"
-        formControlName="name">
-    </div>
+<app-policy-holder-form #policyHolderForm></app-policy-holder-form>
 
-    <div class="form-group">
-      <label for="surname">{{ 'car-crash.home.policy-holder.surname.label' | transloco }}</label>
-      <input
-        id="surname"
-        class="form-control"
-        [placeholder]="'car-crash.home.policy-holder.surname.placeholder' | transloco"
-        formControlName="surname">
-    </div>
-
-    <div class="form-group">
-      <label for="email">{{ 'car-crash.home.policy-holder.email.label' | transloco }}</label>
-      <input
-        id="email"
-        class="form-control"
-        [placeholder]="'car-crash.home.policy-holder.email.placeholder' | transloco"
-        formControlName="email">
-    </div>
-
-    <div class="form-group">
-      <label for="post-number">{{ 'car-crash.home.policy-holder.post-number.label' | transloco }}</label>
-      <input
-        id="post-number"
-        class="form-control"
-        [placeholder]="'car-crash.home.policy-holder.post-number.placeholder' | transloco"
-        formControlName="post_number">
-    </div>
-
-    <div class="form-group">
-      <label for="country_code">{{ 'car-crash.home.policy-holder.country-code.label' | transloco }}</label>
-      <input
-        id="country_code"
-        class="form-control"
-        [placeholder]="'car-crash.home.policy-holder.country-code.placeholder' | transloco"
-        formControlName="country_code">
-    </div>
-
-    <button type="submit" class="btn btn-primary mt-3">
-      {{ 'car-crash.shared.button.submit' | transloco }}
-    </button>
-  </form>
-</div>
+<button type="submit" class="btn btn-primary mt-3" (click)="submitForm()">
+  {{ 'car-crash.shared.button.submit' | transloco }}
+</button>

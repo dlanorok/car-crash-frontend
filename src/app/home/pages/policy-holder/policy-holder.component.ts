@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PolicyHoldersApiService } from "../../../shared/api/policy-holders/policy-holders-api.service";
 import { PolicyHolderModel } from "../../../shared/models/policy-holder.model";
-import { FormBuilder, UntypedFormGroup } from "@angular/forms";
-import { debounceTime, distinctUntilChanged, EMPTY, finalize, map, mergeMap, Observable, tap } from "rxjs";
+import { EMPTY, finalize, map, mergeMap, tap } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { catchError } from "rxjs/operators";
+import { PolicyHolderFormComponent } from "../../../shared/components/forms/policy-holder-form/policy-holder-form.component";
+import { InsuranceModel } from "../../../shared/models/insurance.model";
 
 @Component({
   selector: 'app-policy-holder',
@@ -13,11 +14,10 @@ import { catchError } from "rxjs/operators";
 })
 export class PolicyHolderComponent implements OnInit {
   policyHolder?: PolicyHolderModel;
-  form!: UntypedFormGroup;
+  @ViewChild('policyHolderForm', { static: false }) protected policyHolderForm?: PolicyHolderFormComponent;
 
   constructor(
     private readonly policyHoldersApiService: PolicyHoldersApiService,
-    private readonly formBuilder: FormBuilder,
     private readonly route: ActivatedRoute,
     private readonly router: Router
   ) {
@@ -43,51 +43,35 @@ export class PolicyHolderComponent implements OnInit {
                 this.policyHolder = new PolicyHolderModel({car: carId});
                 return EMPTY;
               }),
-              finalize(() => this.setForm())
+              finalize(() => {
+                if (!this.policyHolder) {
+                  return
+                }
+                this.policyHolderForm?.setDefaults(this.policyHolder);
+              })
             );
         }),
       ).subscribe()
   }
 
-  private setForm(): void {
-    this.form = this.formBuilder.group(
-      {
-        name: [this.policyHolder?.name],
-        surname: [this.policyHolder?.surname],
-        email: [this.policyHolder?.email],
-        post_number: [this.policyHolder?.post_number],
-        country_code: [this.policyHolder?.country_code],
-      }
-    )
-    this.subscribeToFormChange()
+  ngAfterViewInit(): void {
+    this.subscribeAfterFormSubmit()
   }
 
-  private subscribeToFormChange() {
-    this.form.valueChanges
-      .pipe(
-        debounceTime(1000),
-        distinctUntilChanged(),
-        mergeMap(() => this.savePolicyHolder())
-      ).subscribe()
-  }
-
-  private savePolicyHolder(): Observable<PolicyHolderModel> {
-    const policyHolder = new PolicyHolderModel({
-        ...this.policyHolder,
-        ...this.form.value,
-      }
-    )
-
-    return this.policyHoldersApiService.create(policyHolder);
-  }
 
   submitForm() {
-    this.savePolicyHolder()
+    this.policyHolderForm?.submitForm();
+  }
+
+  private subscribeAfterFormSubmit() {
+    this.policyHolderForm?.formSubmit
       .pipe(
-        tap(() => {
-          this.router.navigate(
-            [this.router.url.replace(/\/cars\/\d+\/policy-holder$/, '')]
-          )
+        mergeMap((model: PolicyHolderModel) => {
+          this.policyHolder = {
+            ...this.policyHolder,
+            ...model
+          }
+          return this.policyHoldersApiService.create(this.policyHolder);
         })
       ).subscribe()
   }

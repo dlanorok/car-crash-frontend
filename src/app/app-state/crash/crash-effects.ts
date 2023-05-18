@@ -24,14 +24,6 @@ export class CrashEffects {
     )
   );
 
-  createCrashSuccessful$ = createEffect(() => this.actions$.pipe(
-      ofType(createCrashSuccessful),
-      tap((action) => {
-        this.router.navigate([`/crash/${action.crash.session_id}`])
-      })
-    )
-  );
-
   constructor(
     private actions$: Actions,
     private crashesApiService: CrashesApiService,

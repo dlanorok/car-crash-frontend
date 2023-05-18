@@ -1,25 +1,14 @@
-<div class="row justify-content-center">
-  <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitForm()">
-    <div class="form-group">
-      <label for="registration_plate">{{ 'car-crash.home.car.registration-plate.label' | transloco }}</label>
-      <input
-        id="registration_plate"
-        class="form-control"
-        [placeholder]="'car-crash.home.car.registration-plate.placeholder' | transloco"
-        formControlName="registration_plate">
-    </div>
+<app-page-title
+  [title]="car?.car_type ?? ''"
+  [onBackClick]="step > 1 ? onHeadBackClick : undefined">
 
-    <div class="form-group">
-      <label for="make-type">{{ 'car-crash.home.car.make-type.label' | transloco }}</label>
-      <input
-        id="make-type"
-        class="form-control"
-        [placeholder]="'car-crash.home.car.make-type.placeholder' | transloco"
-        formControlName="make_type">
-    </div>
+</app-page-title>
 
-    <button type="submit" class="btn btn-primary mt-3">
-      {{ 'car-crash.shared.button.submit' | transloco }}
-    </button>
-  </form>
-</div>
+<app-policy-holder-form *ngIf="step === 1"></app-policy-holder-form>
+<app-car-form *ngIf="step === 2"></app-car-form>
+<app-insurance-form *ngIf="step === 3"></app-insurance-form>
+<app-driver-form *ngIf="step === 4"></app-driver-form>
+
+<button type="submit" class="btn btn-primary mt-3" (click)="submitForm()">
+  {{ 'car-crash.shared.button.next' | transloco }}
+</button>

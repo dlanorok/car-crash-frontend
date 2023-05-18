@@ -1,28 +1,15 @@
-.card {
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  width: 100%;
-}
-
-
 .add-button {
   font-size: 50px;
-  color: var(--);
-  position: absolute;
-  bottom: 0;
-  right: 20px;
-  z-index: 1;
+  color: var(--bs-secondary);
   cursor: pointer;
 }
 
-.car-detail {
-  flex: 1 0 160px;
-}
+.car {
+  min-height: 100px;
+  border: 1px solid var(--light-ui-element);
+  border-radius: 8px;
 
-.cars {
-  .car:first-child {
-    background-color: #a1e1ff;
-  }
-  .car:nth-child(2) {
-    background-color: #f5f5bf;
+  &:hover {
+    border-color: var(--medium-ui-element);
   }
 }

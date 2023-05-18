@@ -17,6 +17,7 @@ export abstract class BaseFormComponent<T> implements OnInit {
   }
 
   protected abstract initForm(): void;
+
   submitForm() {
     this.submitted = true;
 

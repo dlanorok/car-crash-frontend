@@ -25,6 +25,7 @@
     "@ngrx/effects": "^15.4.0",
     "@ngrx/store": "^15.4.0",
     "@popperjs/core": "^2.11.7",
+    "@techiediaries/ngx-qrcode": "^9.1.0",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.5",
     "nanoid": "^4.0.2",

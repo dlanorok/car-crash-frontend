@@ -6,30 +6,32 @@ import { RouterModule } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TranslocoModule } from "@ngneat/transloco";
 import { MainLayoutComponent } from "../../../shared/layout/main-layout.component";
+import { PolicyHolderFormModule } from "../../../shared/components/forms/policy-holder-form/policy-holder-form.module";
 
 
 @NgModule({
   declarations: [
     PolicyHolderComponent
   ],
-  imports: [
-    CommonModule,
-    ApiModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule.forChild([
-      {
-        path: "",
-        component: MainLayoutComponent,
-        children: [
-          {
-            path: '',
-            component: PolicyHolderComponent
-          }
-        ]
-      }
-    ]),
-    TranslocoModule
-  ]
+    imports: [
+        CommonModule,
+        ApiModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule.forChild([
+            {
+                path: "",
+                component: MainLayoutComponent,
+                children: [
+                    {
+                        path: '',
+                        component: PolicyHolderComponent
+                    }
+                ]
+            }
+        ]),
+        TranslocoModule,
+        PolicyHolderFormModule
+    ]
 })
 export class PolicyHolderModule { }

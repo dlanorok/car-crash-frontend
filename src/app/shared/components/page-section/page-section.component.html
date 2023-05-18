@@ -1,0 +1,14 @@
+
+<div class="d-flex align-items-center mb-3 mt-3">
+  <div class="page-section-title">
+    {{ sectionTitle }}
+  </div>
+
+  <button *ngIf="buttonText" type="submit" class="btn btn-sm btn-primary ms-auto" (click)="onButtonClick.next()">
+    {{ buttonText }}
+  </button>
+</div>
+<ng-content></ng-content>
+<hr>
+
+
