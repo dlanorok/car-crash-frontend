@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { CarsApiService } from "../../../shared/api/cars/cars-api.service";
 import { CarModel } from "../../../shared/models/car.model";
-import { forkJoin, map, of, switchMap, tap } from "rxjs";
+import { forkJoin, map, of, skip, Subscription, switchMap, take, tap } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 import { UntypedFormGroup } from "@angular/forms";
 import { catchError } from "rxjs/operators";
@@ -14,6 +14,7 @@ import { InsuranceFormComponent } from "../../../shared/components/forms/insuran
 import { DriverFormComponent } from "../../../shared/components/forms/driver-form/driver-form.component";
 import { DriverModel } from "../../../shared/models/driver.model";
 import { DriversApiService } from "../../../shared/api/drivers/drivers-api.service";
+import { BaseFormComponent } from "../../../shared/components/forms/base-form.component";
 
 @Component({
   selector: 'app-car',
@@ -27,7 +28,7 @@ export class CarComponent implements OnInit {
   driver?: DriverModel;
 
   form!: UntypedFormGroup;
-  step: number = 0;
+  step: number = 1;
 
   @ViewChild('policyHolderForm', { static: false }) protected policyHolderForm?: PolicyHolderFormComponent;
 
@@ -35,6 +36,7 @@ export class CarComponent implements OnInit {
   set setPolicyHolderForm(policyHolderForm: PolicyHolderFormComponent) {
     if(policyHolderForm) {
       this.setFormsData();
+      this.subscribeToFormChange(policyHolderForm)
     }
   }
 
@@ -44,6 +46,7 @@ export class CarComponent implements OnInit {
   set setInsuranceForm(insuranceForm: InsuranceFormComponent) {
     if(insuranceForm) {
       this.setFormsData();
+      this.subscribeToFormChange(insuranceForm)
     }
   }
 
@@ -53,15 +56,18 @@ export class CarComponent implements OnInit {
   set setDriverForm(driverForm: DriverFormComponent) {
     if(driverForm) {
       this.setFormsData();
+      this.subscribeToFormChange(driverForm)
     }
   }
+
+  private formChangeSubscription?: Subscription;
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly policyHoldersApiService: PolicyHoldersApiService,
     private readonly carsApiService: CarsApiService,
     private readonly insurancesApiService: InsurancesApiService,
-    private readonly driversApiService: DriversApiService,
+    private readonly driversApiService: DriversApiService
   ) {}
 
   ngOnInit(): void {
@@ -78,6 +84,16 @@ export class CarComponent implements OnInit {
         return 'car-crash.home.car.driver';
     }
     return '';
+  }
+
+  private subscribeToFormChange(baseForm: BaseFormComponent<any>) {
+    this.formChangeSubscription?.unsubscribe();
+    this.formChangeSubscription = baseForm.formChange
+      .pipe(
+        tap(() => {
+          this.saveForm(baseForm)
+        })
+      ).subscribe()
   }
 
   private setFormsData() {
@@ -116,7 +132,6 @@ export class CarComponent implements OnInit {
           ])
             .pipe(
               tap(([car, policyHolder, insurance, driver]: [CarModel, PolicyHolderModel, InsuranceModel, DriverModel]) => {
-                this.step = 1;
                 this.car = car;
                 this.policyHolder = policyHolder;
                 this.insurance = insurance;
@@ -130,7 +145,34 @@ export class CarComponent implements OnInit {
   }
 
   submitForm() {
+    this.saveForm(this.policyHolderForm || this.driverForm || this.insuranceForm);
     this.step++;
+  }
+
+  private saveForm(baseForm: BaseFormComponent<any> | undefined) {
+    if (!baseForm) {
+      return
+    }
+
+    if (baseForm instanceof PolicyHolderFormComponent) {
+      this.policyHolder = new PolicyHolderModel({
+        ...this.policyHolder,
+        ...baseForm.form.value
+      })
+      this.policyHoldersApiService.create(this.policyHolder).pipe(take(1)).subscribe();
+    } else if (baseForm instanceof InsuranceFormComponent) {
+      this.insurance = new InsuranceModel({
+        ...this.insurance,
+        ...baseForm.form.value
+      })
+      this.insurancesApiService.create(this.insurance).pipe(take(1)).subscribe();
+    } else if (baseForm instanceof DriverFormComponent) {
+      this.driver = new DriverModel({
+        ...this.driver,
+        ...baseForm.form.value
+      })
+      this.driversApiService.create(this.driver).pipe(take(1)).subscribe();
+    }
   }
 
   readonly onHeadBackClick: () => void = () => {

@@ -9,11 +9,11 @@
 }
 
 .car {
-  border: 1px solid var(--light-ui-element);
+  border: 1px solid var(--medium-ui-element);
   border-radius: 8px;
 
   &:hover {
-    border-color: var(--medium-ui-element);
+    border-color: var(--strong-ui-element);
   }
 }
 
