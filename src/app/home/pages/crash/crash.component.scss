@@ -1,3 +1,7 @@
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/mixins';
+
 .add-button {
   font-size: 50px;
   color: var(--bs-secondary);
@@ -5,11 +9,33 @@
 }
 
 .car {
-  min-height: 100px;
   border: 1px solid var(--light-ui-element);
   border-radius: 8px;
 
   &:hover {
     border-color: var(--medium-ui-element);
+  }
+}
+
+.car-detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.car-type {
+  flex: 1 0 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@include media-breakpoint-up(sm) {
+  .car {
+    min-height: 100px;
+  }
+
+  .car-detail {
+    display: block;
   }
 }

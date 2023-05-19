@@ -8,6 +8,7 @@ import { Location } from "@angular/common";
 })
 export class PageTitleComponent {
   @Input() title!: string;
+  @Input() subTitle?: string;
   @Input() onBackClick?: () => void;
 
   constructor(private readonly location: Location)

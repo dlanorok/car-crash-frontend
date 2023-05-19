@@ -2,3 +2,15 @@
   font-size: 1.5em;
   font-weight: 600;
 }
+
+.title-section {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  > div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

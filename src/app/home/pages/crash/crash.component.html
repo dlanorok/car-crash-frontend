@@ -39,8 +39,8 @@
 <app-page-section
   *ngIf="cars$ | async"
   [sectionTitle]="'car-crash.home.crash.cars.data' | transloco"
-  [buttonText]="'car-crash.home.car.invite' | transloco"
-  (onButtonClick)="editCrash()"
+  [buttonText]="'car-crash.home.car.add' | transloco"
+  (onButtonClick)="createCar()"
 >
 
   <div class="row">
@@ -48,23 +48,21 @@
       <div class="col-12 col-md-6 col-lg-4 mb-3 mb-md-0">
         <div class="car p-3 d-flex align-items-center h-100" [routerLink]="'cars/' + car.id">
           <i class="bi bi-car-front filled-icon me-3"></i>
-          <div>
+          <div class="car-detail">
             <div class="car-type">
               <b>{{ car.car_type }}</b>
             </div>
             <div>
               {{ car.registration_plate }}
             </div>
-            <div>
+            <div class="d-none d-md-block">
               {{ car.registration_country }}
             </div>
           </div>
+          <i class="bi bi-chevron-right ms-auto ps-3"></i>
         </div>
       </div>
     </ng-template>
-    <div class="col-12 d-flex justify-content-center mt-3">
-      <i class="add-button bi bi-plus-circle-fill" (click)="createCar()"></i>
-    </div>
   </div>
 
 </app-page-section>

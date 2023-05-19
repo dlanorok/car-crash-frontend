@@ -22,14 +22,15 @@
   "car-crash.home.crash.vehicle-material-damage.label": "Vehicle material damage",
   "car-crash.home.crash.other-material-damage.label": "Other material damage",
 
+  "car-crash.home.car.add": "Add",
   "car-crash.home.car.create": "Create car",
   "car-crash.home.car.invite": "Invite",
   "car-crash.home.car.view": "View car",
   "car-crash.home.car.delete": "Delete car",
   "car-crash.home.car.edit": "Edit car",
-  "car-crash.home.car.set-policy-holder": "Policy holder",
-  "car-crash.home.car.set-driver": "Driver",
-  "car-crash.home.car.set-insurance": "Insurance",
+  "car-crash.home.car.policy-holder": "Policy holder",
+  "car-crash.home.car.driver": "Driver",
+  "car-crash.home.car.insurance": "Insurance",
 
   "car-crash.home.car.registration-plate.label": "Registration plate",
   "car-crash.home.car.registration-plate.placeholder": "LJ-RU-567",

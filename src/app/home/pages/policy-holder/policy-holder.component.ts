@@ -5,7 +5,6 @@ import { EMPTY, finalize, map, mergeMap, tap } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { catchError } from "rxjs/operators";
 import { PolicyHolderFormComponent } from "../../../shared/components/forms/policy-holder-form/policy-holder-form.component";
-import { InsuranceModel } from "../../../shared/models/insurance.model";
 
 @Component({
   selector: 'app-policy-holder',
@@ -14,6 +13,7 @@ import { InsuranceModel } from "../../../shared/models/insurance.model";
 })
 export class PolicyHolderComponent implements OnInit {
   policyHolder?: PolicyHolderModel;
+
   @ViewChild('policyHolderForm', { static: false }) protected policyHolderForm?: PolicyHolderFormComponent;
 
   constructor(

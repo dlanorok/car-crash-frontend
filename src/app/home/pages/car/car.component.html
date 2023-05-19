@@ -1,13 +1,12 @@
 <app-page-title
-  [title]="car?.car_type ?? ''"
+  [title]="(car?.car_type ?? '')"
+  [subTitle]="stepTitle | transloco"
   [onBackClick]="step > 1 ? onHeadBackClick : undefined">
-
 </app-page-title>
 
-<app-policy-holder-form *ngIf="step === 1"></app-policy-holder-form>
-<app-car-form *ngIf="step === 2"></app-car-form>
-<app-insurance-form *ngIf="step === 3"></app-insurance-form>
-<app-driver-form *ngIf="step === 4"></app-driver-form>
+<app-policy-holder-form #policyHolderForm *ngIf="step === 1"></app-policy-holder-form>
+<app-insurance-form #insuranceForm *ngIf="step === 2"></app-insurance-form>
+<app-driver-form #driverForm *ngIf="step === 3"></app-driver-form>
 
 <button type="submit" class="btn btn-primary mt-3" (click)="submitForm()">
   {{ 'car-crash.shared.button.next' | transloco }}
