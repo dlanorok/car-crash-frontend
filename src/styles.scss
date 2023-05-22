@@ -27,11 +27,30 @@ app-root {
   font-size: 18px;
   padding: 4px 8px;
   border-radius: 8px;
-  background-color: var(--bs-light);
+  background-color: var(--bs-primary);
+  color: white;
 }
 
 @media only screen and (max-width: 300px) {
   .filled-icon {
     display: none;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  .filled-icon {
+    display: none;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .btn {
+    width: inherit;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .btn {
+    width: 100%;
   }
 }

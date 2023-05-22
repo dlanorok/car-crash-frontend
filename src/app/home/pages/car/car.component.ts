@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CarsApiService } from "../../../shared/api/cars/cars-api.service";
 import { CarModel } from "../../../shared/models/car.model";
 import { forkJoin, map, of, Subscription, switchMap, take, tap } from "rxjs";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, ParamMap, Params, Router } from "@angular/router";
 import { UntypedFormGroup } from "@angular/forms";
 import { catchError } from "rxjs/operators";
 import { PolicyHolderModel } from "../../../shared/models/policy-holder.model";
@@ -15,6 +15,8 @@ import { DriverFormComponent } from "../../../shared/components/forms/driver-for
 import { DriverModel } from "../../../shared/models/driver.model";
 import { DriversApiService } from "../../../shared/api/drivers/drivers-api.service";
 import { BaseFormComponent } from "../../../shared/components/forms/base-form.component";
+import { Step } from "../../../shared/common/stepper-data";
+import { getContentOfKeyLiteral } from "@ngneat/transloco/schematics/src/utils/ast-utils";
 
 @Component({
   selector: 'app-car',
@@ -29,6 +31,20 @@ export class CarComponent implements OnInit {
 
   form!: UntypedFormGroup;
   step: number = 1;
+  steps: Step[] = [
+    {
+      name: 'car-crash.home.car.policy-holder',
+      icon: 'bi-file-earmark-person'
+    },
+    {
+      name: 'car-crash.home.car.insurance',
+      icon: 'bi-shield-check'
+    },
+    {
+      name: 'car-crash.home.car.driver',
+      icon: 'bi-person-vcard'
+    }
+  ]
 
   @ViewChild('policyHolderForm', { static: false }) protected policyHolderForm?: PolicyHolderFormComponent;
 
@@ -67,23 +83,13 @@ export class CarComponent implements OnInit {
     private readonly policyHoldersApiService: PolicyHoldersApiService,
     private readonly carsApiService: CarsApiService,
     private readonly insurancesApiService: InsurancesApiService,
-    private readonly driversApiService: DriversApiService
+    private readonly driversApiService: DriversApiService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
     this.getData();
-  }
-
-  get stepTitle(): string {
-    switch (this.step) {
-      case 1:
-        return 'car-crash.home.car.policy-holder';
-      case 2:
-        return 'car-crash.home.car.insurance';
-      case 3:
-        return 'car-crash.home.car.driver';
-    }
-    return '';
+    this.getStepFromRoute();
   }
 
   private subscribeToFormChange(baseForm: BaseFormComponent<any>) {
@@ -104,6 +110,15 @@ export class CarComponent implements OnInit {
     } else if (this.driverForm && this.driver) {
       this.driverForm.setDefaults(this.driver);
     }
+  }
+
+  private getStepFromRoute(): void {
+    this.route.queryParamMap
+      .pipe(
+        tap((params: ParamMap) => {
+          this.step = parseInt(params.get('step') ?? '1');
+        })
+      ).subscribe()
   }
 
   private getData(): void {
@@ -144,6 +159,15 @@ export class CarComponent implements OnInit {
       .subscribe()
   }
 
+  setStep(step: number): void {
+    this.router.navigate([], {
+      queryParams: {
+        step: step
+      },
+      queryParamsHandling: 'merge',
+    });
+  }
+
   submitForm() {
     const form = this.policyHolderForm || this.driverForm || this.insuranceForm;
     if (!form) {
@@ -154,7 +178,7 @@ export class CarComponent implements OnInit {
 
     if (form.isFormValid()) {
       this.saveForm(this.policyHolderForm || this.driverForm || this.insuranceForm);
-      this.step++;
+      this.setStep(++this.step);
     }
   }
 

@@ -1,0 +1,35 @@
+<div class="stepper mb-5">
+  <div
+    *ngFor="let step of steps; let i = index"
+    class="stepper__item"
+    [class.step__current]="currentStep === i + 1"
+    [class.step__completed]="currentStep > i + 1"
+    (click)="stepClicked.next(i + 1)"
+  >
+    <div class="stepper__icon">
+      <i *ngIf="step" class="bi" [ngClass]="step.icon"></i>
+    </div>
+    <div class="stepper__title">
+      {{ step.name | transloco}}
+    </div>
+    <div class="stepper__connector">
+    </div>
+  </div>
+</div>
+
+<div class="stepper__mobile">
+  <div class="step__current">
+    <div class="stepper__icon">
+      <i *ngIf="steps[currentStep - 1]" class="bi" [ngClass]="steps[currentStep - 1].icon"></i>
+    </div>
+    <div class="stepper__step__detail">
+      <div class="stepper__step">
+        Step {{ currentStep }} of {{ steps.length }}
+      </div>
+      <div class="stepper__step__title">
+        {{ steps[currentStep - 1].name | transloco }}
+      </div>
+    </div>
+  </div>
+  <progress class="stepper__complete__bar" [value]="(currentStep / steps.length) * 100" max="100"> </progress>
+</div>

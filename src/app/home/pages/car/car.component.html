@@ -1,8 +1,5 @@
-<app-page-title
-  [title]="(car?.car_type ?? '')"
-  [subTitle]="stepTitle | transloco"
-  [onBackClick]="step > 1 ? onHeadBackClick : undefined">
-</app-page-title>
+<app-stepper [steps]="steps" [currentStep]="step" (stepClicked)="setStep($event)">
+</app-stepper>
 
 <app-policy-holder-form #policyHolderForm *ngIf="step === 1"></app-policy-holder-form>
 <app-insurance-form #insuranceForm *ngIf="step === 2"></app-insurance-form>

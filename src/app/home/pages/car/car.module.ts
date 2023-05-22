@@ -11,34 +11,36 @@ import { CarFormModule } from "../../../shared/components/forms/car-form/car-for
 import { InsuranceFormModule } from "../../../shared/components/forms/insurance-form/insurance-form.module";
 import { DriverFormModule } from "../../../shared/components/forms/driver-form/driver-form.module";
 import { PolicyHolderFormModule } from "../../../shared/components/forms/policy-holder-form/policy-holder-form.module";
+import { StepperModule } from "../../../shared/components/stepper/stepper.module";
 
 
 @NgModule({
   declarations: [
     CarComponent
   ],
-  imports: [
-    CommonModule,
-    ApiModule,
-    RouterModule.forChild([
-      {
-        path: "",
-        component: MainLayoutComponent,
-        children: [
-          {
-            path: '',
-            component: CarComponent
-          }
-        ]
-      }
-    ]),
-    ReactiveFormsModule,
-    TranslocoModule,
-    PageTitleModule,
-    CarFormModule,
-    InsuranceFormModule,
-    DriverFormModule,
-    PolicyHolderFormModule
-  ]
+    imports: [
+        CommonModule,
+        ApiModule,
+        RouterModule.forChild([
+            {
+                path: "",
+                component: MainLayoutComponent,
+                children: [
+                    {
+                        path: '',
+                        component: CarComponent
+                    }
+                ]
+            }
+        ]),
+        ReactiveFormsModule,
+        TranslocoModule,
+        PageTitleModule,
+        CarFormModule,
+        InsuranceFormModule,
+        DriverFormModule,
+        PolicyHolderFormModule,
+        StepperModule
+    ]
 })
 export class CarModule { }

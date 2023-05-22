@@ -1,0 +1,126 @@
+.stepper {
+  display: flex;
+  flex-wrap: wrap;
+  --size: 3em;
+  --spacing: 3rem;
+}
+
+.stepper__mobile {
+  --size: 3em;
+  --spacing: 3rem;
+
+  .step__current {
+
+    display: flex;
+    gap: 30px;
+  }
+
+  .stepper__step__detail {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    .stepper__step {
+      font-weight: 600;
+      font-size: 12px;
+      color: var(--medium-ui-element);
+    }
+
+    .stepper__step__title {
+      font-weight: 800;
+    }
+  }
+  .stepper__complete__bar {
+    width: 100%;
+    border: 0;
+    height: 4px;
+    margin: 1em 0;
+    --progress-bar-color: #cfd8dc;
+    --progress-value-color: #2196f3;
+
+    &::-webkit-progress-bar {
+      background-color: var(--light-ui-element);
+      border-radius: 7px;
+    }
+
+    &::-webkit-progress-value {
+      background-color: var(--bs-success);
+      border-radius: 7px;
+    }
+  }
+}
+
+.stepper__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  --stepper__connector__color: var(--light-ui-element);
+  cursor: pointer;
+}
+
+.stepper__icon {
+  border-radius: 50%;
+  width: var(--size);
+  height: var(--size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--medium-ui-element);
+
+  i {
+    font-size: 20px;
+    color: var(--medium-ui-element);
+  }
+}
+
+.stepper__title {
+  display: flex;
+  align-items: center;
+}
+
+.stepper__item:not(:last-child):after {
+  content: "";
+  position: relative;
+  width: calc(100% - var(--size) - var(--spacing));
+  top: 1.5rem;
+  left: 50%;
+  height: 2px;
+  background-color: var(--stepper__connector__color);
+  order: -1;
+}
+
+.step__current {
+  font-weight: 600;
+  .stepper__icon {
+    border-color: var(--bs-primary);
+    i {
+      color: var(--bs-primary);
+    }
+  }
+}
+
+.step__completed {
+  --stepper__connector__color: var(--bs-success);
+
+  .stepper__icon {
+    border-color: var(--bs-success);
+    background-color: var(--bs-success);
+    i {
+      color: var(--light-ui-element);
+    }
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .stepper {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 700px) {
+  .stepper__mobile {
+    display: none;
+  }
+}
