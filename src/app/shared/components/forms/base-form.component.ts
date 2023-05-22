@@ -20,6 +20,7 @@ export abstract class BaseFormComponent<T> implements OnInit {
   }
 
   protected abstract initForm(): void;
+  protected abstract afterFormSubmit(): void;
   public abstract setDefaults(value: T): void;
 
 
@@ -33,12 +34,18 @@ export abstract class BaseFormComponent<T> implements OnInit {
       ).subscribe()
   }
 
+  isFormValid(): boolean {
+    return this.form.valid;
+  }
+
   submitForm() {
     this.submitted = true;
 
-    if (!this.form.valid) {
+    if (!this.isFormValid()) {
       return;
     }
+
+    this.afterFormSubmit();
   };
 
   protected emitValue(value: T): void {

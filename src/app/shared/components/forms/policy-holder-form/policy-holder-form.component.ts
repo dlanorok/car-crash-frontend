@@ -1,7 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { BaseFormComponent } from "../base-form.component";
 import { PolicyHolderModel } from "../../../models/policy-holder.model";
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-policy-holder-form',
@@ -18,11 +18,11 @@ export class PolicyHolderFormComponent extends BaseFormComponent<PolicyHolderMod
   protected initForm(): void {
     this.form = this.formBuilder.group(
       {
-        name: [this.policyHolder?.name],
-        surname: [this.policyHolder?.surname],
-        email: [this.policyHolder?.email],
-        post_number: [this.policyHolder?.post_number],
-        country_code: [this.policyHolder?.country_code],
+        name: [this.policyHolder?.name, Validators.required],
+        surname: [this.policyHolder?.surname, Validators.required],
+        email: [this.policyHolder?.email, Validators.required],
+        post_number: [this.policyHolder?.post_number, Validators.required],
+        country_code: [this.policyHolder?.country_code, Validators.required],
       }
     )
   }
@@ -38,9 +38,7 @@ export class PolicyHolderFormComponent extends BaseFormComponent<PolicyHolderMod
     })
   }
 
-  override submitForm() {
-    super.submitForm();
-
+  protected override afterFormSubmit() {
     const policyHolder = new PolicyHolderModel({
       ...this.policyHolder,
       ...this.form.value

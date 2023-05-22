@@ -2,30 +2,40 @@
   <ng-container *ngIf="control.errors">
     <div class="invalid-feedback">
       <ng-container *ngIf="control?.hasError(validatorErrors.apiValidationError);">
-        {{ control.getError(validatorErrors.apiValidationError) }}
+        <span>
+          {{ control.getError(validatorErrors.apiValidationError) }}
+        </span>
       </ng-container>
 
       <ng-container *ngIf="control.errors[validatorErrors.minlength]">
-        {{
-        'shared.forms/validators.labels.min_length.val'
-          | transloco : {minLength: control.errors[validatorErrors.minlength]?.requiredLength}
-        }}
+        <span>
+          {{
+          'shared.forms/validators.labels.min_length.val'
+            | transloco : {minLength: control.errors[validatorErrors.minlength]?.requiredLength}
+          }}
+        </span>
       </ng-container>
 
       <ng-container *ngIf="control.errors[validatorErrors.maxlength]">
-        {{
-        'shared.forms/validators.labels.max_length.val'
-          | transloco : {maxLength: control.errors[validatorErrors.maxlength]?.requiredLength}
-        }}
+        <span>
+          {{
+          'shared.forms/validators.labels.max_length.val'
+            | transloco : {maxLength: control.errors[validatorErrors.maxlength]?.requiredLength}
+          }}
+        </span>
       </ng-container>
 
       <ng-container *ngIf="control.errors[validatorErrors.required]">
-        {{ 'shared.forms/validators.labels.control_required.val' | transloco }}
+        <span>
+          {{ 'shared.forms/validators.labels.control_required.val' | transloco }}
+        </span>
       </ng-container>
 
       <ng-container *ngIf="control.errors[validatorErrors.ngbDate]">
         <ng-container *ngIf="control.errors[validatorErrors.ngbDate].invalid !== undefined">
-          {{ 'shared.forms/validators.labels.date_invalid.val' | transloco }}
+          <span>
+            {{ 'shared.forms/validators.labels.date_invalid.val' | transloco }}
+          </span>
         </ng-container>
       </ng-container>
     </div>

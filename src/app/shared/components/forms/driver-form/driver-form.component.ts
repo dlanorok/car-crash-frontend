@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, Validators } from "@angular/forms";
 import { BaseFormComponent } from "../base-form.component";
 import { DriverModel } from "../../../models/driver.model";
+import { CarModel } from "../../../models/car.model";
 
 @Component({
   selector: 'app-driver-form',
@@ -16,11 +17,11 @@ export class DriverFormComponent extends BaseFormComponent<DriverModel> {
   protected initForm() {
     this.form = this.formBuilder.group(
       {
-        name: [''],
-        surname: [''],
-        address: [''],
-        driving_licence_number: [''],
-        driving_licence_valid_to: [null],
+        name: ['', Validators.required],
+        surname: ['', Validators.required],
+        address: ['', Validators.required],
+        driving_licence_number: ['', Validators.required],
+        driving_licence_valid_to: [null, Validators.required],
       }
     );
   }
@@ -35,9 +36,7 @@ export class DriverFormComponent extends BaseFormComponent<DriverModel> {
     })
   }
 
-  override submitForm() {
-    super.submitForm();
-
+  protected override afterFormSubmit() {
     const driver = new DriverModel({
       ...this.form.value
     })

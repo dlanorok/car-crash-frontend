@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, Validators } from "@angular/forms";
 import { BaseFormComponent } from "../base-form.component";
 import { InsuranceModel } from "../../../models/insurance.model";
 
@@ -16,11 +16,11 @@ export class InsuranceFormComponent extends BaseFormComponent<InsuranceModel> {
   protected initForm() {
     this.form = this.formBuilder.group(
       {
-        name: [''],
-        policy_number: [''],
+        name: ['', Validators.required],
+        policy_number: ['', Validators.required],
         agent: [''],
         green_card: [''],
-        valid_until: [''],
+        valid_until: ['', Validators.required],
         damaged_insured: [''],
       }
     );
@@ -37,13 +37,10 @@ export class InsuranceFormComponent extends BaseFormComponent<InsuranceModel> {
     })
   }
 
-  override submitForm() {
-    super.submitForm();
-
+  protected override afterFormSubmit() {
     const insurance = new InsuranceModel({
       ...this.form.value
     })
     this.emitValue(insurance);
   }
-
 }

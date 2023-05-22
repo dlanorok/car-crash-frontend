@@ -17,7 +17,7 @@ export class CrashFormComponent extends BaseFormComponent<CrashModel>{
   protected initForm() {
     this.form = this.formBuilder.group(
       {
-        date_of_accident: [''],
+        date_of_accident: ['', Validators.required],
         country: ['', Validators.required],
         place: ['', Validators.required],
         injuries: [''],
@@ -39,13 +39,11 @@ export class CrashFormComponent extends BaseFormComponent<CrashModel>{
     })
   }
 
-  override submitForm() {
-    super.submitForm();
-
+  protected override afterFormSubmit() {
     const crash = new CrashModel({
       ...this.crash,
       ...this.form.value
     })
-    this.emitValue(crash);
+    this.emitValue(crash)
   }
 }

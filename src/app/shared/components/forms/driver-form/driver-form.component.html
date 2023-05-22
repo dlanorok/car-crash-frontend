@@ -32,6 +32,7 @@
     *ngIf="form.get('driving_licence_valid_to')"
     [label]="'car-crash.home.driver.driving-licence-valid-to.label' | transloco"
     [placeholder]="'car-crash.home.driver.driving-licence-valid-to.placeholder' | transloco"
-    [formControl]="$any(form.controls['driving_licence_valid_to'])">
+    [formControl]="$any(form.controls['driving_licence_valid_to'])"
+    [submitted]="submitted">
   </app-date-control>
 </form>

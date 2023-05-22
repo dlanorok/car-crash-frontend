@@ -17,13 +17,14 @@
     [formControl]="$any(form.controls['green_card'])"
     [label]="'car-crash.home.insurance-company.green-card.label' | transloco"
     [placeholder]="'car-crash.home.insurance-company.green-card.placeholder' | transloco"
-    [submitted]="submitted">
+    [submitted]="submitted">s
   </app-text-control>
 
   <app-date-control
     [formControl]="$any(form.controls['valid_until'])"
     [placeholder]="'car-crash.home.insurance-company.valid-until.placeholder' | transloco"
-    [label]="'car-crash.home.insurance-company.valid-until.label' | transloco">
+    [label]="'car-crash.home.insurance-company.valid-until.label' | transloco"
+    [submitted]="submitted">
 
   </app-date-control>
 

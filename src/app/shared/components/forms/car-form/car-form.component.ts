@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder } from "@angular/forms";
 import { CarModel } from "../../../models/car.model";
 import { BaseFormComponent } from "../base-form.component";
+import { InsuranceModel } from "../../../models/insurance.model";
 
 @Component({
   selector: 'app-car-form',
@@ -35,9 +36,7 @@ export class CarFormComponent extends BaseFormComponent<CarModel> {
     })
   }
 
-  override submitForm() {
-    super.submitForm();
-
+  protected override afterFormSubmit() {
     const car = new CarModel({
       ...this.car,
       ...this.form.value

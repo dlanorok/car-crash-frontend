@@ -1,8 +1,8 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CarsApiService } from "../../../shared/api/cars/cars-api.service";
 import { CarModel } from "../../../shared/models/car.model";
-import { forkJoin, map, of, skip, Subscription, switchMap, take, tap } from "rxjs";
-import { ActivatedRoute } from "@angular/router";
+import { forkJoin, map, of, Subscription, switchMap, take, tap } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
 import { UntypedFormGroup } from "@angular/forms";
 import { catchError } from "rxjs/operators";
 import { PolicyHolderModel } from "../../../shared/models/policy-holder.model";
@@ -145,8 +145,17 @@ export class CarComponent implements OnInit {
   }
 
   submitForm() {
-    this.saveForm(this.policyHolderForm || this.driverForm || this.insuranceForm);
-    this.step++;
+    const form = this.policyHolderForm || this.driverForm || this.insuranceForm;
+    if (!form) {
+      return;
+    }
+
+    form.submitForm();
+
+    if (form.isFormValid()) {
+      this.saveForm(this.policyHolderForm || this.driverForm || this.insuranceForm);
+      this.step++;
+    }
   }
 
   private saveForm(baseForm: BaseFormComponent<any> | undefined) {

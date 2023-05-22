@@ -1,3 +1,11 @@
 .invalid-feedback {
   display: block;
+
+  span {
+    display: none;
+  }
+
+  span:first-child {
+    display: block;
+  }
 }
