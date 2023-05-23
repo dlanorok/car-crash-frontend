@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CarsApiService } from "../../../shared/api/cars/cars-api.service";
 import { CarModel } from "../../../shared/models/car.model";
 import { forkJoin, map, of, Subscription, switchMap, take, tap } from "rxjs";
-import { ActivatedRoute, ParamMap, Params, Router } from "@angular/router";
+import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { UntypedFormGroup } from "@angular/forms";
 import { catchError } from "rxjs/operators";
 import { PolicyHolderModel } from "../../../shared/models/policy-holder.model";
@@ -16,7 +16,9 @@ import { DriverModel } from "../../../shared/models/driver.model";
 import { DriversApiService } from "../../../shared/api/drivers/drivers-api.service";
 import { BaseFormComponent } from "../../../shared/components/forms/base-form.component";
 import { Step } from "../../../shared/common/stepper-data";
-import { getContentOfKeyLiteral } from "@ngneat/transloco/schematics/src/utils/ast-utils";
+import { CircumstanceFormComponent } from "../../../shared/components/forms/circumstance-form/circumstance-form.component";
+import { CircumstanceModel } from "../../../shared/models/circumstance.model";
+import { CircumstancesApiService } from "../../../shared/api/circumstances/circumstances-api.service";
 
 @Component({
   selector: 'app-car',
@@ -28,21 +30,30 @@ export class CarComponent implements OnInit {
   car?: CarModel;
   insurance?: InsuranceModel;
   driver?: DriverModel;
+  circumstance?: CircumstanceModel;
 
   form!: UntypedFormGroup;
   step: number = 1;
   steps: Step[] = [
     {
-      name: 'car-crash.home.car.policy-holder',
+      name: 'car-crash.car.policy-holder',
       icon: 'bi-file-earmark-person'
     },
     {
-      name: 'car-crash.home.car.insurance',
+      name: 'car-crash.car.insurance',
       icon: 'bi-shield-check'
     },
     {
-      name: 'car-crash.home.car.driver',
+      name: 'car-crash.car.driver',
       icon: 'bi-person-vcard'
+    },
+    {
+      name: 'car-crash.car.circumstances',
+      icon: 'bi-file-earmark-bar-graph'
+    },
+    {
+      name: 'car-crash.car.crash-section',
+      icon: 'bi-file-earmark-bar-graph'
     }
   ]
 
@@ -76,6 +87,16 @@ export class CarComponent implements OnInit {
     }
   }
 
+  @ViewChild('circumstanceForm', { static: false }) protected circumstanceForm?: CircumstanceFormComponent;
+
+  @ViewChild('circumstanceForm')
+  set setCircumstanceForm(circumstanceForm: CircumstanceFormComponent) {
+    if(circumstanceForm) {
+      this.setFormsData();
+      this.subscribeToFormChange(circumstanceForm)
+    }
+  }
+
   private formChangeSubscription?: Subscription;
 
   constructor(
@@ -84,6 +105,7 @@ export class CarComponent implements OnInit {
     private readonly carsApiService: CarsApiService,
     private readonly insurancesApiService: InsurancesApiService,
     private readonly driversApiService: DriversApiService,
+    private readonly circumstancesApiService: CircumstancesApiService,
     private readonly router: Router
   ) {}
 
@@ -109,6 +131,8 @@ export class CarComponent implements OnInit {
       this.insuranceForm.setDefaults(this.insurance);
     } else if (this.driverForm && this.driver) {
       this.driverForm.setDefaults(this.driver);
+    } else if (this.circumstanceForm && this.circumstance) {
+      this.circumstanceForm.setDefaults(this.circumstance);
     }
   }
 
@@ -144,13 +168,21 @@ export class CarComponent implements OnInit {
               this.driver = new DriverModel({car: carId});
               return of(this.driver);
             })),
+            this.circumstancesApiService.getSingle(carId).pipe(catchError(() => {
+              this.circumstance = new CircumstanceModel({car: carId});
+              return of(this.circumstance);
+            })),
           ])
             .pipe(
-              tap(([car, policyHolder, insurance, driver]: [CarModel, PolicyHolderModel, InsuranceModel, DriverModel]) => {
+              tap((
+                [car, policyHolder, insurance, driver, circumstance]:
+                  [CarModel, PolicyHolderModel, InsuranceModel, DriverModel, CircumstanceModel]
+              ) => {
                 this.car = car;
                 this.policyHolder = policyHolder;
                 this.insurance = insurance;
                 this.driver = driver;
+                this.circumstance = circumstance;
                 this.setFormsData();
               })
             )
@@ -168,8 +200,16 @@ export class CarComponent implements OnInit {
     });
   }
 
+  back() {
+    if (this.step === 1) {
+      this.navigateToCrash()
+    } else {
+      this.setStep(--this.step);
+    }
+  }
+
   submitForm() {
-    const form = this.policyHolderForm || this.driverForm || this.insuranceForm;
+    const form = this.policyHolderForm || this.driverForm || this.insuranceForm || this.circumstanceForm;
     if (!form) {
       return;
     }
@@ -178,7 +218,13 @@ export class CarComponent implements OnInit {
 
     if (form.isFormValid()) {
       this.saveForm(this.policyHolderForm || this.driverForm || this.insuranceForm);
-      this.setStep(++this.step);
+
+      if (this.step === this.steps.length) {
+        this.navigateToCrash()
+      } else {
+        this.setStep(++this.step);
+      }
+
     }
   }
 
@@ -205,11 +251,17 @@ export class CarComponent implements OnInit {
         ...baseForm.form.value
       })
       this.driversApiService.create(this.driver).pipe(take(1)).subscribe();
+    } else if (baseForm instanceof CircumstanceFormComponent) {
+      this.circumstance = new CircumstanceModel({
+        ...this.circumstance,
+        ...baseForm.form.value
+      })
+      this.circumstancesApiService.create(this.circumstance).pipe(take(1)).subscribe();
     }
   }
 
-  readonly onHeadBackClick: () => void = () => {
-    this.step--;
+  private navigateToCrash() {
+    this.router.navigate([this.router.url.replace(/\/cars\/.*/, '')])
   }
 
 }

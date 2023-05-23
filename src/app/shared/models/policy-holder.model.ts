@@ -1,17 +1,7 @@
 import { BaseModel } from "./base.model";
 
-export interface PolicyHolder {
-  name?: string;
-  surname?: string;
-  email?: string;
-  address?: string;
-  post_number?: string;
-  country_code?: string;
 
-  car?: string;
-}
-
-export class PolicyHolderModel extends BaseModel implements PolicyHolder {
+export class PolicyHolderModel extends BaseModel {
   address?: string;
   country_code?: string;
   email?: string;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BaseFormControlComponent, provideControlValueAccessor } from "../base-form-control.component";
 
 @Component({
@@ -7,5 +7,6 @@ import { BaseFormControlComponent, provideControlValueAccessor } from "../base-f
   providers: [provideControlValueAccessor(TextControlComponent)]
 })
 export class TextControlComponent extends BaseFormControlComponent<string>{
+  @Input() type: string = 'text';
 
 }

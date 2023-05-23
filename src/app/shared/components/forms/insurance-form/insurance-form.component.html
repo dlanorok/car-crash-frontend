@@ -1,36 +1,36 @@
 <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitForm()" (keyup.enter)="submitForm()">
   <app-text-control
     [formControl]="$any(form.controls['name'])"
-    [label]="'car-crash.home.insurance-company.name.label' | transloco"
-    [placeholder]="'car-crash.home.insurance-company.name.placeholder' | transloco"
+    [label]="'car-crash.insurance-company.name.label' | transloco"
+    [placeholder]="'car-crash.insurance-company.name.placeholder' | transloco"
     [submitted]="submitted">
   </app-text-control>
 
   <app-text-control
     [formControl]="$any(form.controls['policy_number'])"
-    [label]="'car-crash.home.insurance-company.policy-number.label' | transloco"
-    [placeholder]="'car-crash.home.insurance-company.policy-number.placeholder' | transloco"
+    [label]="'car-crash.insurance-company.policy-number.label' | transloco"
+    [placeholder]="'car-crash.insurance-company.policy-number.placeholder' | transloco"
     [submitted]="submitted">
   </app-text-control>
 
   <app-text-control
     [formControl]="$any(form.controls['green_card'])"
-    [label]="'car-crash.home.insurance-company.green-card.label' | transloco"
-    [placeholder]="'car-crash.home.insurance-company.green-card.placeholder' | transloco"
+    [label]="'car-crash.insurance-company.green-card.label' | transloco"
+    [placeholder]="'car-crash.insurance-company.green-card.placeholder' | transloco"
     [submitted]="submitted">s
   </app-text-control>
 
   <app-date-control
     [formControl]="$any(form.controls['valid_until'])"
-    [placeholder]="'car-crash.home.insurance-company.valid-until.placeholder' | transloco"
-    [label]="'car-crash.home.insurance-company.valid-until.label' | transloco"
+    [placeholder]="'car-crash.insurance-company.valid-until.placeholder' | transloco"
+    [label]="'car-crash.insurance-company.valid-until.label' | transloco"
     [submitted]="submitted">
 
   </app-date-control>
 
   <app-checkbox-control
     [formControl]="$any(form.controls['damaged_insured'])"
-    [label]="'car-crash.home.insurance-company.damaged-insured.label' | transloco"
+    [label]="'car-crash.insurance-company.damaged-insured.label' | transloco"
     [submitted]="submitted">
 
   </app-checkbox-control>

@@ -1,32 +1,32 @@
 <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitForm()">
   <app-text-control
     [formControl]="$any(form.controls['car_type'])"
-    [label]="'car-crash.home.car.car-type.label' | transloco"
-    [placeholder]="'car-crash.home.car.car-type.placeholder' | transloco"
+    [label]="'car-crash.car.car-type.label' | transloco"
+    [placeholder]="'car-crash.car.car-type.placeholder' | transloco"
     [submitted]="submitted">
 
   </app-text-control>
 
   <app-text-control
     [formControl]="$any(form.controls['make_type'])"
-    [label]="'car-crash.home.car.make-type.label' | transloco"
-    [placeholder]="'car-crash.home.car.make-type.placeholder' | transloco"
+    [label]="'car-crash.car.make-type.label' | transloco"
+    [placeholder]="'car-crash.car.make-type.placeholder' | transloco"
     [submitted]="submitted">
 
   </app-text-control>
 
   <app-text-control
     [formControl]="$any(form.controls['registration_country'])"
-    [label]="'car-crash.home.car.registration-country.label' | transloco"
-    [placeholder]="'car-crash.home.car.registration-country.placeholder' | transloco"
+    [label]="'car-crash.car.registration-country.label' | transloco"
+    [placeholder]="'car-crash.car.registration-country.placeholder' | transloco"
     [submitted]="submitted">
 
   </app-text-control>
 
   <app-text-control
     [formControl]="$any(form.controls['registration_plate'])"
-    [label]="'car-crash.home.car.registration-plate.label' | transloco"
-    [placeholder]="'car-crash.home.car.registration-plate.placeholder' | transloco"
+    [label]="'car-crash.car.registration-plate.label' | transloco"
+    [placeholder]="'car-crash.car.registration-plate.placeholder' | transloco"
     [submitted]="submitted">
 
   </app-text-control>

@@ -4,7 +4,8 @@ import { BaseFormControlComponent, provideControlValueAccessor } from "../base-f
 @Component({
   selector: 'app-checkbox-control',
   templateUrl: './checkbox-control.component.html',
-  providers: [provideControlValueAccessor(CheckboxControlComponent)]
+  providers: [provideControlValueAccessor(CheckboxControlComponent)],
+  styles: [':host { display: block }'],
 })
 export class CheckboxControlComponent extends BaseFormControlComponent<boolean> {
 

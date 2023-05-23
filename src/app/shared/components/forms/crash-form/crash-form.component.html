@@ -1,43 +1,43 @@
 <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitForm()">
   <app-date-control
     [formControl]="$any(form.controls['date_of_accident'])"
-    [placeholder]="'car-crash.home.crash.date-of-accident.placeholder' | transloco"
-    [label]="'car-crash.home.crash.date-of-accident.label' | transloco"
+    [placeholder]="'car-crash.crash.date-of-accident.placeholder' | transloco"
+    [label]="'car-crash.crash.date-of-accident.label' | transloco"
     [submitted]="submitted">
 
   </app-date-control>
 
   <app-text-control
     [formControl]="$any(form.controls['country'])"
-    [placeholder]="'car-crash.home.crash.country.placeholder' | transloco"
-    [label]="'car-crash.home.crash.country.label' | transloco"
+    [placeholder]="'car-crash.crash.country.placeholder' | transloco"
+    [label]="'car-crash.crash.country.label' | transloco"
     [submitted]="submitted">
   </app-text-control>
 
   <app-text-control
     [formControl]="$any(form.controls['place'])"
-    [placeholder]="'car-crash.home.crash.place.placeholder' | transloco"
-    [label]="'car-crash.home.crash.place.label' | transloco"
+    [placeholder]="'car-crash.crash.place.placeholder' | transloco"
+    [label]="'car-crash.crash.place.label' | transloco"
     [submitted]="submitted">
   </app-text-control>
 
   <app-checkbox-control
     [formControl]="$any(form.controls['injuries'])"
-    [label]="'car-crash.home.crash.injuries.label' | transloco"
+    [label]="'car-crash.crash.injuries.label' | transloco"
     [submitted]="submitted">
 
   </app-checkbox-control>
 
   <app-checkbox-control
     [formControl]="$any(form.controls['vehicle_material_damage'])"
-    [label]="'car-crash.home.crash.vehicle-material-damage.label' | transloco"
+    [label]="'car-crash.crash.vehicle-material-damage.label' | transloco"
     [submitted]="submitted">
 
   </app-checkbox-control>
 
   <app-checkbox-control
     [formControl]="$any(form.controls['other_material_damage'])"
-    [label]="'car-crash.home.crash.other-material-damage.label' | transloco"
+    [label]="'car-crash.crash.other-material-damage.label' | transloco"
     [submitted]="submitted">
 
   </app-checkbox-control>

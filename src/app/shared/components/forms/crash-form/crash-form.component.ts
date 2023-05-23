@@ -8,7 +8,7 @@ import { BaseFormComponent } from "../base-form.component";
   templateUrl: './crash-form.component.html',
   styleUrls: ['./crash-form.component.scss']
 })
-export class CrashFormComponent extends BaseFormComponent<CrashModel>{
+export class CrashFormComponent extends BaseFormComponent<CrashModel> {
   crash?: CrashModel;
   constructor(private readonly formBuilder: FormBuilder) {
     super()

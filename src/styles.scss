@@ -31,6 +31,23 @@ app-root {
   color: white;
 }
 
+.form-switch.form-switch-md {
+  padding-left: 4.5em;
+  input {
+    height: 2.5em;
+  }
+}
+
+.form-switch.form-switch-md .form-check-input {
+  margin-left: -4.5em;
+  height: 2em;
+  width: 4em;
+}
+
+.form-switch.form-switch-md label {
+  padding-top: 0.5em;
+}
+
 @media only screen and (max-width: 300px) {
   .filled-icon {
     display: none;
@@ -45,12 +62,12 @@ app-root {
 
 @include media-breakpoint-up(sm) {
   .btn {
-    width: inherit;
+    width: unset;
   }
 }
 
 @include media-breakpoint-down(sm) {
-  .btn {
+  .btn-sm-full-width {
     width: 100%;
   }
 }

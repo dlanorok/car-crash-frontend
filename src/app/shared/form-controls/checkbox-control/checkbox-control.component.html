@@ -1,5 +1,5 @@
-<div class="form-group form-check form-switch mt-3">
-  <label>{{ label }}</label>
+<div class="form-group form-check form-switch form-switch-md mt-3">
+
 
   <input
     [id]="_id"
@@ -8,6 +8,8 @@
     class="form-check-input"
     type="checkbox"
     role="switch">
+
+  <label class="form-check-label">{{ label }}</label>
 
   <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
 </div>

@@ -1,0 +1,103 @@
+<form *ngIf="form" [formGroup]="form" (ngSubmit)="submitForm()">
+  <app-checkbox-control
+    [formControl]="$any(form.controls['parked_stopped'])"
+    [label]="'car-crash.circumstances.parked_stopped.label'| transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['leaving_parking_opening_door'])"
+    [label]="'car-crash.circumstances.leaving_parking_opening_door.label'| transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['entering_parking'])"
+    [label]="'car-crash.circumstances.entering_parking.label' | transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['emerging_from_car_park'])"
+    [label]="'car-crash.circumstances.emerging_from_car_park.label' | transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['entering_car_park'])"
+    [label]="'car-crash.circumstances.entering_car_park.label' | transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['entering_roundabout'])"
+    [label]="'car-crash.circumstances.entering_roundabout.label' | transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['circulating_roundabout'])"
+    [label]="'car-crash.circumstances.circulating_roundabout.label' | transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['rear_same_direction'])"
+    [label]="'car-crash.circumstances.rear_same_direction.label' | transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['same_direction_different_lane'])"
+    [label]="'car-crash.circumstances.same_direction_different_lane.label' | transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['changing_lanes'])"
+    [label]="'car-crash.circumstances.changing_lanes.label' | transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['overtaking'])"
+    [label]="'car-crash.circumstances.overtaking.label' | transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['turning_right'])"
+    [label]="'car-crash.circumstances.turning_right.label' | transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['turning_left'])"
+    [label]="'car-crash.circumstances.turning_left.label' | transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['reversing'])"
+    [label]="'car-crash.circumstances.reversing.label' | transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['driving_on_opposite_lane'])"
+    [label]="'car-crash.circumstances.driving_on_opposite_lane.label' | transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['from_right_crossing'])"
+    [label]="'car-crash.circumstances.from_right_crossing.label' | transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+
+  <app-checkbox-control
+    [formControl]="$any(form.controls['disregarding_right_of_way_red_light'])"
+    [label]="'car-crash.circumstances.disregarding_right_of_way_red_light.label'| transloco"
+    [submitted]="submitted">
+  </app-checkbox-control>
+</form>

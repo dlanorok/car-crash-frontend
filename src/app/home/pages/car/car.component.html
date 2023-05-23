@@ -4,7 +4,19 @@
 <app-policy-holder-form #policyHolderForm *ngIf="step === 1"></app-policy-holder-form>
 <app-insurance-form #insuranceForm *ngIf="step === 2"></app-insurance-form>
 <app-driver-form #driverForm *ngIf="step === 3"></app-driver-form>
+<app-circumstance-form #circumstanceForm *ngIf="step === 4"></app-circumstance-form>
 
-<button type="submit" class="btn btn-primary mt-3" (click)="submitForm()">
-  {{ 'car-crash.shared.button.next' | transloco }}
-</button>
+<div class="d-flex d-md-block">
+  <button class="btn btn-outline-primary btn-sm-full-width mt-3 me-3" (click)="back()">
+    {{ 'car-crash.shared.button.back' | transloco }}
+  </button>
+
+  <button type="submit" class="btn btn-primary btn-sm-full-width mt-3" (click)="submitForm()">
+    <ng-container *ngIf="step === steps.length; else next">
+      {{ 'car-crash.shared.button.confirm' | transloco }}
+    </ng-container>
+    <ng-template #next>
+      {{ 'car-crash.shared.button.next' | transloco }}
+    </ng-template>
+  </button>
+</div>

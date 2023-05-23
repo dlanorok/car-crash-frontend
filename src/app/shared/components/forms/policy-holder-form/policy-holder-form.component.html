@@ -2,37 +2,38 @@
 
   <app-text-control
     [formControl]="$any(form.controls['name'])"
-    [label]="'car-crash.home.policy-holder.name.label' | transloco"
-    [placeholder]="'car-crash.home.policy-holder.name.placeholder' | transloco"
+    [label]="'car-crash.policy-holder.name.label' | transloco"
+    [placeholder]="'car-crash.policy-holder.name.placeholder' | transloco"
     [submitted]="submitted">
   </app-text-control>
 
   <app-text-control
     [formControl]="$any(form.controls['surname'])"
-    [label]="'car-crash.home.policy-holder.surname.label' | transloco"
-    [placeholder]="'car-crash.home.policy-holder.surname.placeholder' | transloco"
+    [label]="'car-crash.policy-holder.surname.label' | transloco"
+    [placeholder]="'car-crash.policy-holder.surname.placeholder' | transloco"
     [submitted]="submitted">
   </app-text-control>
 
   <app-text-control
     [formControl]="$any(form.controls['email'])"
-    [label]="'car-crash.home.policy-holder.email.label' | transloco"
-    [placeholder]="'car-crash.home.policy-holder.email.placeholder' | transloco"
+    [label]="'car-crash.policy-holder.email.label' | transloco"
+    [placeholder]="'car-crash.policy-holder.email.placeholder' | transloco"
+    type="email"
     [submitted]="submitted">
   </app-text-control>
 
   <app-text-control
     [formControl]="$any(form.controls['post_number'])"
-    [label]="'car-crash.home.policy-holder.post-number.label' | transloco"
-    [placeholder]="'car-crash.home.policy-holder.post-number.placeholder' | transloco"
+    [label]="'car-crash.policy-holder.post-number.label' | transloco"
+    [placeholder]="'car-crash.policy-holder.post-number.placeholder' | transloco"
     [submitted]="submitted">
   </app-text-control>
 
 
   <app-text-control
     [formControl]="$any(form.controls['country_code'])"
-    [label]="'car-crash.home.policy-holder.country-code.label' | transloco"
-    [placeholder]="'car-crash.home.policy-holder.country-code.placeholder' | transloco"
+    [label]="'car-crash.policy-holder.country-code.label' | transloco"
+    [placeholder]="'car-crash.policy-holder.country-code.placeholder' | transloco"
     [submitted]="submitted">
   </app-text-control>
 </form>

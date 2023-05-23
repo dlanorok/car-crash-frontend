@@ -12,6 +12,7 @@ import { InsuranceFormModule } from "../../../shared/components/forms/insurance-
 import { DriverFormModule } from "../../../shared/components/forms/driver-form/driver-form.module";
 import { PolicyHolderFormModule } from "../../../shared/components/forms/policy-holder-form/policy-holder-form.module";
 import { StepperModule } from "../../../shared/components/stepper/stepper.module";
+import { CircumstanceFormModule } from "../../../shared/components/forms/circumstance-form/circumstance-form.module";
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { StepperModule } from "../../../shared/components/stepper/stepper.module
         InsuranceFormModule,
         DriverFormModule,
         PolicyHolderFormModule,
-        StepperModule
+        StepperModule,
+        CircumstanceFormModule
     ]
 })
 export class CarModule { }
