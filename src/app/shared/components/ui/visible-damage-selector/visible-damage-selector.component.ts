@@ -26,24 +26,24 @@ export class VisibleDamageSelectorComponent extends BaseSvgHoverComponent implem
     private readonly carsApiService: CarsApiService,
     private readonly renderer2: Renderer2
   ) {
-    super()
+    super();
   }
 
   override onViewReady() {
     this.selectedParts = this.car.damaged_parts || [];
     this.visibleDamage?.nativeElement.querySelectorAll('path').forEach((path) => {
-      this.listeners.push(this.renderer2.listen(path, 'click', this.onPathClick.bind(this)))
+      this.listeners.push(this.renderer2.listen(path, 'click', this.onPathClick.bind(this)));
       if (this.car.damaged_parts?.includes(path.id)) {
-        path.classList.add(this.selectedClass)
+        path.classList.add(this.selectedClass);
       }
     });
   }
 
   override afterSvgItemClicked() {
-    let car = new CarModel({
+    const car = new CarModel({
       id: this.car.id,
       damaged_parts: this.selectedParts
-    })
+    });
     this.carsApiService.patch(car).pipe(take(1)).subscribe();
   }
 

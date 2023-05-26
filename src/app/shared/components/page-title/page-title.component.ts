@@ -16,7 +16,7 @@ export class PageTitleComponent {
 
   back(): void {
     if (this.onBackClick) {
-      this.onBackClick()
+      this.onBackClick();
       return;
     }
 

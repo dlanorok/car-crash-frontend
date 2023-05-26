@@ -9,7 +9,7 @@ import { debounceTime, distinctUntilChanged, skip, tap } from "rxjs";
 })
 export abstract class BaseFormComponent<T> implements OnInit {
   form!: UntypedFormGroup;
-  submitted: boolean = false;
+  submitted = false;
 
   @Output() formSubmit: EventEmitter<T> = new EventEmitter<T>();
   @Output() formChange: EventEmitter<T> = new EventEmitter<T>();
@@ -31,7 +31,7 @@ export abstract class BaseFormComponent<T> implements OnInit {
         distinctUntilChanged(),
         skip(1),
         tap(() => this.formChange.next(this.form.value))
-      ).subscribe()
+      ).subscribe();
   }
 
   isFormValid(): boolean {
@@ -46,7 +46,7 @@ export abstract class BaseFormComponent<T> implements OnInit {
     }
 
     this.afterFormSubmit();
-  };
+  }
 
   protected emitValue(value: T): void {
     this.formSubmit.emit(value);
@@ -57,7 +57,7 @@ export abstract class BaseFormComponent<T> implements OnInit {
       for (const [control, value] of Object.entries(error.error)) {
         this.form.get(control)?.setErrors({
           [ValidatorsErrors.apiValidationError]: value
-        })
+        });
       }
     }
   }

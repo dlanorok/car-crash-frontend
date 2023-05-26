@@ -4,7 +4,7 @@
     {{ sectionTitle }}
   </div>
 
-  <button *ngIf="buttonText" type="submit" class="btn btn-sm btn-outline-primary ms-auto" (click)="onButtonClick.next()">
+  <button *ngIf="buttonText" type="submit" class="btn btn-sm btn-outline-primary ms-auto" (click)="buttonClicked.next()">
     {{ buttonText }}
   </button>
 </div>

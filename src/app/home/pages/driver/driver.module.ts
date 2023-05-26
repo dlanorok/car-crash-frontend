@@ -6,12 +6,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { MainLayoutComponent } from "../../../shared/layout/main-layout.component";
 import { TranslocoModule } from "@ngneat/transloco";
-import {
-  NgbDateAdapter,
-  NgbDateNativeAdapter,
-  NgbDateParserFormatter,
-  NgbInputDatepicker
-} from "@ng-bootstrap/ng-bootstrap";
 import { DriverFormModule } from "../../../shared/components/forms/driver-form/driver-form.module";
 
 

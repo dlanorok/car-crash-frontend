@@ -7,6 +7,6 @@ import { BaseFormControlComponent, provideControlValueAccessor } from "../base-f
   providers: [provideControlValueAccessor(TextControlComponent)]
 })
 export class TextControlComponent extends BaseFormControlComponent<string>{
-  @Input() type: string = 'text';
+  @Input() type = 'text';
 
 }

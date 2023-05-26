@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BaseFormComponent } from "../base-form.component";
 import { CircumstanceModel } from "../../../models/circumstance.model";
-import { FormBuilder, Validators } from "@angular/forms";
+import { FormBuilder } from "@angular/forms";
 
 @Component({
   selector: 'app-circumstance-form',
@@ -11,7 +11,7 @@ import { FormBuilder, Validators } from "@angular/forms";
 export class CircumstanceFormComponent extends BaseFormComponent<CircumstanceModel> {
   circumstance?: CircumstanceModel;
   constructor(private readonly formBuilder: FormBuilder) {
-    super()
+    super();
   }
 
   protected initForm() {
@@ -58,14 +58,14 @@ export class CircumstanceFormComponent extends BaseFormComponent<CircumstanceMod
       driving_on_opposite_lane: value.driving_on_opposite_lane,
       from_right_crossing: value.from_right_crossing,
       disregarding_right_of_way_red_light: value.disregarding_right_of_way_red_light,
-    })
+    });
   }
 
   protected override afterFormSubmit() {
     const crash = new CircumstanceModel({
       ...this.circumstance,
       ...this.form.value
-    })
-    this.emitValue(crash)
+    });
+    this.emitValue(crash);
   }
 }

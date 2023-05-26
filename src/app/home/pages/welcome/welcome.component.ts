@@ -1,11 +1,7 @@
-import { Component, ComponentFactoryResolver, Injector, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from "@ngrx/store";
-import { createCrash, createCrashSuccessful } from "../../../app-state/crash/crash-action";
 import { BaseFormModalComponent } from "../../../shared/components/modals/base-form-modal/base-form-modal.component";
-import { CarFormComponent } from "../../../shared/components/forms/car-form/car-form.component";
-import { CarFormModule } from "../../../shared/components/forms/car-form/car-form.module";
-import { CarModel } from "../../../shared/models/car.model";
-import { of, take, tap } from "rxjs";
+import { tap } from "rxjs";
 import { CrashModel } from "../../../shared/models/crash.model";
 import { ModalService } from "../../../shared/services/modal.service";
 import { CrashFormComponent } from "../../../shared/components/forms/crash-form/crash-form.component";
@@ -41,14 +37,14 @@ export class WelcomeComponent implements OnInit {
         return this.crashesApiService.create(crash)
           .pipe(
             tap((crash: CrashModel) => {
-              this.router.navigate([`/crash/${crash.session_id}`])
+              this.router.navigate([`/crash/${crash.session_id}`]);
             })
-          )
+          );
       }
     });
   }
 
   ngOnInit(): void {
-    this.localStorageCrash = localStorage.getItem('session_id')
+    this.localStorageCrash = localStorage.getItem('session_id');
   }
 }

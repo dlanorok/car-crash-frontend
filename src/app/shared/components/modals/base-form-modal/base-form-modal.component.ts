@@ -13,19 +13,20 @@ import { FormModalData } from "../interfaces/form-modal-data";
 import { BaseFormComponent } from "../../forms/base-form.component";
 import { combineLatest, filter, map, Observable, of, ReplaySubject, shareReplay, switchMap, take } from "rxjs";
 import { FormDirective } from "../directives/form.directive";
+import { HttpErrorResponse } from "@angular/common/http";
 @Component({
   selector: 'app-base-form-modal',
   templateUrl: './base-form-modal.component.html'
 })
 export class BaseFormModalComponent<T, C extends BaseFormComponent<T>, R> implements AfterViewInit {
-  @ViewChild(FormDirective, {static: true}) formHost!: FormDirective;
+  @ViewChild(FormDirective, {static: true}) appFormHost!: FormDirective;
 
   readonly options$: ReplaySubject<FormModalData<T, C, R>> = new ReplaySubject<FormModalData<T, C, R>>(1);
   tplInit$: ReplaySubject<void> = new ReplaySubject<void>();
 
   private readonly componentRef$: Observable<ComponentRef<C>> = combineLatest([this.options$, this.tplInit$]).pipe(
-    map(([options, tpl]) => {
-      const componentRef: ComponentRef<C> = this.formHost.viewContainerRef.createComponent(options.formComponent.component, {
+    map(([options]) => {
+      const componentRef: ComponentRef<C> = this.appFormHost.viewContainerRef.createComponent(options.formComponent.component, {
         ngModuleRef: createNgModule(
           options.formComponent.module,
           options.formComponent.parentInjector ?? this.injector,
@@ -44,16 +45,16 @@ export class BaseFormModalComponent<T, C extends BaseFormComponent<T>, R> implem
     this.options$.next(options);
   }
 
-  get formSubmit(): Observable<any> {
+  get formSubmit(): Observable<T> {
     return this.componentRef$.pipe(
       switchMap(c => c.instance.formSubmit)
     );
   }
 
-  parseApiValidationError(invalidFields?: any): void {
+  parseApiValidationError(error: HttpErrorResponse): void {
     this.componentRef$
       .pipe(take(1))
-      .subscribe(comp => comp.instance.parseApiValidationError(invalidFields));
+      .subscribe(comp => comp.instance.parseApiValidationError(error));
   }
 
   constructor(
@@ -70,7 +71,7 @@ export class BaseFormModalComponent<T, C extends BaseFormComponent<T>, R> implem
         take(1),
         map(
           (dynamicComponentRef): BaseFormComponent<T> => {
-            return dynamicComponentRef.instance
+            return dynamicComponentRef.instance;
           }
         ),
         filter(

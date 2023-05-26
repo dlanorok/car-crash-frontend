@@ -1,12 +1,11 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { debounceTime, distinctUntilChanged, EMPTY, finalize, map, mergeMap, Observable, tap } from "rxjs";
+import { EMPTY, finalize, map, mergeMap, tap } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { DriversApiService } from "../../../shared/api/drivers/drivers-api.service";
 import { DriverModel } from "../../../shared/models/driver.model";
 import { DriverFormComponent } from "../../../shared/components/forms/driver-form/driver-form.component";
-import { InsuranceModel } from "../../../shared/models/insurance.model";
 
 @Component({
   selector: 'app-driver',
@@ -27,7 +26,7 @@ export class DriverComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.getDataFromRoute()
+    this.getDataFromRoute();
   }
 
   private getDataFromRoute(): void {
@@ -55,11 +54,11 @@ export class DriverComponent implements OnInit, AfterViewInit {
               })
             );
         }),
-      ).subscribe()
+      ).subscribe();
   }
 
   ngAfterViewInit(): void {
-    this.subscribeAfterFormSubmit()
+    this.subscribeAfterFormSubmit();
   }
 
   submitForm() {
@@ -73,14 +72,14 @@ export class DriverComponent implements OnInit, AfterViewInit {
           this.driver = {
             ...this.driver,
             ...model
-          }
+          };
           return this.driversApiService.create(this.driver);
         }),
         tap(() => {
           this.router.navigate(
             [this.router.url.replace(/\/cars\/\d+\/driver$/, '')]
-          )
+          );
         })
-      ).subscribe()
+      ).subscribe();
   }
 }

@@ -1,14 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'svg-comp',
+  selector: 'app-svg-comp',
   templateUrl: './svg-icon.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SvgIconComponent implements OnInit {
-  @Input() src: any;
-
-  constructor() { }
-
-  ngOnInit() {}
+export class SvgIconComponent {
+  @Input() src: {default: string} | undefined;
 }

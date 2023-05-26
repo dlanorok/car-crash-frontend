@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { PolicyHoldersApiService } from "../../../shared/api/policy-holders/policy-holders-api.service";
 import { PolicyHolderModel } from "../../../shared/models/policy-holder.model";
 import { EMPTY, finalize, map, mergeMap, tap } from "rxjs";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { catchError } from "rxjs/operators";
 import { PolicyHolderFormComponent } from "../../../shared/components/forms/policy-holder-form/policy-holder-form.component";
 
@@ -11,20 +11,19 @@ import { PolicyHolderFormComponent } from "../../../shared/components/forms/poli
   templateUrl: './policy-holder.component.html',
   styleUrls: ['./policy-holder.component.scss']
 })
-export class PolicyHolderComponent implements OnInit {
+export class PolicyHolderComponent implements OnInit, AfterViewInit {
   policyHolder?: PolicyHolderModel;
 
   @ViewChild('policyHolderForm', { static: false }) protected policyHolderForm?: PolicyHolderFormComponent;
 
   constructor(
     private readonly policyHoldersApiService: PolicyHoldersApiService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
+    private readonly route: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
-    this.setCar()
+    this.setCar();
   }
 
   private setCar(): void {
@@ -45,17 +44,17 @@ export class PolicyHolderComponent implements OnInit {
               }),
               finalize(() => {
                 if (!this.policyHolder) {
-                  return
+                  return;
                 }
                 this.policyHolderForm?.setDefaults(this.policyHolder);
               })
             );
         }),
-      ).subscribe()
+      ).subscribe();
   }
 
   ngAfterViewInit(): void {
-    this.subscribeAfterFormSubmit()
+    this.subscribeAfterFormSubmit();
   }
 
 
@@ -70,9 +69,9 @@ export class PolicyHolderComponent implements OnInit {
           this.policyHolder = {
             ...this.policyHolder,
             ...model
-          }
+          };
           return this.policyHoldersApiService.create(this.policyHolder);
         })
-      ).subscribe()
+      ).subscribe();
   }
 }

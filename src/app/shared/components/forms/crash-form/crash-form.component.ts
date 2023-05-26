@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from "@angular/forms";
 import { CrashModel } from "../../../models/crash.model";
 import { BaseFormComponent } from "../base-form.component";
@@ -11,7 +11,7 @@ import { BaseFormComponent } from "../base-form.component";
 export class CrashFormComponent extends BaseFormComponent<CrashModel> {
   crash?: CrashModel;
   constructor(private readonly formBuilder: FormBuilder) {
-    super()
+    super();
   }
 
   protected initForm() {
@@ -36,14 +36,14 @@ export class CrashFormComponent extends BaseFormComponent<CrashModel> {
       injuries: value.injuries,
       vehicle_material_damage: value.vehicle_material_damage,
       other_material_damage: value.other_material_damage
-    })
+    });
   }
 
   protected override afterFormSubmit() {
     const crash = new CrashModel({
       ...this.crash,
       ...this.form.value
-    })
-    this.emitValue(crash)
+    });
+    this.emitValue(crash);
   }
 }

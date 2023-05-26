@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder } from "@angular/forms";
 import { CarModel } from "../../../models/car.model";
 import { BaseFormComponent } from "../base-form.component";
-import { InsuranceModel } from "../../../models/insurance.model";
 
 @Component({
   selector: 'app-car-form',
@@ -12,7 +11,7 @@ import { InsuranceModel } from "../../../models/insurance.model";
 export class CarFormComponent extends BaseFormComponent<CarModel> {
   car?: CarModel;
   constructor(private readonly formBuilder: FormBuilder) {
-    super()
+    super();
   }
 
   protected initForm() {
@@ -33,14 +32,14 @@ export class CarFormComponent extends BaseFormComponent<CarModel> {
       make_type: value.make_type,
       registration_country: value.registration_country,
       registration_plate: value.registration_plate,
-    })
+    });
   }
 
   protected override afterFormSubmit() {
     const car = new CarModel({
       ...this.car,
       ...this.form.value
-    })
+    });
     this.emitValue(car);
   }
 

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { CarModel } from "../../../models/car.model";
 import { combineLatest, ReplaySubject, Subscription, tap } from "rxjs";
 
@@ -13,7 +13,7 @@ export abstract class BaseSvgHoverComponent implements AfterViewInit, OnDestroy,
   private readonly viewInit$: ReplaySubject<void> = new ReplaySubject<void>(1);
   private readonly change$: ReplaySubject<void> = new ReplaySubject<void>(1);
   private viewInitSub?: Subscription;
-  protected listeners: any[] = [];
+  protected listeners: (()=>void)[] = [];
   protected selectedParts: string[] = [];
 
   abstract onViewReady(): void;
@@ -23,7 +23,7 @@ export abstract class BaseSvgHoverComponent implements AfterViewInit, OnDestroy,
     this.viewInit$.next();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.change$.next();
   }
 
@@ -38,18 +38,18 @@ export abstract class BaseSvgHoverComponent implements AfterViewInit, OnDestroy,
         tap(() => {
           this.onViewReady();
         })
-      ).subscribe()
+      ).subscribe();
   }
 
-  protected onPathClick(event: any) {
+  protected onPathClick(event: PointerEvent) {
     const clickedElement = event.currentTarget as HTMLElement;
 
     if (clickedElement.classList.contains(this.selectedClass)) {
-      clickedElement.classList.remove(this.selectedClass)
-      this.selectedParts.splice(this.selectedParts.indexOf(clickedElement.id), 1)
+      clickedElement.classList.remove(this.selectedClass);
+      this.selectedParts.splice(this.selectedParts.indexOf(clickedElement.id), 1);
     } else {
-      clickedElement.classList.add(this.selectedClass)
-      this.selectedParts.push(clickedElement.id)
+      clickedElement.classList.add(this.selectedClass);
+      this.selectedParts.push(clickedElement.id);
     }
     this.afterSvgItemClicked();
   }

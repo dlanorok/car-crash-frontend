@@ -7,6 +7,6 @@ import { InsuranceModel } from "../../models/insurance.model";
   providedIn: ApiModule
 })
 export class InsurancesApiService extends BaseApiService<InsuranceModel>{
-  endpoint = `/api/v1/insurances/`
+  endpoint = `/api/v1/insurances/`;
   model = InsuranceModel;
 }

@@ -8,7 +8,7 @@ import { map, Observable } from "rxjs";
   providedIn: ApiModule
 })
 export class CrashesApiService extends BaseApiService<CrashModel>{
-  endpoint = `/api/v1/crashes/`
+  endpoint = `/api/v1/crashes/`;
   model = CrashModel;
 
   override put(entity: CrashModel): Observable<CrashModel> {

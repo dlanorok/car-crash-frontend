@@ -12,7 +12,7 @@ export class PolicyHolderFormComponent extends BaseFormComponent<PolicyHolderMod
   policyHolder?: PolicyHolderModel;
 
   constructor(private readonly formBuilder: FormBuilder) {
-    super()
+    super();
   }
 
   protected initForm(): void {
@@ -24,7 +24,7 @@ export class PolicyHolderFormComponent extends BaseFormComponent<PolicyHolderMod
         post_number: [this.policyHolder?.post_number, Validators.required],
         country_code: [this.policyHolder?.country_code, Validators.required],
       }
-    )
+    );
   }
 
   setDefaults(value: PolicyHolderModel) {
@@ -35,14 +35,14 @@ export class PolicyHolderFormComponent extends BaseFormComponent<PolicyHolderMod
       email: value.email,
       post_number: value.post_number,
       country_code: value.country_code,
-    })
+    });
   }
 
   protected override afterFormSubmit() {
     const policyHolder = new PolicyHolderModel({
       ...this.policyHolder,
       ...this.form.value
-    })
+    });
     this.emitValue(policyHolder);
   }
 

@@ -1,10 +1,10 @@
-<div class="modal-content" (keyup.enter)="submitForm()">
+<div tabindex="1" class="modal-content" (keyup.enter)="submitForm()">
   <div class="modal-header">
     <h5 class="modal-title">{{ (options$ | async)?.title }}</h5>
-    <button type="button" class="btn-close" (click)="closeModal()"></button>
+    <button type="button" class="btn-close" (click)="closeModal()"> </button>
   </div>
   <div class="modal-body">
-    <ng-template formHost></ng-template>
+    <ng-template appFormHost></ng-template>
     <div class="d-flex justify-content-end gap-2">
       <button (click)="closeModal()" class="btn btn-outline-primary mt-3">
         {{ 'car-crash.shared.button.back' | transloco }}

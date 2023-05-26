@@ -18,20 +18,22 @@ export abstract class BaseFormControlComponent<T> implements ControlValueAccesso
 
   readonly _id: string = customAlphabet('abcdefgijz', 12)();
 
-  constructor() {}
-
-  onChange: any = () => {};
-  onTouched: any = () => {};
+  onChange: () => void = () => {
+    //noop
+  };
+  onTouched: () => void = () => {
+    //noop
+  };
 
   writeValue(value: T): void {
     this.value = value;
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: () => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -45,6 +47,7 @@ export abstract class BaseFormControlComponent<T> implements ControlValueAccesso
 
 }
 
+// eslint-disable-next-line
 export function provideControlValueAccessor(component: any) {
   return {
     provide: NG_VALUE_ACCESSOR,

@@ -20,6 +20,6 @@ export class AppComponent implements OnInit{
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
       tap(() => this.urlParamService.saveUrlParamToLocalStorage('session_id', 'crash'))
-    ).subscribe()
+    ).subscribe();
   }
 }

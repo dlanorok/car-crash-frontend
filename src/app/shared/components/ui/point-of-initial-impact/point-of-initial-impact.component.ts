@@ -26,24 +26,24 @@ export class PointOfInitialImpactComponent extends BaseSvgHoverComponent impleme
     private readonly renderer2: Renderer2,
     private readonly carsApiService: CarsApiService
   ) {
-    super()
+    super();
   }
 
   override onViewReady() {
     this.selectedParts = this.car.initial_impact || [];
     this.pointOfInitialImpact?.nativeElement.querySelectorAll('g').forEach((g) => {
-      this.listeners.push(this.renderer2.listen(g, 'click', this.onPathClick.bind(this)))
+      this.listeners.push(this.renderer2.listen(g, 'click', this.onPathClick.bind(this)));
       if (this.car.initial_impact?.includes(g.id)) {
-        g.classList.add(this.selectedClass)
+        g.classList.add(this.selectedClass);
       }
     });
   }
 
   override afterSvgItemClicked() {
-    let car = new CarModel({
+    const car = new CarModel({
       id: this.car.id,
       initial_impact: this.selectedParts
-    })
+    });
     this.carsApiService.patch(car).pipe(take(1)).subscribe();
   }
 

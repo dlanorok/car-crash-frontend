@@ -1,6 +1,6 @@
 export interface Step {
   name: string;
   icon?: string;
-  svg?: string;
+  svg?: {default: string};
   innerStepsLength?: number;
 }

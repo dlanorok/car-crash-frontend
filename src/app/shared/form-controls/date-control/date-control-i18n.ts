@@ -9,19 +9,19 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
   }
 
   getWeekdayLabel(weekday: number): string {
-    return this.translocoService.translate(`car-crash.date-picker.weekday.${weekday-1}`)
+    return this.translocoService.translate(`car-crash.date-picker.weekday.${weekday-1}`);
   }
 
   override getWeekLabel(): string {
-    return this.translocoService.translate(`car-crash.date-picker.weekday.week-label`)
+    return this.translocoService.translate(`car-crash.date-picker.weekday.week-label`);
   }
 
   getMonthShortName(month: number): string {
-    return this.translocoService.translate(`car-crash.date-picker.month.${month-1}`)
+    return this.translocoService.translate(`car-crash.date-picker.month.${month-1}`);
   }
 
   getMonthFullName(month: number): string {
-    return this.translocoService.translate(`car-crash.date-picker.month-full.${month-1}`)
+    return this.translocoService.translate(`car-crash.date-picker.month-full.${month-1}`);
   }
 
   getDayAriaLabel(date: NgbDateStruct): string {

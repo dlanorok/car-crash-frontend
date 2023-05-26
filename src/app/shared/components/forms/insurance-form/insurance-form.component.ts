@@ -10,7 +10,7 @@ import { InsuranceModel } from "../../../models/insurance.model";
 })
 export class InsuranceFormComponent extends BaseFormComponent<InsuranceModel> {
   constructor(private readonly formBuilder: FormBuilder) {
-    super()
+    super();
   }
 
   protected initForm() {
@@ -34,13 +34,13 @@ export class InsuranceFormComponent extends BaseFormComponent<InsuranceModel> {
       green_card: value.green_card,
       valid_until: value.valid_until ? new Date(value.valid_until) : '',
       damaged_insured: value.damaged_insured,
-    })
+    });
   }
 
   protected override afterFormSubmit() {
     const insurance = new InsuranceModel({
       ...this.form.value
-    })
+    });
     this.emitValue(insurance);
   }
 }

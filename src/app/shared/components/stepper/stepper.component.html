@@ -8,7 +8,7 @@
     <div class="stepper__icon">
       <ng-container *ngIf="step">
         <i *ngIf="step.icon" class="bi" [ngClass]="step.icon"></i>
-        <svg-comp *ngIf="step.svg" [src]="step.svg"></svg-comp>
+        <app-svg-comp *ngIf="step.svg" [src]="step.svg"></app-svg-comp>
       </ng-container>
     </div>
     <div class="stepper__title">
@@ -24,7 +24,7 @@
     <div class="stepper__icon">
       <ng-container *ngIf="steps[currentStep - 1]">
         <i *ngIf="steps[currentStep - 1].icon" class="bi" [ngClass]="steps[currentStep - 1].icon"></i>
-        <svg-comp *ngIf="steps[currentStep - 1].svg" [src]="steps[currentStep - 1].svg"></svg-comp>
+        <app-svg-comp *ngIf="steps[currentStep - 1].svg" [src]="steps[currentStep - 1].svg"></app-svg-comp>
       </ng-container>
     </div>
     <div class="stepper__step__detail">

@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-page-section',
@@ -9,5 +8,5 @@ import { Observable } from "rxjs";
 export class PageSectionComponent {
   @Input() sectionTitle!: string;
   @Input() buttonText?: string;
-  @Output() onButtonClick: EventEmitter<void> = new EventEmitter<void>();
+  @Output() buttonClicked: EventEmitter<void> = new EventEmitter<void>();
 }

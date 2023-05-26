@@ -7,6 +7,6 @@ import { PolicyHolderModel } from "../../models/policy-holder.model";
   providedIn: ApiModule
 })
 export class PolicyHoldersApiService extends BaseApiService<PolicyHolderModel>{
-  endpoint = `/api/v1/policy_holders/`
+  endpoint = `/api/v1/policy_holders/`;
   model = PolicyHolderModel;
 }

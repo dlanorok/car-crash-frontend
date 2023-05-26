@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 export interface FormModalData<T, C, R> {
   formComponent: {
     component: Type<C>;
-    module: Type<any>;
+    module: Type<unknown>;
     parentInjector?: Injector;
   };
   title: string,

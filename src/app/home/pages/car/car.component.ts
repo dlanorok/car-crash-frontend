@@ -29,14 +29,14 @@ export class CarComponent implements OnInit {
   carCrashSvg = require('src/assets/icons/car-crash.svg');
 
   car!: CarModel;
-  policyHolder?: PolicyHolderModel
+  policyHolder?: PolicyHolderModel;
   insurance?: InsuranceModel;
   driver?: DriverModel;
   circumstance?: CircumstanceModel;
 
   form!: UntypedFormGroup;
-  step: number = 1;
-  innerStep: number = 1;
+  step = 1;
+  innerStep = 1;
 
   steps: Step[] = [
     {
@@ -60,7 +60,7 @@ export class CarComponent implements OnInit {
       svg: this.carCrashSvg,
       innerStepsLength: 3
     }
-  ]
+  ];
 
   @ViewChild('policyHolderForm', { static: false }) protected policyHolderForm?: PolicyHolderFormComponent;
 
@@ -68,7 +68,7 @@ export class CarComponent implements OnInit {
   set setPolicyHolderForm(policyHolderForm: PolicyHolderFormComponent) {
     if(policyHolderForm) {
       this.setFormsData();
-      this.subscribeToFormChange(policyHolderForm)
+      this.subscribeToFormChange(policyHolderForm);
     }
   }
 
@@ -78,7 +78,7 @@ export class CarComponent implements OnInit {
   set setInsuranceForm(insuranceForm: InsuranceFormComponent) {
     if(insuranceForm) {
       this.setFormsData();
-      this.subscribeToFormChange(insuranceForm)
+      this.subscribeToFormChange(insuranceForm);
     }
   }
 
@@ -88,7 +88,7 @@ export class CarComponent implements OnInit {
   set setDriverForm(driverForm: DriverFormComponent) {
     if(driverForm) {
       this.setFormsData();
-      this.subscribeToFormChange(driverForm)
+      this.subscribeToFormChange(driverForm);
     }
   }
 
@@ -98,7 +98,7 @@ export class CarComponent implements OnInit {
   set setCircumstanceForm(circumstanceForm: CircumstanceFormComponent) {
     if(circumstanceForm) {
       this.setFormsData();
-      this.subscribeToFormChange(circumstanceForm)
+      this.subscribeToFormChange(circumstanceForm);
     }
   }
 
@@ -123,14 +123,14 @@ export class CarComponent implements OnInit {
     return this.step === this.steps.length && this.steps[this.step - 1].innerStepsLength === this.innerStep;
   }
 
-  private subscribeToFormChange(baseForm: BaseFormComponent<any>) {
+  private subscribeToFormChange<T>(baseForm: BaseFormComponent<T>) {
     this.formChangeSubscription?.unsubscribe();
     this.formChangeSubscription = baseForm.formChange
       .pipe(
         tap(() => {
-          this.saveForm(baseForm)
+          this.saveForm(baseForm);
         })
-      ).subscribe()
+      ).subscribe();
   }
 
   private setFormsData() {
@@ -151,7 +151,7 @@ export class CarComponent implements OnInit {
         tap((params: ParamMap) => {
           this.step = parseInt(params.get('step') ?? '1');
         })
-      ).subscribe()
+      ).subscribe();
   }
 
   private getData(): void {
@@ -194,14 +194,14 @@ export class CarComponent implements OnInit {
                 this.circumstance = circumstance;
                 this.setFormsData();
               })
-            )
+            );
         }),
       )
-      .subscribe()
+      .subscribe();
   }
 
   setStep(next: boolean): void {
-    let innerSteps = this.steps[this.step - 1].innerStepsLength || 1;
+    const innerSteps = this.steps[this.step - 1].innerStepsLength || 1;
     if (next) {
       if (innerSteps === this.innerStep) {
         this.innerStep = 1;
@@ -229,7 +229,7 @@ export class CarComponent implements OnInit {
 
   back() {
     if (this.step === 1) {
-      this.navigateToCrash()
+      this.navigateToCrash();
     } else {
       this.setStep(false);
     }
@@ -250,46 +250,46 @@ export class CarComponent implements OnInit {
 
   private navigateToNextView() {
     if (this.isLastStep) {
-      this.navigateToCrash()
+      this.navigateToCrash();
     } else {
       this.setStep(true);
     }
   }
 
-  private saveForm(baseForm: BaseFormComponent<any> | undefined) {
+  private saveForm<T>(baseForm: BaseFormComponent<T> | undefined) {
     if (!baseForm) {
-      return
+      return;
     }
 
     if (baseForm instanceof PolicyHolderFormComponent) {
       this.policyHolder = new PolicyHolderModel({
         ...this.policyHolder,
         ...baseForm.form.value
-      })
+      });
       this.policyHoldersApiService.create(this.policyHolder).pipe(take(1)).subscribe();
     } else if (baseForm instanceof InsuranceFormComponent) {
       this.insurance = new InsuranceModel({
         ...this.insurance,
         ...baseForm.form.value
-      })
+      });
       this.insurancesApiService.create(this.insurance).pipe(take(1)).subscribe();
     } else if (baseForm instanceof DriverFormComponent) {
       this.driver = new DriverModel({
         ...this.driver,
         ...baseForm.form.value
-      })
+      });
       this.driversApiService.create(this.driver).pipe(take(1)).subscribe();
     } else if (baseForm instanceof CircumstanceFormComponent) {
       this.circumstance = new CircumstanceModel({
         ...this.circumstance,
         ...baseForm.form.value
-      })
+      });
       this.circumstancesApiService.create(this.circumstance).pipe(take(1)).subscribe();
     }
   }
 
   private navigateToCrash() {
-    this.router.navigate([this.router.url.replace(/\/cars\/.*/, '')])
+    this.router.navigate([this.router.url.replace(/\/cars\/.*/, '')]);
   }
 
 }

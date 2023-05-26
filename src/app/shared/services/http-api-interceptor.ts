@@ -9,10 +9,9 @@ export class HttpApiInterceptor implements HttpInterceptor {
   private readonly authHeaderName: string = 'X-SESSION';
   private readonly authTokenType: string = 'Session';
 
-  constructor() {}
-
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    let headers = this.setAuthHeader(request.headers);
+    const headers = this.setAuthHeader(request.headers);
 
     request = request.clone({
       headers: headers
@@ -22,7 +21,7 @@ export class HttpApiInterceptor implements HttpInterceptor {
   }
 
   private setAuthHeader(headers: HttpHeaders): HttpHeaders {
-    const token = localStorage.getItem('session_id')
+    const token = localStorage.getItem('session_id');
     headers = headers.set(this.authHeaderName, `${this.authTokenType} ${token}`);
 
     return headers;

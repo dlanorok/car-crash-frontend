@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EMPTY, mergeMap, pipe, tap } from 'rxjs';
-import { map, exhaustMap, catchError } from 'rxjs/operators';
+import { EMPTY, tap } from 'rxjs';
+import { catchError, exhaustMap, map } from 'rxjs/operators';
 import { CrashesApiService } from "../../shared/api/crashes/crashes-api.service";
-import { createCrash, createCrashSuccessful, loadCrash, loadCrashSuccessful } from "./crash-action";
-import { CrashModel } from "../../shared/models/crash.model";
+import { loadCrash, loadCrashSuccessful } from "./crash-action";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { loadCars } from "../car/car-action";

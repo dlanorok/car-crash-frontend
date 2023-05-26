@@ -13,7 +13,6 @@ import { DriverFormModule } from "../../../shared/components/forms/driver-form/d
 import { PolicyHolderFormModule } from "../../../shared/components/forms/policy-holder-form/policy-holder-form.module";
 import { StepperModule } from "../../../shared/components/stepper/stepper.module";
 import { CircumstanceFormModule } from "../../../shared/components/forms/circumstance-form/circumstance-form.module";
-import { VisibleDamageSelectorModule } from "../../../shared/components/ui/visible-damage-selector/visible-damage-selector.module";
 import { CarConditionModule } from "../../../shared/components/ui/car-condition/car-condition.module";
 
 

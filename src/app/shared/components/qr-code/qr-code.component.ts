@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxQrcodeElementTypes } from '@techiediaries/ngx-qrcode';
 import { ActivatedRoute } from "@angular/router";
-import { filter, map, tap } from "rxjs";
+import { map, tap } from "rxjs";
 
 @Component({
   selector: 'app-qr-code',
@@ -28,10 +28,10 @@ export class QrCodeComponent implements OnInit {
         map(params => params.get('sessionId')),
         tap((sessionId) => {
           if (sessionId) {
-            this.location = window.origin + '/crash/' + sessionId
+            this.location = window.origin + '/crash/' + sessionId;
           }
         })
-      ).subscribe()
+      ).subscribe();
   }
 
 }

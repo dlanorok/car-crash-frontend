@@ -7,6 +7,6 @@ import { CircumstanceModel } from "../../models/circumstance.model";
   providedIn: ApiModule
 })
 export class CircumstancesApiService extends BaseApiService<CircumstanceModel>{
-  endpoint = `/api/v1/circumstances/`
+  endpoint = `/api/v1/circumstances/`;
   model = CircumstanceModel;
 }

@@ -4,7 +4,7 @@
   *ngIf="crash$ | async"
   [sectionTitle]="'car-crash.crash.crash.data' | transloco"
   [buttonText]="'car-crash.shared.button.edit' | transloco"
-  (onButtonClick)="editCrash()"
+  (buttonClicked)="editCrash()"
 >
 
   <div class="row">
@@ -40,7 +40,7 @@
   *ngIf="carExists$ | async"
   [sectionTitle]="'car-crash.crash.cars.data' | transloco"
   [buttonText]="'car-crash.car.add' | transloco"
-  (onButtonClick)="createCar()"
+  (buttonClicked)="createCar()"
 >
 
   <div class="row">
@@ -68,7 +68,7 @@
 </app-page-section>
 
 <button
-  *ngIf="!(carExists$ | async)"
+  *ngIf="(carExists$ | async) === false"
   class="btn btn-outline-primary btn-sm-full-width mt-3 me-3"
   (click)="createCar()">
   {{ 'car-crash.car.create' | transloco }}

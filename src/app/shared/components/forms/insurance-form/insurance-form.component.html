@@ -1,4 +1,4 @@
-<form *ngIf="form" [formGroup]="form" (ngSubmit)="submitForm()" (keyup.enter)="submitForm()">
+<form tabindex="0" *ngIf="form" [formGroup]="form" (ngSubmit)="submitForm()" (keyup.enter)="submitForm()">
   <app-text-control
     [formControl]="$any(form.controls['name'])"
     [label]="'car-crash.insurance-company.name.label' | transloco"

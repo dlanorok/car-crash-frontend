@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { CarModel } from "../../../shared/models/car.model";
-import { map, mergeMap, Observable, of, take, tap } from "rxjs";
+import { map, mergeMap, Observable, take, tap } from "rxjs";
 import { CrashModel } from "../../../shared/models/crash.model";
 import { Store } from "@ngrx/store";
 import { createCrashSuccessful, loadCrash } from "../../../app-state/crash/crash-action";
 import { selectCrash } from "../../../app-state/crash/crash-selector";
 import { selectCars } from "../../../app-state/car/car-selector";
-import { createCar, createCarSuccessful, deleteCar, updateCar } from "../../../app-state/car/car-action";
+import { createCarSuccessful, deleteCar, updateCar } from "../../../app-state/car/car-action";
 import { ModalService } from "../../../shared/services/modal.service";
 import { BaseFormModalComponent } from "../../../shared/components/modals/base-form-modal/base-form-modal.component";
 import { CarFormComponent } from "../../../shared/components/forms/car-form/car-form.component";
@@ -30,9 +30,9 @@ export class CrashComponent implements OnInit {
   carExists$: Observable<boolean> = this.cars$
     .pipe(
       map((cars: CarModel[]) => {
-        return cars && cars.length > 0
+        return cars && cars.length > 0;
       })
-    )
+    );
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -65,12 +65,12 @@ export class CrashComponent implements OnInit {
               if (!crash) {
                 throw new Error("CrashModel undefined");
               }
-              car.crash = crash.id
+              car.crash = crash.id;
               return this.carsApiService.create(car)
                 .pipe(
                   tap((_car: CarModel) => {
                     this.store.dispatch(createCarSuccessful({ car: _car }));
-                    this.router.navigate([`cars/${_car.id}`], { relativeTo: this.route })
+                    this.router.navigate([`cars/${_car.id}`], { relativeTo: this.route });
                   })
                 );
             }),
@@ -94,8 +94,8 @@ export class CrashComponent implements OnInit {
               if (!crash) {
                 throw new Error("CrashModel undefined");
               }
-              car.crash = crash.id
-              this.store.dispatch(updateCar({car: car}))
+              car.crash = crash.id;
+              this.store.dispatch(updateCar({car: car}));
             }),
           )
     });
@@ -109,9 +109,9 @@ export class CrashComponent implements OnInit {
           if (!crash) {
             throw new Error("CrashModel undefined");
           }
-          this.store.dispatch(deleteCar({carId: carId}))
+          this.store.dispatch(deleteCar({carId: carId}));
         }),
-      ).subscribe()
+      ).subscribe();
   }
 
   getData(): void {
@@ -124,7 +124,7 @@ export class CrashComponent implements OnInit {
           }
         }),
       )
-      .subscribe()
+      .subscribe();
   }
 
   editCrash(): void {
@@ -143,12 +143,12 @@ export class CrashComponent implements OnInit {
               return this.crashesApiService.put(crash)
                 .pipe(
                   tap((crash: CrashModel) => {
-                    this.store.dispatch(createCrashSuccessful({crash: crash}))
+                    this.store.dispatch(createCrashSuccessful({crash: crash}));
                   })
-                )
+                );
             }
           });
         })
-      ).subscribe()
-  };
+      ).subscribe();
+  }
 }

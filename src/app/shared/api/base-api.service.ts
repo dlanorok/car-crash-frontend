@@ -38,8 +38,8 @@ export abstract class BaseApiService<T extends BaseModel> {
       );
   }
 
-  delete(id: number | string): Observable<any> {
-    return this.httpClient.delete(`${this.endpoint}${id}/`)
+  delete(id: number | string): Observable<void> {
+    return this.httpClient.delete(`${this.endpoint}${id}/`).pipe(map(() => undefined));
   }
 
   getList(): Observable<T[]> {
@@ -51,8 +51,8 @@ export abstract class BaseApiService<T extends BaseModel> {
           }
 
           return models.map(model => {
-            return new this.model(model)
-          })
+            return new this.model(model);
+          });
         })
       );
   }

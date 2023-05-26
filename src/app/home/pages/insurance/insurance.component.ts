@@ -40,17 +40,17 @@ export class InsuranceComponent implements AfterViewInit, OnInit {
               }),
               finalize(() => {
                 if (!this.insurance) {
-                  return
+                  return;
                 }
                 this.insuranceForm?.setDefaults(this.insurance);
               })
             );
         }),
-      ).subscribe()
+      ).subscribe();
   }
 
   ngAfterViewInit(): void {
-    this.subscribeAfterFormSubmit()
+    this.subscribeAfterFormSubmit();
   }
 
   submitForm() {
@@ -64,14 +64,14 @@ export class InsuranceComponent implements AfterViewInit, OnInit {
           this.insurance = {
             ...this.insurance,
             ...model
-          }
+          };
           return this.insurancesApiAService.create(this.insurance);
         }),
         tap(() => {
           this.router.navigate(
             [this.router.url.replace(/\/cars\/\d+\/insurance-company$/, '')]
-          )
+          );
         })
-      ).subscribe()
+      ).subscribe();
   }
 }

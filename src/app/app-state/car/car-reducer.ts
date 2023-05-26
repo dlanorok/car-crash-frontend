@@ -18,28 +18,28 @@ export const initialState: CarState = {
 
 export const carReducer = createReducer(
   initialState,
-  on(createCar, (state, { car }) => {
+  on(createCar, (state) => {
     return {
       ...state
-    }
+    };
   }),
   on(createCarSuccessful, (state, { car }) => {
     return {
       ...state,
       cars: [...state.cars, car]
-    }
+    };
   }),
   on(deleteCarSuccessful, (state, { carId }) => {
     return {
       ...state,
       cars: [...state.cars.filter(car => car.id !== carId)]
-    }
+    };
   }),
   on(loadCarsSuccessful, (state, { cars }) => {
     return {
       ...state,
       cars: [...cars]
-    }
+    };
   }),
   on(updateCarSuccessful, (state, { car }) => {
     return {
@@ -48,8 +48,8 @@ export const carReducer = createReducer(
         if (car.id === _car.id) {
           return car;
         }
-        return _car
+        return _car;
       })]
-    }
+    };
   }),
 );

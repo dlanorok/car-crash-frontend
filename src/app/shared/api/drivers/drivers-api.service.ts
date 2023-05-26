@@ -7,6 +7,6 @@ import { DriverModel } from "../../models/driver.model";
   providedIn: ApiModule
 })
 export class DriversApiService extends BaseApiService<DriverModel>{
-  endpoint = `/api/v1/drivers/`
+  endpoint = `/api/v1/drivers/`;
   model = DriverModel;
 }
