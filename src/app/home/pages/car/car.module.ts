@@ -13,36 +13,39 @@ import { DriverFormModule } from "../../../shared/components/forms/driver-form/d
 import { PolicyHolderFormModule } from "../../../shared/components/forms/policy-holder-form/policy-holder-form.module";
 import { StepperModule } from "../../../shared/components/stepper/stepper.module";
 import { CircumstanceFormModule } from "../../../shared/components/forms/circumstance-form/circumstance-form.module";
+import { VisibleDamageSelectorModule } from "../../../shared/components/ui/visible-damage-selector/visible-damage-selector.module";
+import { CarConditionModule } from "../../../shared/components/ui/car-condition/car-condition.module";
 
 
 @NgModule({
   declarations: [
     CarComponent
   ],
-    imports: [
-        CommonModule,
-        ApiModule,
-        RouterModule.forChild([
-            {
-                path: "",
-                component: MainLayoutComponent,
-                children: [
-                    {
-                        path: '',
-                        component: CarComponent
-                    }
-                ]
-            }
-        ]),
-        ReactiveFormsModule,
-        TranslocoModule,
-        PageTitleModule,
-        CarFormModule,
-        InsuranceFormModule,
-        DriverFormModule,
-        PolicyHolderFormModule,
-        StepperModule,
-        CircumstanceFormModule
-    ]
+  imports: [
+    CommonModule,
+    ApiModule,
+    RouterModule.forChild([
+      {
+        path: "",
+        component: MainLayoutComponent,
+        children: [
+          {
+            path: '',
+            component: CarComponent
+          }
+        ]
+      }
+    ]),
+    ReactiveFormsModule,
+    TranslocoModule,
+    PageTitleModule,
+    CarFormModule,
+    InsuranceFormModule,
+    DriverFormModule,
+    PolicyHolderFormModule,
+    StepperModule,
+    CircumstanceFormModule,
+    CarConditionModule
+  ]
 })
-export class CarModule { }
+export class CarModule {}

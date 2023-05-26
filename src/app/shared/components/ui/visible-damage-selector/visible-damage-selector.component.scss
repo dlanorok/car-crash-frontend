@@ -1,0 +1,20 @@
+#damaged-parts {
+  width: 100%;
+  max-width: 350px;
+
+  path {
+    fill: transparent;
+    stroke: var(--medium-ui-element);
+  }
+
+  @media (hover: hover) {
+    path:hover {
+      fill: var(--bs-danger);
+      cursor: pointer;
+    }
+  }
+
+  path.selected {
+    fill: var(--bs-danger);
+  }
+}

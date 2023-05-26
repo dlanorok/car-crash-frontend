@@ -73,6 +73,12 @@
     font-size: 20px;
     color: var(--medium-ui-element);
   }
+
+  svg-comp {
+    color: var(--medium-ui-element);
+    width: 24px;
+    height: 24px;
+  }
 }
 
 .stepper__title {
@@ -95,7 +101,7 @@
   font-weight: 600;
   .stepper__icon {
     border-color: var(--bs-primary);
-    i {
+    i, svg-comp {
       color: var(--bs-primary);
     }
   }

@@ -31,6 +31,13 @@ export abstract class BaseApiService<T extends BaseModel> {
       );
   }
 
+  patch(entity: T): Observable<T> {
+    return this.httpClient.patch(`${this.endpoint}${entity.id}/`, entity)
+      .pipe(
+        map((data) => new this.model(data))
+      );
+  }
+
   delete(id: number | string): Observable<any> {
     return this.httpClient.delete(`${this.endpoint}${id}/`)
   }

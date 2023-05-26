@@ -10,4 +10,6 @@ export class CarModel extends BaseModel {
   make_type?: string
 
   policy_holder?: PolicyHolderModel
+  damaged_parts?: string[];
+  initial_impact?: string[];
 }

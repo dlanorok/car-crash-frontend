@@ -10,6 +10,5 @@ export class StepperComponent {
 
   @Input() steps!: Step[];
   @Input() currentStep!: number;
-  @Output() stepClicked: EventEmitter<number> = new EventEmitter<number>();
 
 }

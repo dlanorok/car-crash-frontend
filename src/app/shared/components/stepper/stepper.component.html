@@ -4,10 +4,12 @@
     class="stepper__item"
     [class.step__current]="currentStep === i + 1"
     [class.step__completed]="currentStep > i + 1"
-    (click)="stepClicked.next(i + 1)"
   >
     <div class="stepper__icon">
-      <i *ngIf="step" class="bi" [ngClass]="step.icon"></i>
+      <ng-container *ngIf="step">
+        <i *ngIf="step.icon" class="bi" [ngClass]="step.icon"></i>
+        <svg-comp *ngIf="step.svg" [src]="step.svg"></svg-comp>
+      </ng-container>
     </div>
     <div class="stepper__title">
       {{ step.name | transloco}}
@@ -20,7 +22,10 @@
 <div class="stepper__mobile">
   <div class="step__current">
     <div class="stepper__icon">
-      <i *ngIf="steps[currentStep - 1]" class="bi" [ngClass]="steps[currentStep - 1].icon"></i>
+      <ng-container *ngIf="steps[currentStep - 1]">
+        <i *ngIf="steps[currentStep - 1].icon" class="bi" [ngClass]="steps[currentStep - 1].icon"></i>
+        <svg-comp *ngIf="steps[currentStep - 1].svg" [src]="steps[currentStep - 1].svg"></svg-comp>
+      </ng-container>
     </div>
     <div class="stepper__step__detail">
       <div class="stepper__step">

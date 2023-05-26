@@ -26,14 +26,18 @@ import { CircumstancesApiService } from "../../../shared/api/circumstances/circu
   styleUrls: ['./car.component.scss']
 })
 export class CarComponent implements OnInit {
+  carCrashSvg = require('src/assets/icons/car-crash.svg');
+
+  car!: CarModel;
   policyHolder?: PolicyHolderModel
-  car?: CarModel;
   insurance?: InsuranceModel;
   driver?: DriverModel;
   circumstance?: CircumstanceModel;
 
   form!: UntypedFormGroup;
   step: number = 1;
+  innerStep: number = 1;
+
   steps: Step[] = [
     {
       name: 'car-crash.car.policy-holder',
@@ -53,7 +57,8 @@ export class CarComponent implements OnInit {
     },
     {
       name: 'car-crash.car.crash-section',
-      icon: 'bi-file-earmark-bar-graph'
+      svg: this.carCrashSvg,
+      innerStepsLength: 3
     }
   ]
 
@@ -112,6 +117,10 @@ export class CarComponent implements OnInit {
   ngOnInit(): void {
     this.getData();
     this.getStepFromRoute();
+  }
+
+  get isLastStep(): boolean {
+    return this.step === this.steps.length && this.steps[this.step - 1].innerStepsLength === this.innerStep;
   }
 
   private subscribeToFormChange(baseForm: BaseFormComponent<any>) {
@@ -191,10 +200,28 @@ export class CarComponent implements OnInit {
       .subscribe()
   }
 
-  setStep(step: number): void {
+  setStep(next: boolean): void {
+    let innerSteps = this.steps[this.step - 1].innerStepsLength || 1;
+    if (next) {
+      if (innerSteps === this.innerStep) {
+        this.innerStep = 1;
+        this.step++;
+      } else {
+        this.innerStep++;
+      }
+    } else {
+      if (this.innerStep === 1) {
+        this.innerStep = 1;
+        this.step --;
+      } else {
+        this.innerStep--;
+      }
+    }
+
     this.router.navigate([], {
       queryParams: {
-        step: step
+        step: this.step,
+        innerStep: this.innerStep
       },
       queryParamsHandling: 'merge',
     });
@@ -204,27 +231,28 @@ export class CarComponent implements OnInit {
     if (this.step === 1) {
       this.navigateToCrash()
     } else {
-      this.setStep(--this.step);
+      this.setStep(false);
     }
   }
 
-  submitForm() {
+  nextStep() {
     const form = this.policyHolderForm || this.driverForm || this.insuranceForm || this.circumstanceForm;
-    if (!form) {
-      return;
-    }
-
-    form.submitForm();
-
-    if (form.isFormValid()) {
-      this.saveForm(this.policyHolderForm || this.driverForm || this.insuranceForm);
-
-      if (this.step === this.steps.length) {
-        this.navigateToCrash()
-      } else {
-        this.setStep(++this.step);
+    if (form) {
+      form.submitForm();
+      if (form.isFormValid()) {
+        this.saveForm(this.policyHolderForm || this.driverForm || this.insuranceForm);
+        this.navigateToNextView();
       }
+    } else {
+      this.navigateToNextView();
+    }
+  }
 
+  private navigateToNextView() {
+    if (this.isLastStep) {
+      this.navigateToCrash()
+    } else {
+      this.setStep(true);
     }
   }
 
