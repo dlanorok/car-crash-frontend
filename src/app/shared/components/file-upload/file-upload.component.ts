@@ -9,19 +9,18 @@ import { tap } from "rxjs";
   styleUrls: ['./file-upload.component.scss']
 })
 export class FileUploadComponent {
-  selectedFile: File | null = null;
 
   @Output() fileUploaded: EventEmitter<UploadedFile> = new EventEmitter<UploadedFile>();
 
   constructor(private readonly filesApiService: FilesApiService) {}
 
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
+    this.uploadFile(event.target.files[0]);
   }
 
-  uploadFile() {
-    if (this.selectedFile) {
-      this.filesApiService.uploadFile(this.selectedFile).pipe(
+  uploadFile(selectedFile: File | null) {
+    if (selectedFile) {
+      this.filesApiService.uploadFile(selectedFile).pipe(
         tap((uploadedFile: UploadedFile) => {
           this.fileUploaded.next(uploadedFile);
         })

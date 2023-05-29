@@ -30,7 +30,7 @@ export class CrashFormComponent extends BaseFormComponent<CrashModel> {
   setDefaults(value: CrashModel) {
     this.crash = value;
     this.form.patchValue({
-      date_of_accident: value.date_of_accident ? new Date(value.date_of_accident) : '',
+      date_of_accident: value.date_of_accident ? new Date(value.date_of_accident) : new Date(),
       country: value.country,
       place: value.place,
       injuries: value.injuries,
