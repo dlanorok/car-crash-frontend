@@ -1,2 +1,7 @@
-<input type="file" (change)="onFileSelected($event)">
-<button (click)="uploadFile()">Upload</button>
+<div class="image-container">
+  <ng-container *ngFor="let file of uploadedFiles; let i = index">
+    <img *ngIf="file" [src]="file" alt="Preview">
+  </ng-container>
+</div>
+<input type="file" accept="image/*" (change)="onFileSelected($event)">
+

@@ -138,5 +138,9 @@
   "shared.forms/validators.labels.max_length.val": "The maximum number of characters is { maxLength, number }.",
   "shared.forms/validators.labels.min_length.val": "The minimum number of characters is { minLength, number }.",
   "shared.forms/validators.labels.control_required.val": "This item is required.",
-  "shared.forms/validators.labels.date_invalid.val": "Date must be DD.MM.YYYY"
+  "shared.forms/validators.labels.date_invalid.val": "Date must be DD.MM.YYYY",
+
+
+  "shared.ocr_ID_card": "Scan your ID card",
+  "shared.ocr_driver_license": "Scan your driver license"
 }

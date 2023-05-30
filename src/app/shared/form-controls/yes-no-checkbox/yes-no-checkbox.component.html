@@ -1,0 +1,17 @@
+<div class="form-group mt-3">
+
+  <label [htmlFor]="_id" class="form-check-label">{{ label }}</label>
+  <div class="d-flex gap-1">
+    <div>
+      <input (click)="toggleValue(true)" [name]="'options' + _id" type="radio" class="btn-check" [id]="'1' + _id" autocomplete="off">
+      <label [class.checked]=" formControl.value === true"  class="btn btn-custom-checkbox" [htmlFor]="'1' + _id">Yes</label><br>
+    </div>
+
+    <div>
+      <input (click)="toggleValue(false)" [name]="'options' + _id" type="radio" class="btn-check" [id]="'2' + _id" autocomplete="off">
+      <label [class.checked]=" formControl.value === false" class="btn btn-custom-checkbox" [htmlFor]="'2' + _id">NO</label><br>
+    </div>
+  </div>
+
+  <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
+</div>

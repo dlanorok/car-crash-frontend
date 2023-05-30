@@ -14,6 +14,8 @@ import { PolicyHolderFormModule } from "../../../shared/components/forms/policy-
 import { StepperModule } from "../../../shared/components/stepper/stepper.module";
 import { CircumstanceFormModule } from "../../../shared/components/forms/circumstance-form/circumstance-form.module";
 import { CarConditionModule } from "../../../shared/components/ui/car-condition/car-condition.module";
+import { OcrComponentModule } from "../../../shared/components/ocr-component/ocr-component.module";
+import { SvgIconModule } from "../../../shared/components/ui/svg-icon/svg-icon.module";
 
 
 @NgModule({
@@ -44,7 +46,9 @@ import { CarConditionModule } from "../../../shared/components/ui/car-condition/
     PolicyHolderFormModule,
     StepperModule,
     CircumstanceFormModule,
-    CarConditionModule
+    CarConditionModule,
+    OcrComponentModule,
+    SvgIconModule
   ]
 })
 export class CarModule {}

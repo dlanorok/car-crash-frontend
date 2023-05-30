@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { BaseFormComponent } from "../base-form.component";
 import { PolicyHolderModel } from "../../../models/policy-holder.model";
 import { FormBuilder, Validators } from "@angular/forms";
+import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
+import { TextFieldType } from "@regulaforensics/document-reader-webclient";
 
 @Component({
   selector: 'app-policy-holder-form',
@@ -10,6 +12,8 @@ import { FormBuilder, Validators } from "@angular/forms";
 })
 export class PolicyHolderFormComponent extends BaseFormComponent<PolicyHolderModel>{
   policyHolder?: PolicyHolderModel;
+  hasOcrEnabled = true;
+  ocrTitle = 'shared.ocr_ID_card';
 
   constructor(private readonly formBuilder: FormBuilder) {
     super();
@@ -44,6 +48,14 @@ export class PolicyHolderFormComponent extends BaseFormComponent<PolicyHolderMod
       ...this.form.value
     });
     this.emitValue(policyHolder);
+  }
+
+  override setFromOCRResponse(response: Response): void {
+    this.form.patchValue({
+      name: response.text?.getFieldValue(TextFieldType.FIRST_NAME) || response.text?.getFieldValue(TextFieldType.GIVEN_NAME) ,
+      surname: response.text?.getFieldValue(TextFieldType.SURNAME),
+      country_code: response.text?.getFieldValue(TextFieldType.NATIONALITY_CODE)
+    });
   }
 
 }

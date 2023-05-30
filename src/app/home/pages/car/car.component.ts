@@ -3,7 +3,6 @@ import { CarsApiService } from "../../../shared/api/cars/cars-api.service";
 import { CarModel } from "../../../shared/models/car.model";
 import { forkJoin, map, of, Subscription, switchMap, take, tap } from "rxjs";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
-import { UntypedFormGroup } from "@angular/forms";
 import { catchError } from "rxjs/operators";
 import { PolicyHolderModel } from "../../../shared/models/policy-holder.model";
 import { PolicyHoldersApiService } from "../../../shared/api/policy-holders/policy-holders-api.service";
@@ -19,6 +18,7 @@ import { Step } from "../../../shared/common/stepper-data";
 import { CircumstanceFormComponent } from "../../../shared/components/forms/circumstance-form/circumstance-form.component";
 import { CircumstanceModel } from "../../../shared/models/circumstance.model";
 import { CircumstancesApiService } from "../../../shared/api/circumstances/circumstances-api.service";
+import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
 
 @Component({
   selector: 'app-car',
@@ -27,6 +27,7 @@ import { CircumstancesApiService } from "../../../shared/api/circumstances/circu
 })
 export class CarComponent implements OnInit {
   carCrashSvg = require('src/assets/icons/car-crash.svg');
+  ocrSvg = require('src/assets/icons/ocr.svg');
 
   car!: CarModel;
   policyHolder?: PolicyHolderModel;
@@ -34,9 +35,10 @@ export class CarComponent implements OnInit {
   driver?: DriverModel;
   circumstance?: CircumstanceModel;
 
-  form!: UntypedFormGroup;
+  baseFormComponent!: BaseFormComponent<any>;
   step = 1;
   innerStep = 1;
+  showOCRComponent = false;
 
   steps: Step[] = [
     {
@@ -62,41 +64,45 @@ export class CarComponent implements OnInit {
     }
   ];
 
-  @ViewChild('policyHolderForm', { static: false }) protected policyHolderForm?: PolicyHolderFormComponent;
+  @ViewChild('policyHolderForm', {static: false}) protected policyHolderForm?: PolicyHolderFormComponent;
 
   @ViewChild('policyHolderForm')
   set setPolicyHolderForm(policyHolderForm: PolicyHolderFormComponent) {
-    if(policyHolderForm) {
+    if (policyHolderForm) {
+      this.baseFormComponent = policyHolderForm;
       this.setFormsData();
       this.subscribeToFormChange(policyHolderForm);
     }
   }
 
-  @ViewChild('insuranceForm', { static: false }) protected insuranceForm?: InsuranceFormComponent;
+  @ViewChild('insuranceForm', {static: false}) protected insuranceForm?: InsuranceFormComponent;
 
   @ViewChild('insuranceForm')
   set setInsuranceForm(insuranceForm: InsuranceFormComponent) {
-    if(insuranceForm) {
+    if (insuranceForm) {
+      this.baseFormComponent = insuranceForm;
       this.setFormsData();
       this.subscribeToFormChange(insuranceForm);
     }
   }
 
-  @ViewChild('driverForm', { static: false }) protected driverForm?: DriverFormComponent;
+  @ViewChild('driverForm', {static: false}) protected driverForm?: DriverFormComponent;
 
   @ViewChild('driverForm')
   set setDriverForm(driverForm: DriverFormComponent) {
-    if(driverForm) {
+    if (driverForm) {
+      this.baseFormComponent = driverForm;
       this.setFormsData();
       this.subscribeToFormChange(driverForm);
     }
   }
 
-  @ViewChild('circumstanceForm', { static: false }) protected circumstanceForm?: CircumstanceFormComponent;
+  @ViewChild('circumstanceForm', {static: false}) protected circumstanceForm?: CircumstanceFormComponent;
 
   @ViewChild('circumstanceForm')
   set setCircumstanceForm(circumstanceForm: CircumstanceFormComponent) {
-    if(circumstanceForm) {
+    if (circumstanceForm) {
+      this.baseFormComponent = circumstanceForm;
       this.setFormsData();
       this.subscribeToFormChange(circumstanceForm);
     }
@@ -112,7 +118,8 @@ export class CarComponent implements OnInit {
     private readonly driversApiService: DriversApiService,
     private readonly circumstancesApiService: CircumstancesApiService,
     private readonly router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.getData();
@@ -121,6 +128,11 @@ export class CarComponent implements OnInit {
 
   get isLastStep(): boolean {
     return this.step === this.steps.length && this.steps[this.step - 1].innerStepsLength === this.innerStep;
+  }
+
+  processOCRResponse(response: Response) {
+    this.baseFormComponent.setFromOCRResponse(response);
+    this.showOCRComponent = false;
   }
 
   private subscribeToFormChange<T>(baseForm: BaseFormComponent<T>) {
@@ -134,14 +146,18 @@ export class CarComponent implements OnInit {
   }
 
   private setFormsData() {
-    if (this.policyHolderForm && this.policyHolder) {
-      this.policyHolderForm.setDefaults(this.policyHolder);
-    } else if (this.insuranceForm && this.insurance) {
-      this.insuranceForm.setDefaults(this.insurance);
-    } else if (this.driverForm && this.driver) {
-      this.driverForm.setDefaults(this.driver);
-    } else if (this.circumstanceForm && this.circumstance) {
-      this.circumstanceForm.setDefaults(this.circumstance);
+    if (!this.baseFormComponent) {
+      return;
+    }
+
+    if (this.step === 1) {
+      this.baseFormComponent.setDefaults(this.policyHolder);
+    } else if (this.step === 2) {
+      this.baseFormComponent.setDefaults(this.insurance);
+    } else if (this.step === 3) {
+      this.baseFormComponent.setDefaults(this.driver);
+    } else if (this.step === 4) {
+      this.baseFormComponent.setDefaults(this.circumstance);
     }
   }
 
@@ -212,7 +228,7 @@ export class CarComponent implements OnInit {
     } else {
       if (this.innerStep === 1) {
         this.innerStep = 1;
-        this.step --;
+        this.step--;
       } else {
         this.innerStep--;
       }

@@ -21,25 +21,24 @@
     [submitted]="submitted">
   </app-text-control>
 
-  <app-checkbox-control
+  <app-yes-no-checkbox
     [formControl]="$any(form.controls['injuries'])"
     [label]="'car-crash.crash.injuries.label' | transloco"
     [submitted]="submitted">
 
-  </app-checkbox-control>
+  </app-yes-no-checkbox>
 
-  <app-checkbox-control
+  <app-yes-no-checkbox
     [formControl]="$any(form.controls['vehicle_material_damage'])"
     [label]="'car-crash.crash.vehicle-material-damage.label' | transloco"
     [submitted]="submitted">
 
-  </app-checkbox-control>
+  </app-yes-no-checkbox>
 
-  <app-checkbox-control
+  <app-yes-no-checkbox
     [formControl]="$any(form.controls['other_material_damage'])"
     [label]="'car-crash.crash.other-material-damage.label' | transloco"
     [submitted]="submitted">
-
-  </app-checkbox-control>
+  </app-yes-no-checkbox>
 
 </form>

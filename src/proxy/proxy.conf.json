@@ -4,5 +4,14 @@
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": true
+  },
+  "/regula": {
+    "target": "http://52.30.114.38:8080",
+    "pathRewrite": {
+      "^/regula": ""
+    },
+    "logLevel": "debug",
+    "secure": false,
+    "changeOrigin": true
   }
 }

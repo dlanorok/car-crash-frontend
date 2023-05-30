@@ -7,12 +7,19 @@
       "@angular/localize",
       "node"
     ],
-    "typeRoots": [ "../node_modules/@types" ]
+    "typeRoots": [ "../node_modules/@types" ],
+    "skipLibCheck": true
   },
   "files": [
     "src/main.ts"
   ],
   "include": [
     "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "./node_modules",
+    "./node_modules/*",
+    "node_modules/@regulaforensics/document-reader-webclient/src/base.ts",
   ]
 }

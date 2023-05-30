@@ -3,6 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { HttpErrorResponse } from "@angular/common/http";
 import { ValidatorsErrors } from "./common/enumerators/validators-errors";
 import { debounceTime, distinctUntilChanged, skip, tap } from "rxjs";
+import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
 
 @Component({
   template: '',
@@ -10,6 +11,8 @@ import { debounceTime, distinctUntilChanged, skip, tap } from "rxjs";
 export abstract class BaseFormComponent<T> implements OnInit {
   form!: UntypedFormGroup;
   submitted = false;
+  hasOcrEnabled = false;
+  ocrTitle?: string;
 
   @Output() formSubmit: EventEmitter<T> = new EventEmitter<T>();
   @Output() formChange: EventEmitter<T> = new EventEmitter<T>();
@@ -22,6 +25,10 @@ export abstract class BaseFormComponent<T> implements OnInit {
   protected abstract initForm(): void;
   protected abstract afterFormSubmit(): void;
   public abstract setDefaults(value: T): void;
+
+  setFromOCRResponse(response: Response): void {
+    // noop
+  }
 
 
   subscribeToFormChange() {

@@ -6,7 +6,7 @@ import { TranslocoModule } from "@ngneat/transloco";
 import { DateControlModule } from "../../../form-controls/date-control/date-control.module";
 import { FormErrorsModule } from "../shell/form-errors/form-errors.module";
 import { TextControlModule } from "../../../form-controls/text-control/text-control.module";
-import { CheckboxControlModule } from "../../../form-controls/checkbox-control/checkbox-control.module";
+import { YesNoCheckboxModule } from "../../../form-controls/yes-no-checkbox/yes-no-checkbox.module";
 
 
 @NgModule({
@@ -24,7 +24,7 @@ import { CheckboxControlModule } from "../../../form-controls/checkbox-control/c
     DateControlModule,
     FormErrorsModule,
     TextControlModule,
-    CheckboxControlModule,
+    YesNoCheckboxModule
   ],
 })
 export class CrashFormModule { }

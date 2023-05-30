@@ -1,3 +1,22 @@
 form {
   max-width: 500px;
 }
+
+.ocr-scan {
+  text-align: center;
+  padding: 40px;
+  border: 1px solid var(--medium-ui-element);
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--strong-ui-element)
+  }
+
+  app-svg-comp {
+    color: var(--medium-ui-element);
+    margin: auto;
+    width: 40px;
+    height: 40px;
+  }
+}

@@ -26,7 +26,7 @@ import { CustomDatepickerI18n } from "./shared/form-controls/date-control/date-c
 @NgModule({
   declarations: [
     AppComponent,
-    MainLayoutComponent
+    MainLayoutComponent,
   ],
   imports: [
     BrowserModule,

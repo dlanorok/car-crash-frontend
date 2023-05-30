@@ -20,9 +20,9 @@ export class CrashFormComponent extends BaseFormComponent<CrashModel> {
         date_of_accident: ['', Validators.required],
         country: ['', Validators.required],
         place: ['', Validators.required],
-        injuries: [''],
-        vehicle_material_damage: [''],
-        other_material_damage: ['']
+        injuries: ['', Validators.required],
+        vehicle_material_damage: ['', Validators.required],
+        other_material_damage: ['', Validators.required]
       }
     );
   }
