@@ -20,5 +20,5 @@ export class CircumstanceModel extends BaseModel {
   from_right_crossing?: boolean;
   disregarding_right_of_way_red_light?: boolean;
 
-  car?: string;
+  car!: number;
 }

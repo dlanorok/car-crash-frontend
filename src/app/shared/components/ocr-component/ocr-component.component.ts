@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import {
   defineComponents,
   DocumentReaderDetailType,
@@ -19,10 +19,15 @@ import { Response } from "@regulaforensics/document-reader-webclient/src/ext/pro
 })
 export class OcrComponentComponent implements AfterViewInit, OnInit {
 
+  @Input() showOCRComponent = false;
+  @Input() title!: string;
+
   @Output() OCRResponse: EventEmitter<Response> = new EventEmitter<Response>();
-  @Output() closeOCR: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() OCRToggle: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @ViewChild('reader', { static: false }) reader?: ElementRef<DocumentReaderWebComponent>;
+
+  ocrSvg = require('src/assets/icons/ocr.svg');
 
   constructor(private readonly regularForensicsApi: RegularForensicsApi) {
   }
@@ -47,7 +52,7 @@ export class OcrComponentComponent implements AfterViewInit, OnInit {
 
   documentReaderHandler(data: CustomEvent<DocumentReaderDetailType>) {
     if (data.detail.action === 'CLOSE') {
-      this.closeOCR.next(true);
+      this.OCRToggle.next(false);
       return;
     }
 

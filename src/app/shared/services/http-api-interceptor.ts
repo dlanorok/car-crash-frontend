@@ -1,6 +1,7 @@
 import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { StorageItem } from "../common/enumerators/storage";
 
 
 @Injectable()
@@ -14,14 +15,15 @@ export class HttpApiInterceptor implements HttpInterceptor {
     const headers = this.setAuthHeader(request.headers);
 
     request = request.clone({
-      headers: headers
+      headers: headers,
+      withCredentials: true
     });
 
     return next.handle(request);
   }
 
   private setAuthHeader(headers: HttpHeaders): HttpHeaders {
-    const token = localStorage.getItem('session_id');
+    const token = localStorage.getItem(StorageItem.sessionId);
     headers = headers.set(this.authHeaderName, `${this.authTokenType} ${token}`);
 
     return headers;

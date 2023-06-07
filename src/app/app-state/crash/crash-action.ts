@@ -16,6 +16,11 @@ export const loadCrash = createAction(
   props<{sessionId: string}>()
 );
 
+export const updateCrash = createAction(
+  '[AccidentData Component] Update',
+  props<{crash: CrashModel}>()
+);
+
 export const loadCrashSuccessful = createAction(
   '[CrashModel API] CrashModel Load Success',
   props<{crash: CrashModel}>()

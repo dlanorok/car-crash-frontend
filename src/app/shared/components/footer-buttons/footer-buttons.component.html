@@ -1,0 +1,6 @@
+<div class="fixed-bottom footer d-flex align-items-center justify-content-between">
+  <div *ngFor="let button of buttons; let i = index" class="button d-flex flex-column" (click)="button.action()">
+    <i class="bi" [ngClass]="button.icon"></i>
+    {{ button.name$ | async }}
+  </div>
+</div>

@@ -7,5 +7,13 @@ export class DriverModel extends BaseModel {
   driving_licence_number?: string;
   driving_licence_valid_to?: string;
 
-  car?: string;
+  car!: number;
+
+  constructor(data?: any) {
+    super(data);
+
+    if (data['car']) {
+      this.id = data['car'];
+    }
+  }
 }

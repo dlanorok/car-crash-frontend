@@ -1,0 +1,17 @@
+<div class="main-content">
+  <div [class.d-none]="showOCRComponent">
+    <app-policy-holder-form #formComponent></app-policy-holder-form>
+  </div>
+
+  <app-ocr-component
+    *ngIf="formComponent && formComponent.hasOcrEnabled"
+    [showOCRComponent]="showOCRComponent"
+    [title]="formComponent.ocrTitle | transloco"
+    (OCRResponse)="processOCRResponse($event)"
+    (OCRToggle)="showOCRComponent = $event">
+  </app-ocr-component>
+</div>
+
+<app-footer-buttons [buttons]="footerButtons">
+</app-footer-buttons>
+

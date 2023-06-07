@@ -6,6 +6,15 @@
   "car-crash.shared.button.edit": "Edit",
   "car-crash.shared.button.next": "Next",
   "car-crash.shared.button.confirm": "Confirm",
+  "car-crash.shared.button.overview": "Overview",
+  "car-crash.shared.button.scan_qr_code": "Scan QR code",
+  "car-crash.shared.button.enter_code": "Enter code",
+
+  "car-crash.shared.todo_list.basic_data": "Basic accident data",
+  "car-crash.shared.todo_list.invite_others": "Invite other participant",
+  "car-crash.shared.todo_list.your_data": "Your data",
+  "car-crash.shared.todo_list.accident_damage": "Accident Damage & Circumstances",
+  "car-crash.shared.todo_list.accident_sketch": "Accident sketch",
 
   "car-crash.crash.create": "Create crash",
   "car-crash.crash.overview.title": "Crash overview",

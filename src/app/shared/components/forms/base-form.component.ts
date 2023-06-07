@@ -1,14 +1,14 @@
 import { UntypedFormGroup } from "@angular/forms";
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from "@angular/core";
 import { HttpErrorResponse } from "@angular/common/http";
 import { ValidatorsErrors } from "./common/enumerators/validators-errors";
-import { debounceTime, distinctUntilChanged, skip, tap } from "rxjs";
+import { debounceTime, distinctUntilChanged, skip, Subscription, tap } from "rxjs";
 import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
 
 @Component({
   template: '',
 })
-export abstract class BaseFormComponent<T> implements OnInit {
+export abstract class BaseFormComponent<T> implements OnInit, OnDestroy {
   form!: UntypedFormGroup;
   submitted = false;
   hasOcrEnabled = false;
@@ -16,6 +16,8 @@ export abstract class BaseFormComponent<T> implements OnInit {
 
   @Output() formSubmit: EventEmitter<T> = new EventEmitter<T>();
   @Output() formChange: EventEmitter<T> = new EventEmitter<T>();
+
+  formSubscription?: Subscription;
 
   ngOnInit(): void {
     this.initForm();
@@ -32,12 +34,15 @@ export abstract class BaseFormComponent<T> implements OnInit {
 
 
   subscribeToFormChange() {
-    this.form.valueChanges
+    this.formSubscription?.unsubscribe();
+    this.formSubscription = this.form.valueChanges
       .pipe(
         debounceTime(1000),
         distinctUntilChanged(),
         skip(1),
-        tap(() => this.formChange.next(this.form.value))
+        tap(() => {
+          this.formChange.next(this.form.value);
+        })
       ).subscribe();
   }
 
@@ -67,5 +72,9 @@ export abstract class BaseFormComponent<T> implements OnInit {
         });
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.formSubscription?.unsubscribe();
   }
 }

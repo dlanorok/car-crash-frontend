@@ -12,6 +12,8 @@ import { BaseSvgHoverComponent } from "../base-svg-hover/base-svg-hover.componen
 import { CarsApiService } from "../../../api/cars/cars-api.service";
 import { CarModel } from "../../../models/car.model";
 import { take } from "rxjs";
+import { updateCarInitialImpact } from "../../../../app-state/car/car-action";
+import { Store } from "@ngrx/store";
 
 @Component({
   selector: 'app-point-of-initial-impact',
@@ -24,7 +26,8 @@ export class PointOfInitialImpactComponent extends BaseSvgHoverComponent impleme
 
   constructor(
     private readonly renderer2: Renderer2,
-    private readonly carsApiService: CarsApiService
+    private readonly carsApiService: CarsApiService,
+    private readonly store: Store
   ) {
     super();
   }
@@ -44,6 +47,7 @@ export class PointOfInitialImpactComponent extends BaseSvgHoverComponent impleme
       id: this.car.id,
       initial_impact: this.selectedParts
     });
+    this.store.dispatch(updateCarInitialImpact({carId: this.car.id, initialImpacts: this.selectedParts}));
     this.carsApiService.patch(car).pipe(take(1)).subscribe();
   }
 

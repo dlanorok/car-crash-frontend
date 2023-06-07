@@ -1,7 +1,8 @@
-import { BaseModel } from "./base.model";
+import { BaseModel, ModelState } from "./base.model";
 
 export class CrashModel extends BaseModel {
   session_id!: string;
+  state!: ModelState;
 
   created_at?: string;
   closed?: boolean;

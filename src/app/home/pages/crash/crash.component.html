@@ -1,82 +1,16 @@
-<app-page-title [title]="'car-crash.crash.overview.title' | transloco"></app-page-title>
-
-<app-page-section
-  *ngIf="crash$ | async"
-  [sectionTitle]="'car-crash.crash.crash.data' | transloco"
-  [buttonText]="'car-crash.shared.button.edit' | transloco"
-  (buttonClicked)="editCrash()"
->
-
-  <div class="row">
-    <div class="col-12 col-md-6">
-      <div class="d-flex align-items-center">
-        <i class="bi bi-geo-alt filled-icon me-3" (click)="createCar()"></i>
-        <div>
-          <div>
-            {{ (crash$ | async)?.place}}
-          </div>
-          <div>
-            {{ (crash$ | async)?.country}}
-          </div>
-        </div>
-      </div>
+<div class="main-content">
+  <div
+    *ngFor="let todoItem of todoList; let i = index"
+    class="todo-item"
+    (click)="todoItem.navigate()"
+  >
+    <div>
+      {{ todoItem.name | transloco }}
     </div>
-
-    <div class="col-12 col-md-6 mt-3 mt-md-0">
-      <div class="d-flex align-items-center">
-        <i class="bi bi-clock filled-icon me-3" (click)="createCar()"></i>
-        <div>
-          <div>
-            {{ (crash$ | async)?.date_of_accident}}
-          </div>
-        </div>
-      </div>
+    <div class="d-flex align-items-center">
+      <i *ngIf="(todoItem.state | async) === ModelState.empty" class="bi bi-circle"></i>
+      <i *ngIf="(todoItem.state | async) === ModelState.validated" class="bi bi-check-circle"></i>
+      <i *ngIf="(todoItem.state | async) === ModelState.partial" class="bi bi-question-circle"></i>
     </div>
   </div>
-
-</app-page-section>
-
-<app-page-section
-  *ngIf="carExists$ | async"
-  [sectionTitle]="'car-crash.crash.cars.data' | transloco"
-  [buttonText]="'car-crash.car.add' | transloco"
-  (buttonClicked)="createCar()"
->
-
-  <div class="row">
-    <ng-template ngFor [ngForOf]="cars$ | async" let-car>
-      <div class="col-12 col-md-6 col-lg-4 mb-3">
-        <div class="car p-3 d-flex align-items-center h-100" [routerLink]="'cars/' + car.id">
-          <i class="bi bi-car-front-fill filled-icon me-3"></i>
-          <div class="car-detail">
-            <div class="car-type">
-              <b>{{ car.car_type }}</b>
-            </div>
-            <div>
-              {{ car.registration_plate }}
-            </div>
-            <div class="d-none d-md-block">
-              {{ car.registration_country }}
-            </div>
-          </div>
-          <i class="bi bi-chevron-right ms-auto ps-3"></i>
-        </div>
-      </div>
-    </ng-template>
-  </div>
-
-</app-page-section>
-
-<button
-  *ngIf="(carExists$ | async) === false"
-  class="btn btn-outline-primary btn-sm-full-width mt-3 me-3"
-  (click)="createCar()">
-  {{ 'car-crash.car.create' | transloco }}
-</button>
-
-<button
-  *ngIf="carExists$ | async"
-  class="btn btn-outline-primary btn-sm-full-width mt-3 me-3"
-  (click)="createCar()">
-  {{ 'car-crash.crash.accident_description' | transloco }}
-</button>
+</div>

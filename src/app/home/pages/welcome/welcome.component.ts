@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from "@ngrx/store";
-import { BaseFormModalComponent } from "../../../shared/components/modals/base-form-modal/base-form-modal.component";
-import { tap } from "rxjs";
 import { CrashModel } from "../../../shared/models/crash.model";
-import { ModalService } from "../../../shared/services/modal.service";
-import { CrashFormComponent } from "../../../shared/components/forms/crash-form/crash-form.component";
-import { CrashFormModule } from "../../../shared/components/forms/crash-form/crash-form.module";
 import { CrashesApiService } from "../../../shared/api/crashes/crashes-api.service";
 import { Router } from "@angular/router";
+import { HeaderService } from "../../../shared/services/header-service";
+import { createCrash } from "../../../app-state/crash/crash-action";
+import { StorageItem } from "../../../shared/common/enumerators/storage";
 
 @Component({
   selector: 'app-welcome',
@@ -18,33 +16,22 @@ export class WelcomeComponent implements OnInit {
   localStorageCrash?: string | null;
 
   constructor(
-    private readonly modalService: ModalService,
     private readonly store: Store,
     private readonly crashesApiService: CrashesApiService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly headerService: HeaderService
   ) {
   }
 
   createCrash() {
-    this.modalService.open(BaseFormModalComponent, {
-      formComponent: {
-        component: CrashFormComponent,
-        module: CrashFormModule,
-      },
-      model: new CrashModel(),
-      title: 'Create crash',
-      afterSubmit$: (crash: CrashModel) => {
-        return this.crashesApiService.create(crash)
-          .pipe(
-            tap((crash: CrashModel) => {
-              this.router.navigate([`/crash/${crash.session_id}`]);
-            })
-          );
-      }
-    });
+    this.store.dispatch(createCrash({crash: new CrashModel()}));
   }
 
   ngOnInit(): void {
-    this.localStorageCrash = localStorage.getItem('session_id');
+    this.headerService.setHeaderData({
+      name: '§§Car Crash assist',
+      preventBack: true
+    });
+    this.localStorageCrash = localStorage.getItem(StorageItem.sessionId);
   }
 }

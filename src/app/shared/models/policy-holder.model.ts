@@ -9,5 +9,13 @@ export class PolicyHolderModel extends BaseModel {
   post_number?: string;
   surname?: string;
 
-  car?: string;
+  car!: number;
+
+  constructor(data?: any) {
+    super(data);
+
+    if (data['car']) {
+      this.id = data['car'];
+    }
+  }
 }

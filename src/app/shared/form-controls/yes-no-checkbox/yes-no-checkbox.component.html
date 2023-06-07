@@ -1,7 +1,7 @@
 <div class="form-group mt-3">
 
   <label [htmlFor]="_id" class="form-check-label">{{ label }}</label>
-  <div class="d-flex gap-1">
+  <div class="d-flex gap-2">
     <div>
       <input (click)="toggleValue(true)" [name]="'options' + _id" type="radio" class="btn-check" [id]="'1' + _id" autocomplete="off">
       <label [class.checked]=" formControl.value === true"  class="btn btn-custom-checkbox" [htmlFor]="'1' + _id">Yes</label><br>

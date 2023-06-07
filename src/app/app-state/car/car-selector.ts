@@ -8,3 +8,11 @@ export const selectCars = createSelector(
   selectCarState,
   (state: CarState) => state.cars
 );
+
+export const selectCar = createSelector(
+  selectCarState,
+  (state: CarState, id: string | number) => {
+    return state.cars.find(car => car.id === id || car.creator === id);
+  }
+);
+

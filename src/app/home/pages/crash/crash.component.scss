@@ -1,41 +1,21 @@
-@import 'node_modules/bootstrap/scss/functions';
-@import 'node_modules/bootstrap/scss/variables';
-@import 'node_modules/bootstrap/scss/mixins';
-
-.add-button {
-  font-size: 50px;
-  color: var(--bs-secondary);
-  cursor: pointer;
-}
-
-.car {
+.todo-item {
   border: 1px solid var(--medium-ui-element);
   border-radius: 8px;
-
-  &:hover {
-    border-color: var(--strong-ui-element);
-  }
-}
-
-.car-detail {
+  padding: 10px;
+  margin-bottom: 10px;
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
   gap: 10px;
 }
 
-.car-type {
-  flex: 1 0 50px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.bi-check-circle {
+  color: var(--bs-success);
 }
 
-@include media-breakpoint-up(sm) {
-  .car {
-    min-height: 100px;
-  }
+.bi-circle {
+  color: var(--bs-danger);
+}
 
-  .car-detail {
-    display: block;
-  }
+.bi-question-circle {
+  color: var(--bs-warning);
 }

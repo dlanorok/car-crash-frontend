@@ -49,7 +49,7 @@ export abstract class BaseSvgHoverComponent implements AfterViewInit, OnDestroy,
       this.selectedParts.splice(this.selectedParts.indexOf(clickedElement.id), 1);
     } else {
       clickedElement.classList.add(this.selectedClass);
-      this.selectedParts.push(clickedElement.id);
+      this.selectedParts = [...this.selectedParts, clickedElement.id];
     }
     this.afterSvgItemClicked();
   }

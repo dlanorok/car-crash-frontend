@@ -1,7 +1,7 @@
 import { BaseModel } from "./base.model";
 
 export class InsuranceModel extends BaseModel {
-  car?: string;
+  car!: number;
 
   name?: string;
   policy_number?: string;
@@ -9,4 +9,12 @@ export class InsuranceModel extends BaseModel {
   green_card?: string;
   valid_until?: string;
   damaged_insured?: boolean;
+
+  constructor(data?: any) {
+    super(data);
+
+    if (data['car']) {
+      this.id = data['car'];
+    }
+  }
 }

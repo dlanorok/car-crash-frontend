@@ -1,0 +1,12 @@
+:host {
+  width: 100%;
+}
+.header {
+  height: 56px;
+  background-color: var(--bs-secondary);
+}
+
+.content {
+  height: calc(100vh - 56px - 56px); /* Adjust the heights as per your navbar height */
+  overflow-y: auto;
+}

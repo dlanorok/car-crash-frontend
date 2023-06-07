@@ -1,0 +1,23 @@
+<div class="main-content">
+<!--  <app-stepper [steps]="steps" [currentStep]="step">-->
+<!--  </app-stepper>-->
+
+  <ng-template [ngIf]="car">
+    <div [class.d-none]="showOCRComponent">
+      <app-policy-holder-form #policyHolderForm *ngIf="step === 1"></app-policy-holder-form>
+      <app-insurance-form #insuranceForm *ngIf="step === 2"></app-insurance-form>
+      <app-driver-form #driverForm *ngIf="step === 3"></app-driver-form>
+
+
+    </div>
+  </ng-template>
+
+  <app-ocr-component
+    *ngIf="showOCRComponent"
+    (OCRResponse)="processOCRResponse($event)"
+    (closeOCR)="showOCRComponent = false">
+  </app-ocr-component>
+</div>
+
+<app-footer-buttons [buttons]="footerButtons">
+</app-footer-buttons>
