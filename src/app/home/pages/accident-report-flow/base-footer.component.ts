@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { FooterButton } from "@app/shared/components/footer-buttons/footer-buttons.component";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { Router } from "@angular/router";
@@ -8,6 +8,9 @@ import { TranslocoService } from "@ngneat/transloco";
   template: '',
 })
 export abstract class BaseFooterComponent {
+  protected readonly router: Router = inject(Router);
+  protected readonly translateService: TranslocoService = inject(TranslocoService);
+
   footerButtons: FooterButton[] = [
     {
       name$: this.translateService.selectTranslate('car-crash.shared.button.back'),
@@ -32,12 +35,6 @@ export abstract class BaseFooterComponent {
       icon: 'bi-chevron-right'
     },
   ];
-
-  constructor(
-    protected readonly router: Router,
-    protected readonly translateService: TranslocoService
-  ) {
-  }
 
   abstract next(): void;
   abstract previous(): void;

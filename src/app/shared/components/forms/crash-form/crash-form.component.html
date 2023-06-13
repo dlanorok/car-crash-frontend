@@ -4,7 +4,6 @@
     [placeholder]="'car-crash.crash.date-of-accident.placeholder' | transloco"
     [label]="'car-crash.crash.date-of-accident.label' | transloco"
     [submitted]="submitted">
-
   </app-date-control>
 
   <app-text-control
@@ -21,18 +20,23 @@
     [submitted]="submitted">
   </app-text-control>
 
+  <app-number-control
+    [formControl]="$any(form.controls['participants'])"
+    [placeholder]="'car-crash.crash.participants.placeholder' | transloco"
+    [label]="'car-crash.crash.participants.label' | transloco"
+    [submitted]="submitted">
+  </app-number-control>
+
   <app-yes-no-checkbox
     [formControl]="$any(form.controls['injuries'])"
     [label]="'car-crash.crash.injuries.label' | transloco"
     [submitted]="submitted">
-
   </app-yes-no-checkbox>
 
   <app-yes-no-checkbox
     [formControl]="$any(form.controls['vehicle_material_damage'])"
     [label]="'car-crash.crash.vehicle-material-damage.label' | transloco"
     [submitted]="submitted">
-
   </app-yes-no-checkbox>
 
   <app-yes-no-checkbox

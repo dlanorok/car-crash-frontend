@@ -1,16 +1,21 @@
 <div class="main-content">
   <div
-    *ngFor="let todoItem of todoList; let i = index"
+    *ngFor="let todoItem of todoList | async; let i = index"
     class="todo-item"
     (click)="todoItem.navigate()"
   >
     <div>
-      {{ todoItem.name | transloco }}
+      <ng-container *ngIf="todoItem.translateParams; else todoNameTpl">
+        {{ todoItem.name | transloco : todoItem.translateParams }}
+      </ng-container>
+      <ng-template #todoNameTpl>
+        {{ todoItem.name | transloco }}
+      </ng-template>
     </div>
     <div class="d-flex align-items-center">
-      <i *ngIf="(todoItem.state | async) === ModelState.empty" class="bi bi-circle"></i>
-      <i *ngIf="(todoItem.state | async) === ModelState.validated" class="bi bi-check-circle"></i>
-      <i *ngIf="(todoItem.state | async) === ModelState.partial" class="bi bi-question-circle"></i>
+      <i *ngIf="todoItem.state === ModelState.empty" class="bi bi-circle"></i>
+      <i *ngIf="todoItem.state === ModelState.validated" class="bi bi-check-circle"></i>
+      <i *ngIf="todoItem.state === ModelState.partial" class="bi bi-question-circle"></i>
     </div>
   </div>
 </div>

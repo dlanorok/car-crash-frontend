@@ -21,6 +21,7 @@ export class CrashFormComponent extends BaseFormComponent<CrashModel> {
         date_of_accident: [new Date(), Validators.required],
         country: ['', Validators.required],
         place: ['', Validators.required],
+        participants: [2, Validators.required],
         injuries: ['', Validators.required],
         vehicle_material_damage: ['', Validators.required],
         other_material_damage: ['', Validators.required]

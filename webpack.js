@@ -22,12 +22,12 @@ module.exports = (config, options, targetOptions) => {
 
   config.module.plugins
 
-  // /**
-  //  * Add Plugin analyzed
-  //  */
-  // config.plugins.push(
-  //   new BundleAnalyzerPlugin(),
-  // )
+  /**
+   * Add Plugin analyzed
+   */
+  config.plugins.push(
+    new BundleAnalyzerPlugin(),
+  )
 
   return config;
 };

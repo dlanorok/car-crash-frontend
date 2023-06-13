@@ -7,6 +7,12 @@
         </span>
       </ng-container>
 
+      <ng-container *ngIf="control?.hasError(validatorErrors.validatePhoneNumber) && !control?.errors?.[validatorErrors.validatePhoneNumber]['valid'];">
+        <span>
+          §§ invalid phone number
+        </span>
+      </ng-container>
+
       <ng-container *ngIf="control.errors[validatorErrors.minlength]">
         <span>
           {{

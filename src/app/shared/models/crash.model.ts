@@ -3,6 +3,7 @@ import { BaseModel, ModelState } from "./base.model";
 export class CrashModel extends BaseModel {
   session_id!: string;
   state!: ModelState;
+  participants!: number;
 
   created_at?: string;
   closed?: boolean;
@@ -16,4 +17,5 @@ export class CrashModel extends BaseModel {
 
 
   cars?: number[];
+  my_cars?: number[];
 }

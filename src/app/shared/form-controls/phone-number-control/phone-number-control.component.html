@@ -1,0 +1,18 @@
+<div class="form-group">
+  <ngx-intl-tel-input
+    [cssClass]="'custom'"
+    [preferredCountries]="[CountryISO.Slovenia, CountryISO.Croatia]"
+    [enableAutoCountrySelect]="false"
+    [enablePlaceholder]="true"
+    [searchCountryFlag]="true"
+    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+    [selectFirstCountry]="false"
+    [separateDialCode]="true"
+    [selectedCountryISO]="CountryISO.Slovenia"
+    [maxLength]="15"
+    [phoneValidation]="true"
+    [formControl]="formControl"
+  ></ngx-intl-tel-input>
+
+  <app-form-errors *ngIf="!formControl.untouched" [control]="formControl"></app-form-errors>
+</div>

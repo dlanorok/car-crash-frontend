@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
-import { TranslocoService } from "@ngneat/transloco";
 import { HeaderService } from "@app/shared/services/header-service";
 import { filter, Observable, take, tap } from "rxjs";
 import { CrashFormComponent } from "@app/shared/components/forms/crash-form/crash-form.component";
 import { CrashModel } from "@app/shared/models/crash.model";
 import { selectCrash } from "@app/app-state/crash/crash-selector";
-import { Store } from "@ngrx/store";
 import { loadCrash, updateCrash } from "@app/app-state/crash/crash-action";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { BaseFlowComponent } from "@app/home/pages/accident-report-flow/base-flow.component";
@@ -20,12 +17,9 @@ export class AccidentDataComponent extends BaseFlowComponent<CrashFormComponent,
   crash$: Observable<CrashModel> = this.store.select(selectCrash);
 
   constructor(
-    protected readonly router: Router,
-    protected readonly translateService: TranslocoService,
     private readonly headerService: HeaderService,
-    private readonly store: Store
   ) {
-    super(router, translateService);
+    super();
   }
 
   ngOnInit() {
@@ -58,7 +52,7 @@ export class AccidentDataComponent extends BaseFlowComponent<CrashFormComponent,
 
     if (validate) {
       const sessionId = localStorage.getItem(StorageItem.sessionId);
-      this.router.navigate([`/crash/${sessionId}/cars/my-car/policy-holder`]);
+      this.router.navigate([`/crash/${sessionId}/invite`]);
     }
   }
 

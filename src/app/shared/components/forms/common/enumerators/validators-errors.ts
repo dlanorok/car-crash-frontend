@@ -3,5 +3,6 @@ export enum ValidatorsErrors {
   maxlength = 'maxlength',
   required = 'required',
   apiValidationError = 'apiValidationError',
-  ngbDate = 'ngbDate'
+  ngbDate = 'ngbDate',
+  validatePhoneNumber = 'validatePhoneNumber',
 }

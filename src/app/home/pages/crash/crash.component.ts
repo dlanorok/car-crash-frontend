@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { map, Observable, of, tap } from "rxjs";
+import { combineLatest, map, Observable, tap } from "rxjs";
 import { Store } from "@ngrx/store";
 import { loadCrash } from "@app/app-state/crash/crash-action";
 import { HeaderService } from "@app/shared/services/header-service";
@@ -9,8 +9,6 @@ import { selectCrash } from "@app/app-state/crash/crash-selector";
 import { ModelState } from "@app/shared/models/base.model";
 import { selectCars } from "@app/app-state/car/car-selector";
 import { CarModel } from "@app/shared/models/car.model";
-import { CookieService } from "ngx-cookie-service";
-import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { loadCars } from "@app/app-state/car/car-action";
 
 @Component({
@@ -22,55 +20,23 @@ export class CrashComponent implements OnInit {
   crash$: Observable<CrashModel> = this.store.select(selectCrash);
   cars$: Observable<CarModel[]> = this.store.select(selectCars);
 
-  todoList: TodoItem[] = [
-    {
-      name: 'car-crash.shared.todo_list.basic_data',
-      state: this.crash$.pipe(map((crashModel) => crashModel.state)),
-      navigate: () => this.router.navigate(['accident-data'], { relativeTo: this.route }),
-    },
-    {
-      name: 'car-crash.shared.todo_list.invite_others',
-      state: of(ModelState.empty),
-      navigate: () => this.router.navigate(['invite-others'], { relativeTo: this.route }),
-    },
-    {
-      name: 'car-crash.shared.todo_list.your_data',
-      state: this.cars$.pipe(
-        map((cars: CarModel[]) => cars.find(
-          car => car.creator === this.cookieService.get(CookieName.sessionId))
-        ),
-        map((car: CarModel | undefined) => {
-          if (!car) {
-            return ModelState.empty;
-          }
-
-          return car.getCarModelState();
-        })
-      ),
-      navigate: () => this.router.navigate(['cars/my-car/policy-holder'], { relativeTo: this.route }),
-    },
-    {
-      name:'car-crash.shared.todo_list.accident_damage',
-      state: this.cars$.pipe(
-        map((cars: CarModel[]) => cars.find(
-          car => car.creator === this.cookieService.get(CookieName.sessionId))
-        ),
-        map((car: CarModel | undefined) => {
-          if (!car) {
-            return ModelState.empty;
-          }
-
-          return car.getCarCircumstanceState();
-        })
-      ),
-      navigate: () => this.router.navigate(['cars/my-car/circumstances'], { relativeTo: this.route }),
-    },
-    {
-      name: 'car-crash.shared.todo_list.accident_sketch',
-      state: of(ModelState.empty),
-      navigate: () => this.router.navigate(['accident-data'], { relativeTo: this.route }),
-    }
-  ];
+  todoList: Observable<TodoItem[]> = this.generateTodoList();
+    // {
+    //   name: 'car-crash.shared.todo_list.accident_damage',
+    //   state: this.cars$.pipe(
+    //     map((cars: CarModel[]) => cars.find(
+    //       car => car.creator === this.cookieService.get(CookieName.sessionId))
+    //     ),
+    //     map((car: CarModel | undefined) => {
+    //       if (!car) {
+    //         return ModelState.empty;
+    //       }
+    //
+    //       return car.getCarCircumstanceState();
+    //     })
+    //   ),
+    //   navigate: () => this.router.navigate(['cars/my-car/circumstances'], {relativeTo: this.route}),
+    // },
 
   readonly ModelState = ModelState;
 
@@ -78,9 +44,9 @@ export class CrashComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly headerService: HeaderService,
     private readonly router: Router,
-    private readonly store: Store,
-    private readonly cookieService: CookieService
-  ) {}
+    private readonly store: Store
+  ) {
+  }
 
   ngOnInit(): void {
     this.headerService.setHeaderData({name: '§§Accident statement', preventBack: true});
@@ -100,10 +66,86 @@ export class CrashComponent implements OnInit {
       )
       .subscribe();
   }
+
+  private generateTodoList(): Observable<TodoItem[]> {
+    return combineLatest([
+      this.crash$,
+      this.cars$
+    ]).pipe(
+      map(([crash, cars]: [CrashModel, CarModel[]]) => {
+        return [
+          this.basicDataTodo(crash),
+          this.inviteOtherParticipants(),
+          ...this.generateCarPlaceholders(crash, cars),
+          this.createAccidentSketchTodo()
+        ];
+      }),
+    );
+  }
+
+  private basicDataTodo(crashModel: CrashModel): TodoItem {
+    return {
+      name: 'car-crash.shared.todo_list.basic_data',
+      state: crashModel.state,
+      navigate: () => this.router.navigate(['accident-data'], {relativeTo: this.route}),
+    };
+  }
+
+  private inviteOtherParticipants(): TodoItem {
+    return {
+      name: 'car-crash.shared.todo_list.invite_others',
+      state: ModelState.empty,
+      navigate: () => this.router.navigate(['invite'], {relativeTo: this.route}),
+    };
+  }
+
+  private generateCarPlaceholders(crash: CrashModel, cars: CarModel[]): TodoItem[] {
+    const carsTodoList: TodoItem[] = [];
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    const myCarId = crash.my_cars?.[0];
+    let index = 0;
+
+
+    crash.cars?.forEach((carId) => {
+      carsTodoList.push(
+        {
+          name: myCarId == carId ? 'car-crash.shared.todo_list.your_data' : 'car-crash.shared.todo_list.car_data',
+          state: cars.find(car => car.id === carId)?.getCarModelState() || ModelState.empty,
+          translateParams: { vehicle: alphabet.charAt(index).toUpperCase() },
+          navigate: () => this.router.navigate([`cars/${carId}/policy-holder`], {relativeTo: this.route}),
+        }
+      );
+      index ++;
+    });
+
+    for(let j = 0; j <= crash.participants - (crash.cars?.length || 0); j++) {
+      carsTodoList.push(
+        {
+          name: 'car-crash.shared.todo_list.car_pending',
+          state: ModelState.empty,
+          translateParams: { vehicle: alphabet.charAt(index).toUpperCase() },
+          navigate: () => this.router.navigate(['invite'], {relativeTo: this.route}),
+        }
+      );
+      index ++;
+    }
+
+
+    return carsTodoList;
+  }
+
+  private createAccidentSketchTodo(): TodoItem {
+    return {
+      name: 'car-crash.shared.todo_list.accident_sketch',
+      state: ModelState.empty,
+      navigate: () => this.router.navigate(['accident-data'], {relativeTo: this.route}),
+    };
+  }
 }
 
 interface TodoItem {
   name: string;
-  state: Observable<ModelState>;
+  translateParams?: object;
+  state: ModelState;
   navigate: () => void;
 }

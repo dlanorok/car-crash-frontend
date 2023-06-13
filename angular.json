@@ -39,7 +39,10 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              "src/styles.scss"
+              "./node_modules/intl-tel-input/build/css/intlTelInput.css",
+              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.scss",
+              "src/styles.scss",
+              "src/app/shared/form-controls/phone-number-control/phone-number-control.component.scss"
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.js"

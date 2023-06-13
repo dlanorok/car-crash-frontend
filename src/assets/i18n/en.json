@@ -1,4 +1,5 @@
 {
+
   "car-crash.shared.button.submit": "Submit",
   "car-crash.shared.button.back": "Back",
   "car-crash.shared.button.delete": "Delete",
@@ -12,7 +13,9 @@
 
   "car-crash.shared.todo_list.basic_data": "Basic accident data",
   "car-crash.shared.todo_list.invite_others": "Invite other participant",
-  "car-crash.shared.todo_list.your_data": "Your data",
+  "car-crash.shared.todo_list.your_data": "Your data (Vehicle {{ vehicle}})",
+  "car-crash.shared.todo_list.car_data": "Vehicle {{ vehicle }}",
+  "car-crash.shared.todo_list.car_pending": "Pending vehicle {{ vehicle }}",
   "car-crash.shared.todo_list.accident_damage": "Accident Damage & Circumstances",
   "car-crash.shared.todo_list.accident_sketch": "Accident sketch",
 

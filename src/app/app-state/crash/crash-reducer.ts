@@ -29,7 +29,11 @@ export const crashReducer = createReducer(
   }),
   on(addCar, (state, { carId }) => ({
     ...state,
-    crash: { ...state.crash, cars: [...state.crash?.cars || [], carId]} as CrashModel
+    crash: {
+      ...state.crash,
+      cars: [...state.crash?.cars || [], carId],
+      my_cars: [...state.crash?.my_cars || [], carId]
+    } as CrashModel
   })),
   on(loadCrash, (state) => ({
     ...state

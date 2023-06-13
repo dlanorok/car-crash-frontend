@@ -5,7 +5,7 @@
   </div>
 
   <app-ocr-component
-    *ngIf="formComponent && formComponent.hasOcrEnabled"
+    *ngIf="formComponent && formComponent.hasOcrEnabled && formComponent.form.enabled"
     [showOCRComponent]="showOCRComponent"
     [title]="formComponent.ocrTitle | transloco"
     (OCRResponse)="processOCRResponse($event)"
@@ -16,4 +16,3 @@
 
 <app-footer-buttons [buttons]="footerButtons">
 </app-footer-buttons>
-

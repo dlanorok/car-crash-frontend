@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { filter, map, Observable, of, switchMap, take, tap } from "rxjs";
-import { ActivatedRoute, Router } from "@angular/router";
-import { TranslocoService } from "@ngneat/transloco";
+import { ActivatedRoute } from "@angular/router";
 import { HeaderService } from "@app/shared/services/header-service";
 import { Store } from "@ngrx/store";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
@@ -22,14 +21,12 @@ export class DamagedPartsComponent extends BaseFooterComponent implements OnInit
   car?: CarModel;
 
   constructor(
-    protected readonly router: Router,
-    protected readonly translateService: TranslocoService,
     private readonly headerService: HeaderService,
     private readonly store: Store,
     private readonly route: ActivatedRoute,
     private readonly cookieService: CookieService
   ) {
-    super(router, translateService);
+    super();
   }
 
   ngOnInit() {

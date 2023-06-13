@@ -38,6 +38,9 @@ export abstract class BaseFormControlComponent<T> implements ControlValueAccesso
   }
 
   setDisabledState(disabled: boolean): void {
+    if ((disabled && this.formControl.disabled) || (!disabled && !this.formControl.disabled)) {
+      return;
+    }
     if (disabled) {
       this.formControl.disable();
     } else {

@@ -119,6 +119,7 @@ export class CarComponent implements OnInit {
   }
 
   cars$: Observable<CarModel[]> = this.store.select(selectCars);
+  crash$: Observable<CarModel[]> = this.store.select(selectCars);
 
   private formChangeSubscription?: Subscription;
 

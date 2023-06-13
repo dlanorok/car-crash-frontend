@@ -2,9 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CrashComponent } from "./crash.component";
 import { RouterModule } from "@angular/router";
-import { ApiModule } from "../../../shared/api/api.module";
+import { ApiModule } from "@app/shared/api/api.module";
 import { TranslocoModule } from "@ngneat/transloco";
-import { QrCodeModule } from "../../../shared/components/qr-code/qr-code.module";
 
 
 @NgModule({
@@ -20,8 +19,7 @@ import { QrCodeModule } from "../../../shared/components/qr-code/qr-code.module"
         path: "",
         component: CrashComponent,
       }
-    ]),
-    QrCodeModule
+    ])
   ]
 })
 export class CrashModule { }

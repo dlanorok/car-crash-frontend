@@ -3,8 +3,7 @@ import { BaseFooterComponent } from "@app/home/pages/accident-report-flow/base-f
 import { filter, map, Observable, of, switchMap, take, tap } from "rxjs";
 import { CarModel } from "@app/shared/models/car.model";
 import { selectCars } from "@app/app-state/car/car-selector";
-import { ActivatedRoute, Router } from "@angular/router";
-import { TranslocoService } from "@ngneat/transloco";
+import { ActivatedRoute } from "@angular/router";
 import { HeaderService } from "@app/shared/services/header-service";
 import { Store } from "@ngrx/store";
 import { CookieService } from "ngx-cookie-service";
@@ -22,14 +21,12 @@ export class InitialImpactComponent extends BaseFooterComponent implements OnIni
   car?: CarModel;
 
   constructor(
-    protected readonly router: Router,
-    protected readonly translateService: TranslocoService,
+    protected readonly cookieService: CookieService,
     private readonly headerService: HeaderService,
     private readonly store: Store,
     private readonly route: ActivatedRoute,
-    private readonly cookieService: CookieService
   ) {
-    super(router, translateService);
+    super();
   }
 
   ngOnInit() {
