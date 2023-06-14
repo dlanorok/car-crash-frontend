@@ -4,8 +4,10 @@ import { CrashModel } from "../../../shared/models/crash.model";
 import { CrashesApiService } from "../../../shared/api/crashes/crashes-api.service";
 import { Router } from "@angular/router";
 import { HeaderService } from "../../../shared/services/header-service";
-import { createCrash } from "../../../app-state/crash/crash-action";
 import { StorageItem } from "../../../shared/common/enumerators/storage";
+import { Observable } from "rxjs";
+import { createCrash } from '@app/app-state/crash/crash-action';
+import { crashLoading } from "@app/app-state/crash/crash-selector";
 
 @Component({
   selector: 'app-welcome',
@@ -14,6 +16,7 @@ import { StorageItem } from "../../../shared/common/enumerators/storage";
 })
 export class WelcomeComponent implements OnInit {
   localStorageCrash?: string | null;
+  loading$: Observable<boolean> = this.store.select(crashLoading);
 
   constructor(
     private readonly store: Store,

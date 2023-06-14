@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UrlParamService } from "./shared/services/url-param-service";
 import { NavigationEnd, Router } from "@angular/router";
 import { filter, tap } from "rxjs";
-import { defineComponents } from "@regulaforensics/vp-frontend-document-components";
+import { WebSocketService } from "@app/shared/services/web-socket.service";
 
 @Component({
   selector: 'app-root',
@@ -14,14 +14,22 @@ export class AppComponent implements OnInit {
 
   constructor(
     private urlParamService: UrlParamService,
-    private router: Router
+    private router: Router,
+    private webSocketService: WebSocketService
   ) { }
 
   ngOnInit(): void {
-    defineComponents();
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
-      tap(() => this.urlParamService.saveUrlParamToLocalStorage('session_id', 'crash'))
+      tap(() => this.urlParamService.saveUrlParamToLocalStorage('session_id', 'crash')),
+      tap((event) => {
+        const currentPage = (event as NavigationEnd).url;
+        if (currentPage.includes('/crash')) {
+          this.webSocketService.connect();
+        } else {
+          this.webSocketService.close();
+        }
+      })
     ).subscribe();
   }
 }

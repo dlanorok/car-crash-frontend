@@ -118,7 +118,7 @@ export class CrashComponent implements OnInit {
       index ++;
     });
 
-    for(let j = 0; j <= crash.participants - (crash.cars?.length || 0); j++) {
+    for(let j = 0; j < crash.participants - (crash.cars?.length || 0); j++) {
       carsTodoList.push(
         {
           name: 'car-crash.shared.todo_list.car_pending',

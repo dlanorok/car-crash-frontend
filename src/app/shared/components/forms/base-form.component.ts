@@ -2,7 +2,7 @@ import { UntypedFormGroup } from "@angular/forms";
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from "@angular/core";
 import { HttpErrorResponse } from "@angular/common/http";
 import { ValidatorsErrors } from "./common/enumerators/validators-errors";
-import { debounceTime, distinctUntilChanged, skip, Subscription, tap } from "rxjs";
+import { debounceTime, distinctUntilChanged, Subscription, tap } from "rxjs";
 import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
 
 @Component({
@@ -39,7 +39,6 @@ export abstract class BaseFormComponent<T> implements OnInit, OnDestroy {
       .pipe(
         debounceTime(1000),
         distinctUntilChanged(),
-        skip(1),
         tap(() => {
           this.formChange.next(this.form.value);
         })
@@ -47,7 +46,7 @@ export abstract class BaseFormComponent<T> implements OnInit, OnDestroy {
   }
 
   isFormValid(): boolean {
-    return this.form.valid;
+    return this.form.valid || this.form.disabled;
   }
 
   submitForm() {

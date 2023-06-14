@@ -4,6 +4,7 @@ export class CrashModel extends BaseModel {
   session_id!: string;
   state!: ModelState;
   participants!: number;
+  creator!: string;
 
   created_at?: string;
   closed?: boolean;

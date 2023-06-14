@@ -27,7 +27,7 @@ export class PolicyHolderFormComponent extends BaseFormComponent<PolicyHolderMod
         email: [this.policyHolder?.email, Validators.required],
         post_number: [this.policyHolder?.post_number, Validators.required],
         country_code: [this.policyHolder?.country_code, Validators.required],
-      }
+      }, { emitEvent: false , onlySelf: true}
     );
   }
 
@@ -39,7 +39,7 @@ export class PolicyHolderFormComponent extends BaseFormComponent<PolicyHolderMod
       email: value.email,
       post_number: value.post_number,
       country_code: value.country_code,
-    });
+    }, { emitEvent: false , onlySelf: true} );
   }
 
   protected override afterFormSubmit() {

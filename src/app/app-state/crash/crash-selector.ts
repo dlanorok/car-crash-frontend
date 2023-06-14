@@ -9,3 +9,8 @@ export const selectCrash = createSelector(
   selectCrashState,
   (state: CrashState) => state.crash
 );
+
+export const crashLoading = createSelector(
+  selectCrashState,
+  (state: CrashState) => state.isLoading
+);

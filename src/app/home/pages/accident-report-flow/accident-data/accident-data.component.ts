@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderService } from "@app/shared/services/header-service";
-import { filter, Observable, take, tap } from "rxjs";
+import { filter, Observable, tap } from "rxjs";
 import { CrashFormComponent } from "@app/shared/components/forms/crash-form/crash-form.component";
 import { CrashModel } from "@app/shared/models/crash.model";
 import { selectCrash } from "@app/app-state/crash/crash-selector";
@@ -32,7 +32,7 @@ export class AccidentDataComponent extends BaseFlowComponent<CrashFormComponent,
     this.store.dispatch(loadCrash({sessionId: sessionId }));
   }
 
-  setFormsData() {
+  observeStoreChange() {
     this.crash$.pipe(
       filter((crash: CrashModel) => {
         return !!crash.id;
@@ -40,11 +40,11 @@ export class AccidentDataComponent extends BaseFlowComponent<CrashFormComponent,
       tap((crash: CrashModel) => {
         this.formComponent?.setDefaults(crash);
       }),
-      take(1)
     ).subscribe();
   }
 
   protected saveForm(crash: CrashModel, validate = false) {
+    console.log("SAVE FORM");
     crash.validate = validate;
     this.store.dispatch(updateCrash({
       crash: crash

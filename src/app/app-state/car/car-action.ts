@@ -47,6 +47,12 @@ export const updateCarSuccessful = createAction(
 );
 
 
+export const wsCarUpdated = createAction(
+  '[WS Service] Car updated',
+  props<{car: CarModel}>()
+);
+
+
 export const updateCarSubModelSuccessful = createAction(
   '[Car Effects] Update submodel',
   props<{carId: number, model: BaseModel}>()

@@ -39,7 +39,7 @@ export class DriverFormComponent extends BaseFormComponent<DriverModel> {
       address: value.address,
       driving_licence_number: value.driving_licence_number,
       driving_licence_valid_to: new Date(value.driving_licence_valid_to ?? ''),
-    });
+    }, {emitEvent: false});
   }
 
   protected override afterFormSubmit() {

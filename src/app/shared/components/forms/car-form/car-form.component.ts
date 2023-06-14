@@ -32,7 +32,7 @@ export class CarFormComponent extends BaseFormComponent<CarModel> {
       make_type: value.make_type,
       registration_country: value.registration_country,
       registration_plate: value.registration_plate,
-    });
+    }, {emitEvent: false});
   }
 
   protected override afterFormSubmit() {

@@ -28,5 +28,10 @@ export const loadCrashSuccessful = createAction(
 
 export const addCar = createAction(
   '[Car store] Add Car',
-  props<{carId: number}>()
+  props<{carId: number, addToMyCars: boolean}>()
+);
+
+export const crashUpdateWS = createAction(
+  '[WS Service] Crash updated',
+  props<{crash: CrashModel}>()
 );

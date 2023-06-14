@@ -46,7 +46,11 @@ export class CrashEffects {
         .pipe(
           mergeMap((crash: CrashModel) => {
             return this.carsApiService.create(new CarModel({crash: crash.id}))
-              .pipe(map(() => crash));
+              .pipe(map((car: CarModel) => {
+                crash.cars?.push(car.id);
+                crash.my_cars?.push(car.id);
+                return crash;
+              }));
           }),
           tap((crash: CrashModel) => {
             this.router.navigate([`/crash/${crash.session_id}`]);

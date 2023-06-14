@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from "@angular/forms";
 import { CrashModel } from "../../../models/crash.model";
 import { BaseFormComponent } from "../base-form.component";
-import { ModelState } from "../../../models/base.model";
 
 @Component({
   selector: 'app-crash-form',
@@ -22,9 +21,9 @@ export class CrashFormComponent extends BaseFormComponent<CrashModel> {
         country: ['', Validators.required],
         place: ['', Validators.required],
         participants: [2, Validators.required],
-        injuries: ['', Validators.required],
-        vehicle_material_damage: ['', Validators.required],
-        other_material_damage: ['', Validators.required]
+        injuries: [null, Validators.required],
+        vehicle_material_damage: [null, Validators.required],
+        other_material_damage: [null, Validators.required]
       }
     );
   }
@@ -38,12 +37,7 @@ export class CrashFormComponent extends BaseFormComponent<CrashModel> {
       injuries: value.injuries,
       vehicle_material_damage: value.vehicle_material_damage,
       other_material_damage: value.other_material_damage
-    });
-
-    if (value.state === ModelState.partial) {
-      // Todo server side validation?
-      this.submitForm();
-    }
+    }, {emitEvent: false});
   }
 
   protected override afterFormSubmit() {

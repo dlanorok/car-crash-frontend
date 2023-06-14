@@ -8,7 +8,7 @@ import {
   updateCarDamagedParts,
   updateCarInitialImpact,
   updateCarSubModel, updateCarSubModelSuccessful,
-  updateCarSuccessful
+  updateCarSuccessful, wsCarUpdated
 } from "./car-action";
 import { PolicyHolderModel } from "../../shared/models/policy-holder.model";
 import { DriverModel } from "../../shared/models/driver.model";
@@ -57,6 +57,12 @@ export const carReducer = createReducer(
         }
         return _car;
       })]
+    };
+  }),
+  on(wsCarUpdated, (state, {car}) => {
+    return {
+      ...state,
+      cars: [...state.cars.filter(_car => _car.id !== car.id), car]
     };
   }),
   on(updateCarSubModelSuccessful, (state, {carId, model}) => {

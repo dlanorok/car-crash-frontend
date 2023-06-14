@@ -35,7 +35,7 @@ export class CarEffects {
       ofType(createCar),
       exhaustMap((action) => this.carApiService.create(action.car)
         .pipe(
-          tap((car: CarModel) => this.store.dispatch(addCar({carId: car.id}))),
+          tap((car: CarModel) => this.store.dispatch(addCar({carId: car.id, addToMyCars: true}))),
           map(car => ({type: createCarSuccessful.type, car})),
           catchError(() => EMPTY)
         ))

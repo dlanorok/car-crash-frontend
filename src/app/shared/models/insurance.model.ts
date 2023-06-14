@@ -8,7 +8,7 @@ export class InsuranceModel extends BaseModel {
   agent?: string;
   green_card?: string;
   valid_until?: string;
-  damaged_insured?: boolean;
+  damage_insured?: boolean;
 
   constructor(data?: any) {
     super(data);
