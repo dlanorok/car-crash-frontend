@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { filter, map, Observable, of, switchMap, take, tap } from "rxjs";
+import { filter, map, Observable, of, switchMap, tap } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 import { HeaderService } from "@app/shared/services/header-service";
 import { Store } from "@ngrx/store";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { loadCars } from "@app/app-state/car/car-action";
 import { CarModel } from "@app/shared/models/car.model";
-import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { selectCars } from "@app/app-state/car/car-selector";
-import { CookieService } from "ngx-cookie-service";
 import { BaseFooterComponent } from "@app/home/pages/accident-report-flow/base-footer.component";
 
 @Component({
@@ -23,8 +21,7 @@ export class DamagedPartsComponent extends BaseFooterComponent implements OnInit
   constructor(
     private readonly headerService: HeaderService,
     private readonly store: Store,
-    private readonly route: ActivatedRoute,
-    private readonly cookieService: CookieService
+    private readonly route: ActivatedRoute
   ) {
     super();
   }
@@ -53,11 +50,8 @@ export class DamagedPartsComponent extends BaseFooterComponent implements OnInit
           return this.cars$
             .pipe(
               filter((cars: CarModel[]) => cars.length > 0),
-              take(1),
               tap((cars: CarModel[]) => {
-                const car = cars.find(
-                  _car => _car.id.toString() === carId || _car.creator === this.cookieService.get(CookieName.sessionId)
-                );
+                const car = cars.find(_car => _car.id.toString() === carId);
 
                 if (!car) {
                   return;
@@ -72,11 +66,11 @@ export class DamagedPartsComponent extends BaseFooterComponent implements OnInit
 
   next() {
     const sessionId = localStorage.getItem(StorageItem.sessionId);
-    this.router.navigate([`/crash/${sessionId}/cars/my-car/initial-impact`]);
+    this.router.navigate([`/crash/${sessionId}/cars/${this.car?.id}/initial-impact`]);
   }
 
   previous(): void {
     const sessionId = localStorage.getItem(StorageItem.sessionId);
-    this.router.navigate([`/crash/${sessionId}/cars/my-car/circumstances`]);
+    this.router.navigate([`/crash/${sessionId}/cars/${this.car?.id}/circumstances`]);
   }
 }

@@ -1,12 +1,9 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
   OnChanges,
   OnDestroy,
-  OnInit,
-  Renderer2,
-  ViewChild
+  OnInit
 } from '@angular/core';
 import { BaseSvgHoverComponent } from "../base-svg-hover/base-svg-hover.component";
 import { CarsApiService } from "../../../api/cars/cars-api.service";
@@ -22,10 +19,7 @@ import { Store } from "@ngrx/store";
 })
 export class PointOfInitialImpactComponent extends BaseSvgHoverComponent implements AfterViewInit, OnDestroy, OnChanges, OnInit {
 
-  @ViewChild('pointOfInitialImpact') pointOfInitialImpact?: ElementRef<SVGElement>;
-
   constructor(
-    private readonly renderer2: Renderer2,
     private readonly carsApiService: CarsApiService,
     private readonly store: Store
   ) {
@@ -34,11 +28,18 @@ export class PointOfInitialImpactComponent extends BaseSvgHoverComponent impleme
 
   override onViewReady() {
     this.selectedParts = this.car.initial_impact || [];
-    this.pointOfInitialImpact?.nativeElement.querySelectorAll('g').forEach((g) => {
-      this.listeners.push(this.renderer2.listen(g, 'click', this.onPathClick.bind(this)));
-      if (this.car.initial_impact?.includes(g.id)) {
-        g.classList.add(this.selectedClass);
+    this.svgImage?.nativeElement.querySelectorAll('g').forEach((path) => {
+      if (this.car.initial_impact?.includes(path.id)) {
+        path.classList.add(this.selectedClass);
+      } else {
+        path.classList.remove(this.selectedClass);
       }
+    });
+  }
+
+  override addListeners() {
+    this.svgImage?.nativeElement.querySelectorAll('g').forEach((path) => {
+      this.listeners.push(this.renderer2.listen(path, 'click', this.onPathClick.bind(this)));
     });
   }
 

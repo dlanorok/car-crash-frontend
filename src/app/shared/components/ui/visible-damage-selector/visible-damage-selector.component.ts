@@ -1,12 +1,9 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
   OnChanges,
   OnDestroy,
-  OnInit,
-  Renderer2,
-  ViewChild
+  OnInit
 } from '@angular/core';
 import { CarsApiService } from "../../../api/cars/cars-api.service";
 import { CarModel } from "../../../models/car.model";
@@ -22,11 +19,8 @@ import { updateCarDamagedParts } from "@app/app-state/car/car-action";
 })
 export class VisibleDamageSelectorComponent extends BaseSvgHoverComponent implements AfterViewInit, OnDestroy, OnChanges, OnInit {
 
-  @ViewChild('visibleDamage') visibleDamage?: ElementRef<SVGElement>;
-
   constructor(
     private readonly carsApiService: CarsApiService,
-    private readonly renderer2: Renderer2,
     private readonly store: Store
   ) {
     super();
@@ -34,11 +28,18 @@ export class VisibleDamageSelectorComponent extends BaseSvgHoverComponent implem
 
   override onViewReady() {
     this.selectedParts = [...(this.car.damaged_parts || [])];
-    this.visibleDamage?.nativeElement.querySelectorAll('path').forEach((path) => {
-      this.listeners.push(this.renderer2.listen(path, 'click', this.onPathClick.bind(this)));
+    this.svgImage?.nativeElement.querySelectorAll('path').forEach((path) => {
       if (this.car.damaged_parts?.includes(path.id)) {
         path.classList.add(this.selectedClass);
+      } else {
+        path.classList.remove(this.selectedClass);
       }
+    });
+  }
+
+  override addListeners() {
+    this.svgImage?.nativeElement.querySelectorAll('path').forEach((path) => {
+      this.listeners.push(this.renderer2.listen(path, 'click', this.onPathClick.bind(this)));
     });
   }
 

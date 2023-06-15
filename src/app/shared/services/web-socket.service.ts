@@ -14,6 +14,7 @@ import { addCar, crashUpdateWS } from "@app/app-state/crash/crash-action";
 import { CarModel } from "@app/shared/models/car.model";
 import { CookieService } from "ngx-cookie-service";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
+import { CircumstanceModel } from "@app/shared/models/circumstance.model";
 
 interface WebSocketMessage {
   type: string;
@@ -79,27 +80,28 @@ export class WebSocketService implements OnDestroy {
         model = new PolicyHolderModel(message.model);
         storeActions = [updateCarSubModelSuccessful({carId: model.car, model: model})];
         break;
-      case 'Insurance': {
+      case 'Insurance':
         model = new InsuranceModel(message.model);
         storeActions = [updateCarSubModelSuccessful({carId: model.car, model: model})];
         break;
-      }
-      case 'Driver': {
+      case 'Driver':
         model = new DriverModel(message.model);
         storeActions = [updateCarSubModelSuccessful({carId: model.car, model: model})];
         break;
-      }
-      case 'Crash': {
+      case 'Circumstance':
+        model = new CircumstanceModel(message.model);
+        storeActions = [updateCarSubModelSuccessful({carId: model.car, model: model})];
+        break;
+      case 'Crash':
         model = new CrashModel(message.model);
         storeActions = [crashUpdateWS({crash: model})];
         break;
-      }
-      case 'Car': {
+      case 'Car':
         model = new CarModel(message.model);
         storeActions.push(wsCarUpdated({car: model}));
         storeActions.push(addCar({carId: model.id, addToMyCars: false}));
         break;
-      }
+
     }
 
     storeActions.forEach(action => {

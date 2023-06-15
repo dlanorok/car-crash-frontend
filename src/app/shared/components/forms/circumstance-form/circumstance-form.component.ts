@@ -58,7 +58,7 @@ export class CircumstanceFormComponent extends BaseFormComponent<CircumstanceMod
       driving_on_opposite_lane: value.driving_on_opposite_lane,
       from_right_crossing: value.from_right_crossing,
       disregarding_right_of_way_red_light: value.disregarding_right_of_way_red_light,
-    });
+    }, {emitEvent: false});
   }
 
   protected override afterFormSubmit() {

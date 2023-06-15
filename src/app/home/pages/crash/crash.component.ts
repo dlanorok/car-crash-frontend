@@ -21,22 +21,6 @@ export class CrashComponent implements OnInit {
   cars$: Observable<CarModel[]> = this.store.select(selectCars);
 
   todoList: Observable<TodoItem[]> = this.generateTodoList();
-    // {
-    //   name: 'car-crash.shared.todo_list.accident_damage',
-    //   state: this.cars$.pipe(
-    //     map((cars: CarModel[]) => cars.find(
-    //       car => car.creator === this.cookieService.get(CookieName.sessionId))
-    //     ),
-    //     map((car: CarModel | undefined) => {
-    //       if (!car) {
-    //         return ModelState.empty;
-    //       }
-    //
-    //       return car.getCarCircumstanceState();
-    //     })
-    //   ),
-    //   navigate: () => this.router.navigate(['cars/my-car/circumstances'], {relativeTo: this.route}),
-    // },
 
   readonly ModelState = ModelState;
 
@@ -77,6 +61,7 @@ export class CrashComponent implements OnInit {
           this.basicDataTodo(crash),
           this.inviteOtherParticipants(),
           ...this.generateCarPlaceholders(crash, cars),
+          this.createCircumstancesTodo(crash, cars),
           this.createAccidentSketchTodo()
         ];
       }),
@@ -111,27 +96,36 @@ export class CrashComponent implements OnInit {
         {
           name: myCarId == carId ? 'car-crash.shared.todo_list.your_data' : 'car-crash.shared.todo_list.car_data',
           state: cars.find(car => car.id === carId)?.getCarModelState() || ModelState.empty,
-          translateParams: { vehicle: alphabet.charAt(index).toUpperCase() },
+          translateParams: {vehicle: alphabet.charAt(index).toUpperCase()},
           navigate: () => this.router.navigate([`cars/${carId}/policy-holder`], {relativeTo: this.route}),
         }
       );
-      index ++;
+      index++;
     });
 
-    for(let j = 0; j < crash.participants - (crash.cars?.length || 0); j++) {
+    for (let j = 0; j < crash.participants - (crash.cars?.length || 0); j++) {
       carsTodoList.push(
         {
           name: 'car-crash.shared.todo_list.car_pending',
           state: ModelState.empty,
-          translateParams: { vehicle: alphabet.charAt(index).toUpperCase() },
+          translateParams: {vehicle: alphabet.charAt(index).toUpperCase()},
           navigate: () => this.router.navigate(['invite'], {relativeTo: this.route}),
         }
       );
-      index ++;
+      index++;
     }
 
 
     return carsTodoList;
+  }
+
+  private createCircumstancesTodo(crash: CrashModel, cars: CarModel[]): TodoItem {
+    const myCarId = crash.my_cars?.[0];
+    return {
+      name: 'car-crash.shared.todo_list.accident_damage',
+      state: cars.find(car => car.id === myCarId)?.getCarCircumstanceState() || ModelState.empty,
+      navigate: () => this.router.navigate([`cars/${myCarId}/circumstances`], {relativeTo: this.route}),
+    };
   }
 
   private createAccidentSketchTodo(): TodoItem {

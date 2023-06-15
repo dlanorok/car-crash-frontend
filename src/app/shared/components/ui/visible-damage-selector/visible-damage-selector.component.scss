@@ -1,3 +1,6 @@
+
+
+
 #damaged-parts {
   width: 100%;
   max-width: 350px;
@@ -7,10 +10,19 @@
     stroke: var(--medium-ui-element);
   }
 
-  @media (hover: hover) {
-    path:hover {
-      fill: var(--bs-danger);
-      cursor: pointer;
+  &.disabled {
+    path {
+      fill: var(--light-ui-element);
+      stroke: var(--medium-ui-element);
+    }
+  }
+
+  &:not(.disabled) {
+    @media (hover: hover) {
+      path:hover {
+        fill: var(--bs-danger);
+        cursor: pointer;
+      }
     }
   }
 

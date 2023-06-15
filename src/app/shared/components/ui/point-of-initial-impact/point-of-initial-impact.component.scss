@@ -1,3 +1,4 @@
+
 #initial-impact {
   width: 100%;
   max-width: 350px;
@@ -5,6 +6,24 @@
   path {
     fill: transparent;
     stroke: var(--medium-ui-element);
+  }
+
+  &:not(.disabled) {
+    g {
+      @media (hover: hover) {
+        &:hover {
+          cursor: pointer;
+          line {
+            stroke-width: 5px;
+            stroke: var(--bs-danger);
+          }
+
+          polygon {
+            fill: var(--bs-danger);
+          }
+        }
+      }
+    }
   }
 
   g {
@@ -15,20 +34,6 @@
 
     polygon {
       fill: var(--medium-ui-element);
-    }
-
-    @media (hover: hover) {
-      &:hover {
-        cursor: pointer;
-        line {
-          stroke-width: 5px;
-          stroke: var(--bs-danger);
-        }
-
-        polygon {
-          fill: var(--bs-danger);
-        }
-      }
     }
 
     &.selected {
