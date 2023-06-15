@@ -5,6 +5,11 @@
     "secure": false,
     "changeOrigin": true
   },
+  "/ws/*": {
+    "target": "ws://127.0.0.1:8000",
+    "secure": false,
+    "ws": true
+  },
   "/regula": {
     "target": "http://52.30.114.38:8080",
     "pathRewrite": {

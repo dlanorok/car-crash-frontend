@@ -42,7 +42,7 @@ export class WebSocketService implements OnDestroy {
 
   connect(): void {
     this.socket$ = webSocket<any>({
-      url: `wss://carcrashassist.snapp.email/ws/updates/${localStorage.getItem(StorageItem.sessionId)}/`,
+      url: `ws://localhost:4200/ws/updates/${localStorage.getItem(StorageItem.sessionId)}/`,
     });
 
     if (this.connected) {
