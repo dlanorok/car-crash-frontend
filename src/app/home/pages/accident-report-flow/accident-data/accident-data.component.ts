@@ -44,7 +44,6 @@ export class AccidentDataComponent extends BaseFlowComponent<CrashFormComponent,
   }
 
   protected saveForm(crash: CrashModel, validate = false) {
-    console.log("SAVE FORM");
     crash.validate = validate;
     this.store.dispatch(updateCrash({
       crash: crash

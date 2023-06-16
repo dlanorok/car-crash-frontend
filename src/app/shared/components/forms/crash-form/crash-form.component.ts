@@ -34,6 +34,7 @@ export class CrashFormComponent extends BaseFormComponent<CrashModel> {
       date_of_accident: value.date_of_accident ? new Date(value.date_of_accident) : new Date(),
       country: value.country,
       place: value.place,
+      participants: value.participants,
       injuries: value.injuries,
       vehicle_material_damage: value.vehicle_material_damage,
       other_material_damage: value.other_material_damage

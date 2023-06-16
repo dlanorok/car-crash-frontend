@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from "@ngrx/store";
 import { CrashModel } from "../../../shared/models/crash.model";
-import { CrashesApiService } from "../../../shared/api/crashes/crashes-api.service";
-import { Router } from "@angular/router";
 import { HeaderService } from "../../../shared/services/header-service";
 import { StorageItem } from "../../../shared/common/enumerators/storage";
 import { Observable } from "rxjs";
@@ -20,9 +18,7 @@ export class WelcomeComponent implements OnInit {
 
   constructor(
     private readonly store: Store,
-    private readonly crashesApiService: CrashesApiService,
-    private readonly router: Router,
-    private readonly headerService: HeaderService
+    private readonly headerService: HeaderService,
   ) {
   }
 

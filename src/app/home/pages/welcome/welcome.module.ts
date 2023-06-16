@@ -22,7 +22,7 @@ import { BaseFormModalModule } from "@app/shared/components/modals/base-form-mod
     ]),
     RouterModule,
     TranslocoModule,
-    CrashFormModule,
+    CrashFormModule
   ],
 })
 export class WelcomeModule {
