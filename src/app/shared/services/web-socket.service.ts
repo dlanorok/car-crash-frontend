@@ -99,8 +99,9 @@ export class WebSocketService implements OnDestroy {
         break;
       case 'Car':
         model = new CarModel(message.model);
-        storeActions.push(wsCarUpdated({car: model}));
-        storeActions.push(addCar({carId: model.id, addToMyCars: false}));
+        message.type === EventType.modelUpdated
+          ? storeActions.push(wsCarUpdated({car: model}))
+          : storeActions.push(addCar({carId: model.id, addToMyCars: false}));
         break;
 
     }

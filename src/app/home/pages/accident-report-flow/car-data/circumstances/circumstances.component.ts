@@ -39,9 +39,13 @@ export class CircumstancesComponent extends BaseFlowCarSubModelComponent<Circums
       }));
 
     if (validate) {
-      const sessionId = localStorage.getItem(StorageItem.sessionId);
-      this.router.navigate([`/crash/${sessionId}/cars/${this.model.car}/damaged-parts`]);
+      this.nextPage();
     }
+  }
+
+  protected nextPage() {
+    const sessionId = localStorage.getItem(StorageItem.sessionId);
+    this.router.navigate([`/crash/${sessionId}/cars/${this.model.car}/damaged-parts`]);
   }
 
   previous(): void {

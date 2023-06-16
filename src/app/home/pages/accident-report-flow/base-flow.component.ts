@@ -43,6 +43,7 @@ export abstract class BaseFlowComponent<T, C extends BaseModel> extends BaseFoot
 
   protected abstract observeStoreChange(): void;
   protected abstract saveForm(model: C, validate: boolean): void;
+  protected abstract nextPage(): void;
 
   ngOnInit(): void {
     const sessionId: string | null = localStorage.getItem(StorageItem.sessionId);
@@ -78,7 +79,11 @@ export abstract class BaseFlowComponent<T, C extends BaseModel> extends BaseFoot
   }
 
   next(): void {
-    this.submit();
+    if (this.formComponent?.form.disabled) {
+      this.nextPage();
+    } else {
+      this.submit();
+    }
   }
 
   submit(): void {

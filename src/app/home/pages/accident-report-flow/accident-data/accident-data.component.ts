@@ -50,10 +50,15 @@ export class AccidentDataComponent extends BaseFlowComponent<CrashFormComponent,
     }));
 
     if (validate) {
-      const sessionId = localStorage.getItem(StorageItem.sessionId);
-      this.router.navigate([`/crash/${sessionId}/invite`]);
+      this.nextPage();
     }
   }
+
+  protected nextPage() {
+    const sessionId = localStorage.getItem(StorageItem.sessionId);
+    this.router.navigate([`/crash/${sessionId}/invite`]);
+  }
+
 
   previous(): void {
     const sessionId = localStorage.getItem(StorageItem.sessionId);

@@ -39,9 +39,13 @@ export class DriverComponent extends BaseFlowCarSubModelComponent<DriverFormComp
       }));
 
     if (validate) {
-      const sessionId = localStorage.getItem(StorageItem.sessionId);
-      this.router.navigate([`/crash/${sessionId}/cars/${this.model.car}/circumstances`]);
+      this.nextPage();
     }
+  }
+
+  protected nextPage() {
+    const sessionId = localStorage.getItem(StorageItem.sessionId);
+    this.router.navigate([`/crash/${sessionId}/cars/${this.model.car}/circumstances`]);
   }
 
   previous(): void {

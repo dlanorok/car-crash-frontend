@@ -39,9 +39,13 @@ export class PolicyHolderComponent extends BaseFlowCarSubModelComponent<PolicyHo
       }));
 
     if (validate) {
-      const sessionId = localStorage.getItem(StorageItem.sessionId);
-      this.router.navigate([`/crash/${sessionId}/cars/${this.model.car}/insurance-company`]);
+      this.nextPage();
     }
+  }
+
+  protected nextPage() {
+    const sessionId = localStorage.getItem(StorageItem.sessionId);
+    this.router.navigate([`/crash/${sessionId}/cars/${this.model.car}/insurance-company`]);
   }
 
   previous(): void {
