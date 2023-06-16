@@ -64,11 +64,11 @@ export class InitialImpactComponent extends BaseFooterComponent implements OnIni
 
   next() {
     const sessionId = localStorage.getItem(StorageItem.sessionId);
-    this.router.navigate([`/crash/${sessionId}/cars/my-car/initial-impact`]);
+    this.router.navigate([`/crash/${sessionId}/cars/${this.car?.id}/initial-impact`]);
   }
 
   previous(): void {
     const sessionId = localStorage.getItem(StorageItem.sessionId);
-    this.router.navigate([`/crash/${sessionId}/cars/my-car/damaged-parts`]);
+    this.router.navigate([`/crash/${sessionId}/cars/${this.car?.id}/damaged-parts`]);
   }
 }

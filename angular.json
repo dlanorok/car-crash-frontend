@@ -79,6 +79,20 @@
                   "with": "src/environments/environment.development.ts"
                 }
               ]
+            },
+            "stage": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.stage.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -91,6 +105,9 @@
             },
             "development": {
               "browserTarget": "car-crash-frontend:build:development"
+            },
+            "stage": {
+              "browserTarget": "car-crash-frontend:build:stage"
             }
           },
           "options": {

@@ -15,6 +15,7 @@ import { CarModel } from "@app/shared/models/car.model";
 import { CookieService } from "ngx-cookie-service";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { CircumstanceModel } from "@app/shared/models/circumstance.model";
+import { environment } from "../../../environments/environment";
 
 interface WebSocketMessage {
   type: string;
@@ -42,7 +43,7 @@ export class WebSocketService implements OnDestroy {
 
   connect(): void {
     this.socket$ = webSocket<any>({
-      url: `wss://carcrashassist.snapp.email/ws/updates/${localStorage.getItem(StorageItem.sessionId)}/`,
+      url: `${environment.webSocketUrl}/ws/updates/${localStorage.getItem(StorageItem.sessionId)}/`,
     });
 
     if (this.connected) {
