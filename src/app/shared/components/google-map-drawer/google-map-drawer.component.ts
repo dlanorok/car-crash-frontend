@@ -236,10 +236,6 @@ export class GoogleMapDrawerComponent implements OnInit, AfterViewInit, OnDestro
           this.map.googleMap.controls[ControlPosition.TOP_CENTER].push(this.undoButton.nativeElement);
           this.map.googleMap.controls[ControlPosition.TOP_CENTER].push(this.drawingButton.nativeElement);
           this.map.googleMap.controls[ControlPosition.TOP_CENTER].push(this.drawCarsButton.nativeElement);
-        } else {
-          this.undoButton.nativeElement.remove();
-          this.drawingButton.nativeElement.remove();
-          this.drawCarsButton.nativeElement.remove();
         }
       })
     ).subscribe());
@@ -247,7 +243,7 @@ export class GoogleMapDrawerComponent implements OnInit, AfterViewInit, OnDestro
 
   private setInitialMapPosition() {
     this.mapOptions = {
-      zoom: 18,
+      zoom: 8,
       center: this.initialPosition,
       mapTypeId: "satellite",
       clickableIcons: false,
@@ -266,29 +262,38 @@ export class GoogleMapDrawerComponent implements OnInit, AfterViewInit, OnDestro
        * if already drawn set on car[0] else if creator, ask for location
        */
       tap(([sketch, isCreator]: [SketchModel, boolean]) => {
-        let initialPosition: LatLngLiteral = {lat: 0, lng: 0};
+        let initialPosition: LatLngLiteral = {lat: 50.073658, lng: 14.418540};
+        let initialZoom = 5;
         if (sketch.sketch_cars.length > 0) {
           const car = sketch.sketch_cars[0];
           initialPosition = { lat: car.position_south, lng: car.position_west};
+          initialZoom = 18;
         } else {
           if (isCreator && navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
               const {latitude, longitude} = position.coords;
               initialPosition = {lat: latitude, lng: longitude};
+              initialZoom = 18;
+              this.setMapZoomAndPosition(initialZoom, initialPosition);
 
             }, (error) => {
               console.log('Error getting current location:', error);
             });
           }
         }
-
-        this.initialPosition = initialPosition;
-        if (this.map?.googleMap) {
-          this.map.googleMap.setCenter(this.initialPosition);
-        }
-        this.mapOptions.center = this.initialPosition;
+        this.setMapZoomAndPosition(initialZoom, initialPosition);
       })
     ).subscribe();
+  }
+
+  private setMapZoomAndPosition(zoom: number, position: LatLngLiteral) {
+    this.initialPosition = position;
+    if (this.map?.googleMap) {
+      this.map.googleMap.setCenter(this.initialPosition);
+      this.map.googleMap.setZoom(zoom);
+    }
+    this.mapOptions.center = this.initialPosition;
+    this.mapOptions.zoom = zoom;
   }
 
   toggleDraw($event: MouseEvent) {
