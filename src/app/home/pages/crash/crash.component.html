@@ -2,7 +2,7 @@
   <div
     *ngFor="let todoItem of todoList | async; let i = index"
     class="todo-item"
-    (click)="todoItem.navigate()"
+    (click)="!todoItem.helpText && todoItem.navigate()"
   >
     <div>
       <ng-container *ngIf="todoItem.translateParams; else todoNameTpl">
@@ -11,6 +11,9 @@
       <ng-template #todoNameTpl>
         {{ todoItem.name | transloco }}
       </ng-template>
+      <small *ngIf="todoItem.helpText">
+        {{ todoItem.helpText }}
+      </small>
     </div>
     <div class="d-flex align-items-center">
       <i *ngIf="todoItem.state === ModelState.empty" class="bi bi-circle"></i>

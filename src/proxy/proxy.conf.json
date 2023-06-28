@@ -18,5 +18,11 @@
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": true
+  },
+  "/staticmap": {
+    "target": "https://maps.googleapis.com/maps/api/",
+    "logLevel": "debug",
+    "secure": false,
+    "changeOrigin": true
   }
 }

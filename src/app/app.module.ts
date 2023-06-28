@@ -24,28 +24,30 @@ import { CustomDatepickerI18n } from "./shared/form-controls/date-control/date-c
 import { MainLayoutComponent } from "./shared/layout/main-layout/main-layout.component";
 import { NavigationHeaderModule } from "./shared/components/navigation-header/navigation-header.module";
 import { CookieService } from "ngx-cookie-service";
+import { sketchReducer } from "@app/app-state/sketch/sketch-reducer";
+import { SketchEffects } from "@app/app-state/sketch/sketch-effects";
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainLayoutComponent,
+    MainLayoutComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        TranslocoRootModule,
-        ServiceWorkerModule.register('ngsw-worker.js', {
-            enabled: !isDevMode(),
-            // Register the ServiceWorker as soon as the application is stable
-            // or after 30 seconds (whichever comes first).
-            registrationStrategy: 'registerWhenStable:30000'
-        }),
-        StoreModule.forRoot({crashStore: crashReducer, carStore: carReducer}),
-        EffectsModule.forRoot(CrashEffects, CarEffects),
-        ApiModule,
-        NavigationHeaderModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    TranslocoRootModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
+    StoreModule.forRoot({crashStore: crashReducer, carStore: carReducer, sketchStore: sketchReducer}),
+    EffectsModule.forRoot(CrashEffects, CarEffects, SketchEffects),
+    ApiModule,
+    NavigationHeaderModule
+  ],
   providers: [
     {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},
@@ -54,4 +56,5 @@ import { CookieService } from "ngx-cookie-service";
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

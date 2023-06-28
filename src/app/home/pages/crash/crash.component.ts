@@ -10,6 +10,9 @@ import { ModelState } from "@app/shared/models/base.model";
 import { selectCars } from "@app/app-state/car/car-selector";
 import { CarModel } from "@app/shared/models/car.model";
 import { loadCars } from "@app/app-state/car/car-action";
+import { loadSketches } from "@app/app-state/sketch/sketch-action";
+import { selectSketches } from "@app/app-state/sketch/sketch-selector";
+import { SketchModel } from "@app/shared/models/sketch.model";
 
 @Component({
   selector: 'app-crash',
@@ -19,6 +22,7 @@ import { loadCars } from "@app/app-state/car/car-action";
 export class CrashComponent implements OnInit {
   crash$: Observable<CrashModel> = this.store.select(selectCrash);
   cars$: Observable<CarModel[]> = this.store.select(selectCars);
+  sketches$: Observable<SketchModel[]> = this.store.select(selectSketches);
 
   todoList: Observable<TodoItem[]> = this.generateTodoList();
 
@@ -45,6 +49,7 @@ export class CrashComponent implements OnInit {
           if (sessionId) {
             this.store.dispatch(loadCrash({sessionId: sessionId}));
             this.store.dispatch(loadCars());
+            this.store.dispatch(loadSketches());
           }
         }),
       )
@@ -54,15 +59,16 @@ export class CrashComponent implements OnInit {
   private generateTodoList(): Observable<TodoItem[]> {
     return combineLatest([
       this.crash$,
-      this.cars$
+      this.cars$,
+      this.sketches$
     ]).pipe(
-      map(([crash, cars]: [CrashModel, CarModel[]]) => {
+      map(([crash, cars, sketches]: [CrashModel, CarModel[], SketchModel[]]) => {
         return [
           this.basicDataTodo(crash),
-          this.inviteOtherParticipants(),
+          ...crash.participants > (crash.cars?.length || 0) ? [this.inviteOtherParticipants()] : [],
           ...this.generateCarPlaceholders(crash, cars),
           this.createCircumstancesTodo(crash, cars),
-          this.createAccidentSketchTodo()
+          this.createAccidentSketchTodo(crash)
         ];
       }),
     );
@@ -128,11 +134,12 @@ export class CrashComponent implements OnInit {
     };
   }
 
-  private createAccidentSketchTodo(): TodoItem {
+  private createAccidentSketchTodo(crash: CrashModel): TodoItem {
     return {
       name: 'car-crash.shared.todo_list.accident_sketch',
       state: ModelState.empty,
-      navigate: () => this.router.navigate(['accident-data'], {relativeTo: this.route}),
+      navigate: () => this.router.navigate(['accident-sketch'], {relativeTo: this.route}),
+      helpText: (crash.cars?.length || 0) < crash.participants ? '§§ All participants have to join before you can start drawing' : ''
     };
   }
 }
@@ -142,4 +149,5 @@ interface TodoItem {
   translateParams?: object;
   state: ModelState;
   navigate: () => void;
+  helpText?: string;
 }

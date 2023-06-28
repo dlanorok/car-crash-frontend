@@ -3,7 +3,6 @@ import { webSocket, WebSocketSubject } from "rxjs/webSocket";
 import { retry, tap, throwError } from "rxjs";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { catchError } from "rxjs/operators";
-import { BaseModel } from "@app/shared/models/base.model";
 import { Store } from "@ngrx/store";
 import { updateCarSubModelSuccessful, wsCarUpdated } from "@app/app-state/car/car-action";
 import { PolicyHolderModel } from "@app/shared/models/policy-holder.model";
@@ -16,17 +15,24 @@ import { CookieService } from "ngx-cookie-service";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { CircumstanceModel } from "@app/shared/models/circumstance.model";
 import { environment } from "../../../environments/environment";
+import { wsSketchCarUpdated, wsSketchPolygonsUpdated, wsSketchUpdated } from "@app/app-state/sketch/sketch-action";
+import { PolygonsData, SketchCarModel, SketchModel } from "@app/shared/models/sketch.model";
 
 interface WebSocketMessage {
   type: string;
   model_name: string;
   sender_id: string;
-  model: BaseModel
+  model: any
 }
 
-enum EventType {
+export enum EventType {
   modelCreated = 'model_create',
   modelUpdated = 'model_update'
+}
+
+export enum SpecialModelName {
+  SketchCarUpdated = 'SketchCarUpdated',
+  SketchPolygonsUpdated = 'SketchPolygonsUpdated',
 }
 
 @Injectable({
@@ -42,13 +48,13 @@ export class WebSocketService implements OnDestroy {
   ) {}
 
   connect(): void {
+    if (this.connected) {
+      return;
+    }
     this.socket$ = webSocket<any>({
       url: `${environment.webSocketUrl}/ws/updates/${localStorage.getItem(StorageItem.sessionId)}/`,
     });
 
-    if (this.connected) {
-      return;
-    }
     this.connected = true;
 
     this.socket$
@@ -62,7 +68,6 @@ export class WebSocketService implements OnDestroy {
           if (message.type === EventType.modelUpdated || message.type === EventType.modelCreated) {
             this.processModelEvents(message);
           }
-          console.log(message);
         }),
         catchError((error) => {
           console.log(error);
@@ -103,7 +108,16 @@ export class WebSocketService implements OnDestroy {
           ? storeActions.push(wsCarUpdated({car: model}))
           : storeActions.push(addCar({carId: model.id, addToMyCars: false}));
         break;
-
+      case 'Sketch':
+        model = new SketchModel(message.model);
+        storeActions = [wsSketchUpdated({sketch: model})];
+        break;
+      case SpecialModelName.SketchCarUpdated:
+        storeActions = [wsSketchCarUpdated({sketchCar: message.model as SketchCarModel})];
+        break;
+      case SpecialModelName.SketchPolygonsUpdated:
+        storeActions = [wsSketchPolygonsUpdated({polygonData: JSON.parse(message.model) as PolygonsData})];
+        break;
     }
 
     storeActions.forEach(action => {
@@ -115,6 +129,12 @@ export class WebSocketService implements OnDestroy {
     this.connected = false;
     if (this.socket$) {
       this.socket$.complete();
+    }
+  }
+
+  send(data: any): void {
+    if (this.socket$) {
+      this.socket$.next(data);
     }
   }
 

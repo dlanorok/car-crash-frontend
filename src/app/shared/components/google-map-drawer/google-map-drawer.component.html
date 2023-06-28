@@ -1,0 +1,25 @@
+<google-map
+  #map
+  id="map"
+  height="100%"
+  width="100%"
+  [class.drawing]="drawingEnabled"
+  [options]="mapOptions"
+  (mousedown)="drawFreeHand($event)"
+  (touchstart)="drawFreeHand($event)"
+>
+</google-map>
+
+<ng-container *ngIf="isCreator$ | async">
+  <div #undoButton class="drawing-button" (click)="undoDraw($event)">
+    §§ Undo
+  </div>
+
+  <div #drawingButton class="drawing-button" (click)="toggleDraw($event)">
+    {{ drawingEnabled ? '§§Stop' : '§§Start'}} Drawing
+  </div>
+
+  <div #drawCarsButton class="drawing-button" (click)="drawCars($event)">
+    §§ Draw Cars
+  </div>
+</ng-container>

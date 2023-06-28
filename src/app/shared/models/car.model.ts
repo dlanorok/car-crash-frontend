@@ -20,6 +20,9 @@ export class CarModel extends BaseModel {
   damaged_parts?: string[];
   initial_impact?: string[];
 
+  rotation?: number;
+  lat_lng_bounds_literal?: string;
+
   getCarModelState() {
     const childStates = [this.policy_holder?.state, this.driver?.state, this.insurance?.state];
     const isAnyPartial = childStates.some(state => state === ModelState.partial);
