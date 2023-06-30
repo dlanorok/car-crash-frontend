@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { combineLatest, map, Observable, tap } from "rxjs";
+import { combineLatest, map, Observable, switchMap, take, tap } from "rxjs";
 import { Store } from "@ngrx/store";
 import { loadCrash } from "@app/app-state/crash/crash-action";
 import { HeaderService } from "@app/shared/services/header-service";
@@ -13,6 +13,7 @@ import { loadCars } from "@app/app-state/car/car-action";
 import { loadSketches } from "@app/app-state/sketch/sketch-action";
 import { selectSketches } from "@app/app-state/sketch/sketch-selector";
 import { SketchModel } from "@app/shared/models/sketch.model";
+import { CrashesApiService } from "@app/shared/api/crashes/crashes-api.service";
 
 @Component({
   selector: 'app-crash',
@@ -32,7 +33,8 @@ export class CrashComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly headerService: HeaderService,
     private readonly router: Router,
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly crashApiService: CrashesApiService
   ) {
   }
 
@@ -141,6 +143,16 @@ export class CrashComponent implements OnInit {
       navigate: () => this.router.navigate(['accident-sketch'], {relativeTo: this.route}),
       helpText: (crash.cars?.length || 0) < crash.participants ? '§§ All participants have to join before you can start drawing' : ''
     };
+  }
+
+  generatePdf() {
+    this.crash$
+      .pipe(
+        take(1),
+        switchMap((crash: CrashModel) => {
+          return this.crashApiService.generatePdf(crash);
+        })
+      ).subscribe();
   }
 }
 

@@ -17,4 +17,11 @@ export class CrashesApiService extends BaseApiService<CrashModel>{
         map((data) => new this.model(data))
       );
   }
+
+  generatePdf(entity: CrashModel): Observable<any> {
+    return this.httpClient.post(`${this.endpoint}${entity.session_id}/generate_pdf/`, {})
+      .pipe(
+        map((data) => new this.model(data))
+      );
+  }
 }
