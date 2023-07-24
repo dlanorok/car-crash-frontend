@@ -1,6 +1,7 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { customAlphabet } from 'nanoid';
+import { BehaviorSubject } from "rxjs";
 
 @Component(
   {
@@ -14,19 +15,25 @@ export abstract class BaseFormControlComponent<T> implements ControlValueAccesso
 
   @Input() formControl!: FormControl;
 
-  value?: T;
+  readonly value$: BehaviorSubject<T | undefined | null> = new BehaviorSubject<T | undefined | null>(undefined);
 
   readonly _id: string = customAlphabet('abcdefgijz', 12)();
 
-  onChange: () => void = () => {
+  onChange: (value: T) => void = () => {
     //noop
   };
+
   onTouched: () => void = () => {
     //noop
   };
 
   writeValue(value: T): void {
-    this.value = value;
+    this.value$.next(value);
+  }
+
+  handleModelChange(value: T): void {
+    this.value$.next(value);
+    this.onChange(value);
   }
 
   registerOnChange(fn: () => void): void {
@@ -38,6 +45,9 @@ export abstract class BaseFormControlComponent<T> implements ControlValueAccesso
   }
 
   setDisabledState(disabled: boolean): void {
+    if (!this.formControl) {
+      return;
+    }
     if ((disabled && this.formControl.disabled) || (!disabled && !this.formControl.disabled)) {
       return;
     }

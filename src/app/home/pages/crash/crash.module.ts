@@ -4,11 +4,14 @@ import { CrashComponent } from "./crash.component";
 import { RouterModule } from "@angular/router";
 import { ApiModule } from "@app/shared/api/api.module";
 import { TranslocoModule } from "@ngneat/transloco";
+import { CheckboxControlModule } from "@app/shared/form-controls/checkbox-control/checkbox-control.module";
+import { FormsModule } from "@angular/forms";
+import { GetStateFromSectionModule } from "@app/shared/common/pipes/get-state-from-section.module";
 
 
 @NgModule({
   declarations: [
-    CrashComponent
+    CrashComponent,
   ],
   imports: [
     CommonModule,
@@ -19,7 +22,10 @@ import { TranslocoModule } from "@ngneat/transloco";
         path: "",
         component: CrashComponent,
       }
-    ])
+    ]),
+    CheckboxControlModule,
+    FormsModule,
+    GetStateFromSectionModule
   ]
 })
 export class CrashModule { }

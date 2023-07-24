@@ -11,7 +11,7 @@ export class BaseModel {
 }
 
 export enum ModelState {
-  partial = "P",
-  validated = 'V',
-  empty = 'E'
+  partial = "partial",
+  validated = 'filled',
+  empty = 'empty'
 }

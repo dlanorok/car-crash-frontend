@@ -11,7 +11,8 @@
     [selectedCountryISO]="CountryISO.Slovenia"
     [maxLength]="15"
     [phoneValidation]="true"
-    [formControl]="formControl"
+    [ngModel]="value$ | async"
+    (ngModelChange)="handleModelChange($event)"
   ></ngx-intl-tel-input>
 
   <app-form-errors *ngIf="!formControl.untouched" [control]="formControl"></app-form-errors>

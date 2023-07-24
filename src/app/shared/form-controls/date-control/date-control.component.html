@@ -7,7 +7,8 @@
     ngbDatepicker
     (click)="d.toggle()"
     #d="ngbDatepicker"
-    [formControl]="formControl"
+    [ngModel]="value$ | async"
+    (ngModelChange)="handleModelChange($event)"
     [class.is-invalid]="submitted && formControl.errors"
   />
 

@@ -7,9 +7,4 @@ import { BaseFormControlComponent, provideControlValueAccessor } from "../base-f
   styleUrls: ['./yes-no-checkbox.component.scss'],
   providers: [provideControlValueAccessor(YesNoCheckboxComponent)],
 })
-export class YesNoCheckboxComponent extends BaseFormControlComponent<boolean | null>{
-
-  toggleValue(value: boolean): void {
-    this.formControl.setValue(value);
-  }
-}
+export class YesNoCheckboxComponent extends BaseFormControlComponent<boolean | null>{}

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NumberControlComponent } from './number-control.component';
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FormErrorsModule } from "@app/shared/components/forms/shell/form-errors/form-errors.module";
 
 
@@ -15,7 +15,8 @@ import { FormErrorsModule } from "@app/shared/components/forms/shell/form-errors
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormErrorsModule
+    FormErrorsModule,
+    FormsModule
   ]
 })
 export class NumberControlModule {

@@ -1,0 +1,13 @@
+.option {
+  width: 100%;
+  border-radius: var(--border-radius-normal);
+  border: var(--border-small) var(--medium-ui-element);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--theme-spacing-half);
+
+  &.selected {
+    background-color: #97ff4d;
+  }
+}

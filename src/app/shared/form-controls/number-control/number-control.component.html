@@ -6,7 +6,8 @@
     class="form-control"
     type="number"
     [placeholder]="placeholder"
-    [formControl]="formControl"
+    [ngModel]="value$ | async"
+    (ngModelChange)="handleModelChange($event)"
     [class.is-invalid]="submitted && formControl.errors">
 
   <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>

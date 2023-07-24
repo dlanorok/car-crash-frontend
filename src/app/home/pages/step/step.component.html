@@ -1,0 +1,23 @@
+<ng-container *ngIf="questionnaire && step && section">
+  <div>
+    <p>{{ step.question }}</p>
+    <div *ngFor="let input of step | getStepInputs : questionnaire">
+      <ng-container [ngSwitch]="input.type">
+        <app-text-control *ngSwitchCase="'text'" [(ngModel)]="input.value" (ngModelChange)="updateAnswer(input)"></app-text-control>
+        <app-number-control *ngSwitchCase="'number'" [(ngModel)]="input.value" (ngModelChange)="updateAnswer(input)"></app-number-control>
+        <textarea *ngSwitchCase="'textarea'" [(ngModel)]="input.value"
+                  (ngModelChange)="updateAnswer(input)"></textarea>
+        <app-stacked-select-control
+          *ngSwitchCase="'select'"
+          [(ngModel)]="input.value"
+          (ngModelChange)="onSelectInput(input)"
+          [options]="input.options">
+        </app-stacked-select-control>
+        <!-- Add more input types as needed -->
+      </ng-container>
+    </div>
+  </div>
+  <app-footer-buttons [buttons]="footerButtons">
+  </app-footer-buttons>
+</ng-container>
+

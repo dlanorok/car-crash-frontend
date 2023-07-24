@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DateControlComponent } from './date-control.component';
 import { NgbDatepicker, NgbDatepickerModule, NgbInputDatepicker } from "@ng-bootstrap/ng-bootstrap";
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FormErrorsModule } from "../../components/forms/shell/form-errors/form-errors.module";
 
 
@@ -16,7 +16,8 @@ import { FormErrorsModule } from "../../components/forms/shell/form-errors/form-
     NgbInputDatepicker,
     NgbDatepickerModule,
     ReactiveFormsModule,
-    FormErrorsModule
+    FormErrorsModule,
+    FormsModule
   ],
   exports: [
     DateControlComponent

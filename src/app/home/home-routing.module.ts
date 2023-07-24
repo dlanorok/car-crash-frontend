@@ -27,6 +27,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/accident-report-flow/invite-participants/invite-participants.module').then(mod => mod.InviteParticipantsModule),
   },
   {
+    path: 'crash/:sessionId/questionnaires/:questionnaireId/sections/:sectionId/steps/:stepType',
+    loadChildren: () => import('./pages/step/step.module').then(mod => mod.StepModule),
+  },
+  {
     path: 'crash/:sessionId/accident-sketch',
     loadChildren: () => import('./pages/accident-report-flow/accident-sketch/accident-sketch.module').then(mod => mod.AccidentSketchModule),
   },
