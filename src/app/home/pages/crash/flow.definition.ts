@@ -44,6 +44,8 @@ export enum InputType {
   boolean = 'boolean',
   text = 'text',
   multiChoiceQuestion = 'multiChoiceQuestion',
+  dateTime = 'datetime',
+  date = 'date',
 }
 
 export enum StepType {
@@ -56,4 +58,5 @@ export interface Input {
   value: any;
   options?: Option[];
   required?: boolean;
+  placeholder?: string;
 }

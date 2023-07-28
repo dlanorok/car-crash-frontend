@@ -8,12 +8,16 @@ import { StackedSelectControlModule } from "@app/shared/form-controls/stacked-se
 import { TextControlModule } from "@app/shared/form-controls/text-control/text-control.module";
 import { NumberControlModule } from "@app/shared/form-controls/number-control/number-control.module";
 import { FooterButtonsModule } from "@app/shared/components/footer-buttons/footer-buttons.module";
+import { DateControlModule } from "@app/shared/form-controls/date-control/date-control.module";
+import { DateTimeControlModule } from "@app/shared/form-controls/date-time-control/date-time-control.module";
+import { ToDatePipe } from "@app/home/pages/step/pipes/to-date.pipe";
 
 
 @NgModule({
   declarations: [
     StepComponent,
-    GetStepInputsPipe
+    GetStepInputsPipe,
+    ToDatePipe
   ],
   imports: [
     CommonModule,
@@ -28,6 +32,8 @@ import { FooterButtonsModule } from "@app/shared/components/footer-buttons/foote
     TextControlModule,
     NumberControlModule,
     FooterButtonsModule,
+    DateControlModule,
+    DateTimeControlModule,
   ]
 })
 export class StepModule { }

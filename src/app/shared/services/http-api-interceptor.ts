@@ -9,6 +9,7 @@ export class HttpApiInterceptor implements HttpInterceptor {
 
   private readonly authHeaderName: string = 'X-SESSION';
   private readonly authTokenType: string = 'Session';
+  private readonly acceptLanguage: string = 'Accept-Language';
 
   /* eslint-disable  @typescript-eslint/no-explicit-any */
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -25,6 +26,7 @@ export class HttpApiInterceptor implements HttpInterceptor {
   private setAuthHeader(headers: HttpHeaders): HttpHeaders {
     const token = localStorage.getItem(StorageItem.sessionId);
     headers = headers.set(this.authHeaderName, `${this.authTokenType} ${token}`);
+    headers = headers.set(this.acceptLanguage, 'sl');
 
     return headers;
   }

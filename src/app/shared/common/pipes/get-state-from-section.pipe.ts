@@ -15,6 +15,7 @@ export class GetStateFromSectionPipe implements PipeTransform {
     }
 
     const steps = this.getNextStep(questionnaire, startingStep, []);
+    console.log(steps);
     const inputIds: number[] = steps.map((step => step.input));
     const inputs = questionnaire.data.inputs.filter((input) => input.required && inputIds.includes(input.id));
 

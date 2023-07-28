@@ -33,6 +33,8 @@ export abstract class BaseFormControlComponent<T> implements ControlValueAccesso
 
   handleModelChange(value: T): void {
     this.value$.next(value);
+    console.log(value);
+    console.log(this.value$.getValue());
     this.onChange(value);
   }
 

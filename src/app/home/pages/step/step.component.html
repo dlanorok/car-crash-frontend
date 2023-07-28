@@ -3,10 +3,36 @@
     <p>{{ step.question }}</p>
     <div *ngFor="let input of step | getStepInputs : questionnaire">
       <ng-container [ngSwitch]="input.type">
-        <app-text-control *ngSwitchCase="'text'" [(ngModel)]="input.value" (ngModelChange)="updateAnswer(input)"></app-text-control>
-        <app-number-control *ngSwitchCase="'number'" [(ngModel)]="input.value" (ngModelChange)="updateAnswer(input)"></app-number-control>
-        <textarea *ngSwitchCase="'textarea'" [(ngModel)]="input.value"
-                  (ngModelChange)="updateAnswer(input)"></textarea>
+        <app-text-control
+          *ngSwitchCase="'text'"
+          [placeholder]="input.placeholder ?? ''"
+          [(ngModel)]="input.value"
+          (ngModelChange)="updateAnswer(input)">
+        </app-text-control>
+        <app-number-control
+          *ngSwitchCase="'number'"
+          [placeholder]="input.placeholder ?? ''"
+          [(ngModel)]="input.value"
+          (ngModelChange)="updateAnswer(input)">
+        </app-number-control>
+        <textarea
+          *ngSwitchCase="'textarea'"
+          [placeholder]="input.placeholder ?? ''"
+          [(ngModel)]="input.value"
+          (ngModelChange)="updateAnswer(input)">
+        </textarea>
+        <app-date-control
+          *ngSwitchCase="'date'"
+          [placeholder]="input.placeholder ?? ''"
+          [(ngModel)]="input.value"
+          (ngModelChange)="updateAnswer(input)">
+        </app-date-control>
+        <app-date-time-control
+          *ngSwitchCase="'datetime'"
+          [placeholder]="input.placeholder ?? ''"
+          [(ngModel)]="input.value"
+          (ngModelChange)="updateAnswer(input)">
+        </app-date-time-control>
         <app-stacked-select-control
           *ngSwitchCase="'select'"
           [(ngModel)]="input.value"

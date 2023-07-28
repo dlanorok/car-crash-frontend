@@ -1,0 +1,25 @@
+<div class="form-group">
+  <label *ngIf="label" for="date-picker">{{ label }}</label>
+
+  <div class="d-flex">
+    <input
+      id="date-picker"
+      class="form-control"
+      name="dp"
+      ngbDatepicker
+      (click)="d.toggle()"
+      #d="ngbDatepicker"
+      [ngModel]="value$ | async"
+      (ngModelChange)="handleDateChange($event)"
+      [class.is-invalid]="submitted && formControl.errors"
+    />
+
+    <ngb-timepicker
+      class="ms-3"
+      [ngModel]="time$ | async"
+      (ngModelChange)="handleTimeChange($event)"
+    ></ngb-timepicker>
+  </div>
+
+  <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
+</div>
