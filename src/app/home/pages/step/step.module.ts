@@ -11,6 +11,8 @@ import { FooterButtonsModule } from "@app/shared/components/footer-buttons/foote
 import { DateControlModule } from "@app/shared/form-controls/date-control/date-control.module";
 import { DateTimeControlModule } from "@app/shared/form-controls/date-time-control/date-time-control.module";
 import { ToDatePipe } from "@app/home/pages/step/pipes/to-date.pipe";
+import { PointOfInitialImpactModule } from "@app/shared/components/ui/point-of-initial-impact/point-of-initial-impact.module";
+import { VisibleDamageSelectorModule } from "@app/shared/components/ui/visible-damage-selector/visible-damage-selector.module";
 
 
 @NgModule({
@@ -34,6 +36,8 @@ import { ToDatePipe } from "@app/home/pages/step/pipes/to-date.pipe";
     FooterButtonsModule,
     DateControlModule,
     DateTimeControlModule,
+    PointOfInitialImpactModule,
+    VisibleDamageSelectorModule,
   ]
 })
 export class StepModule { }

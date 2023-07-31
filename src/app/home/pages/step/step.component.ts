@@ -119,4 +119,9 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
 
     this.router.navigate([`/crash/${this.sessionId}`]);
   }
+
+  valueUpdated(input: Input, newValue: any) {
+    input.value = newValue;
+    this.updateAnswer(input);
+  }
 }

@@ -10,7 +10,11 @@ export class GetStepInputsPipe implements PipeTransform {
   transform(step: Step, questionnaire: QuestionnaireModel): Input[] {
     return questionnaire.data.inputs.filter(input => step.input === input.id).map((input) => {
       if (input.type === InputType.date || input.type === InputType.dateTime) {
-        input.value = new Date(input.value);
+        if (input.value) {
+          input.value = new Date(input.value);
+        } else {
+          input.value = new Date();
+        }
       }
       return input;
     });

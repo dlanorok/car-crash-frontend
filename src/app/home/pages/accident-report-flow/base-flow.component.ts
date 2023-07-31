@@ -52,7 +52,6 @@ export abstract class BaseFlowComponent<T, C extends BaseModel> extends BaseFoot
       return;
     }
     this.store.dispatch(loadCars());
-    this.webSocketService.connect();
   }
 
   ngAfterViewInit() {

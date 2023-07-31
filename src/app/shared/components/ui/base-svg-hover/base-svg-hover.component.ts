@@ -1,17 +1,15 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
+  ElementRef, EventEmitter,
   inject,
   Input,
   OnChanges,
   OnDestroy,
-  OnInit, Renderer2,
+  OnInit, Output, Renderer2,
   ViewChild
 } from '@angular/core';
-import { CarModel } from "../../../models/car.model";
 import { combineLatest, ReplaySubject, Subscription, tap } from "rxjs";
-import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { CookieService } from "ngx-cookie-service";
 
 @Component({
@@ -21,7 +19,9 @@ export abstract class BaseSvgHoverComponent implements AfterViewInit, OnDestroy,
   protected readonly renderer2: Renderer2 = inject(Renderer2);
   protected readonly cookieService: CookieService = inject(CookieService);
 
-  @Input() car!: CarModel;
+  @Input() value!: string[];
+  @Output() valueChanged: EventEmitter<string[]> = new EventEmitter<string[]>();
+
   protected selectedClass = 'selected';
 
   @ViewChild('svgImage') svgImage?: ElementRef<SVGElement>;
@@ -34,10 +34,7 @@ export abstract class BaseSvgHoverComponent implements AfterViewInit, OnDestroy,
   protected listeners: (()=>void)[] = [];
   protected selectedParts: string[] = [];
 
-  disabled = false;
-
   abstract onViewReady(): void;
-  abstract afterSvgItemClicked(): void;
   abstract addListeners(): void;
 
   ngAfterViewInit(): void {
@@ -59,14 +56,14 @@ export abstract class BaseSvgHoverComponent implements AfterViewInit, OnDestroy,
         tap(() => {
           this.onViewReady();
           if (this.listeners.length === 0) {
-            if (this.car.creator === this.cookieService.get(CookieName.sessionId)) {
-              this.addListeners();
-            } else {
-              this.disabled = true;
-            }
+            this.addListeners();
           }
         })
       ).subscribe();
+  }
+
+  afterSvgItemClicked(): void {
+    this.valueChanged.next(this.selectedParts);
   }
 
   protected onPathClick(event: PointerEvent) {

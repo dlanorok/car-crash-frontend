@@ -1,5 +1,5 @@
 <ng-container *ngIf="questionnaire && step && section">
-  <div>
+  <div class="p-3">
     <p>{{ step.question }}</p>
     <div *ngFor="let input of step | getStepInputs : questionnaire">
       <ng-container [ngSwitch]="input.type">
@@ -39,6 +39,16 @@
           (ngModelChange)="onSelectInput(input)"
           [options]="input.options">
         </app-stacked-select-control>
+        <app-point-of-initial-impact
+          *ngSwitchCase="'collision_direction'"
+          [value]="input.value"
+          (valueChanged)="valueUpdated(input, $event)">
+        </app-point-of-initial-impact>
+        <app-visible-damage-selector
+          *ngSwitchCase="'damaged_parts'"
+          [value]="input.value"
+          (valueChanged)="valueUpdated(input, $event)">
+        </app-visible-damage-selector>
         <!-- Add more input types as needed -->
       </ng-container>
     </div>
