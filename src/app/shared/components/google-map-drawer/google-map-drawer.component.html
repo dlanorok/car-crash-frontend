@@ -11,15 +11,9 @@
 </google-map>
 
 <ng-container *ngIf="isCreator$ | async">
-  <div #undoButton class="drawing-button" (click)="undoDraw($event)">
-    §§ Undo
-  </div>
+  <app-google-maps-button #undoButton [buttonText]="'§§ Undo'" (click)="undoDraw($event)"></app-google-maps-button>
 
-  <div #drawingButton class="drawing-button" (click)="toggleDraw($event)">
-    {{ drawingEnabled ? '§§Stop' : '§§Start'}} Drawing
-  </div>
+  <app-google-maps-button #drawingButton [buttonText]="drawingEnabled ? '§§Stop' : '§§Start'" (click)="toggleDraw($event)"></app-google-maps-button>
 
-  <div #drawCarsButton class="drawing-button" (click)="drawCars($event)">
-    §§ Draw Cars
-  </div>
+  <app-google-maps-button #drawCarsButton [buttonText]="'§§ Draw Cars'" (click)="drawCars($event)"></app-google-maps-button>
 </ng-container>

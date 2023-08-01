@@ -1,7 +1,7 @@
 <ng-container *ngIf="questionnaire && step && section">
-  <div class="p-3">
+  <div class="p-3 h-100">
     <p>{{ step.question }}</p>
-    <div *ngFor="let input of step | getStepInputs : questionnaire">
+    <ng-container *ngFor="let input of step | getStepInputs : questionnaire">
       <ng-container [ngSwitch]="input.type">
         <app-text-control
           *ngSwitchCase="'text'"
@@ -49,9 +49,15 @@
           [value]="input.value"
           (valueChanged)="valueUpdated(input, $event)">
         </app-visible-damage-selector>
+        <app-place-selector
+          *ngSwitchCase="'place'"
+          [initialPlaceSelectorData]="input.value"
+          [(ngModel)]="input.value"
+          (ngModelChange)="updateAnswer(input)"
+        ></app-place-selector>
         <!-- Add more input types as needed -->
       </ng-container>
-    </div>
+    </ng-container>
   </div>
   <app-footer-buttons [buttons]="footerButtons">
   </app-footer-buttons>

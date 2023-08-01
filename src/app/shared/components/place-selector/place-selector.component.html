@@ -1,0 +1,13 @@
+<div class="h-100">
+  <google-map
+    #map
+    id="map"
+    height="100%"
+    width="100%"
+    [options]="mapOptions"
+  >
+    <map-marker *ngIf="markerPosition$ | async; let markerPosition" [position]="markerPosition"></map-marker>
+  </google-map>
+
+  <app-google-maps-button #currentLocation [buttonText]="'§§ Current location'" (click)="showCurrentLocation()"></app-google-maps-button>
+</div>

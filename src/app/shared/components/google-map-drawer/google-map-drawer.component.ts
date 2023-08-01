@@ -67,9 +67,9 @@ export class GoogleMapDrawerComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   @ViewChild(GoogleMap) map!: GoogleMap;
-  @ViewChild('drawingButton') drawingButton!: ElementRef<HTMLDivElement>;
-  @ViewChild('drawCarsButton') drawCarsButton!: ElementRef<HTMLDivElement>;
-  @ViewChild('undoButton') undoButton!: ElementRef<HTMLDivElement>;
+  @ViewChild('drawingButton', { read: ElementRef }) drawingButton!: ElementRef<HTMLDivElement>;
+  @ViewChild('drawCarsButton', { read: ElementRef }) drawCarsButton!: ElementRef<HTMLDivElement>;
+  @ViewChild('undoButton', { read: ElementRef }) undoButton!: ElementRef<HTMLDivElement>;
 
   rotation = 0;
   mapOptions: MapOptions = {};

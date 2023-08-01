@@ -13,6 +13,7 @@ import { DateTimeControlModule } from "@app/shared/form-controls/date-time-contr
 import { ToDatePipe } from "@app/home/pages/step/pipes/to-date.pipe";
 import { PointOfInitialImpactModule } from "@app/shared/components/ui/point-of-initial-impact/point-of-initial-impact.module";
 import { VisibleDamageSelectorModule } from "@app/shared/components/ui/visible-damage-selector/visible-damage-selector.module";
+import { PlaceSelectorModule } from "@app/shared/components/place-selector/place-selector.module";
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { VisibleDamageSelectorModule } from "@app/shared/components/ui/visible-d
     DateTimeControlModule,
     PointOfInitialImpactModule,
     VisibleDamageSelectorModule,
+    PlaceSelectorModule,
   ]
 })
 export class StepModule { }

@@ -1,25 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GoogleMapDrawerComponent } from './google-map-drawer.component';
+import { PlaceSelectorComponent } from './place-selector.component';
 import { GoogleMapsModule } from "@angular/google-maps";
-import { HttpClientJsonpModule, HttpClientModule } from "@angular/common/http";
 import { GoogleMapsButtonModule } from "@app/shared/components/ui/google-maps-button/google-maps-button.module";
 
 
 
 @NgModule({
   declarations: [
-    GoogleMapDrawerComponent,
+    PlaceSelectorComponent
   ],
   exports: [
-    GoogleMapDrawerComponent
+    PlaceSelectorComponent
   ],
   imports: [
     CommonModule,
     GoogleMapsModule,
-    HttpClientModule,
-    HttpClientJsonpModule,
-    GoogleMapsButtonModule,
+    GoogleMapsButtonModule
   ]
 })
-export class GoogleMapDrawerModule { }
+export class PlaceSelectorModule { }
