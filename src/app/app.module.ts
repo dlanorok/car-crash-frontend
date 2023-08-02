@@ -46,7 +46,7 @@ import { SketchEffects } from "@app/app-state/sketch/sketch-effects";
     StoreModule.forRoot({crashStore: crashReducer, carStore: carReducer, sketchStore: sketchReducer}),
     EffectsModule.forRoot(CrashEffects, CarEffects, SketchEffects),
     ApiModule,
-    NavigationHeaderModule
+    NavigationHeaderModule,
   ],
   providers: [
     {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter},
