@@ -17,10 +17,6 @@ export class NavigationHeaderComponent {
     return this.headerService.header;
   }
 
-  get preventBack(): boolean {
-    return this.headerService.preventBack;
-  }
-
   navigateBack() {
     this.headerService.navigateToPrevious();
   }

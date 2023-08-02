@@ -59,4 +59,6 @@ export interface Input {
   options?: Option[];
   required?: boolean;
   placeholder?: string;
+  input_type?: string;
+  label?: string;
 }

@@ -8,6 +8,7 @@ import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
 import { Action, Input, InputType, Option, Section, Step, StepType } from "@app/home/pages/crash/flow.definition";
 import { Location } from '@angular/common';
 import { BaseFooterComponent } from "@app/home/pages/accident-report-flow/base-footer.component";
+import { HeaderService } from "@app/shared/services/header-service";
 
 @Component({
   selector: 'app-step',
@@ -21,6 +22,7 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
   protected readonly crashesApiService: CrashesApiService = inject(CrashesApiService);
   protected readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
   protected readonly location: Location = inject(Location);
+  protected readonly headerService: HeaderService = inject(HeaderService);
 
   stepType!: StepType;
   questionnaireId!: number;
@@ -56,6 +58,7 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
                 this.questionnaire = questionnaires.find(questionnaire => questionnaire.id === this.questionnaireId);
                 if (sectionId) {
                   this.section = this.questionnaire?.data.sections.find(section => section.id === sectionId);
+                  this.headerService.setHeaderData({name: this.section?.name || ''});
                 }
                 if (stepType) {
                   this.step = this.questionnaire?.data.steps.find((step) => step.step_type === stepType);

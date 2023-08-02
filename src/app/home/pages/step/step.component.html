@@ -1,3 +1,4 @@
+<app-country-control></app-country-control>
 <ng-container *ngIf="questionnaire && step && section">
   <div class="p-3 h-100">
     <p>{{ step.question }}</p>
@@ -6,6 +7,8 @@
         <app-text-control
           *ngSwitchCase="'text'"
           [placeholder]="input.placeholder ?? ''"
+          [label]="input.label"
+          [type]="input.input_type ?? 'text'"
           [(ngModel)]="input.value"
           (ngModelChange)="updateAnswer(input)">
         </app-text-control>
@@ -55,6 +58,11 @@
           [(ngModel)]="input.value"
           (ngModelChange)="updateAnswer(input)"
         ></app-place-selector>
+        <app-phone-number-control
+          *ngSwitchCase="'phone_picker'"
+          [(ngModel)]="input.value"
+          (ngModelChange)="updateAnswer(input)">
+        </app-phone-number-control>
         <!-- Add more input types as needed -->
       </ng-container>
     </ng-container>

@@ -15,5 +15,5 @@
     (ngModelChange)="handleModelChange($event)"
   ></ngx-intl-tel-input>
 
-  <app-form-errors *ngIf="!formControl.untouched" [control]="formControl"></app-form-errors>
+  <app-form-errors *ngIf="submitted && !formControl.untouched" [control]="formControl"></app-form-errors>
 </div>

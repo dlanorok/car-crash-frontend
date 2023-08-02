@@ -17,7 +17,7 @@ export class DriverComponent extends BaseFlowCarSubModelComponent<DriverFormComp
   protected readonly headerService: HeaderService = inject(HeaderService);
 
   ngOnInit() {
-    this.headerService.setHeaderData({name: '§§Driver', preventBack: true});
+    this.headerService.setHeaderData({name: '§§Driver'});
     super.ngOnInit();
   }
 

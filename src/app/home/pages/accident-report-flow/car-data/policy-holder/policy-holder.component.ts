@@ -17,7 +17,7 @@ export class PolicyHolderComponent extends BaseFlowCarSubModelComponent<PolicyHo
   protected readonly headerService: HeaderService = inject(HeaderService);
 
   ngOnInit() {
-    this.headerService.setHeaderData({name: '§§Policy holder', preventBack: true});
+    this.headerService.setHeaderData({name: '§§Policy holder'});
     super.ngOnInit();
   }
 

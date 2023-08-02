@@ -23,7 +23,7 @@ export class AccidentDataComponent extends BaseFlowComponent<CrashFormComponent,
   }
 
   ngOnInit() {
-    this.headerService.setHeaderData({name: '§§Basic accident data', preventBack: true});
+    this.headerService.setHeaderData({name: '§§Basic accident data'});
     const sessionId: string | null = localStorage.getItem(StorageItem.sessionId);
     if (!sessionId) {
       this.router.navigate(["/"]);

@@ -8,7 +8,6 @@ import { Location } from '@angular/common';
 export class HeaderService {
   private headerTitle?: string;
   private previousPage?: string;
-  private _preventBack?: boolean;
 
   constructor(
     private readonly router: Router,
@@ -21,21 +20,12 @@ export class HeaderService {
     return this.headerTitle;
   }
 
-  get preventBack(): boolean {
-    return this._preventBack || false;
-  }
-
   setHeaderData(headerData: HeaderData) {
     this.headerTitle = headerData.name;
-    this._preventBack = headerData.preventBack;
     this.previousPage = headerData.previousPage;
   }
 
   navigateToPrevious() {
-    if (this.preventBack) {
-      return;
-    }
-
     if (this.previousPage) {
       this.router.navigate([this.previousPage]);
     } else {
@@ -47,5 +37,4 @@ export class HeaderService {
 export interface HeaderData {
   name: string;
   previousPage?: string;
-  preventBack?: boolean;
 }

@@ -17,7 +17,7 @@ export class CircumstancesComponent extends BaseFlowCarSubModelComponent<Circums
   protected readonly headerService: HeaderService = inject(HeaderService);
 
   ngOnInit() {
-    this.headerService.setHeaderData({name: '§§Driver', preventBack: true});
+    this.headerService.setHeaderData({name: '§§Driver'});
     super.ngOnInit();
   }
 

@@ -46,7 +46,7 @@ export class AccidentSketchComponent extends BaseFooterComponent implements OnIn
   );
 
   ngOnInit(): void {
-    this.headerService.setHeaderData({name: '§§Accident sketch', preventBack: true});
+    this.headerService.setHeaderData({name: '§§Accident sketch'});
     const sessionId: string | null = localStorage.getItem(StorageItem.sessionId);
     if (!sessionId) {
       this.router.navigate(["/"]);

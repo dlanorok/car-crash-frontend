@@ -26,7 +26,7 @@ export class CrashComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.headerService.setHeaderData({name: '§§Accident statement', preventBack: true});
+    this.headerService.setHeaderData({name: '§§Accident statement'});
     this.questionnaireService.getOrFetchQuestionnaires().pipe(take(1)).subscribe((questionnaires) => {
       this.questionnaires = questionnaires;
     });

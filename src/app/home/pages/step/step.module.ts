@@ -14,6 +14,8 @@ import { ToDatePipe } from "@app/home/pages/step/pipes/to-date.pipe";
 import { PointOfInitialImpactModule } from "@app/shared/components/ui/point-of-initial-impact/point-of-initial-impact.module";
 import { VisibleDamageSelectorModule } from "@app/shared/components/ui/visible-damage-selector/visible-damage-selector.module";
 import { PlaceSelectorModule } from "@app/shared/components/place-selector/place-selector.module";
+import { PhoneNumberControlModule } from "@app/shared/form-controls/phone-number-control/phone-number-control.module";
+import { CountryControlModule } from "@app/shared/form-controls/country-control/country-control.module";
 
 
 @NgModule({
@@ -40,6 +42,8 @@ import { PlaceSelectorModule } from "@app/shared/components/place-selector/place
     PointOfInitialImpactModule,
     VisibleDamageSelectorModule,
     PlaceSelectorModule,
+    PhoneNumberControlModule,
+    CountryControlModule,
   ]
 })
 export class StepModule { }

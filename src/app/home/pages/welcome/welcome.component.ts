@@ -28,8 +28,7 @@ export class WelcomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.headerService.setHeaderData({
-      name: '§§Car Crash assist',
-      preventBack: true
+      name: '§§Car Crash assist'
     });
     this.localStorageCrash = localStorage.getItem(StorageItem.sessionId);
   }

@@ -17,7 +17,7 @@ export class InsuranceComponent extends BaseFlowCarSubModelComponent<InsuranceFo
   protected readonly headerService: HeaderService = inject(HeaderService);
 
   ngOnInit() {
-    this.headerService.setHeaderData({name: '§§Insurance company', preventBack: true});
+    this.headerService.setHeaderData({name: '§§Insurance company'});
     super.ngOnInit();
   }
 

@@ -33,7 +33,6 @@ export class InviteParticipantsComponent extends BaseFooterComponent implements 
   ngOnInit() {
     this.headerService.setHeaderData({
       name: "§§ Invite other participants",
-      preventBack: true
     });
 
     this.form = this.formBuilder.group(
