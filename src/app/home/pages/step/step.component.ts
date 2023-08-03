@@ -145,7 +145,7 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
     }
 
     // For now select first input of steps
-    const input = this.questionnaire?.data.inputs.find(input => input.id === this.step?.input);
+    const input = this.questionnaire?.data.inputs.find(input => input.id === this.step?.inputs[0]);
 
     if (input?.type === InputType.select) {
       const selectedOption: Option | undefined = input.options?.find(option => option.value === input.value);

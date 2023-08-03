@@ -15,7 +15,11 @@ export class GetStateFromSectionPipe implements PipeTransform {
     }
 
     const steps = this.getNextStep(questionnaire, startingStep, []);
-    const inputIds: number[] = steps.map((step => step.input));
+
+    const inputIds: number[] = steps.reduce((acc: number[], step) => {
+      step.inputs.forEach((input: number) => acc.push(input));
+      return acc;
+    }, []);
     const inputs = questionnaire.data.inputs.filter((input) => input.required && inputIds.includes(input.id));
 
     const completedInputs = inputs.reduce((acc: number, currInput: Input) => {
@@ -39,7 +43,7 @@ export class GetStateFromSectionPipe implements PipeTransform {
       this.getNextStep(questionnaire, nextStep, value);
     }
 
-    const input = questionnaire.data.inputs.find(_input => _input.id === step.input);
+    const input = questionnaire.data.inputs.find(_input => step.inputs.includes(_input.id));
     const optionSelected = input?.options?.find(option => option.value === input?.value);
     if (input && optionSelected && optionSelected.action === Action.nextStep && optionSelected.action_property?.step) {
       const nextStep = questionnaire.data.steps.find(_step => _step.step_type === optionSelected.action_property?.step);

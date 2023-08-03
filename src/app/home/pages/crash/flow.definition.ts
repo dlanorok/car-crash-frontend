@@ -26,7 +26,7 @@ export interface Section {
 export interface Step {
   step_type: StepType
   question: string;
-  input: number
+  inputs: number[]
   next_step?: StepType;
 }
 

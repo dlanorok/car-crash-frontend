@@ -1,5 +1,8 @@
 <div class="form-group">
+  <label [htmlFor]="_id">{{ label }}</label>
+
   <ngx-intl-tel-input
+    [id]="_id"
     [cssClass]="'custom'"
     [preferredCountries]="[CountryISO.Slovenia, CountryISO.Croatia]"
     [enableAutoCountrySelect]="false"
@@ -11,9 +14,8 @@
     [selectedCountryISO]="CountryISO.Slovenia"
     [maxLength]="15"
     [phoneValidation]="true"
-    [ngModel]="value$ | async"
+    [formControl]="formControl"
     (ngModelChange)="handleModelChange($event)"
   ></ngx-intl-tel-input>
-
-  <app-form-errors *ngIf="submitted && !formControl.untouched" [control]="formControl"></app-form-errors>
+  <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
 </div>
