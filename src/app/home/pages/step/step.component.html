@@ -67,6 +67,10 @@
             [formControl]="$any(form.controls[input.id])"
             [items]="input.options">
           </app-select-control>
+          <app-driver-control
+            *ngSwitchCase="'driving_license'"
+            [formControl]="$any(form.controls[input.id])">
+          </app-driver-control>
           <!-- Add more input types as needed -->
         </ng-container>
       </ng-container>

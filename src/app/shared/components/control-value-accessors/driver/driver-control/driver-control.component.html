@@ -1,0 +1,8 @@
+<app-ocr-component
+  *ngIf="(value$ | async) === null"
+  [showOCRComponent]="true"
+  (OCRResponse)="processOCRResponse($event)">
+</app-ocr-component>
+
+<app-driver-form #driverForm [driver]="value$ | async" [hidden]="(value$ | async) === null">
+</app-driver-form>

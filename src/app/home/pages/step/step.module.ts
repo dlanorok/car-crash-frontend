@@ -17,6 +17,7 @@ import { SelectControlModule } from "@app/shared/form-controls/select-control/se
 import { PointOfInitialImpactModule } from "@app/shared/components/control-value-accessors/svg-selector/point-of-initial-impact/point-of-initial-impact.module";
 import { VisibleDamageSelectorModule } from "@app/shared/components/control-value-accessors/svg-selector/visible-damage-selector/visible-damage-selector.module";
 import { PlaceSelectorModule } from "@app/shared/components/control-value-accessors/place-selector/place-selector.module";
+import { DriverControlModule } from "@app/shared/components/control-value-accessors/driver/driver-control/driver-control.module";
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { PlaceSelectorModule } from "@app/shared/components/control-value-access
     CountryControlModule,
     CountryControlModule,
     SelectControlModule,
+    DriverControlModule,
   ]
 })
 export class StepModule { }

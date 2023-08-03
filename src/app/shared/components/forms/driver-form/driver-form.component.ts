@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormBuilder, Validators } from "@angular/forms";
 import { BaseFormComponent } from "../base-form.component";
 import { DriverModel } from "../../../models/driver.model";
@@ -13,7 +13,7 @@ import { TextFieldType } from "@regulaforensics/document-reader-webclient";
 export class DriverFormComponent extends BaseFormComponent<DriverModel> {
   hasOcrEnabled = true;
   ocrTitle = 'shared.ocr_driver_license';
-  driver?: DriverModel;
+  @Input() driver?: DriverModel | undefined | null;
 
   constructor(private readonly formBuilder: FormBuilder) {
     super();
@@ -22,11 +22,11 @@ export class DriverFormComponent extends BaseFormComponent<DriverModel> {
   protected initForm() {
     this.form = this.formBuilder.group(
       {
-        name: ['', Validators.required],
-        surname: ['', Validators.required],
-        address: ['', Validators.required],
-        driving_licence_number: ['', Validators.required],
-        driving_licence_valid_to: [null, Validators.required],
+        name: [this.driver?.name || '', Validators.required],
+        surname: [this.driver?.surname || '', Validators.required],
+        address: [this.driver?.address || '', Validators.required],
+        driving_licence_number: [this.driver?.driving_licence_number || '', Validators.required],
+        driving_licence_valid_to: [this.driver?.driving_licence_valid_to ? new Date(this.driver?.driving_licence_valid_to) : null, Validators.required],
       }
     );
   }

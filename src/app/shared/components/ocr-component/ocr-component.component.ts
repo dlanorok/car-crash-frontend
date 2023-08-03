@@ -7,7 +7,7 @@ import {
 } from '@regulaforensics/vp-frontend-document-components';
 import { RegularForensicsApi } from "../../api/regula-forensics/regular-forensics-api";
 import { ProcessRequest } from "@regulaforensics/document-reader-webclient/src/ext/process-request";
-import { from, tap } from "rxjs";
+import { from, take, tap } from "rxjs";
 import { GraphicFieldType, Scenario } from '@regulaforensics/document-reader-webclient';
 import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
 
@@ -46,7 +46,7 @@ export class OcrComponentComponent implements AfterViewInit, OnInit {
     this.reader.nativeElement.settings = {
       startScreen: true,
       changeCameraButton: true,
-      devLicense: 'AAEAABBmWVwKhDA1oG8sQn2wSCaOqJVF7xEgi9lY1atcFHJNn5KObyqKbhY8lyW+tHzhZcjEcgJmOo5Aa73ot5KohpmaMRzKL0EEJ/z5fsBJeK5CaGD6JVmX8JP4eZPFBam8fyKVxVksNOJh3O1gthxGb5eNhoNGF2MT5gzCApw67bSne3X2KyVJeEEt/wvmmfhNUa/Tm2mHr70huUDkbMOhG3Y61dldcfRnzZGMS8YSiyj/VANxRaRJjvByQRZq3VJzrXtVl+n1hLqzWFiUrfiS7a/7jVh3FIjWgX7nAg/oApGEcdOkrB8h+5Txyto9JXyQjdXjA7K0Fn9ntUlEIHSOW+nkAAAAAAAAEJmLvp0m+LHs2EPWs3WUb6acaHpVHe++xIjVSmtpDntnXBKREb3mySvflEhfW5WWm2Qcf2dCYigXW6ImqKt8xUDYmRJo3J2fj525xnX+19wZihEieir97ISnCPAFG6jYGwmu6P1JJ8QlXqh1Q6+GPjt4pJgbRmslCk40ka27D0+92qFZVosS7mVTXfP9+5O/pm0XYQQ4JBfZkKMOIkcORzacbDd2Y9COi3BuVhPxZxtu8P9qJjsye3tjmSAwryr6XTVdaz6nksl1aI1Re/HoEC1Y4s9Jn9tkiAKc9OgTdz2v',
+      devLicense: 'AAEAAJfR0Kw2vm6AgfHgWU5evWJiH9WDEldyfLLSmGjaKKOX08mhg3/MVmH7F6eWI+p3b44Q3Ob6xcMv62E7dgIv1gLj34tSi0qK1mnqK2VDVBtk0Ts65VSNRU8q+kjHl1LCkY2apSV/Vm8WLi0b2B/xPF7DN/PRdmZDYfBhsH7w4mqxJoS5PjsCwfl2CZkji8TlBGYlTze90B09uuVGUGqMCoKf7G0eDpYpiJ1/vN23VOC+AkMh9PIMJdbmd69qGC+7IWpT+ISDxzR9fEApWgjut0E9Ma2COzu+6SQg99No5ecNUejQkDYohEu38G2zQh61Yvoh9idalFHlLo9/3zQAuxMkAQAAAAAAEImsKmwHcPTt7AmEzq9P42Xv66kukzs0Nzs6m6mpJxHA/z05tUMcn+IEBvw7qdBkJQQZX24gZ3gsvTwBoMiO+XqxHf6gObdU62HwOypj7zFbRmQEGdft2xTr23QcIOHT4cePK07mWGSU81Om8XqhZcfCiSj51J+GEW99EwdIN99vmwcoXu7K1B9rChGjX9twVH8jzqn7ZCgcJtY4mzWmyU+MnZ632AAsy2frqdY77enR42L3xkunr7WRHQR4qfXtDN2CaLOypbenuUkg0wsrlbjciOMm1hiw6sCl0aHsOiFNAOTfu11dJbKM7Dh9d98et9VyrqrHD0OdV3ChEY7HPwbIegHYwpnY60wGglhbEj8GdZKvTmkIvOp/fZG0RQ0Lmg=='
     };
   }
 
@@ -55,6 +55,8 @@ export class OcrComponentComponent implements AfterViewInit, OnInit {
       this.OCRToggle.next(false);
       return;
     }
+
+    console.log(data);
 
     if (data.detail.action === 'PROCESS_FINISHED') {
       const status = data.detail.data?.status;
@@ -83,7 +85,8 @@ export class OcrComponentComponent implements AfterViewInit, OnInit {
             tap((response: Response) => {
               console.log(response);
               this.OCRResponse.next(response);
-            })
+            }),
+            take(1)
           ).subscribe();
       }
     }
