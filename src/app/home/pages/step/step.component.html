@@ -8,8 +8,7 @@
           [placeholder]="input.placeholder ?? ''"
           [label]="input.label"
           [type]="input.input_type ?? 'text'"
-          [(ngModel)]="input.value"
-          (ngModelChange)="updateAnswer(input)">
+          [(ngModel)]="input.value">
         </app-text-control>
         <app-number-control
           *ngSwitchCase="'number'"
@@ -67,6 +66,11 @@
           [(ngModel)]="input.value"
           (ngModelChange)="updateAnswer(input)">
         </app-country-control>
+        <app-select-control
+          *ngSwitchCase="'insurance_picker'"
+          [(ngModel)]="input.value"
+          [items]="input.options">
+        </app-select-control>
         <!-- Add more input types as needed -->
       </ng-container>
     </ng-container>

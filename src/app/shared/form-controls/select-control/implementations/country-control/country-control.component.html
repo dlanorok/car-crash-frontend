@@ -1,0 +1,11 @@
+<app-select-control
+  [ngModel]="value$ | async"
+  [items]="items"
+  [customOptionTemplate]="countryOptionTemplate"
+  (ngModelChange)="handleModelChange($event)">
+</app-select-control>
+
+<ng-template #countryOptionTemplate let-country>
+  <span>{{country.emoji}}</span>
+  {{country.name}}
+</ng-template>

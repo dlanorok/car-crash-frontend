@@ -1,0 +1,13 @@
+<ng-select [ngModel]="value$ | async" (ngModelChange)="handleModelChange($event)">
+  <ng-option *ngFor="let item of items" [value]="item.value">
+    <ng-container
+      *ngIf="!!customOptionTemplate; else labelTpl"
+      [ngTemplateOutlet]="customOptionTemplate"
+      [ngTemplateOutletContext]="{ $implicit: item }"
+    ></ng-container>
+    <ng-template #labelTpl>
+      {{ item.label }} <!-- Default option display -->
+    </ng-template>
+  </ng-option>
+</ng-select>
+

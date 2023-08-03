@@ -99,6 +99,11 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
   }
 
   next(): void {
+
+    if (this.questionnaire) {
+      this.questionnaireService.saveQuestionnaire(this.questionnaire);
+    }
+
     if (!this.step) {
       this.router.navigate([`/crash/${this.sessionId}`]);
       return;

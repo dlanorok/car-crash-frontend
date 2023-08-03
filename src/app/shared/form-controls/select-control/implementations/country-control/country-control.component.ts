@@ -13,7 +13,7 @@ import {
 })
 export class CountryControlComponent extends BaseFormControlComponent<string> {
 
-  countries = Object.entries(countries).map(([key, value]) => {
-    return { id: key, ...value };
+  items = Object.entries(countries).map(([key, value]) => {
+    return { value: key, label: value.name, ...value };
   });
 }

@@ -37,7 +37,6 @@ export class QuestionnaireService {
           }
           return _input;
         });
-        this.saveQuestionnaire(questionnaire);
         return questionnaire;
       }
 

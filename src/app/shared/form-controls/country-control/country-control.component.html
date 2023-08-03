@@ -1,6 +1,0 @@
-<ng-select [ngModel]="value$ | async" (ngModelChange)="handleModelChange($event)">
-  <ng-option *ngFor="let country of countries" [value]="country.id">
-    <span>{{country.emoji}}</span>
-    {{country.name}}
-  </ng-option>
-</ng-select>

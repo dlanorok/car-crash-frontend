@@ -15,7 +15,8 @@ import { PointOfInitialImpactModule } from "@app/shared/components/ui/point-of-i
 import { VisibleDamageSelectorModule } from "@app/shared/components/ui/visible-damage-selector/visible-damage-selector.module";
 import { PlaceSelectorModule } from "@app/shared/components/place-selector/place-selector.module";
 import { PhoneNumberControlModule } from "@app/shared/form-controls/phone-number-control/phone-number-control.module";
-import { CountryControlModule } from "@app/shared/form-controls/country-control/country-control.module";
+import { CountryControlModule } from "@app/shared/form-controls/select-control/implementations/country-control/country-control.module";
+import { SelectControlModule } from "@app/shared/form-controls/select-control/select-control.module";
 
 
 @NgModule({
@@ -44,6 +45,8 @@ import { CountryControlModule } from "@app/shared/form-controls/country-control/
     PlaceSelectorModule,
     PhoneNumberControlModule,
     CountryControlModule,
+    CountryControlModule,
+    SelectControlModule,
   ]
 })
 export class StepModule { }
