@@ -30,18 +30,21 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
     ).subscribe();
   }
 
-  processOCRResponse(response: Response): void {
-    const dateOfExpiry: string | undefined = response.text?.getFieldValue(TextFieldType.DATE_OF_EXPIRY);
-    const driver = {
-      name: response.text?.getFieldValue(TextFieldType.FIRST_NAME) || response.text?.getFieldValue(TextFieldType.GIVEN_NAME),
-      surname: response.text?.getFieldValue(TextFieldType.SURNAME),
-      address: response.text?.getFieldValue(TextFieldType.ADDRESS),
-      driving_licence_number: response.text?.getFieldValue(TextFieldType.DOCUMENT_NUMBER),
-      driving_licence_valid_to: dateOfExpiry ? new Date(dateOfExpiry) : ''
-    };
-    const driverModel = new DriverModel({
-      ...driver
-    });
+  processOCRResponse(response: Response | undefined): void {
+    let driverModel = new DriverModel({});
+    if (response) {
+      const dateOfExpiry: string | undefined = response.text?.getFieldValue(TextFieldType.DATE_OF_EXPIRY);
+      const driver = {
+        name: response.text?.getFieldValue(TextFieldType.FIRST_NAME) || response.text?.getFieldValue(TextFieldType.GIVEN_NAME),
+        surname: response.text?.getFieldValue(TextFieldType.SURNAME),
+        address: response.text?.getFieldValue(TextFieldType.ADDRESS),
+        driving_licence_number: response.text?.getFieldValue(TextFieldType.DOCUMENT_NUMBER),
+        driving_licence_valid_to: dateOfExpiry ? new Date(dateOfExpiry) : ''
+      };
+      driverModel = new DriverModel({
+        ...driver
+      });
+    }
     this.handleModelChange(driverModel);
   }
 }
