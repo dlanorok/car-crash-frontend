@@ -1,26 +1,25 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef, EventEmitter,
+  ElementRef,
   inject,
-  Input,
   OnChanges,
   OnDestroy,
-  OnInit, Output, Renderer2,
+  OnInit, Renderer2,
   ViewChild
 } from '@angular/core';
 import { combineLatest, ReplaySubject, Subscription, tap } from "rxjs";
 import { CookieService } from "ngx-cookie-service";
+import {
+  BaseFormControlComponent
+} from "@app/shared/form-controls/base-form-control.component";
 
 @Component({
   template: '',
 })
-export abstract class BaseSvgHoverComponent implements AfterViewInit, OnDestroy, OnChanges, OnInit {
+export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<string[]> implements AfterViewInit, OnDestroy, OnChanges, OnInit {
   protected readonly renderer2: Renderer2 = inject(Renderer2);
   protected readonly cookieService: CookieService = inject(CookieService);
-
-  @Input() value!: string[];
-  @Output() valueChanged: EventEmitter<string[]> = new EventEmitter<string[]>();
 
   protected selectedClass = 'selected';
 
@@ -63,7 +62,7 @@ export abstract class BaseSvgHoverComponent implements AfterViewInit, OnDestroy,
   }
 
   afterSvgItemClicked(): void {
-    this.valueChanged.next(this.selectedParts);
+    this.handleModelChange(this.selectedParts);
   }
 
   protected onPathClick(event: PointerEvent) {

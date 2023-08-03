@@ -5,4 +5,5 @@ export enum ValidatorsErrors {
   apiValidationError = 'apiValidationError',
   ngbDate = 'ngbDate',
   validatePhoneNumber = 'validatePhoneNumber',
+  email = 'email',
 }

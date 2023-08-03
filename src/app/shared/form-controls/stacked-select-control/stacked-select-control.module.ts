@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StackedSelectControlComponent } from './stacked-select-control.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormErrorsModule } from "@app/shared/components/forms/shell/form-errors/form-errors.module";
 
 
 
@@ -14,7 +15,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
   ],
   imports: [
     CommonModule, FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule, FormErrorsModule,
   ]
 })
 export class StackedSelectControlModule { }

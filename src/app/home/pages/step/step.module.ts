@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StepComponent } from './step.component';
 import { RouterModule } from "@angular/router";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { GetStepInputsPipe } from "@app/home/pages/step/pipes/get-step-inputs.pipe";
 import { StackedSelectControlModule } from "@app/shared/form-controls/stacked-select-control/stacked-select-control.module";
 import { TextControlModule } from "@app/shared/form-controls/text-control/text-control.module";
@@ -25,9 +25,11 @@ import { SelectControlModule } from "@app/shared/form-controls/select-control/se
     GetStepInputsPipe,
     ToDatePipe
   ],
+  providers: [GetStepInputsPipe],
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild([
       {
         path: "",

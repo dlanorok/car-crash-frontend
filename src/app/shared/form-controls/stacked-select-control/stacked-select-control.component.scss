@@ -10,4 +10,8 @@
   &.selected {
     background-color: #97ff4d;
   }
+
+  &.is-invalid {
+    border-color: var(--bs-form-invalid-color);
+  }
 }

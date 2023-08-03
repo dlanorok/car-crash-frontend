@@ -1,17 +1,19 @@
 import { AfterViewInit, Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { BaseSvgHoverComponent } from "../base-svg-hover/base-svg-hover.component";
+import { provideControlValueAccessor } from "@app/shared/form-controls/base-form-control.component";
 
 @Component({
   selector: 'app-visible-damage-selector',
   templateUrl: './visible-damage-selector.component.html',
-  styleUrls: ['./visible-damage-selector.component.scss']
+  styleUrls: ['./visible-damage-selector.component.scss'],
+  providers: [provideControlValueAccessor(VisibleDamageSelectorComponent)],
 })
 export class VisibleDamageSelectorComponent extends BaseSvgHoverComponent implements AfterViewInit, OnDestroy, OnChanges, OnInit {
 
   override onViewReady() {
-    this.selectedParts = this.value || [];
+    this.selectedParts = this.value$.getValue() || [];
     this.svgImage?.nativeElement.querySelectorAll('path').forEach((path) => {
-      if (this.value?.includes(path.id)) {
+      if (this.selectedParts?.includes(path.id)) {
         path.classList.add(this.selectedClass);
       } else {
         path.classList.remove(this.selectedClass);

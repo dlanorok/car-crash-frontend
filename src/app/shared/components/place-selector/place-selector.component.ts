@@ -12,7 +12,7 @@ import MapOptions = google.maps.MapOptions;
 import LatLngLiteral = google.maps.LatLngLiteral;
 import { GoogleMap } from "@angular/google-maps";
 import ControlPosition = google.maps.ControlPosition;
-import { BehaviorSubject, bufferTime, tap } from "rxjs";
+import { BehaviorSubject, tap } from "rxjs";
 import {
   BaseFormControlComponent,
   provideControlValueAccessor
@@ -59,7 +59,6 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
 
     this.markerPosition$
       .pipe(
-        bufferTime(5000),
         tap(() => {
           this.handleModelChange({
             markerPosition: this.markerPosition$.getValue(),

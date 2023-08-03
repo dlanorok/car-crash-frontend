@@ -47,5 +47,24 @@ export class QuestionnaireService {
   saveQuestionnaire(questionnaire: QuestionnaireModel): void {
     this.questionnairesApiService.put(questionnaire).pipe(take(1)).subscribe();
   }
+
+  updateInputs(inputs: Record<string, string>, questionnaire: QuestionnaireModel) {
+    this.questionnaires.map(_questionnaire => {
+      if (_questionnaire.id === questionnaire.id) {
+        const inputIds = Object.keys(inputs);
+        questionnaire.data.inputs.map((input) => {
+          if (inputIds.includes(input.id.toString())) {
+            input.value = inputs[input.id];
+            return input;
+          } else {
+            return input;
+          }
+        });
+      } else {
+        return _questionnaire;
+      }
+    });
+    this.questionnairesApiService.updateInputs(questionnaire.id, inputs).pipe(take(1)).subscribe();
+  }
 }
 

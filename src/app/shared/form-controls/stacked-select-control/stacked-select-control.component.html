@@ -1,5 +1,8 @@
 <div *ngFor="let option of (options || [])">
-  <div class="option mt-3" [class.selected]="(value$ | async) ==option.value" (click)="handleModelChange(option.value)">
+  <div class="option mt-3" [class.is-invalid]="submitted && formControl.errors" [class.selected]="(value$ | async) ==option.value" (click)="handleModelChange(option.value)">
     {{ option.label }}
   </div>
 </div>
+
+<app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
+

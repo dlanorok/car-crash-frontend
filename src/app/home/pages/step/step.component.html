@@ -1,79 +1,74 @@
-<ng-container *ngIf="questionnaire && step && section">
+<ng-container *ngIf="questionnaire && step && section && form">
   <div class="p-3 h-100">
     <p>{{ step.question }}</p>
-    <ng-container *ngFor="let input of step | getStepInputs : questionnaire">
-      <ng-container [ngSwitch]="input.type">
-        <app-text-control
-          *ngSwitchCase="'text'"
-          [placeholder]="input.placeholder ?? ''"
-          [label]="input.label"
-          [type]="input.input_type ?? 'text'"
-          [(ngModel)]="input.value">
-        </app-text-control>
-        <app-number-control
-          *ngSwitchCase="'number'"
-          [placeholder]="input.placeholder ?? ''"
-          [(ngModel)]="input.value"
-          (ngModelChange)="updateAnswer(input)">
-        </app-number-control>
-        <textarea
-          *ngSwitchCase="'textarea'"
-          [placeholder]="input.placeholder ?? ''"
-          [(ngModel)]="input.value"
-          (ngModelChange)="updateAnswer(input)">
-        </textarea>
-        <app-date-control
-          *ngSwitchCase="'date'"
-          [placeholder]="input.placeholder ?? ''"
-          [(ngModel)]="input.value"
-          (ngModelChange)="updateAnswer(input)">
-        </app-date-control>
-        <app-date-time-control
-          *ngSwitchCase="'datetime'"
-          [placeholder]="input.placeholder ?? ''"
-          [(ngModel)]="input.value"
-          (ngModelChange)="updateAnswer(input)">
-        </app-date-time-control>
-        <app-stacked-select-control
-          *ngSwitchCase="'select'"
-          [(ngModel)]="input.value"
-          (ngModelChange)="onSelectInput(input)"
-          [options]="input.options">
-        </app-stacked-select-control>
-        <app-point-of-initial-impact
-          *ngSwitchCase="'collision_direction'"
-          [value]="input.value"
-          (valueChanged)="valueUpdated(input, $event)">
-        </app-point-of-initial-impact>
-        <app-visible-damage-selector
-          *ngSwitchCase="'damaged_parts'"
-          [value]="input.value"
-          (valueChanged)="valueUpdated(input, $event)">
-        </app-visible-damage-selector>
-        <app-place-selector
-          *ngSwitchCase="'place'"
-          [initialPlaceSelectorData]="input.value"
-          [(ngModel)]="input.value"
-          (ngModelChange)="updateAnswer(input)"
-        ></app-place-selector>
-        <app-phone-number-control
-          *ngSwitchCase="'phone_picker'"
-          [(ngModel)]="input.value"
-          (ngModelChange)="updateAnswer(input)">
-        </app-phone-number-control>
-        <app-country-control
-          *ngSwitchCase="'country_picker'"
-          [(ngModel)]="input.value"
-          (ngModelChange)="updateAnswer(input)">
-        </app-country-control>
-        <app-select-control
-          *ngSwitchCase="'insurance_picker'"
-          [(ngModel)]="input.value"
-          [items]="input.options">
-        </app-select-control>
-        <!-- Add more input types as needed -->
+    <form [formGroup]="form" class="h-100">
+      <ng-container *ngFor="let input of step | getStepInputs : questionnaire">
+        <ng-container [ngSwitch]="input.type">
+          <app-text-control
+            *ngSwitchCase="'text'"
+            [placeholder]="input.placeholder ?? ''"
+            [label]="input.label"
+            [type]="input.input_type ?? 'text'"
+            [formControl]="$any(form.controls[input.id])"
+            [submitted]="submitted">
+          </app-text-control>
+          <app-number-control
+            *ngSwitchCase="'number'"
+            [placeholder]="input.placeholder ?? ''"
+            [formControl]="$any(form.controls[input.id])">
+          </app-number-control>
+          <textarea
+            *ngSwitchCase="'textarea'"
+            [placeholder]="input.placeholder ?? ''"
+            [formControl]="$any(form.controls[input.id])">
+          </textarea>
+          <app-date-control
+            *ngSwitchCase="'date'"
+            [placeholder]="input.placeholder ?? ''"
+            [formControl]="$any(form.controls[input.id])">
+          </app-date-control>
+          <app-date-time-control
+            *ngSwitchCase="'datetime'"
+            [placeholder]="input.placeholder ?? ''"
+            [formControl]="$any(form.controls[input.id])">
+          </app-date-time-control>
+          <app-stacked-select-control
+            *ngSwitchCase="'select'"
+            [formControl]="$any(form.controls[input.id])"
+            (ngModelChange)="onSelectInput(input)"
+            [options]="input.options"
+            [submitted]="submitted">
+          </app-stacked-select-control>
+          <app-point-of-initial-impact
+            *ngSwitchCase="'collision_direction'"
+            [formControl]="$any(form.controls[input.id])">
+          </app-point-of-initial-impact>
+          <app-visible-damage-selector
+            *ngSwitchCase="'damaged_parts'"
+            [formControl]="$any(form.controls[input.id])">
+          </app-visible-damage-selector>
+          <app-place-selector
+            *ngSwitchCase="'place'"
+            [initialPlaceSelectorData]="input.value"
+            [formControl]="$any(form.controls[input.id])"
+          ></app-place-selector>
+          <app-phone-number-control
+            *ngSwitchCase="'phone_picker'"
+            [formControl]="$any(form.controls[input.id])">
+          </app-phone-number-control>
+          <app-country-control
+            *ngSwitchCase="'country_picker'"
+            [formControl]="$any(form.controls[input.id])">
+          </app-country-control>
+          <app-select-control
+            *ngSwitchCase="'insurance_picker'"
+            [formControl]="$any(form.controls[input.id])"
+            [items]="input.options">
+          </app-select-control>
+          <!-- Add more input types as needed -->
+        </ng-container>
       </ng-container>
-    </ng-container>
+    </form>
   </div>
   <app-footer-buttons [buttons]="footerButtons">
   </app-footer-buttons>

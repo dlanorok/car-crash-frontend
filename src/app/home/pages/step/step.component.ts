@@ -9,6 +9,9 @@ import { Action, Input, InputType, Option, Section, Step, StepType } from "@app/
 import { Location } from '@angular/common';
 import { BaseFooterComponent } from "@app/home/pages/accident-report-flow/base-footer.component";
 import { HeaderService } from "@app/shared/services/header-service";
+import { FormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { GetStepInputsPipe } from "@app/home/pages/step/pipes/get-step-inputs.pipe";
+import { updateEntireFormValidity } from "@app/shared/forms/helpers/update-entire-form-validity";
 
 @Component({
   selector: 'app-step',
@@ -23,14 +26,18 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
   protected readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
   protected readonly location: Location = inject(Location);
   protected readonly headerService: HeaderService = inject(HeaderService);
+  protected readonly formBuilder: FormBuilder = inject(FormBuilder);
+  protected readonly getStepInputsPipe: GetStepInputsPipe = inject(GetStepInputsPipe);
 
   stepType!: StepType;
   questionnaireId!: number;
   sessionId!: string;
   questionnaire?: QuestionnaireModel;
+  submitted = false;
 
   section?: Section;
   step?: Step;
+  form!: UntypedFormGroup;
 
   ngOnInit(): void {
     this.getData();
@@ -62,6 +69,23 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
                 }
                 if (stepType) {
                   this.step = this.questionnaire?.data.steps.find((step) => step.step_type === stepType);
+
+                  if (this.step && this.questionnaire) {
+                    const inputs = this.getStepInputsPipe.transform(this.step, this.questionnaire);
+                    this.form = this.formBuilder.group({});
+                    inputs.forEach(input => {
+                      const control = this.formBuilder.control(input.value);
+                      if (input.required) {
+                        control.addValidators(Validators.required);
+                      }
+
+                      if (input.input_type === 'email') {
+                        control.addValidators(Validators.email);
+                      }
+
+                      this.form?.addControl(input.id.toString(), control);
+                    });
+                  }
                 }
               })
             );
@@ -71,8 +95,8 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
   }
 
   onSelectInput(input: Input): void {
-    const selectedOption: Option | undefined = input.options?.find(option => option.value === input.value);
-    this.updateAnswer(input);
+    const selectedOption: Option | undefined = input.options?.find(option => option.value === this.form.value[input.id]);
+    this.updateAnswer();
 
     switch (selectedOption?.action) {
       case Action.call:
@@ -80,6 +104,7 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
         break;
       case Action.nextStep:
         if (selectedOption?.action_property?.step) {
+          this.submitted = false;
           this.router.navigate(
             [`/crash/${this.sessionId}/questionnaires/${this.questionnaireId}/sections/${this.section?.id}/steps/${selectedOption?.action_property.step}`]
           );
@@ -90,8 +115,10 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
     }
   }
 
-  updateAnswer(input: Input): void {
-    this.questionnaireService.saveInput(this.questionnaireId, input);
+  updateAnswer(): void {
+    if (this.questionnaire) {
+      this.questionnaireService.updateInputs(this.form.value, this.questionnaire);
+    }
   }
 
   previous(): void {
@@ -99,9 +126,17 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
   }
 
   next(): void {
+    this.submitted = true;
+    updateEntireFormValidity(this.form);
+    console.log(this.form.value);
 
-    if (this.questionnaire) {
-      this.questionnaireService.saveQuestionnaire(this.questionnaire);
+    if (!this.form?.valid) {
+      return;
+    }
+
+    this.submitted = false;
+    if (this.questionnaire && this.step) {
+      this.questionnaireService.updateInputs(this.form.value, this.questionnaire);
     }
 
     if (!this.step) {
@@ -129,7 +164,6 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
   }
 
   valueUpdated(input: Input, newValue: any) {
-    input.value = newValue;
-    this.updateAnswer(input);
+    this.form.get(input.id.toString())?.setValue(newValue);
   }
 }

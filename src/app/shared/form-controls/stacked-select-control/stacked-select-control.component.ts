@@ -11,6 +11,6 @@ import { Option } from "@app/home/pages/crash/flow.definition";
   providers: [provideControlValueAccessor(StackedSelectControlComponent)],
   styleUrls: ['./stacked-select-control.component.scss']
 })
-export class StackedSelectControlComponent extends BaseFormControlComponent<string | boolean>{
+export class StackedSelectControlComponent extends BaseFormControlComponent<string | boolean> {
   @Input() options: Option[] | undefined = [];
 }

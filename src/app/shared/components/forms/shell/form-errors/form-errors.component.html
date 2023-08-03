@@ -37,6 +37,12 @@
         </span>
       </ng-container>
 
+      <ng-container *ngIf="control.errors[validatorErrors.email]">
+        <span>
+          {{ 'shared.forms/validators.labels.email_format.val' | transloco }}
+        </span>
+      </ng-container>
+
       <ng-container *ngIf="control.errors[validatorErrors.ngbDate]">
         <ng-container *ngIf="control.errors[validatorErrors.ngbDate].invalid !== undefined">
           <span>
