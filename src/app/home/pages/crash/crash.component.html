@@ -1,24 +1,27 @@
 <div class="main-content">
-  <ng-container *ngFor="let questionnaire of questionnaires">
-    <div
-      *ngFor="let section of questionnaire.data.sections; let i = index"
-      class="todo-item"
-      [routerLink]="'questionnaires/' + questionnaire.id + '/sections/' + section.id + '/steps/' + section.starting_step"
-    >
-      <div>
-        {{ section.name }}
-        <small *ngIf="section.helpText">
-          {{ section.helpText }}
-        </small>
+  <ng-container *ngFor="let questionnaire of questionnaires; let questionnaireIndex = index">
+    <details [open]="questionnaireIndex === 0">
+      <summary>{{ questionnaire | carIdentifier : questionnaireIndex }}</summary>
+      <div
+        *ngFor="let section of questionnaire.data.sections; let i = index"
+        class="todo-item"
+        [routerLink]="'questionnaires/' + questionnaire.id + '/sections/' + section.id + '/steps/' + section.starting_step"
+      >
+        <div>
+          {{ section.name }}
+          <small *ngIf="section.helpText">
+            {{ section.helpText }}
+          </small>
+        </div>
+        <div class="d-flex align-items-center">
+          <ng-container [ngSwitch]="(section | getStateFromPipe : questionnaire)">
+            <i *ngSwitchCase="ModelState.empty" class="bi bi-circle"></i>
+            <i *ngSwitchCase="ModelState.validated" class="bi bi-check-circle"></i>
+            <i *ngSwitchCase="ModelState.partial" class="bi bi-question-circle"></i>
+          </ng-container>
+        </div>
       </div>
-      <div class="d-flex align-items-center">
-        <ng-container [ngSwitch]="(section | getStateFromPipe : questionnaire)">
-          <i *ngSwitchCase="ModelState.empty" class="bi bi-circle"></i>
-          <i *ngSwitchCase="ModelState.validated" class="bi bi-check-circle"></i>
-          <i *ngSwitchCase="ModelState.partial" class="bi bi-question-circle"></i>
-        </ng-container>
-      </div>
-    </div>
+    </details>
   </ng-container>
 </div>
 

@@ -6,6 +6,8 @@ import { HeaderService } from "@app/shared/services/header-service";
 import { ModelState } from "@app/shared/models/base.model";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
+import { CookieService } from "ngx-cookie-service";
+import { CookieName } from "@app/shared/common/enumerators/cookies";
 
 @Component({
   selector: 'app-crash',
@@ -21,14 +23,19 @@ export class CrashComponent implements OnInit {
     private readonly headerService: HeaderService,
     private readonly router: Router,
     private readonly store: Store,
-    private readonly questionnaireService: QuestionnaireService
+    private readonly questionnaireService: QuestionnaireService,
+    private readonly cookieService: CookieService
   ) {
   }
 
   ngOnInit(): void {
     this.headerService.setHeaderData({name: '§§Accident statement'});
-    this.questionnaireService.getOrFetchQuestionnaires().pipe(take(1)).subscribe((questionnaires) => {
-      this.questionnaires = questionnaires;
+    this.questionnaireService.getOrFetchQuestionnaires().pipe(
+      take(1)
+    ).subscribe((questionnaires) => {
+      this.questionnaires = questionnaires.sort((q1, q2) => {
+        return q1.creator === this.cookieService.get(CookieName.sessionId) ? -1 : 1;
+      });
     });
   }
 

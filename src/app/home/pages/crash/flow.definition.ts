@@ -49,7 +49,8 @@ export enum InputType {
 }
 
 export enum StepType {
-  injuries = 'injuries'
+  injuries = 'injuries',
+  registration_number = 'registration_number'
 }
 
 export interface Input {

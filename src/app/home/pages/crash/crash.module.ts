@@ -7,6 +7,7 @@ import { TranslocoModule } from "@ngneat/transloco";
 import { CheckboxControlModule } from "@app/shared/form-controls/checkbox-control/checkbox-control.module";
 import { FormsModule } from "@angular/forms";
 import { GetStateFromSectionModule } from "@app/shared/common/pipes/get-state-from-section.module";
+import { CarIdentifierModule } from "@app/shared/common/pipes/car-identifier/car-identifier.module";
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { GetStateFromSectionModule } from "@app/shared/common/pipes/get-state-fr
     ]),
     CheckboxControlModule,
     FormsModule,
-    GetStateFromSectionModule
+    GetStateFromSectionModule,
+    CarIdentifierModule
   ]
 })
 export class CrashModule { }
