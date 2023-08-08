@@ -3,8 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  inject, Input,
-  OnDestroy,
+  inject,
   OnInit,
   ViewChild
 } from '@angular/core';
@@ -12,11 +11,11 @@ import MapOptions = google.maps.MapOptions;
 import LatLngLiteral = google.maps.LatLngLiteral;
 import { GoogleMap } from "@angular/google-maps";
 import ControlPosition = google.maps.ControlPosition;
-import { BehaviorSubject, tap } from "rxjs";
 import {
   BaseFormControlComponent,
   provideControlValueAccessor
 } from "@app/shared/form-controls/base-form-control.component";
+import { filter, take, tap } from "rxjs";
 
 export interface PlaceSelectorData {
   markerPosition?: LatLngLiteral;
@@ -29,15 +28,12 @@ export interface PlaceSelectorData {
   styleUrls: ['./place-selector.component.scss'],
   providers: [provideControlValueAccessor(PlaceSelectorComponent)],
 })
-export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelectorData> implements OnInit, AfterViewInit, OnDestroy {
+export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelectorData> implements OnInit, AfterViewInit {
   protected readonly changeDetectorRef: ChangeDetectorRef = inject(ChangeDetectorRef);
 
   @ViewChild(GoogleMap) map!: GoogleMap;
   @ViewChild('currentLocation', { read: ElementRef }) currentLocation!: ElementRef;
 
-  @Input() initialPlaceSelectorData?: PlaceSelectorData;
-
-  markerPosition$: BehaviorSubject<LatLngLiteral> = new BehaviorSubject<google.maps.LatLngLiteral>({ lat: 48.69083, lng: 9.1405 });
   mapOptions: MapOptions = {
     zoom: 5,
     mapTypeId: "satellite",
@@ -50,22 +46,17 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
   };
 
   ngOnInit() : void {
-    if (this.initialPlaceSelectorData?.markerPosition) {
-      this.markerPosition$.next(this.initialPlaceSelectorData.markerPosition);
-      this.setMapZoomAndPosition(18, this.initialPlaceSelectorData.markerPosition.lat, this.initialPlaceSelectorData.markerPosition.lng);
-    } else {
-      this.showCurrentLocation();
-    }
-
-    this.markerPosition$
-      .pipe(
-        tap(() => {
-          this.handleModelChange({
-            markerPosition: this.markerPosition$.getValue(),
-            writtenPosition: '123123'
-          });
-        })
-      ).subscribe();
+    this.value$.pipe(
+      filter((value) => value !== undefined),
+      take(1),
+      tap((value) => {
+        if (!value) {
+          this.showCurrentLocation();
+        } else {
+          this.setMapZoomAndPosition(18, value.markerPosition!.lat, value.markerPosition!.lng);
+        }
+      })
+    ).subscribe();
   }
 
   ngAfterViewInit() {
@@ -113,14 +104,15 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
   }
 
   private updateMarkerPosition(latitude: number, longitude: number) {
-    this.markerPosition$.next({
-      lat: latitude,
-      lng: longitude
-    });
+    this.handleModelChange(
+      {
+        ...this.value$.getValue(),
+        markerPosition: {
+          lat: latitude,
+          lng: longitude
+        }
+      }
+    );
     this.changeDetectorRef.detectChanges();
-  }
-
-  ngOnDestroy() {
-    this.markerPosition$.complete();
   }
 }

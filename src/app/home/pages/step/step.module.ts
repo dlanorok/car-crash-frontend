@@ -18,13 +18,16 @@ import { PointOfInitialImpactModule } from "@app/shared/components/control-value
 import { VisibleDamageSelectorModule } from "@app/shared/components/control-value-accessors/svg-selector/visible-damage-selector/visible-damage-selector.module";
 import { PlaceSelectorModule } from "@app/shared/components/control-value-accessors/place-selector/place-selector.module";
 import { DriverControlModule } from "@app/shared/components/control-value-accessors/driver/driver-control/driver-control.module";
+import { DynamicControlDirective } from "@app/home/pages/step/directive/dynamic-control.directive";
+import { DynamicControlFromInputModule } from "@app/shared/common/pipes/dynamic-control-from-input/dynamic-control-from-input.module";
 
 
 @NgModule({
   declarations: [
     StepComponent,
     GetStepInputsPipe,
-    ToDatePipe
+    ToDatePipe,
+    DynamicControlDirective
   ],
   providers: [GetStepInputsPipe],
   imports: [
@@ -51,6 +54,7 @@ import { DriverControlModule } from "@app/shared/components/control-value-access
     CountryControlModule,
     SelectControlModule,
     DriverControlModule,
+    DynamicControlFromInputModule,
   ]
 })
 export class StepModule { }

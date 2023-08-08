@@ -46,6 +46,15 @@ export enum InputType {
   multiChoiceQuestion = 'multiChoiceQuestion',
   dateTime = 'datetime',
   date = 'date',
+  number = 'number',
+  textarea = 'textarea',
+  collision_direction = 'collision_direction',
+  damaged_parts = 'damaged_parts',
+  place = 'place',
+  phone_picker = 'phone_picker',
+  country_picker = 'country_picker',
+  insurance_picker = 'insurance_picker',
+  driving_license = 'driving_license'
 }
 
 export enum StepType {

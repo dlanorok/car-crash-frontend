@@ -1,4 +1,4 @@
-<div class="h-100 d-block w-100">
+<div  class="h-100 d-block w-100">
   <google-map
     #map
     id="map"
@@ -6,7 +6,9 @@
     width="100%"
     [options]="mapOptions"
   >
-    <map-marker *ngIf="markerPosition$ | async; let markerPosition" [position]="markerPosition"></map-marker>
+    <ng-container *ngIf="value$ | async; let value">
+      <map-marker *ngIf="value.markerPosition" [position]="value.markerPosition"></map-marker>
+    </ng-container>
   </google-map>
 
   <app-google-maps-button #currentLocation [buttonText]="'§§ Current location'" (click)="showCurrentLocation()"></app-google-maps-button>

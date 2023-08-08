@@ -1,5 +1,5 @@
-import { Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { AfterViewInit, Component, forwardRef, inject, Injector, Input } from '@angular/core';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
 import { customAlphabet } from 'nanoid';
 import { BehaviorSubject } from "rxjs";
 
@@ -8,7 +8,9 @@ import { BehaviorSubject } from "rxjs";
     template: '',
   },
 )
-export abstract class BaseFormControlComponent<T> implements ControlValueAccessor {
+export abstract class BaseFormControlComponent<T> implements ControlValueAccessor, AfterViewInit {
+  private injector: Injector = inject(Injector);
+
   @Input() label?: string;
   @Input() placeholder?: string;
   @Input() submitted?: boolean;
@@ -18,6 +20,15 @@ export abstract class BaseFormControlComponent<T> implements ControlValueAccesso
   readonly value$: BehaviorSubject<T | undefined | null> = new BehaviorSubject<T | undefined | null>(undefined);
 
   readonly _id: string = customAlphabet('abcdefgijz', 12)();
+
+  ngAfterViewInit(): void {
+    const ngControl: NgControl | null = this.injector.get(NgControl, null);
+    if (ngControl) {
+      this.formControl = ngControl.control as FormControl;
+    } else {
+      // Component is missing form control binding
+    }
+  }
 
   onChange: (value: T) => void = () => {
     //noop

@@ -1,15 +1,14 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { mergeMap, tap } from "rxjs";
+import { distinctUntilChanged, mergeMap, Subject, takeUntil, tap } from "rxjs";
 import { Store } from "@ngrx/store";
-import { CrashesApiService } from "@app/shared/api/crashes/crashes-api.service";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
 import { Action, Input, InputType, Option, Section, Step, StepType } from "@app/home/pages/crash/flow.definition";
 import { Location } from '@angular/common';
 import { BaseFooterComponent } from "@app/home/pages/accident-report-flow/base-footer.component";
 import { HeaderService } from "@app/shared/services/header-service";
-import { FormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { AbstractControl, FormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { GetStepInputsPipe } from "@app/home/pages/step/pipes/get-step-inputs.pipe";
 import { updateEntireFormValidity } from "@app/shared/forms/helpers/update-entire-form-validity";
 
@@ -18,16 +17,17 @@ import { updateEntireFormValidity } from "@app/shared/forms/helpers/update-entir
   templateUrl: './step.component.html',
   styleUrls: ['./step.component.scss']
 })
-export class StepComponent extends BaseFooterComponent implements OnInit {
+export class StepComponent extends BaseFooterComponent implements OnInit, OnDestroy {
   protected readonly router: Router = inject(Router);
   protected readonly route: ActivatedRoute = inject(ActivatedRoute);
   protected readonly store: Store = inject(Store);
-  protected readonly crashesApiService: CrashesApiService = inject(CrashesApiService);
   protected readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
   protected readonly location: Location = inject(Location);
   protected readonly headerService: HeaderService = inject(HeaderService);
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
   protected readonly getStepInputsPipe: GetStepInputsPipe = inject(GetStepInputsPipe);
+
+  protected destroy$: Subject<void> = new Subject<void>();
 
   stepType!: StepType;
   questionnaireId!: number;
@@ -72,16 +72,18 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
 
                   if (this.step && this.questionnaire) {
                     const inputs = this.getStepInputsPipe.transform(this.step, this.questionnaire);
+
                     this.form = this.formBuilder.group({});
                     inputs.forEach(input => {
                       const control = this.formBuilder.control(input.value);
                       if (input.required) {
                         control.addValidators(Validators.required);
                       }
-
                       if (input.input_type === 'email') {
                         control.addValidators(Validators.email);
                       }
+
+                      this.listenToChanges(input, control);
 
                       this.form?.addControl(input.id.toString(), control);
                     });
@@ -94,24 +96,26 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
       .subscribe();
   }
 
-  onSelectInput(input: Input): void {
-    const selectedOption: Option | undefined = input.options?.find(option => option.value === this.form.value[input.id]);
-    this.updateAnswer();
-
-    switch (selectedOption?.action) {
-      case Action.call:
-        window.location.href = `tel:${selectedOption.action_property.number}`;
-        break;
-      case Action.nextStep:
-        if (selectedOption?.action_property?.step) {
-          this.submitted = false;
-          this.router.navigate(
-            [`/crash/${this.sessionId}/questionnaires/${this.questionnaireId}/sections/${this.section?.id}/steps/${selectedOption?.action_property.step}`]
-          );
-        } else {
-          this.next();
+  private listenToChanges(input: Input, control: AbstractControl) {
+    if (input.type === InputType.select) {
+      control.valueChanges.pipe(
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      ).subscribe((value) => {
+        const selectedOption: Option | undefined = input.options?.find(option => option.value === value);
+        switch (selectedOption?.action) {
+          case Action.call:
+            window.location.href = `tel:${selectedOption.action_property.number}`;
+            break;
+          case Action.nextStep:
+            if (selectedOption?.action_property?.step) {
+              this.next(`/crash/${this.sessionId}/questionnaires/${this.questionnaireId}/sections/${this.section?.id}/steps/${selectedOption?.action_property.step}`);
+            } else {
+              this.next();
+            }
+            break;
         }
-        break;
+      });
     }
   }
 
@@ -125,10 +129,9 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
     this.location.back();
   }
 
-  next(): void {
+  next(url?: string): void {
     this.submitted = true;
     updateEntireFormValidity(this.form);
-    console.log(this.form.value);
 
     if (!this.form?.valid) {
       return;
@@ -146,6 +149,11 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
 
     // For now select first input of steps
     const input = this.questionnaire?.data.inputs.find(input => input.id === this.step?.inputs[0]);
+
+    if (url) {
+      this.router.navigate([url]);
+      return;
+    }
 
     if (input?.type === InputType.select) {
       const selectedOption: Option | undefined = input.options?.find(option => option.value === input.value);
@@ -165,5 +173,10 @@ export class StepComponent extends BaseFooterComponent implements OnInit {
 
   valueUpdated(input: Input, newValue: any) {
     this.form.get(input.id.toString())?.setValue(newValue);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

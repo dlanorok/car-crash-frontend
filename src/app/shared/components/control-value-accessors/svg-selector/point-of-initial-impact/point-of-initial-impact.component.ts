@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BaseSvgHoverComponent } from "../base-svg-hover/base-svg-hover.component";
 import { provideControlValueAccessor } from "@app/shared/form-controls/base-form-control.component";
 
@@ -8,16 +8,18 @@ import { provideControlValueAccessor } from "@app/shared/form-controls/base-form
   styleUrls: ['./point-of-initial-impact.component.scss'],
   providers: [provideControlValueAccessor(PointOfInitialImpactComponent)],
 })
-export class PointOfInitialImpactComponent extends BaseSvgHoverComponent implements AfterViewInit, OnDestroy, OnChanges, OnInit {
+export class PointOfInitialImpactComponent extends BaseSvgHoverComponent {
 
   override onViewReady() {
-    this.selectedParts = this.value$.getValue() || [];
-    this.svgImage?.nativeElement.querySelectorAll('g').forEach((path) => {
-      if (this.selectedParts?.includes(path.id)) {
-        path.classList.add(this.selectedClass);
-      } else {
-        path.classList.remove(this.selectedClass);
-      }
+    this.value$.subscribe((value) => {
+      this.selectedParts = value || [];
+      this.svgImage?.nativeElement.querySelectorAll('g').forEach((path) => {
+        if (this.selectedParts?.includes(path.id)) {
+          path.classList.add(this.selectedClass);
+        } else {
+          path.classList.remove(this.selectedClass);
+        }
+      });
     });
   }
 
