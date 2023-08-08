@@ -29,7 +29,6 @@ import { TextControlModule } from "@app/shared/form-controls/text-control/text-c
 export class DynamicControlFromInputPipe implements PipeTransform {
   private injector: Injector = inject(Injector);
 
-
   transform(input: Input, submitted: boolean): DynamicControlComponentConfiguration<any> | null {
     let component, module;
     let additionalOptions = {};
@@ -60,7 +59,7 @@ export class DynamicControlFromInputPipe implements PipeTransform {
       case InputType.insurance_picker:
         component = StackedSelectControlComponent;
         module = StackedSelectControlModule;
-        additionalOptions = {options: input.options};
+        additionalOptions = { options: input.options };
         break;
       case InputType.collision_direction:
         component = PointOfInitialImpactComponent;

@@ -20,6 +20,11 @@ module.exports = (config, options, targetOptions) => {
     }
   )
 
+  config.infrastructureLogging = {
+    colors: true,
+    level: 'verbose',
+  }
+
   config.module.plugins
 
   /**

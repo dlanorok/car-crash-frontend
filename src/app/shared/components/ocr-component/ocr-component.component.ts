@@ -7,7 +7,7 @@ import {
 } from '@regulaforensics/vp-frontend-document-components';
 import { RegularForensicsApi } from "../../api/regula-forensics/regular-forensics-api";
 import { ProcessRequest } from "@regulaforensics/document-reader-webclient/src/ext/process-request";
-import { from, take, tap, throwError } from "rxjs";
+import { finalize, from, take, tap, throwError } from "rxjs";
 import { GraphicFieldType, Scenario } from '@regulaforensics/document-reader-webclient';
 import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
 import { catchError } from "rxjs/operators";
@@ -19,6 +19,8 @@ import { catchError } from "rxjs/operators";
   styleUrls: ['./ocr-component.component.scss']
 })
 export class OcrComponentComponent implements AfterViewInit, OnInit {
+
+  loading = false;
 
   @Input() showOCRComponent = false;
   @Input() title!: string;
@@ -57,7 +59,9 @@ export class OcrComponentComponent implements AfterViewInit, OnInit {
       return;
     }
 
+
     if (data.detail.action === 'PROCESS_FINISHED') {
+      this.loading = true;
       const status = data.detail.data?.status;
       const isFinishStatus = status === 1;
 
@@ -88,7 +92,8 @@ export class OcrComponentComponent implements AfterViewInit, OnInit {
             catchError((err) => {
               this.OCRResponse.next({} as Response);
               return throwError(err);
-            })
+            }),
+            finalize(() => this.loading = false)
           ).subscribe();
       }
     }

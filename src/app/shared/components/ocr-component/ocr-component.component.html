@@ -13,6 +13,11 @@
 <div
   [class.d-none]="!showOCRComponent"
   class="ocr-reader">
-  <document-reader
-    (document-reader)="documentReaderHandler($event)" #reader></document-reader>
+  <ng-container *ngIf="loading; else documentReaderTpl">
+    Loading...
+  </ng-container>
+  <ng-template #documentReaderTpl>
+    <document-reader
+      (document-reader)="documentReaderHandler($event)" #reader></document-reader>
+  </ng-template>
 </div>

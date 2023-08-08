@@ -7,7 +7,7 @@ import { DriverModel } from "@app/shared/models/driver.model";
 import { TextFieldType } from "@regulaforensics/document-reader-webclient";
 import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
 import { DriverFormComponent } from "@app/shared/components/forms/driver-form/driver-form.component";
-import { Subject, takeUntil, tap } from "rxjs";
+import { distinctUntilChanged, Subject, takeUntil, tap } from "rxjs";
 
 @Component({
   selector: 'app-driver-control',
@@ -18,6 +18,7 @@ import { Subject, takeUntil, tap } from "rxjs";
 })
 export class DriverControlComponent extends BaseFormControlComponent<DriverModel> implements AfterViewInit, OnDestroy {
   protected destroy$: Subject<void> = new Subject<void>();
+  loading = false;
 
   @ViewChild('driverForm', {static: false}) protected driverForm?: DriverFormComponent;
 
@@ -25,11 +26,12 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
     this.isDisabled$.pipe(
       takeUntil(this.destroy$),
       tap((disabled) => {
-        disabled ? this.driverForm?.form.disable() : this.driverForm?.form.enable();
+        disabled ? this.driverForm?.form.disable({emitEvent: false}) : this.driverForm?.form.enable({emitEvent: false});
       })
     ).subscribe();
 
     this.driverForm?.form.valueChanges.pipe(
+      distinctUntilChanged(),
       takeUntil(this.destroy$),
       tap((value) => {
         const driverModel = new DriverModel({
@@ -55,6 +57,7 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
         ...driver
       });
     }
+    this.driverForm?.setDefaults(driverModel);
     this.handleModelChange(driverModel);
   }
 

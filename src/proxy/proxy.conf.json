@@ -11,12 +11,11 @@
     "ws": true
   },
   "/regula": {
-    "target": "http://52.30.114.38:8080",
+    "target": "https://regula.snapp.email",
     "pathRewrite": {
       "^/regula": ""
     },
-    "logLevel": "debug",
-    "secure": false,
+    "secure": true,
     "changeOrigin": true
   },
   "/staticmap": {

@@ -82,6 +82,7 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
                         value: input.value,
                         disabled: this.questionnaire?.creator !== this.cookieService.get(CookieName.sessionId)
                       });
+
                       if (input.required) {
                         control.addValidators(Validators.required);
                       }
