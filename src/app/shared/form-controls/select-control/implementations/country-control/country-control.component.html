@@ -1,4 +1,5 @@
 <app-select-control
+  [disabled]="(isDisabled$ | async) === true"
   [ngModel]="value$ | async"
   [items]="items"
   [customOptionTemplate]="countryOptionTemplate"

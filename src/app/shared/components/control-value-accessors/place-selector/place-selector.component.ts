@@ -15,7 +15,7 @@ import {
   BaseFormControlComponent,
   provideControlValueAccessor
 } from "@app/shared/form-controls/base-form-control.component";
-import { filter, take, tap } from "rxjs";
+import { distinctUntilChanged, filter, take, tap } from "rxjs";
 
 export interface PlaceSelectorData {
   markerPosition?: LatLngLiteral;
@@ -60,10 +60,24 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
   }
 
   ngAfterViewInit() {
-    if (this.map.googleMap) {
-      this.map.googleMap.controls[ControlPosition.TOP_CENTER].push(this.currentLocation.nativeElement);
-    }
-    this.addMapCenterChangeListener();
+    this.isDisabled$.pipe(
+      distinctUntilChanged(),
+      tap((isDisabled) => {
+        if (isDisabled) {
+          this.removeMapCenterListeners();
+          if (this.map.googleMap) {
+            this.map.googleMap.setOptions({draggable: false});
+          }
+          return;
+        }
+
+        if (this.map.googleMap) {
+          this.map.googleMap.controls[ControlPosition.TOP_CENTER].push(this.currentLocation.nativeElement);
+          this.map.googleMap.setOptions({draggable: true});
+        }
+        this.addMapCenterChangeListener();
+      })
+    ).subscribe();
   }
 
   private setMapZoomAndPosition(zoom: number, lat: number, lng: number) {
@@ -100,6 +114,12 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
           this.updateMarkerPosition(center.lat(), center.lng());
         }
       });
+    }
+  }
+
+  private removeMapCenterListeners() {
+    if (this.map?.googleMap) {
+      google.maps.event.clearListeners(this.map.googleMap, 'center_changed');
     }
   }
 

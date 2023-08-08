@@ -18,6 +18,8 @@ export abstract class BaseFormControlComponent<T> implements ControlValueAccesso
   @Input() formControl!: FormControl;
 
   readonly value$: BehaviorSubject<T | undefined | null> = new BehaviorSubject<T | undefined | null>(undefined);
+  readonly isDisabled$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
 
   readonly _id: string = customAlphabet('abcdefgijz', 12)();
 
@@ -56,6 +58,7 @@ export abstract class BaseFormControlComponent<T> implements ControlValueAccesso
   }
 
   setDisabledState(disabled: boolean): void {
+    this.isDisabled$.next(disabled);
     if (!this.formControl) {
       return;
     }

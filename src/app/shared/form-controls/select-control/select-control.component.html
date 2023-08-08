@@ -1,4 +1,7 @@
-<ng-select [ngModel]="value$ | async" (ngModelChange)="handleModelChange($event)">
+<ng-select
+  [disabled]="(isDisabled$ | async) === true"
+  [ngModel]="value$ | async"
+  (ngModelChange)="handleModelChange($event)">
   <ng-option *ngFor="let item of items" [value]="item.value">
     <ng-container
       *ngIf="!!customOptionTemplate; else labelTpl"

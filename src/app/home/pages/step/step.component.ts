@@ -11,6 +11,8 @@ import { HeaderService } from "@app/shared/services/header-service";
 import { AbstractControl, FormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { GetStepInputsPipe } from "@app/home/pages/step/pipes/get-step-inputs.pipe";
 import { updateEntireFormValidity } from "@app/shared/forms/helpers/update-entire-form-validity";
+import { CookieService } from "ngx-cookie-service";
+import { CookieName } from "@app/shared/common/enumerators/cookies";
 
 @Component({
   selector: 'app-step',
@@ -26,6 +28,7 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
   protected readonly headerService: HeaderService = inject(HeaderService);
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
   protected readonly getStepInputsPipe: GetStepInputsPipe = inject(GetStepInputsPipe);
+  protected readonly cookieService: CookieService = inject(CookieService);
 
   protected destroy$: Subject<void> = new Subject<void>();
 
@@ -75,7 +78,10 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
 
                     this.form = this.formBuilder.group({});
                     inputs.forEach(input => {
-                      const control = this.formBuilder.control(input.value);
+                      const control = this.formBuilder.control({
+                        value: input.value,
+                        disabled: this.questionnaire?.creator !== this.cookieService.get(CookieName.sessionId)
+                      });
                       if (input.required) {
                         control.addValidators(Validators.required);
                       }
@@ -133,12 +139,12 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
     this.submitted = true;
     updateEntireFormValidity(this.form);
 
-    if (!this.form?.valid) {
+    if (!this.form?.valid && !this.form.disabled) {
       return;
     }
 
     this.submitted = false;
-    if (this.questionnaire && this.step) {
+    if (this.questionnaire && this.step && !this.form.disabled) {
       this.questionnaireService.updateInputs(this.form.value, this.questionnaire);
     }
 

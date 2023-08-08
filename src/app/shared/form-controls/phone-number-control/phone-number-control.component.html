@@ -1,6 +1,5 @@
 <div class="form-group">
   <label [htmlFor]="_id">{{ label }}</label>
-
   <ngx-intl-tel-input
     [id]="_id"
     [cssClass]="'custom'"
@@ -14,6 +13,7 @@
     [selectedCountryISO]="CountryISO.Slovenia"
     [maxLength]="15"
     [phoneValidation]="true"
+    [disabled]="(isDisabled$ | async) === true"
     [ngModel]="value$ | async"
     (ngModelChange)="handleModelChange($event)"
   ></ngx-intl-tel-input>

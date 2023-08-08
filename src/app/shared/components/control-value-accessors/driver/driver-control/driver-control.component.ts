@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
 import {
   BaseFormControlComponent,
   provideControlValueAccessor
@@ -7,7 +7,7 @@ import { DriverModel } from "@app/shared/models/driver.model";
 import { TextFieldType } from "@regulaforensics/document-reader-webclient";
 import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
 import { DriverFormComponent } from "@app/shared/components/forms/driver-form/driver-form.component";
-import { tap } from "rxjs";
+import { Subject, takeUntil, tap } from "rxjs";
 
 @Component({
   selector: 'app-driver-control',
@@ -16,11 +16,21 @@ import { tap } from "rxjs";
   providers: [provideControlValueAccessor(DriverControlComponent)],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DriverControlComponent extends BaseFormControlComponent<DriverModel> implements AfterViewInit {
+export class DriverControlComponent extends BaseFormControlComponent<DriverModel> implements AfterViewInit, OnDestroy {
+  protected destroy$: Subject<void> = new Subject<void>();
+
   @ViewChild('driverForm', {static: false}) protected driverForm?: DriverFormComponent;
 
   ngAfterViewInit() {
+    this.isDisabled$.pipe(
+      takeUntil(this.destroy$),
+      tap((disabled) => {
+        disabled ? this.driverForm?.form.disable() : this.driverForm?.form.enable();
+      })
+    ).subscribe();
+
     this.driverForm?.form.valueChanges.pipe(
+      takeUntil(this.destroy$),
       tap((value) => {
         const driverModel = new DriverModel({
           ...value
@@ -46,5 +56,10 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
       });
     }
     this.handleModelChange(driverModel);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

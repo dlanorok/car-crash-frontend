@@ -6,6 +6,7 @@
     class="form-control"
     type="number"
     [placeholder]="placeholder"
+    [disabled]="(isDisabled$ | async) === true"
     [ngModel]="value$ | async"
     (ngModelChange)="handleModelChange($event)"
     [class.is-invalid]="submitted && formControl.errors">

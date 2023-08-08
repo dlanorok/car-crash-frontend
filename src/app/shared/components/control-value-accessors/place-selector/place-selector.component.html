@@ -11,5 +11,5 @@
     </ng-container>
   </google-map>
 
-  <app-google-maps-button #currentLocation [buttonText]="'§§ Current location'" (click)="showCurrentLocation()"></app-google-maps-button>
+  <app-google-maps-button *ngIf="(isDisabled$ | async) === false" #currentLocation [buttonText]="'§§ Current location'" (click)="showCurrentLocation()"></app-google-maps-button>
 </div>

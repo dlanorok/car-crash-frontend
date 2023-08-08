@@ -13,6 +13,7 @@ import { TextFieldType } from "@regulaforensics/document-reader-webclient";
 export class DriverFormComponent extends BaseFormComponent<DriverModel> {
   hasOcrEnabled = true;
   ocrTitle = 'shared.ocr_driver_license';
+
   @Input() driver?: DriverModel | undefined | null;
 
   constructor(private readonly formBuilder: FormBuilder) {

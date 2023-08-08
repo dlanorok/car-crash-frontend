@@ -13,4 +13,12 @@ import { Option } from "@app/home/pages/crash/flow.definition";
 })
 export class StackedSelectControlComponent extends BaseFormControlComponent<string | boolean> {
   @Input() options: Option[] | undefined = [];
+
+  onOptionClick(value: string | boolean) {
+    if (this.isDisabled$.getValue()) {
+      return;
+    }
+
+    this.handleModelChange(value);
+  }
 }

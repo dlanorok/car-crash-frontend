@@ -11,6 +11,11 @@
     background-color: #97ff4d;
   }
 
+  &.disabled {
+    background-color: var(--light-ui-element);
+    cursor: not-allowed;
+  }
+
   &.is-invalid {
     border-color: var(--bs-form-invalid-color);
   }

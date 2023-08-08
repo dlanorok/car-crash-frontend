@@ -9,6 +9,7 @@
       ngbDatepicker
       (click)="d.toggle()"
       #d="ngbDatepicker"
+      [disabled]="(isDisabled$ | async) === true"
       [ngModel]="value$ | async"
       (ngModelChange)="handleDateChange($event)"
       [class.is-invalid]="submitted && formControl.errors"

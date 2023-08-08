@@ -1,6 +1,7 @@
 <div class="form-group form-check mt-3">
   <input
     [id]="_id"
+    [disabled]="(isDisabled$ | async) === true"
     [ngModel]="value$ | async"
     (ngModelChange)="handleModelChange($event)"
     [class.is-invalid]="submitted && formControl.errors"
