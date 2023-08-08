@@ -6,6 +6,8 @@ import {
   Configuration,
 } from '@regulaforensics/document-reader-webclient';
 import { ProcessRequest } from "@regulaforensics/document-reader-webclient/src/ext/process-request";
+import { environment } from "../../../../environments/environment";
+
 
 @Injectable({
   providedIn: ApiModule
@@ -15,7 +17,7 @@ export class RegularForensicsApi {
   api: DocumentReaderApi;
 
   constructor() {
-    const configuration = new Configuration({ basePath: '/regula' });
+    const configuration = new Configuration({ basePath: environment.regulaUrl });
     this.api = new DocumentReaderApi(configuration);
   }
 
