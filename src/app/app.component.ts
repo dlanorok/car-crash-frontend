@@ -22,6 +22,14 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
       tap(() => this.urlParamService.saveUrlParamToLocalStorage('session_id', 'crash')),
+      tap((event) => {
+        const currentPage = (event as NavigationEnd).url;
+        if (currentPage.includes('/crash')) {
+          this.webSocketService.connect();
+        } else {
+          this.webSocketService.close();
+        }
+      })
     ).subscribe();
   }
 }

@@ -17,6 +17,8 @@ import { CircumstanceModel } from "@app/shared/models/circumstance.model";
 import { environment } from "../../../environments/environment";
 import { wsSketchCarUpdated, wsSketchPolygonsUpdated, wsSketchUpdated } from "@app/app-state/sketch/sketch-action";
 import { PolygonsData, SketchCarModel, SketchModel } from "@app/shared/models/sketch.model";
+import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
+import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 
 interface WebSocketMessage {
   type: string;
@@ -44,7 +46,8 @@ export class WebSocketService implements OnDestroy {
 
   constructor(
     private readonly store: Store,
-    private readonly cookieService: CookieService
+    private readonly cookieService: CookieService,
+    private readonly questionnaireService: QuestionnaireService
   ) {}
 
   connect(): void {
@@ -111,6 +114,10 @@ export class WebSocketService implements OnDestroy {
       case 'Sketch':
         model = new SketchModel(message.model);
         storeActions = [wsSketchUpdated({sketch: model})];
+        break;
+      case 'Questionnaire':
+        model = new QuestionnaireModel(message.model);
+        this.questionnaireService.updateQuestionnaire(model);
         break;
       case SpecialModelName.SketchCarUpdated:
         storeActions = [wsSketchCarUpdated({sketchCar: message.model as SketchCarModel})];

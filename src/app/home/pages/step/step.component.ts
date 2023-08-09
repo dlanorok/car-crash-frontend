@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { distinctUntilChanged, mergeMap, Subject, takeUntil, tap } from "rxjs";
 import { Store } from "@ngrx/store";
@@ -13,7 +13,9 @@ import { GetStepInputsPipe } from "@app/home/pages/step/pipes/get-step-inputs.pi
 import { updateEntireFormValidity } from "@app/shared/forms/helpers/update-entire-form-validity";
 import { CookieService } from "ngx-cookie-service";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 
+@UntilDestroy()
 @Component({
   selector: 'app-step',
   templateUrl: './step.component.html',
@@ -29,6 +31,7 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
   protected readonly getStepInputsPipe: GetStepInputsPipe = inject(GetStepInputsPipe);
   protected readonly cookieService: CookieService = inject(CookieService);
+  protected readonly changeDetection: ChangeDetectorRef = inject(ChangeDetectorRef);
 
   protected destroy$: Subject<void> = new Subject<void>();
 
@@ -44,6 +47,20 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
 
   ngOnInit(): void {
     this.getData();
+    this.subscribeToQuestionnaire();
+  }
+
+  private subscribeToQuestionnaire() {
+    this.questionnaireService.questionnairesUpdates$.pipe(
+      untilDestroyed(this)
+    ).subscribe((questionnaires) => {
+      const newQuestionnaire = questionnaires.find(questionnaire => this.questionnaire?.id === questionnaire.id);
+
+      if (newQuestionnaire) {
+        this.questionnaire = newQuestionnaire;
+        this.defineInputs(this.stepType);
+      }
+    });
   }
 
   getData(): void {
@@ -61,6 +78,9 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
           if (sessionId) {
             this.sessionId = sessionId;
           }
+          if (stepType) {
+            this.stepType = stepType as StepType;
+          }
 
           return this.questionnaireService.getOrFetchQuestionnaires()
             .pipe(
@@ -70,37 +90,41 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
                   this.section = this.questionnaire?.data.sections.find(section => section.id === sectionId);
                   this.headerService.setHeaderData({name: this.section?.name || ''});
                 }
-                if (stepType) {
-                  this.step = this.questionnaire?.data.steps.find((step) => step.step_type === stepType);
-
-                  if (this.step && this.questionnaire) {
-                    const inputs = this.getStepInputsPipe.transform(this.step, this.questionnaire);
-
-                    this.form = this.formBuilder.group({});
-                    inputs.forEach(input => {
-                      const control = this.formBuilder.control({
-                        value: input.value,
-                        disabled: this.questionnaire?.creator !== this.cookieService.get(CookieName.sessionId)
-                      });
-
-                      if (input.required) {
-                        control.addValidators(Validators.required);
-                      }
-                      if (input.input_type === 'email') {
-                        control.addValidators(Validators.email);
-                      }
-
-                      this.listenToChanges(input, control);
-
-                      this.form?.addControl(input.id.toString(), control);
-                    });
-                  }
-                }
+                this.defineInputs(stepType);
               })
             );
         }),
       )
       .subscribe();
+  }
+
+  private defineInputs(stepType: string | null): void {
+    if (stepType) {
+      this.step = this.questionnaire?.data.steps.find((step) => step.step_type === stepType);
+
+      if (this.step && this.questionnaire) {
+        const inputs = this.getStepInputsPipe.transform(this.step, this.questionnaire);
+
+        this.form = this.formBuilder.group({});
+        inputs.forEach(input => {
+          const control = this.formBuilder.control({
+            value: input.value,
+            disabled: this.questionnaire?.creator !== this.cookieService.get(CookieName.sessionId)
+          });
+
+          if (input.required) {
+            control.addValidators(Validators.required);
+          }
+          if (input.input_type === 'email') {
+            control.addValidators(Validators.email);
+          }
+
+          this.listenToChanges(input, control);
+
+          this.form?.addControl(input.id.toString(), control);
+        });
+      }
+    }
   }
 
   private listenToChanges(input: Input, control: AbstractControl) {

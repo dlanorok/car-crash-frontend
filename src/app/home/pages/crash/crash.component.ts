@@ -8,7 +8,9 @@ import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 import { CookieService } from "ngx-cookie-service";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 
+@UntilDestroy()
 @Component({
   selector: 'app-crash',
   templateUrl: './crash.component.html',
@@ -37,9 +39,14 @@ export class CrashComponent implements OnInit {
         return q1.creator === this.cookieService.get(CookieName.sessionId) ? -1 : 1;
       });
     });
+    this.subscribeToQuestionnaireChange();
   }
 
-  change($event: any) {
-    console.log($event);
+  private subscribeToQuestionnaireChange() {
+    this.questionnaireService.questionnairesUpdates$.pipe(
+      untilDestroyed(this)
+    ).subscribe((questionnaires) => {
+      this.questionnaires = questionnaires;
+    });
   }
 }

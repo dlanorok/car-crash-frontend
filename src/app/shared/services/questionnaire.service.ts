@@ -1,15 +1,17 @@
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, OnDestroy } from "@angular/core";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
 import { QuestionnairesApiService } from "@app/shared/api/questionnaires/questionnaires-api.service";
-import { Observable, of, take, tap } from "rxjs";
+import { Observable, of, Subject, take, tap } from "rxjs";
 import { map } from "rxjs/operators";
 import { Input } from "@app/home/pages/crash/flow.definition";
 
 @Injectable({
   providedIn: 'root'
 })
-export class QuestionnaireService {
+export class QuestionnaireService implements OnDestroy {
   private readonly questionnairesApiService: QuestionnairesApiService = inject(QuestionnairesApiService);
+
+  questionnairesUpdates$: Subject<QuestionnaireModel[]> = new Subject<QuestionnaireModel[]>();
 
   questionnaires: QuestionnaireModel[] = [];
 
@@ -65,6 +67,17 @@ export class QuestionnaireService {
       }
     });
     this.questionnairesApiService.updateInputs(questionnaire.id, inputs).pipe(take(1)).subscribe();
+  }
+
+  updateQuestionnaire(questionnaire: QuestionnaireModel): void {
+    this.questionnaires = this.questionnaires.map(
+      _questionnaire => _questionnaire.id === questionnaire.id ? questionnaire : _questionnaire
+    );
+    this.questionnairesUpdates$.next(this.questionnaires);
+  }
+
+  ngOnDestroy() {
+    this.questionnairesUpdates$.complete();
   }
 }
 
