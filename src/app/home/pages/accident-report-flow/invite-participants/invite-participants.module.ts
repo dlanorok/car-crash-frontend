@@ -6,11 +6,15 @@ import { FooterButtonsModule } from "@app/shared/components/footer-buttons/foote
 import { QRCodeModule } from "angularx-qrcode";
 import { PhoneNumberControlModule } from "@app/shared/form-controls/phone-number-control/phone-number-control.module";
 import { ApiModule } from "@app/shared/api/api.module";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 
 
 @NgModule({
   declarations: [
+    InviteParticipantsComponent
+  ],
+  exports: [
     InviteParticipantsComponent
   ],
   imports: [
@@ -24,7 +28,9 @@ import { ApiModule } from "@app/shared/api/api.module";
     FooterButtonsModule,
     QRCodeModule,
     PhoneNumberControlModule,
-    ApiModule
+    ApiModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class InviteParticipantsModule { }

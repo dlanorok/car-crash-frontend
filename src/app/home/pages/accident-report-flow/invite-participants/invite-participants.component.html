@@ -25,9 +25,11 @@
     §§Send invite link via SMS
   </div>
 
-  <app-phone-number-control [formControl]="$any(form.controls['phone_number'])">
+  <form [formGroup]="form">
+    <app-phone-number-control [formControl]="$any(form.controls['phone_number'])">
 
-  </app-phone-number-control>
+    </app-phone-number-control>
+  </form>
 
   <button type="submit" class="btn btn-primary w-100 mt-3" (click)="sendSms()">
     §§ Send SMS

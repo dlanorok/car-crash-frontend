@@ -6,6 +6,7 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
+  cursor: pointer;
 }
 
 .bi-check-circle {
@@ -23,7 +24,7 @@
 
 /* Apply basic styles to details element */
 details {
-  margin: 10px; /* Adjust margin as needed */
+  margin-bottom: 10px; /* Adjust margin as needed */
   border: 1px solid var(--medium-ui-element);
   border-radius: 5px;
   padding: 10px;
@@ -34,9 +35,4 @@ summary {
   cursor: pointer;
   font-weight: bold;
   outline: none;
-}
-
-/* Apply custom styles when details is open */
-details[open] {
-  background-color: var(--light-ui-element);
 }

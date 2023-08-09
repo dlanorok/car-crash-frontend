@@ -1,4 +1,12 @@
 <div class="main-content">
+  <div *ngIf="crash$ | async | amICreator" class="todo-item" [routerLink]="'invite'">
+    Invite others
+    <div class="d-flex align-items-center">
+      <i *ngIf="questionnaires.length <= 1" class="bi bi-circle"></i>
+      <i *ngIf="questionnaires.length > 1" class="bi bi-check-circle"></i>
+    </div>
+  </div>
+
   <ng-container *ngFor="let questionnaire of questionnaires; let questionnaireIndex = index">
     <details [open]="questionnaireIndex === 0">
       <summary>{{ questionnaire | carIdentifier : questionnaireIndex }}</summary>

@@ -5,7 +5,7 @@ import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { FormBuilder, UntypedFormGroup } from "@angular/forms";
 import { CommonApiService } from "@app/shared/api/common/common-api.service";
 import { ChangeData } from "ngx-intl-tel-input/lib/interfaces/change-data";
-import { Observable, take, tap } from "rxjs";
+import { Observable } from "rxjs";
 import { CrashModel } from "@app/shared/models/crash.model";
 import { selectCrash } from "@app/app-state/crash/crash-selector";
 import { Store } from "@ngrx/store";
@@ -44,21 +44,12 @@ export class InviteParticipantsComponent extends BaseFooterComponent implements 
 
   next(): void {
     const sessionId = localStorage.getItem(StorageItem.sessionId);
-    this.crash$.pipe(
-      take(1),
-      tap((crash: CrashModel) => {
-        if (crash.cars) {
-          this.router.navigate([`/crash/${sessionId}/cars/${crash.cars?.[0]}/policy-holder`]);
-        } else {
-          // TODO what else?
-        }
-      })
-    ).subscribe();
+    this.router.navigate([`/crash/${sessionId}`]);
   }
 
   previous(): void {
     const sessionId = localStorage.getItem(StorageItem.sessionId);
-    this.router.navigate([`/crash/${sessionId}/accident-data`]);
+    this.router.navigate([`/crash/${sessionId}`]);
   }
 
   sendSms() {

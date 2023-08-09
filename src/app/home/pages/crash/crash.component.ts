@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { take } from "rxjs";
+import { Observable, take } from "rxjs";
 import { Store } from "@ngrx/store";
 import { HeaderService } from "@app/shared/services/header-service";
 import { ModelState } from "@app/shared/models/base.model";
@@ -9,6 +9,10 @@ import { QuestionnaireService } from "@app/shared/services/questionnaire.service
 import { CookieService } from "ngx-cookie-service";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { loadCrash } from "@app/app-state/crash/crash-action";
+import { StorageItem } from "@app/shared/common/enumerators/storage";
+import { CrashModel } from "@app/shared/models/crash.model";
+import { selectCrash } from "@app/app-state/crash/crash-selector";
 
 @UntilDestroy()
 @Component({
@@ -19,6 +23,7 @@ import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 export class CrashComponent implements OnInit {
   readonly ModelState = ModelState;
   questionnaires: QuestionnaireModel[] = [];
+  crash$: Observable<CrashModel> = this.store.select(selectCrash);
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -32,6 +37,13 @@ export class CrashComponent implements OnInit {
 
   ngOnInit(): void {
     this.headerService.setHeaderData({name: '§§Accident statement'});
+    const sessionId: string | null = localStorage.getItem(StorageItem.sessionId);
+    if (!sessionId) {
+      this.router.navigate(["/"]);
+      return;
+    }
+    this.store.dispatch(loadCrash({sessionId}));
+
     this.questionnaireService.getOrFetchQuestionnaires().pipe(
       take(1)
     ).subscribe((questionnaires) => {
