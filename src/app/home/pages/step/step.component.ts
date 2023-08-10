@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { distinctUntilChanged, mergeMap, Subject, takeUntil, tap } from "rxjs";
 import { Store } from "@ngrx/store";
@@ -14,6 +14,7 @@ import { updateEntireFormValidity } from "@app/shared/forms/helpers/update-entir
 import { CookieService } from "ngx-cookie-service";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { ToastrService } from "ngx-toastr";
 
 @UntilDestroy()
 @Component({
@@ -31,7 +32,7 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
   protected readonly getStepInputsPipe: GetStepInputsPipe = inject(GetStepInputsPipe);
   protected readonly cookieService: CookieService = inject(CookieService);
-  protected readonly changeDetection: ChangeDetectorRef = inject(ChangeDetectorRef);
+  protected readonly toastr: ToastrService = inject(ToastrService);
 
   protected destroy$: Subject<void> = new Subject<void>();
 
@@ -165,8 +166,10 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
     updateEntireFormValidity(this.form);
 
     if (!this.form?.valid && !this.form.disabled) {
+      this.toastr.error('§§ This field is required');
       return;
     }
+    this.toastr.clear();
 
     this.submitted = false;
     if (this.questionnaire && this.step && !this.form.disabled) {

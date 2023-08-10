@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterViewChecked,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -20,6 +20,8 @@ import { distinctUntilChanged, filter, take, tap } from "rxjs";
 export interface PlaceSelectorData {
   markerPosition?: LatLngLiteral;
   writtenPosition?: string;
+
+  sketchData?: any;
 }
 
 @Component({
@@ -28,11 +30,12 @@ export interface PlaceSelectorData {
   styleUrls: ['./place-selector.component.scss'],
   providers: [provideControlValueAccessor(PlaceSelectorComponent)],
 })
-export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelectorData> implements OnInit, AfterViewInit {
+export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelectorData> implements OnInit, AfterViewChecked {
   protected readonly changeDetectorRef: ChangeDetectorRef = inject(ChangeDetectorRef);
 
-  @ViewChild(GoogleMap) map!: GoogleMap;
+  @ViewChild(GoogleMap, { static: false }) map!: GoogleMap;
   @ViewChild('currentLocation', { read: ElementRef }) currentLocation!: ElementRef;
+  @ViewChild('confirmLocationBtn', { read: ElementRef }) confirmLocationBtn!: ElementRef;
 
   mapOptions: MapOptions = {
     zoom: 5,
@@ -44,6 +47,10 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
     rotateControl: false,
     mapTypeControlOptions: { mapTypeIds: [] },
   };
+
+  initialized = false;
+
+  position?: LatLngLiteral;
 
   ngOnInit() : void {
     this.value$.pipe(
@@ -59,25 +66,29 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
     ).subscribe();
   }
 
-  ngAfterViewInit() {
-    this.isDisabled$.pipe(
-      distinctUntilChanged(),
-      tap((isDisabled) => {
-        if (isDisabled) {
-          this.removeMapCenterListeners();
-          if (this.map.googleMap) {
-            this.map.googleMap.setOptions({draggable: false});
+  ngAfterViewChecked() {
+    if (this.map && !this.initialized) {
+      this.initialized = true;
+      this.isDisabled$.pipe(
+        distinctUntilChanged(),
+        tap((isDisabled) => {
+          if (isDisabled) {
+            this.removeMapCenterListeners();
+            if (this.map.googleMap) {
+              this.map.googleMap.setOptions({draggable: false});
+            }
+            return;
           }
-          return;
-        }
 
-        if (this.map.googleMap) {
-          this.map.googleMap.controls[ControlPosition.TOP_CENTER].push(this.currentLocation.nativeElement);
-          this.map.googleMap.setOptions({draggable: true});
-        }
-        this.addMapCenterChangeListener();
-      })
-    ).subscribe();
+          if (this.map.googleMap) {
+            this.map.googleMap.controls[ControlPosition.TOP_CENTER].push(this.currentLocation.nativeElement);
+            this.map.googleMap.controls[ControlPosition.TOP_CENTER].push(this.confirmLocationBtn.nativeElement);
+            this.map.googleMap.setOptions({draggable: true});
+          }
+          this.addMapCenterChangeListener();
+        })
+      ).subscribe();
+    }
   }
 
   private setMapZoomAndPosition(zoom: number, lat: number, lng: number) {
@@ -87,6 +98,7 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
     }
     this.mapOptions.center = {lat: lat, lng: lng};
     this.mapOptions.zoom = zoom;
+    this.position = {lat: lat, lng: lng};
   }
 
   showCurrentLocation() {
@@ -103,6 +115,19 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
     } else {
       console.error('Geolocation is not supported by this browser.');
     }
+  }
+
+  confirmLocation() {
+    const value = this.value$.getValue();
+    if (value) {
+      value.markerPosition = this.position;
+      this.handleModelChange(value);
+    } else {
+      this.handleModelChange({
+        markerPosition: this.position
+      });
+    }
+
   }
 
   private addMapCenterChangeListener() {
@@ -124,15 +149,10 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
   }
 
   private updateMarkerPosition(latitude: number, longitude: number) {
-    this.handleModelChange(
-      {
-        ...this.value$.getValue(),
-        markerPosition: {
-          lat: latitude,
-          lng: longitude
-        }
-      }
-    );
+    this.position = {
+      lat: latitude,
+      lng: longitude
+    };
     this.changeDetectorRef.detectChanges();
   }
 }

@@ -7,7 +7,7 @@ import { DriverModel } from "@app/shared/models/driver.model";
 import { TextFieldType } from "@regulaforensics/document-reader-webclient";
 import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
 import { DriverFormComponent } from "@app/shared/components/forms/driver-form/driver-form.component";
-import { distinctUntilChanged, Subject, takeUntil, tap } from "rxjs";
+import { distinctUntilChanged, filter, Subject, takeUntil, tap } from "rxjs";
 
 @Component({
   selector: 'app-driver-control',
@@ -18,6 +18,7 @@ import { distinctUntilChanged, Subject, takeUntil, tap } from "rxjs";
 })
 export class DriverControlComponent extends BaseFormControlComponent<DriverModel> implements AfterViewInit, OnDestroy {
   protected destroy$: Subject<void> = new Subject<void>();
+  protected driverInitialized$: Subject<void> = new Subject<void>();
   loading = false;
 
   @ViewChild('driverForm', {static: false}) protected driverForm?: DriverFormComponent;
@@ -27,6 +28,15 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
       takeUntil(this.destroy$),
       tap((disabled) => {
         disabled ? this.driverForm?.form.disable({emitEvent: false}) : this.driverForm?.form.enable({emitEvent: false});
+      })
+    ).subscribe();
+
+    this.value$.pipe(
+      takeUntil(this.driverInitialized$),
+      filter((driver: DriverModel | undefined | null): driver is DriverModel => !!driver),
+      tap((driver) => {
+        this.driverForm?.setDefaults(driver);
+        this.driverInitialized$.next();
       })
     ).subscribe();
 
@@ -62,6 +72,8 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
   }
 
   ngOnDestroy() {
+    this.driverInitialized$.next();
+    this.driverInitialized$.complete();
     this.destroy$.next();
     this.destroy$.complete();
   }

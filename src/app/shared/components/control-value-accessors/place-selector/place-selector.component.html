@@ -1,4 +1,5 @@
-<div  class="h-100 d-block w-100">
+{{ value$ | async | json }}
+<div class="h-100 d-block w-100">
   <google-map
     #map
     id="map"
@@ -6,10 +7,14 @@
     width="100%"
     [options]="mapOptions"
   >
-    <ng-container *ngIf="value$ | async; let value">
-      <map-marker *ngIf="value.markerPosition" [position]="value.markerPosition"></map-marker>
+    <ng-container>
+      <map-marker *ngIf="position" [position]="position"></map-marker>
     </ng-container>
   </google-map>
 
-  <app-google-maps-button *ngIf="(isDisabled$ | async) === false" #currentLocation [buttonText]="'§§ Current location'" (click)="showCurrentLocation()"></app-google-maps-button>
+  <app-google-maps-button *ngIf="(isDisabled$ | async) === false" #currentLocation [buttonText]="'§§ Current location'"
+                          (click)="showCurrentLocation()"></app-google-maps-button>
+  <app-google-maps-button *ngIf="(isDisabled$ | async) === false" #confirmLocationBtn [buttonText]="'§§ Confirm location'"
+                          (click)="confirmLocation()"></app-google-maps-button>
+
 </div>

@@ -19,6 +19,7 @@ app-root {
 @import 'node_modules/bootstrap/scss/variables';
 @import 'node_modules/bootstrap/scss/mixins';
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+//@import 'node_modules/ngx-toastr/toastr';
 
 .form-control::placeholder {
   opacity: 0.4; /* set the opacity value as desired */

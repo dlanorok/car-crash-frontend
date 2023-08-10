@@ -70,9 +70,12 @@ export class QuestionnaireService implements OnDestroy {
   }
 
   updateQuestionnaire(questionnaire: QuestionnaireModel): void {
-    this.questionnaires = this.questionnaires.map(
-      _questionnaire => _questionnaire.id === questionnaire.id ? questionnaire : _questionnaire
-    );
+    const index = this.questionnaires.findIndex(q => q.id === questionnaire.id);
+    if (index < 0) {
+      this.questionnaires.push(questionnaire);
+    } else {
+      this.questionnaires[index] = questionnaire;
+    }
     this.questionnairesUpdates$.next(this.questionnaires);
   }
 

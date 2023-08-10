@@ -26,6 +26,7 @@ import { NavigationHeaderModule } from "./shared/components/navigation-header/na
 import { CookieService } from "ngx-cookie-service";
 import { sketchReducer } from "@app/app-state/sketch/sketch-reducer";
 import { SketchEffects } from "@app/app-state/sketch/sketch-effects";
+import { ToastrModule } from "ngx-toastr";
 
 @NgModule({
   declarations: [
@@ -47,6 +48,9 @@ import { SketchEffects } from "@app/app-state/sketch/sketch-effects";
     EffectsModule.forRoot(CrashEffects, CarEffects, SketchEffects),
     ApiModule,
     NavigationHeaderModule,
+    ToastrModule.forRoot({
+      preventDuplicates: true
+    })
   ],
   providers: [
     {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter},
