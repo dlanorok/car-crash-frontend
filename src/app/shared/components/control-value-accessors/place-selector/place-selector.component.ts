@@ -100,17 +100,26 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
   }
 
   showCurrentLocation() {
+    const paragraph = document.getElementById("test");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           this.setMapZoomAndPosition(18, latitude, longitude);
+          const text = document.createTextNode("SUCCESS");
+          paragraph?.appendChild(text);
         },
         (error) => {
+          const text = document.createTextNode(error.message);
+          paragraph?.appendChild(text);
+          const text1 = document.createTextNode(error.code.toString());
+          paragraph?.appendChild(text1);
           console.error('Error getting current location:', error);
         }
       );
     } else {
+      const text = document.createTextNode("NOT SUPPORTED");
+      paragraph?.appendChild(text);
       console.error('Geolocation is not supported by this browser.');
     }
   }
