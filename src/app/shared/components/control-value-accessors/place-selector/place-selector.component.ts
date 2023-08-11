@@ -20,8 +20,6 @@ import { distinctUntilChanged, filter, take, tap } from "rxjs";
 export interface PlaceSelectorData {
   markerPosition?: LatLngLiteral;
   writtenPosition?: string;
-
-  sketchData?: any;
 }
 
 @Component({

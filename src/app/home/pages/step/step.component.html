@@ -3,7 +3,7 @@
     <p>{{ step.question }}</p>
     <form [formGroup]="form" class="h-100 form-layout">
       <ng-container *ngFor="let input of step | getStepInputs : questionnaire">
-        <ng-container *appDynamicControl="input | dynamicControlFromInput : submitted; name: input.id"></ng-container>
+        <ng-container *appDynamicControl="input | dynamicControlFromInput : submitted : step; name: input.id"></ng-container>
       </ng-container>
     </form>
   </div>

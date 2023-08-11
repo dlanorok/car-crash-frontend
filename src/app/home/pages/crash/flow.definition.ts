@@ -28,6 +28,7 @@ export interface Step {
   question: string;
   inputs: number[]
   next_step?: StepType;
+  data_from_input?: number;
 }
 
 export interface Option {
@@ -54,7 +55,8 @@ export enum InputType {
   phone_picker = 'phone_picker',
   country_picker = 'country_picker',
   insurance_picker = 'insurance_picker',
-  driving_license = 'driving_license'
+  driving_license = 'driving_license',
+  sketch = 'sketch'
 }
 
 export enum StepType {

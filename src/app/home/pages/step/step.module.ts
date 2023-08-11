@@ -6,8 +6,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { GetStepInputsPipe } from "@app/home/pages/step/pipes/get-step-inputs.pipe";
 import { FooterButtonsModule } from "@app/shared/components/footer-buttons/footer-buttons.module";
 import { ToDatePipe } from "@app/home/pages/step/pipes/to-date.pipe";
-import { DynamicControlDirective } from "@app/home/pages/step/directive/dynamic-control.directive";
 import { DynamicControlFromInputModule } from "@app/shared/common/pipes/dynamic-control-from-input/dynamic-control-from-input.module";
+import { DynamicControlDirective } from "@app/shared/common/directives/dynamic-control.directive";
 
 
 @NgModule({

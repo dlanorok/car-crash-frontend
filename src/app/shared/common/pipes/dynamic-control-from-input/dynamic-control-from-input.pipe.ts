@@ -1,5 +1,5 @@
 import { inject, Injector, Pipe, PipeTransform } from '@angular/core';
-import { Input, InputType } from "@app/home/pages/crash/flow.definition";
+import { Input, InputType, Step } from "@app/home/pages/crash/flow.definition";
 import { DynamicControlComponentConfiguration } from "@app/shared/form-controls/dynamic-control-component-configuration";
 import { NumberControlComponent } from "@app/shared/form-controls/number-control/number-control.component";
 import { NumberControlModule } from "@app/shared/form-controls/number-control/number-control.module";
@@ -22,6 +22,8 @@ import { PhoneNumberControlComponent } from "@app/shared/form-controls/phone-num
 import { PhoneNumberControlModule } from "@app/shared/form-controls/phone-number-control/phone-number-control.module";
 import { TextControlComponent } from "@app/shared/form-controls/text-control/text-control.component";
 import { TextControlModule } from "@app/shared/form-controls/text-control/text-control.module";
+import { SketchCanvasComponent } from "@app/shared/components/control-value-accessors/sketch-canvas/sketch-canvas.component";
+import { SketchCanvasModule } from "@app/shared/components/control-value-accessors/sketch-canvas/sketch-canvas.module";
 
 @Pipe({
   name: 'dynamicControlFromInput',
@@ -29,7 +31,7 @@ import { TextControlModule } from "@app/shared/form-controls/text-control/text-c
 export class DynamicControlFromInputPipe implements PipeTransform {
   private injector: Injector = inject(Injector);
 
-  transform(input: Input, submitted: boolean): DynamicControlComponentConfiguration<any> | null {
+  transform(input: Input, submitted: boolean, step: Step): DynamicControlComponentConfiguration<any> | null {
     let component, module;
     let additionalOptions = {};
     switch (input.type) {
@@ -84,6 +86,11 @@ export class DynamicControlFromInputPipe implements PipeTransform {
       case InputType.driving_license:
         component = DriverControlComponent;
         module = DriverControlModule;
+        break;
+      case InputType.sketch:
+        component = SketchCanvasComponent;
+        module = SketchCanvasModule;
+        additionalOptions = { step: step };
         break;
     }
 

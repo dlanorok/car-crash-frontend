@@ -10,6 +10,14 @@
     "secure": false,
     "ws": true
   },
+  "/googleMapApi": {
+    "target": "https://maps.googleapis.com/maps/api",
+    "pathRewrite": {
+      "^/googleMapApi": ""
+    },
+    "secure": true,
+    "changeOrigin": true
+  },
   "/regula": {
     "target": "https://regula.snapp.email",
     "pathRewrite": {
