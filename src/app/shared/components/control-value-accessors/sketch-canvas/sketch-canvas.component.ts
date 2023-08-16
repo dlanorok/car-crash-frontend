@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, Input, OnDestroy, ViewChild } from '@angular/core';
 import {
   BaseFormControlComponent,
   provideControlValueAccessor
@@ -29,8 +29,8 @@ interface PointData {
   y: number
 }
 
-const imageWidth = 500;
-const imageHeight = 700;
+const imageWidth = 1000;
+const imageHeight = 1000;
 
 @Component({
   selector: 'app-sketch-canvas',
@@ -38,7 +38,7 @@ const imageHeight = 700;
   styleUrls: ['./sketch-canvas.component.scss'],
   providers: [provideControlValueAccessor(SketchCanvasComponent)],
 })
-export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> implements OnInit, OnDestroy {
+export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> implements AfterViewInit, OnDestroy {
   private readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
 
   @ViewChild('container', { static: true }) container!: ElementRef;
@@ -75,15 +75,15 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
     filter((markerPosition: LatLngLiteral | undefined): markerPosition is LatLngLiteral => !!markerPosition),
     map((markerPosition: LatLngLiteral) => {
       const imageSize = `${imageWidth}x${imageHeight}`;
-      return `${environment.googleApiUrl}/staticmap?center=${markerPosition?.lat},${markerPosition.lng}&zoom=19&size=${imageSize}&key=${environment.googleApiKey}&scale=2&maptype=satellite`;
+      return `${environment.googleApiUrl}/staticmap?center=${markerPosition?.lat},${markerPosition.lng}&zoom=18&size=${imageSize}&key=${environment.googleApiKey}&scale=2&maptype=satellite`;
     }),
   );
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.stage = new Konva.Stage({
       container: this.container.nativeElement,
-      width: imageWidth,
-      height: imageHeight,
+      width: this.container.nativeElement.clientWidth,
+      height: this.container.nativeElement.clientHeight ,
     });
     this.layer = new Konva.Layer({
       draggable: true,
@@ -99,7 +99,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
     window.addEventListener('wheel', this.onWheel.bind(this));
     this.layer.on("click tap", this.onClick.bind(this));
 
-    this.tr = new Konva.Transformer();
+    this.tr = new Konva.Transformer({enabledAnchors: ['top-left', 'top-right', 'bottom-left', 'bottom-right']});
     this.layer.add(this.tr);
     this.tr.nodes([]);
   }
@@ -115,6 +115,28 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
           width: this.stage.width(),
           height: this.stage.height(),
         });
+
+        const imageRatio = imageWidth / imageHeight;
+        let newWidth;
+        let newHeight;
+        const aspectRatio = this.layer.width() / this.layer.height();
+
+        if (aspectRatio >= imageRatio) {
+          newWidth = imageWidth;
+          newHeight = imageHeight / aspectRatio;
+        } else {
+          newWidth = imageHeight * aspectRatio;
+          newHeight = imageHeight;
+        }
+        const x = (imageWidth - newWidth) / 2 + (newWidth - this.layer.width()) / 2 ;
+        const y = (imageHeight - newHeight) / 2 + (newHeight - this.layer.height()) / 2;
+        this.image.setAttrs({
+          cropX: x,
+          cropY: y,
+          cropWidth: newWidth,
+          cropHeight: newHeight,
+        });
+
         this.layer.add(this.image);
         this.layer.draw();
         this.fitImageToStage();
@@ -129,11 +151,11 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
             this.removeCars();
             if (!cars) {
               this.layer.setPosition({
-                x: -this.stage.width() / 2 / this.stage.scaleX() - this.layer.width() / 3,
-                y: -this.stage.height() / 2 / this.stage.scaleX() - this.layer.height() / 3
+                x: -this.layer.width() / 2 / this.layer.scaleX() - this.layer.width() / 2,
+                y: -this.layer.height() / 2 / this.layer.scaleX() - this.layer.height() / 2
               });
-              this.layer.scaleX(2.5);
-              this.layer.scaleY(2.5);
+              this.layer.scaleX(3);
+              this.layer.scaleY(3);
               questionnaires.forEach(q => this.addCar());
             } else {
               cars.forEach(car => this.addCar(car));
@@ -328,10 +350,6 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
     if (imageHeight * scale > imageHeight) {
       return;
     }
-
-    this.stage.width(imageWidth * scale);
-    this.stage.height(imageHeight * scale);
-    this.stage.scale({ x: scale, y: scale });
   }
 
   private getDistance(p1: PointData, p2: PointData) {

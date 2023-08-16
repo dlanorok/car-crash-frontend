@@ -1,7 +1,7 @@
 <ng-container *ngIf="questionnaire && step && section && form">
   <div class="p-3 h-100">
-    <p>{{ step.question }}</p>
     <form [formGroup]="form" class="h-100 form-layout">
+      <span>{{ step.question }}</span>
       <ng-container *ngFor="let input of step | getStepInputs : questionnaire">
         <ng-container *appDynamicControl="input | dynamicControlFromInput : submitted : step; name: input.id"></ng-container>
       </ng-container>

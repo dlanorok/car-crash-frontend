@@ -1,6 +1,10 @@
 :host {
   overflow-y: hidden;
+  height: 100%;
   .canvas-container {
+    margin: auto;
+    max-width: 930px;
     display: flex;
+    height: 100%;
   }
 }
