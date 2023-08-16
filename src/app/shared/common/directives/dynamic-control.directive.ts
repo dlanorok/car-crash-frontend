@@ -71,10 +71,9 @@ export class DynamicControlDirective<C extends ControlValueAccessor> extends NgC
       ngModuleRef: createNgModule(controlComponentConfiguration.module, injector),
       injector,
     });
+    this.setupNgControl(controlComponentRef);
     this.writeComponentRefChanges(controlComponentRef, controlComponentConfiguration.componentStaticInputs);
 
-
-    this.setupNgControl(controlComponentRef);
     return controlComponentRef;
   }
 

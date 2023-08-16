@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, forwardRef, inject, Injector, Input } from '@angular/core';
+import { Component, forwardRef, inject, Injector, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
 import { customAlphabet } from 'nanoid';
 import { BehaviorSubject } from "rxjs";
@@ -8,7 +8,7 @@ import { BehaviorSubject } from "rxjs";
     template: '',
   },
 )
-export abstract class BaseFormControlComponent<T> implements ControlValueAccessor, AfterViewInit {
+export abstract class BaseFormControlComponent<T> implements ControlValueAccessor, OnInit {
   private injector: Injector = inject(Injector);
 
   @Input() label?: string;
@@ -20,11 +20,11 @@ export abstract class BaseFormControlComponent<T> implements ControlValueAccesso
   readonly value$: BehaviorSubject<T | undefined | null> = new BehaviorSubject<T | undefined | null>(undefined);
   readonly isDisabled$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-
   readonly _id: string = customAlphabet('abcdefgijz', 12)();
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     const ngControl: NgControl | null = this.injector.get(NgControl, null);
+    console.log(ngControl?.control);
     if (ngControl) {
       this.formControl = ngControl.control as FormControl;
     } else {
