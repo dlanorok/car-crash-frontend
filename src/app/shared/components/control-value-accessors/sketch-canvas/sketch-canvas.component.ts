@@ -5,7 +5,7 @@ import {
 } from "@app/shared/form-controls/base-form-control.component";
 import { PlaceSelectorData } from "@app/shared/components/control-value-accessors/place-selector/place-selector.component";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
-import { filter, Observable, of, ReplaySubject, Subject, switchMap, takeUntil, tap } from "rxjs";
+import { filter, Observable, of, ReplaySubject, Subject, switchMap, takeUntil, tap, combineLatest } from "rxjs";
 import { Step } from "@app/home/pages/crash/flow.definition";
 import { map } from "rxjs/operators";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
@@ -87,7 +87,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
     });
     this.layer = new Konva.Layer({
       draggable: true,
-      dragBoundFunc: this.dragBoundFunc
+      dragBoundFunc: this.dragBoundFunc,
     });
     this.stage.add(this.layer);
 
@@ -102,15 +102,6 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
     this.tr = new Konva.Transformer();
     this.layer.add(this.tr);
     this.tr.nodes([]);
-
-    this.value$.pipe(
-      tap((cars: CarData[] | undefined | null) => {
-        if (cars) {
-          cars.forEach(car => this.addCar(car));
-        }
-      })
-    ).subscribe();
-
   }
 
   private observeImageData(): void {
@@ -122,11 +113,33 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
         this.image = new Konva.Image({
           image: image,
           width: this.stage.width(),
-          height: this.stage.height()
+          height: this.stage.height(),
         });
         this.layer.add(this.image);
         this.layer.draw();
         this.fitImageToStage();
+      }),
+      switchMap(() => {
+        return combineLatest([
+          this.value$,
+          this.questionnaireService.getOrFetchQuestionnaires()
+        ]).pipe(
+          takeUntil(this.destroy$),
+          tap(([cars, questionnaires]: [CarData[] | undefined | null, QuestionnaireModel[]]) => {
+            this.removeCars();
+            if (!cars) {
+              this.layer.setPosition({
+                x: -this.stage.width() / 2 / this.stage.scaleX() - this.layer.width() / 3,
+                y: -this.stage.height() / 2 / this.stage.scaleX() - this.layer.height() / 3
+              });
+              this.layer.scaleX(2.5);
+              this.layer.scaleY(2.5);
+              questionnaires.forEach(q => this.addCar());
+            } else {
+              cars.forEach(car => this.addCar(car));
+            }
+          })
+        );
       })
     ).subscribe();
   }
@@ -144,20 +157,25 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
     }));
   }
 
+  removeCars() {
+    this.cars.forEach(car => car.remove());
+    this.cars = [];
+    this.layer.draw();
+  }
+
   addCar(car?: CarData) {
     const imageObj = new Image();
     const id = (car?.id || Object.keys(this.cars).length + 1).toString();
 
     imageObj.src = `../../../assets/icons/google-car-${id}.svg`;
-    console.log(this.layer);
     const konvaImage = new Konva.Image({
       image: imageObj,
       draggable: true,
-      scaleX: car?.scaleX || 0.3,
-      scaleY: car?.scaleY || 0.3,
-      rotation: car?.rotation,
-      x: car?.x || this.layer.x() / this.layer.scaleX() * -1,
-      y: car?.y || this.layer.y() / this.layer.scaleY() * -1,
+      scaleX: car?.scaleX || 0.06,
+      scaleY: car?.scaleY || 0.06,
+      rotation: car?.rotation || 90,
+      x: car?.x || this.stage.width() / 2 / this.stage.scaleX() + 20 * Object.keys(this.cars).length,
+      y: car?.y || this.stage.height() / 2 / this.stage.scaleX(),
       id: id
     });
     this.cars.push(konvaImage);
@@ -212,10 +230,11 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
       x: $event.x / oldScale - this.layer.x() / oldScale,
       y: $event.y / oldScale - this.layer.y() / oldScale
     };
-    let newScale = $event.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+    let newScale = -$event.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
     if (newScale <= 1) {
       newScale = 1;
     }
+    console.log(newScale);
 
     const x =
       -(mousePointTo.x - $event.x / newScale) * newScale;
