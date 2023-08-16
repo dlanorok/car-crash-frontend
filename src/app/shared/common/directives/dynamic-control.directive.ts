@@ -1,9 +1,11 @@
 import { ComponentRef, createNgModule, Directive, inject, Injector, Input, ViewContainerRef } from '@angular/core';
-import { combineLatest, Subject } from "rxjs";
+import { combineLatest, debounceTime, Subject } from "rxjs";
 import { writeComponentRefChanges } from '@app/shared/common/write-component-ref-changes';
 import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
 import { DynamicControlComponentConfiguration } from "@app/shared/form-controls/dynamic-control-component-configuration";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 
+@UntilDestroy()
 @Directive({
   selector: '[appDynamicControl]',
 })
@@ -42,7 +44,9 @@ export class DynamicControlDirective<C extends ControlValueAccessor> extends NgC
     combineLatest([
       this.controlComponentConfiguration$,
       this.controlNameChange$,
-    ]).subscribe(([controlComponentConfiguration]) => {
+    ])
+      .pipe(debounceTime(0), untilDestroyed(this))
+      .subscribe(([controlComponentConfiguration]) => {
       if (this.controlComponentRef) {
         writeComponentRefChanges(this.controlComponentRef, controlComponentConfiguration.componentStaticInputs);
       } else {

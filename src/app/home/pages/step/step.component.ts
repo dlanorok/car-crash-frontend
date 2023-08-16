@@ -124,6 +124,7 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
 
           this.form?.addControl(input.id.toString(), control);
         });
+        console.log(this.form);
       }
     }
   }

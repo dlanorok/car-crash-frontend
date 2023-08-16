@@ -24,6 +24,8 @@ import { TextControlComponent } from "@app/shared/form-controls/text-control/tex
 import { TextControlModule } from "@app/shared/form-controls/text-control/text-control.module";
 import { SketchCanvasComponent } from "@app/shared/components/control-value-accessors/sketch-canvas/sketch-canvas.component";
 import { SketchCanvasModule } from "@app/shared/components/control-value-accessors/sketch-canvas/sketch-canvas.module";
+import { TextAreaControlComponent } from "@app/shared/form-controls/text-area-control/text-area-control.component";
+import { TextAreaControlModule } from "@app/shared/form-controls/text-area-control/text-area-control.module";
 
 @Pipe({
   name: 'dynamicControlFromInput',
@@ -44,11 +46,10 @@ export class DynamicControlFromInputPipe implements PipeTransform {
         component = NumberControlComponent;
         module = NumberControlModule;
         break;
-        // TODO
-      // case InputType.textarea:
-      //   component = TextAr;
-      //   module = TextControlModule;
-      //   break;
+      case InputType.textarea:
+        component = TextAreaControlComponent;
+        module = TextAreaControlModule;
+        break;
       case InputType.date:
         component = DateControlComponent;
         module = DateTimeControlModule;

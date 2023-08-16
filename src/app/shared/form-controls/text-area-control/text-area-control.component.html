@@ -1,0 +1,17 @@
+<div class="form-group">
+  <label [htmlFor]="_id">{{ label }}</label>
+  {{ formControl | json  }}
+
+  <textarea
+    [id]="_id"
+    [placeholder]="placeholder"
+    [disabled]="(isDisabled$ | async) === true"
+    [class.is-invalid]="submitted && formControl.errors"
+    (ngModelChange)="handleModelChange($event)"
+    class="form-control"
+    rows="15"
+    [ngModel]="value$ | async">
+  </textarea>
+
+  <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
+</div>
