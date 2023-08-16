@@ -24,7 +24,6 @@ export abstract class BaseFormControlComponent<T> implements ControlValueAccesso
 
   ngOnInit(): void {
     const ngControl: NgControl | null = this.injector.get(NgControl, null);
-    console.log(ngControl?.control);
     if (ngControl) {
       this.formControl = ngControl.control as FormControl;
     } else {

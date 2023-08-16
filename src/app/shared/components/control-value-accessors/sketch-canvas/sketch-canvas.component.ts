@@ -234,7 +234,6 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
     if (newScale <= 1) {
       newScale = 1;
     }
-    console.log(newScale);
 
     const x =
       -(mousePointTo.x - $event.x / newScale) * newScale;
