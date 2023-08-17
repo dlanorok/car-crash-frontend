@@ -5,7 +5,18 @@ import {
 } from "@app/shared/form-controls/base-form-control.component";
 import { PlaceSelectorData } from "@app/shared/components/control-value-accessors/place-selector/place-selector.component";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
-import { filter, Observable, of, ReplaySubject, Subject, switchMap, takeUntil, tap, combineLatest } from "rxjs";
+import {
+  filter,
+  Observable,
+  of,
+  ReplaySubject,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap,
+  combineLatest,
+  fromEvent
+} from "rxjs";
 import { Step } from "@app/home/pages/crash/flow.definition";
 import { map } from "rxjs/operators";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
@@ -98,48 +109,25 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
     window.addEventListener('touchmove', this.onTouchMove.bind(this));
     window.addEventListener('wheel', this.onWheel.bind(this));
     this.layer.on("click tap", this.onClick.bind(this));
-
-    this.tr = new Konva.Transformer({enabledAnchors: ['top-left', 'top-right', 'bottom-left', 'bottom-right']});
-    this.layer.add(this.tr);
-    this.tr.nodes([]);
   }
 
   private observeImageData(): void {
     this.imageUrl$.pipe(
       takeUntil(this.destroy$),
-      tap((imageUrl: string) => {
+      switchMap((imageUrl: string) => {
         const image = new Image();
         image.src = imageUrl;
-        this.image = new Konva.Image({
-          image: image,
-          width: this.stage.width(),
-          height: this.stage.height(),
-        });
-
-        const imageRatio = imageWidth / imageHeight;
-        let newWidth;
-        let newHeight;
-        const aspectRatio = this.layer.width() / this.layer.height();
-
-        if (aspectRatio >= imageRatio) {
-          newWidth = imageWidth;
-          newHeight = imageHeight / aspectRatio;
-        } else {
-          newWidth = imageHeight * aspectRatio;
-          newHeight = imageHeight;
-        }
-        const x = (imageWidth - newWidth) / 2 + (newWidth - this.layer.width()) / 2 ;
-        const y = (imageHeight - newHeight) / 2 + (newHeight - this.layer.height()) / 2;
-        this.image.setAttrs({
-          cropX: x,
-          cropY: y,
-          cropWidth: newWidth,
-          cropHeight: newHeight,
-        });
-
-        this.layer.add(this.image);
-        this.layer.draw();
-        this.fitImageToStage();
+        return fromEvent(image, 'load').pipe(
+          tap(() => {
+            this.image = new Konva.Image({
+              image: image,
+              width: image.width,
+              height: image.height,
+            });
+            this.layer.add(this.image);
+            this.layer.draw();
+          })
+        );
       }),
       switchMap(() => {
         return combineLatest([
@@ -148,14 +136,19 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
         ]).pipe(
           takeUntil(this.destroy$),
           tap(([cars, questionnaires]: [CarData[] | undefined | null, QuestionnaireModel[]]) => {
+            this.tr = new Konva.Transformer({enabledAnchors: ['top-left', 'top-right', 'bottom-left', 'bottom-right']});
+            this.layer.add(this.tr);
+            this.tr.nodes([]);
+
             this.removeCars();
             if (!cars) {
+              const initialScale = 3;
+              this.layer.scaleX(initialScale);
+              this.layer.scaleY(initialScale);
               this.layer.setPosition({
-                x: -this.layer.width() / 2 / this.layer.scaleX() - this.layer.width() / 2,
-                y: -this.layer.height() / 2 / this.layer.scaleX() - this.layer.height() / 2
+                x: - (this.image.width() * initialScale) / 2 + this.layer.width() / 2,
+                y: - (this.image.height() * initialScale) / 2 + this.layer.height() / 2
               });
-              this.layer.scaleX(3);
-              this.layer.scaleY(3);
               questionnaires.forEach(q => this.addCar());
             } else {
               cars.forEach(car => this.addCar(car));
@@ -190,36 +183,23 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
     const id = (car?.id || Object.keys(this.cars).length + 1).toString();
 
     imageObj.src = `../../../assets/icons/google-car-${id}.svg`;
+
     const konvaImage = new Konva.Image({
       image: imageObj,
       draggable: true,
       scaleX: car?.scaleX || 0.06,
       scaleY: car?.scaleY || 0.06,
       rotation: car?.rotation || 90,
-      x: car?.x || this.stage.width() / 2 / this.stage.scaleX() + 20 * Object.keys(this.cars).length,
-      y: car?.y || this.stage.height() / 2 / this.stage.scaleX(),
+      x: car?.x || this.image.width() / 2 / this.stage.scaleX() + 20 * Object.keys(this.cars).length,
+      y: car?.y || this.image.height() / 2 / this.stage.scaleX(),
       id: id
     });
+
     this.cars.push(konvaImage);
     this.layer.add(konvaImage);
     this.layer.draw();
     konvaImage.on("dragstart", this.onDragStart.bind(this));
     konvaImage.on("dragend", this.onDragEnd.bind(this));
-
-    // const rect = new Konva.Rect({
-    //   x: Math.random() * this.stage.width(),
-    //   y: Math.random() * this.stage.height(),
-    //   width: 50,
-    //   height: 50,
-    //   fill: 'blue',
-    //   draggable: true,
-    // });
-    // const tr = new Konva.Transformer();
-    // this.layer.add(tr);
-    // tr.nodes([rect]);
-    //
-    // this.layer.add(rect);
-    // this.layer.draw();
   }
 
   private onDragStart() {
@@ -241,7 +221,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
       this.tr.nodes([]);
     } else {
       this.tr.nodes([$event.target]);
-      this.stage.draw();
+      this.layer.draw();
     }
   }
 
@@ -253,8 +233,8 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
       y: $event.y / oldScale - this.layer.y() / oldScale
     };
     let newScale = -$event.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-    if (newScale <= 1) {
-      newScale = 1;
+    if (newScale <= this.layer.width() / this.layer.height()) {
+      newScale = this.layer.width() / this.layer.height();
     }
 
     const x =
@@ -364,11 +344,11 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
   }
 
   private boundFunc(pos: Vector2d, scale: number) {
-    const stageWidth = this.stage.width();
-    const stageHeight = this.stage.height();
+    const imageWidth = this.image.width();
+    const imageHeight = this.image.height();
 
-    const x = Math.min(0, Math.max(pos.x, stageWidth * (1 - scale)));
-    const y = Math.min(0, Math.max(pos.y, stageHeight * (1 - scale)));
+    const x = Math.min(0, Math.max(pos.x, -1 * ((imageWidth * scale) - this.stage.width())));
+    const y = Math.min(0, Math.max(pos.y, -1 * ((imageHeight * scale) - this.stage.height())));
 
     return {
       x,
