@@ -1,4 +1,4 @@
-<div class="h-100 position-relative">
+<div class="h-100 position-relative" [class.blur-canvas]="(value$ | async | canConfirmSketch) === false && (value$ | async | canEditSketch) === false">
   <div
     *ngIf="(value$ | async | canConfirmSketch) === false && (value$ | async | canEditSketch) === false"
     class="wait-notification"

@@ -84,3 +84,9 @@ app-svg-comp svg {
   flex-direction: column;
   gap: var(--theme-spacing);
 }
+
+.blur-canvas {
+  canvas {
+    filter: blur(10px);
+  }
+}

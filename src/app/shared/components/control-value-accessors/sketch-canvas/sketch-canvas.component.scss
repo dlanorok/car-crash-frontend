@@ -1,6 +1,9 @@
 :host {
-  overflow-y: hidden;
   height: 100%;
+  margin-left: -1rem;
+  margin-right: -1rem;
+  overflow: hidden;
+  margin-bottom: -1rem;
 
   .container-wrapper {
     margin: auto;

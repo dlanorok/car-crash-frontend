@@ -171,11 +171,6 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
         ]).pipe(
           takeUntil(this.destroy$),
           tap(([sketch, questionnaires]: [Sketch | undefined | null, QuestionnaireModel[]]) => {
-            if (!this.canEditSketch.transform(sketch) && !this.canConfirmSketch.transform(sketch)) {
-              this.layer.canvas.getContext()._context.filter = 'blur(10px)';
-            } else {
-              this.layer.canvas.getContext()._context.filter = 'blur(0px)';
-            }
             if (sketch?.editor !== this.cookieService.get(CookieName.sessionId) || this.cars.length === 0) {
               this.reDrawCars(sketch, questionnaires.length, initialScale);
             }
@@ -408,10 +403,10 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
           y: (newCenter.y - this.layer.y()) / this.layer.scaleX(),
         };
 
-        const scale = this.layer.scaleX() * (dist / this.lastDist);
+        let scale = this.layer.scaleX() * (dist / this.lastDist);
 
-        if (scale < 1) {
-          return;
+        if (scale <= this.layer.width() / this.layer.height()) {
+          scale = this.layer.width() / this.layer.height();
         }
 
         this.layer.scaleX(scale);
