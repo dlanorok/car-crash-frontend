@@ -164,7 +164,8 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
         skip(1),
         takeUntil(this.destroy$)
       ).subscribe((value) => {
-        if (this.questionnaire && control.value.editor === this.cookieService.get(CookieName.sessionId)) {
+        if (this.questionnaire && control.value.save) {
+          control.value.save = false;
           this.questionnaireService.updateInputs(value, this.questionnaire);
         }
       });

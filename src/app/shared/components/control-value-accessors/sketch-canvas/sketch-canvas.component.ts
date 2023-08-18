@@ -27,14 +27,13 @@ import Vector2d = Konva.Vector2d;
 import { KonvaEventObject } from "konva/lib/Node";
 import { CookieService } from "ngx-cookie-service";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
-import { CanEditSketchPipe } from "@app/shared/components/control-value-accessors/sketch-canvas/can-edit-sketch.pipe";
-import { CanConfirmSketchPipe } from "@app/shared/components/control-value-accessors/sketch-canvas/can-confirm-sketch.pipe";
 
 export interface Sketch {
   cars: CarData[];
   editor: string;
   editing: boolean;
   confirmedEditors: string[];
+  save?: boolean;
 }
 
 interface CarData {
@@ -63,8 +62,6 @@ const imageHeight = 1000;
 export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> implements AfterViewInit, OnDestroy {
   private readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
   private readonly cookieService: CookieService = inject(CookieService);
-  private readonly canEditSketch: CanEditSketchPipe = inject(CanEditSketchPipe);
-  private readonly canConfirmSketch: CanConfirmSketchPipe = inject(CanConfirmSketchPipe);
 
   @ViewChild('container', { static: true }) container!: ElementRef;
   private stage!: Konva.Stage;
@@ -72,6 +69,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
   image!: Konva.Image;
   tr!: Konva.Transformer;
   cars: Konva.Image[] = [];
+  scale = 0;
   private lastCenter: PointData | null = null;
   private lastDist = 0;
   private isDragging = false;
@@ -124,6 +122,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
       draggable: true,
       dragBoundFunc: this.dragBoundFunc,
     });
+    this.scale = window.screen.availHeight / window.screen.availWidth;
     this.stage.add(this.layer);
   }
 
@@ -172,6 +171,10 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
           takeUntil(this.destroy$),
           tap(([sketch, questionnaires]: [Sketch | undefined | null, QuestionnaireModel[]]) => {
             if (sketch?.editor !== this.cookieService.get(CookieName.sessionId) || this.cars.length === 0) {
+              this.layer.scale({
+                x: initialScale,
+                y: initialScale
+              });
               this.reDrawCars(sketch, questionnaires.length, initialScale);
             }
           })
@@ -226,7 +229,8 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
         ...value,
         editor: this.cookieService.get(CookieName.sessionId),
         confirmedEditors: [],
-        editing: true
+        editing: true,
+        save: true
       });
     }
 
@@ -243,14 +247,15 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
           return {
             x: car.x(),
             y: car.y(),
-            scaleY: car.scaleY(),
-            scaleX: car.scaleX(),
+            scaleY: car.scaleY() * this.scale,
+            scaleX: car.scaleX() * this.scale,
             id: car.id(),
             rotation: car.rotation()
           };
         }),
         confirmedEditors: [...new Set(value.confirmedEditors)],
-        editing: false
+        editing: false,
+        save: true
       });
     }
   }
@@ -270,14 +275,15 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     const konvaImage = new Konva.Image({
       image: imageObj,
       draggable: true,
-      scaleX: car?.scaleX || 0.06,
-      scaleY: car?.scaleY || 0.06,
+      scaleX: (car?.scaleX || 0.06) / this.scale,
+      scaleY: (car?.scaleX || 0.06) / this.scale,
       rotation: car?.rotation || 90,
       x: car?.x || this.image.width() / 2 / this.stage.scaleX() + 20 * Object.keys(this.cars).length,
       y: car?.y || this.image.height() / 2 / this.stage.scaleX(),
       id: id
     });
 
+    konvaImage.on('transformstart', this.onDragStart.bind(this));
     this.cars.push(konvaImage);
     this.layer.add(konvaImage);
     this.layer.draw();
@@ -318,7 +324,8 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
         ...value,
         confirmedEditors: [],
         editing: true,
-        editor: editor
+        editor: editor,
+        save: true
       });
     }
     this.isDragging = true;
@@ -350,8 +357,8 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
       y: $event.y / oldScale - this.layer.y() / oldScale
     };
     let newScale = -$event.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-    if (newScale <= this.layer.width() / this.layer.height()) {
-      newScale = this.layer.width() / this.layer.height();
+    if (this.layer.width() / newScale > this.image.width() || this.layer.height() / newScale > this.image.height()) {
+      newScale = this.layer.scaleX();
     }
 
     const x =
@@ -404,9 +411,8 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
         };
 
         let scale = this.layer.scaleX() * (dist / this.lastDist);
-
-        if (scale <= this.layer.width() / this.layer.height()) {
-          scale = this.layer.width() / this.layer.height();
+        if (this.layer.width() / scale > this.image.width() || this.layer.height() / scale > this.image.height()) {
+          scale = this.layer.scaleX();
         }
 
         this.layer.scaleX(scale);

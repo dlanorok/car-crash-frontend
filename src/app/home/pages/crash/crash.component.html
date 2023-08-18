@@ -26,7 +26,7 @@
           </div>
         </div>
 
-        <div *ngIf="i === 0 && (crash$ | async)?.creator | amICreator" class="todo-item" [routerLink]="'invite'">
+        <div *ngIf="i === 0 && ((crash$ | async)?.creator | amICreator) && (questionnaire.creator | amICreator)" class="todo-item" [routerLink]="'invite'">
           Invite others
           <div class="d-flex align-items-center">
             <i *ngIf="questionnaires.length <= 1" class="bi bi-circle"></i>
