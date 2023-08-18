@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { distinctUntilChanged, mergeMap, Subject, takeUntil, tap } from "rxjs";
+import { distinctUntilChanged, mergeMap, skip, Subject, takeUntil, tap } from "rxjs";
 import { Store } from "@ngrx/store";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
@@ -45,6 +45,7 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
   section?: Section;
   step?: Step;
   form!: UntypedFormGroup;
+  inputs: Input[] = [];
 
   ngOnInit(): void {
     this.getData();
@@ -59,7 +60,7 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
 
       if (newQuestionnaire) {
         this.questionnaire = newQuestionnaire;
-        this.defineInputs(this.stepType);
+        this.updateControls();
       }
     });
   }
@@ -104,10 +105,10 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
       this.step = this.questionnaire?.data.steps.find((step) => step.step_type === stepType);
 
       if (this.step && this.questionnaire) {
-        const inputs = this.getStepInputsPipe.transform(this.step, this.questionnaire);
+        this.inputs = this.getStepInputsPipe.transform(this.step, this.questionnaire);
 
         this.form = this.formBuilder.group({});
-        inputs.forEach(input => {
+        this.inputs.forEach(input => {
           const control = this.formBuilder.control({
             value: input.value,
             disabled: this.questionnaire?.creator !== this.cookieService.get(CookieName.sessionId)
@@ -125,6 +126,15 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
           this.form?.addControl(input.id.toString(), control);
         });
       }
+    }
+  }
+
+  private updateControls() {
+    if (this.step && this.questionnaire) {
+      const inputs = this.getStepInputsPipe.transform(this.step, this.questionnaire);
+      inputs.forEach(input => {
+        this.form.controls[input.id].setValue(input.value);
+      });
     }
   }
 
@@ -146,6 +156,16 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
               this.next();
             }
             break;
+        }
+      });
+    } else if (input.type === InputType.sketch) {
+      this.form.valueChanges.pipe(
+        distinctUntilChanged(),
+        skip(1),
+        takeUntil(this.destroy$)
+      ).subscribe((value) => {
+        if (this.questionnaire && control.value.editor === this.cookieService.get(CookieName.sessionId)) {
+          this.questionnaireService.updateInputs(value, this.questionnaire);
         }
       });
     }

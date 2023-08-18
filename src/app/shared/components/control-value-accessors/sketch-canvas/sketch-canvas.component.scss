@@ -1,10 +1,25 @@
 :host {
   overflow-y: hidden;
   height: 100%;
-  .canvas-container {
+
+  .container-wrapper {
     margin: auto;
     max-width: 930px;
-    display: flex;
     height: 100%;
+  }
+
+  .canvas-container {
+    height: 100%;
+  }
+
+  .wait-notification {
+    position: absolute;
+    background-color: var(--light-ui-element);
+    padding: 10px;
+    border-radius: var(--border-radius-normal);
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }

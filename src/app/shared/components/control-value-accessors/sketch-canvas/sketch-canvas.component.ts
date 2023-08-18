@@ -25,6 +25,17 @@ import { environment } from "../../../../../environments/environment";
 import Konva from "konva";
 import Vector2d = Konva.Vector2d;
 import { KonvaEventObject } from "konva/lib/Node";
+import { CookieService } from "ngx-cookie-service";
+import { CookieName } from "@app/shared/common/enumerators/cookies";
+import { CanEditSketchPipe } from "@app/shared/components/control-value-accessors/sketch-canvas/can-edit-sketch.pipe";
+import { CanConfirmSketchPipe } from "@app/shared/components/control-value-accessors/sketch-canvas/can-confirm-sketch.pipe";
+
+export interface Sketch {
+  cars: CarData[];
+  editor: string;
+  editing: boolean;
+  confirmedEditors: string[];
+}
 
 interface CarData {
   id: string;
@@ -49,8 +60,11 @@ const imageHeight = 1000;
   styleUrls: ['./sketch-canvas.component.scss'],
   providers: [provideControlValueAccessor(SketchCanvasComponent)],
 })
-export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> implements AfterViewInit, OnDestroy {
+export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> implements AfterViewInit, OnDestroy {
   private readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
+  private readonly cookieService: CookieService = inject(CookieService);
+  private readonly canEditSketch: CanEditSketchPipe = inject(CanEditSketchPipe);
+  private readonly canConfirmSketch: CanConfirmSketchPipe = inject(CanConfirmSketchPipe);
 
   @ViewChild('container', { static: true }) container!: ElementRef;
   private stage!: Konva.Stage;
@@ -64,6 +78,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
 
   private readonly destroy$: Subject<void> = new Subject<void>();
   private readonly step$: ReplaySubject<Step> = new ReplaySubject<Step>();
+
   @Input() set step(step: Step) {
     this.step$.next(step);
   }
@@ -91,6 +106,15 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
   );
 
   ngAfterViewInit(): void {
+    this.setStageAndLayer();
+    this.drawGoogleImageAndAddCars();
+    window.addEventListener('touchend', this.onTouchEnd.bind(this));
+    window.addEventListener('touchmove', this.onTouchMove.bind(this));
+    window.addEventListener('wheel', this.onWheel.bind(this));
+    this.layer.on("click tap", this.onClick.bind(this));
+  }
+
+  private setStageAndLayer() {
     this.stage = new Konva.Stage({
       container: this.container.nativeElement,
       width: this.container.nativeElement.clientWidth,
@@ -101,22 +125,20 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
       dragBoundFunc: this.dragBoundFunc,
     });
     this.stage.add(this.layer);
-
-    this.observeImageData();
-    this.fixStageIntoParentContainer();
-    window.addEventListener('resize', this.fixStageIntoParentContainer.bind(this));
-    window.addEventListener('touchend', this.onTouchEnd.bind(this));
-    window.addEventListener('touchmove', this.onTouchMove.bind(this));
-    window.addEventListener('wheel', this.onWheel.bind(this));
-    this.layer.on("click tap", this.onClick.bind(this));
   }
 
-  private observeImageData(): void {
+  private drawGoogleImageAndAddCars(): void {
     this.imageUrl$.pipe(
       takeUntil(this.destroy$),
       switchMap((imageUrl: string) => {
+        const initialScale = 2;
+        if (this.image) {
+          return of(initialScale);
+        }
+
         const image = new Image();
         image.src = imageUrl;
+        image.crossOrigin = "Anonymous";
         return fromEvent(image, 'load').pipe(
           tap(() => {
             this.image = new Konva.Image({
@@ -126,32 +148,36 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
             });
             this.layer.add(this.image);
             this.layer.draw();
-          })
+          }),
+          map(() => {
+            this.tr = new Konva.Transformer({enabledAnchors: ['top-left', 'top-right', 'bottom-left', 'bottom-right']});
+            this.layer.add(this.tr);
+            this.tr.nodes([]);
+
+            this.layer.scaleX(initialScale);
+            this.layer.scaleY(initialScale);
+            this.layer.setPosition({
+              x: - (this.image.width() * initialScale) / 2 + this.layer.width() / 2,
+              y: - (this.image.height() * initialScale) / 2 + this.layer.height() / 2
+            });
+            return initialScale;
+          }),
         );
       }),
-      switchMap(() => {
+      switchMap((initialScale) => {
         return combineLatest([
           this.value$,
           this.questionnaireService.getOrFetchQuestionnaires()
         ]).pipe(
           takeUntil(this.destroy$),
-          tap(([cars, questionnaires]: [CarData[] | undefined | null, QuestionnaireModel[]]) => {
-            this.tr = new Konva.Transformer({enabledAnchors: ['top-left', 'top-right', 'bottom-left', 'bottom-right']});
-            this.layer.add(this.tr);
-            this.tr.nodes([]);
-
-            this.removeCars();
-            if (!cars) {
-              const initialScale = 3;
-              this.layer.scaleX(initialScale);
-              this.layer.scaleY(initialScale);
-              this.layer.setPosition({
-                x: - (this.image.width() * initialScale) / 2 + this.layer.width() / 2,
-                y: - (this.image.height() * initialScale) / 2 + this.layer.height() / 2
-              });
-              questionnaires.forEach(q => this.addCar());
+          tap(([sketch, questionnaires]: [Sketch | undefined | null, QuestionnaireModel[]]) => {
+            if (!this.canEditSketch.transform(sketch) && !this.canConfirmSketch.transform(sketch)) {
+              this.layer.canvas.getContext()._context.filter = 'blur(10px)';
             } else {
-              cars.forEach(car => this.addCar(car));
+              this.layer.canvas.getContext()._context.filter = 'blur(0px)';
+            }
+            if (sketch?.editor !== this.cookieService.get(CookieName.sessionId) || this.cars.length === 0) {
+              this.reDrawCars(sketch, questionnaires.length, initialScale);
             }
           })
         );
@@ -159,17 +185,79 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
     ).subscribe();
   }
 
+  private reDrawCars(sketch: Sketch | undefined | null, questionnairesLength: number, scale: number) {
+    this.removeCars();
+    if (!sketch?.cars) {
+      for (let i = 0; i < Math.max(questionnairesLength, 2); i++) {
+        this.addCar();
+      }
+      this.saveCars();
+    } else {
+      sketch.cars.forEach(car => this.addCar(car));
+      this.layer.setPosition({
+        x: -sketch.cars[0].x * scale + this.layer.width() / 2,
+        y: -sketch.cars[0].y * scale + this.layer.height() / 2
+      });
+    }
+    this.observeDragPermissionsToCars();
+  }
+
+  saveCars() {
+    const value = this.value$.getValue();
+
+    if (!value) {
+      this.handleModelChange({
+        cars: this.cars.map(car => {
+          return {
+            x: car.x(),
+            y: car.y(),
+            scaleY: car.scaleY(),
+            scaleX: car.scaleX(),
+            id: car.id(),
+            rotation: car.rotation()
+          };
+        }),
+        editor: '',
+        editing: false,
+        confirmedEditors: []
+      });
+    }
+  }
+
+  editSketch() {
+    const value = this.value$.getValue();
+    if (value) {
+      this.handleModelChange({
+        ...value,
+        editor: this.cookieService.get(CookieName.sessionId),
+        confirmedEditors: [],
+        editing: true
+      });
+    }
+
+  }
+
   confirmSketch() {
-    this.handleModelChange(this.cars.map(car => {
-      return {
-        x: car.x(),
-        y: car.y(),
-        scaleY: car.scaleY(),
-        scaleX: car.scaleX(),
-        id: car.id(),
-        rotation: car.rotation()
-      };
-    }));
+    const value = this.value$.getValue();
+
+    if (value) {
+      value.confirmedEditors.push(this.cookieService.get(CookieName.sessionId));
+      this.handleModelChange({
+        ...value,
+        cars: this.cars.map(car => {
+          return {
+            x: car.x(),
+            y: car.y(),
+            scaleY: car.scaleY(),
+            scaleX: car.scaleX(),
+            id: car.id(),
+            rotation: car.rotation()
+          };
+        }),
+        confirmedEditors: [...new Set(value.confirmedEditors)],
+        editing: false
+      });
+    }
   }
 
   removeCars() {
@@ -198,18 +286,52 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
     this.cars.push(konvaImage);
     this.layer.add(konvaImage);
     this.layer.draw();
-    konvaImage.on("dragstart", this.onDragStart.bind(this));
-    konvaImage.on("dragend", this.onDragEnd.bind(this));
+  }
+
+  private observeDragPermissionsToCars() {
+    this.value$.pipe(
+      takeUntil(this.destroy$),
+      tap((value) => {
+        if (!value) {
+          return;
+        }
+
+        if (value.editor === this.cookieService.get(CookieName.sessionId) || !value.editing) {
+          this.cars.map((car) => {
+            car.setDraggable(true);
+            car.on("dragstart", this.onDragStart.bind(this));
+            car.on("dragend", this.onDragEnd.bind(this));
+          });
+        } else {
+          this.cars.map(car => {
+            this.tr.nodes([]);
+            car.setDraggable(false);
+            car.removeEventListener('dragstart');
+            car.removeEventListener('dragend');
+          });
+        }
+      })
+    ).subscribe();
   }
 
   private onDragStart() {
+    const value = this.value$.getValue();
+    const editor = this.cookieService.get(CookieName.sessionId);
+
+    if (value && !value.editing) {
+      this.handleModelChange({
+        ...value,
+        confirmedEditors: [],
+        editing: true,
+        editor: editor
+      });
+    }
     this.isDragging = true;
   }
 
   private onDragEnd() {
     this.isDragging = false;
   }
-
 
   private onTouchEnd() {
     this.lastCenter = null;
@@ -289,7 +411,6 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
         const scale = this.layer.scaleX() * (dist / this.lastDist);
 
         if (scale < 1) {
-          this.fixStageIntoParentContainer();
           return;
         }
 
@@ -311,25 +432,6 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
         this.lastCenter = newCenter;
       }
 
-  }
-
-  private fixStageIntoParentContainer() {
-    const container = document.getElementById('canvas-container');
-
-    if (!container) {
-      return;
-    }
-
-    // now we need to fit stage into parent container
-    const containerWidth = container.offsetWidth;
-
-    // but we also make the full scene visible
-    // so we need to scale all objects on canvas
-    const scale = containerWidth / imageWidth;
-
-    if (imageHeight * scale > imageHeight) {
-      return;
-    }
   }
 
   private getDistance(p1: PointData, p2: PointData) {
@@ -359,15 +461,6 @@ export class SketchCanvasComponent extends BaseFormControlComponent<CarData[]> i
   dragBoundFunc = (pos: Vector2d) => {
     return this.boundFunc(pos, this.layer.scaleX());
   };
-
-
-  fitImageToStage() {
-
-    this.layer.x(0);
-    this.layer.y(0);
-    this.layer.scale({x: 1, y: 1});
-    this.fixStageIntoParentContainer();
-  }
 
 
   ngOnDestroy() {

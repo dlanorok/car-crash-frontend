@@ -39,6 +39,16 @@ export interface Option {
   next_step: StepType;
 }
 
+export enum SectionId {
+  startingQuestions = 'starting_questions',
+  circumstances = 'circumstances',
+  vehicleDamage = 'vehicle_damage',
+  accidentSketch = 'accident_sketch',
+  carAndInsurance = 'car_and_insurance',
+  driver = 'driver',
+  additional = 'additional'
+}
+
 export enum InputType {
   select = 'select',
   input = 'input',

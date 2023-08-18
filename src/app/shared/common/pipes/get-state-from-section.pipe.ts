@@ -1,17 +1,32 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { Action, Input, Section, Step } from "@app/home/pages/crash/flow.definition";
+import { inject, Pipe, PipeTransform } from '@angular/core';
+import { Action, Input, Section, SectionId, Step } from "@app/home/pages/crash/flow.definition";
 import { ModelState } from "@app/shared/models/base.model";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
+import { CookieService } from "ngx-cookie-service";
+import { Sketch } from "@app/shared/components/control-value-accessors/sketch-canvas/sketch-canvas.component";
 
 @Pipe({
   name: 'getStateFromPipe',
 })
 export class GetStateFromSectionPipe implements PipeTransform {
+  private readonly cookieService: CookieService = inject(CookieService);
 
   transform(section: Section, questionnaire: QuestionnaireModel): ModelState {
     const startingStep = questionnaire.data.steps.find(step => step.step_type === section.starting_step);
     if (!startingStep) {
       return ModelState.empty;
+    }
+
+    if (section.id === SectionId.accidentSketch) {
+      const input = questionnaire.data.inputs.find(_input => startingStep.inputs.includes(_input.id));
+      if (input) {
+        const value: Sketch = input.value;
+        if (value && value.confirmedEditors.length > 0) {
+          return value.confirmedEditors.includes(questionnaire.creator) ? ModelState.validated : ModelState.partial;
+        } else {
+          return ModelState.empty;
+        }
+      }
     }
 
     const steps = this.getNextStep(questionnaire, startingStep, []);
@@ -28,7 +43,6 @@ export class GetStateFromSectionPipe implements PipeTransform {
       }
       return acc;
     }, 0);
-
 
     return inputIds.length === completedInputs ? ModelState.validated : completedInputs === 0 ? ModelState.empty : ModelState.partial;
   }

@@ -13,6 +13,7 @@ import { loadCrash } from "@app/app-state/crash/crash-action";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { CrashModel } from "@app/shared/models/crash.model";
 import { selectCrash } from "@app/app-state/crash/crash-selector";
+import { SectionId } from './flow.definition';
 
 @UntilDestroy()
 @Component({
@@ -24,6 +25,7 @@ export class CrashComponent implements OnInit {
   readonly ModelState = ModelState;
   questionnaires: QuestionnaireModel[] = [];
   crash$: Observable<CrashModel> = this.store.select(selectCrash);
+  readonly SectionId: typeof SectionId = SectionId;
 
   constructor(
     private readonly route: ActivatedRoute,

@@ -1,8 +1,18 @@
-<div class="h-100">
-  <div id="canvas-container" #container class="canvas-container">
-    <div id="buttons">
-      <button (click)="confirmSketch()">Confirm sketch</button>
+<div class="h-100 position-relative">
+  <div
+    *ngIf="(value$ | async | canConfirmSketch) === false && (value$ | async | canEditSketch) === false"
+    class="wait-notification"
+  >
+    Another person is editing the sketch, once finished you will have ability to confirm/edit it.
+  </div>
+  <div class="container-wrapper">
+    <div style="position: absolute; z-index: 1">
+      <div>
+        <button *ngIf="value$ | async | canConfirmSketch" class="btn btn-primary me-3" (click)="confirmSketch()">Confirm sketch</button>
+        <button *ngIf="value$ | async | canEditSketch" class="btn btn-primary"  (click)="editSketch()">Edit sketch</button>
+      </div>
     </div>
+    <div id="canvas-container" #container class="canvas-container"></div>
   </div>
 </div>
 

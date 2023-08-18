@@ -8,6 +8,11 @@
         >
           <div>
             {{ section.name }}
+            <span
+              style="font-size: 11px; color: #7a7a7a"
+              *ngIf="section.id === SectionId.accidentSketch && (section | getStateFromPipe : questionnaire) === ModelState.partial">
+              §§ You must confirm the sketch before You can proceed
+            </span>
             <small *ngIf="section.helpText">
               {{ section.helpText }}
             </small>
@@ -21,7 +26,7 @@
           </div>
         </div>
 
-        <div *ngIf="i === 0 && (crash$ | async | amICreator)" class="todo-item" [routerLink]="'invite'">
+        <div *ngIf="i === 0 && (crash$ | async)?.creator | amICreator" class="todo-item" [routerLink]="'invite'">
           Invite others
           <div class="d-flex align-items-center">
             <i *ngIf="questionnaires.length <= 1" class="bi bi-circle"></i>
