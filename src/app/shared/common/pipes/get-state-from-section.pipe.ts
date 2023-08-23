@@ -1,30 +1,29 @@
-import { inject, Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import { Action, Input, Section, SectionId, Step } from "@app/home/pages/crash/flow.definition";
 import { ModelState } from "@app/shared/models/base.model";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
-import { CookieService } from "ngx-cookie-service";
 import { Sketch } from "@app/shared/components/control-value-accessors/sketch-canvas/sketch-canvas.component";
 
 @Pipe({
   name: 'getStateFromPipe',
 })
 export class GetStateFromSectionPipe implements PipeTransform {
-  private readonly cookieService: CookieService = inject(CookieService);
 
-  transform(section: Section, questionnaire: QuestionnaireModel): ModelState {
+  transform(questionnaire: QuestionnaireModel, section: Section): ModelState {
     const startingStep = questionnaire.data.steps.find(step => step.step_type === section.starting_step);
     if (!startingStep) {
       return ModelState.empty;
     }
 
     if (section.id === SectionId.accidentSketch) {
-      const input = questionnaire.data.inputs.find(_input => startingStep.inputs.includes(_input.id));
+      const inputId = startingStep.inputs[0];
+      const input = questionnaire.data.inputs[inputId];
       if (input) {
         const value: Sketch = input.value;
-        if (value && value.confirmedEditors.length > 0) {
-          return value.confirmedEditors.includes(questionnaire.creator) ? ModelState.validated : ModelState.partial;
+        if (value && value.confirmed_editors?.length > 0) {
+          return value.confirmed_editors.includes(questionnaire.creator) ? ModelState.validated : ModelState.partial;
         } else {
-          return ModelState.empty;
+          return (value.cars || []).length > 0 ? ModelState.partial : ModelState.empty;
         }
       }
     }
@@ -35,7 +34,14 @@ export class GetStateFromSectionPipe implements PipeTransform {
       step.inputs.forEach((input: number) => acc.push(input));
       return acc;
     }, []);
-    const inputs = questionnaire.data.inputs.filter((input) => input.required && inputIds.includes(input.id));
+
+    const inputs = inputIds.reduce((acc: Input[], inputId) => {
+      const input = questionnaire.data.inputs[inputId];
+      if (input.required) {
+        acc.push(input);
+      }
+      return acc;
+    }, []);
 
     const completedInputs = inputs.reduce((acc: number, currInput: Input) => {
       if (currInput.value !== null) {
@@ -57,7 +63,7 @@ export class GetStateFromSectionPipe implements PipeTransform {
       this.getNextStep(questionnaire, nextStep, value);
     }
 
-    const input = questionnaire.data.inputs.find(_input => step.inputs.includes(_input.id));
+    const input = questionnaire.data.inputs[step.inputs[0]];
     const optionSelected = input?.options?.find(option => option.value === input?.value);
     if (input && optionSelected && optionSelected.action === Action.nextStep && optionSelected.action_property?.step) {
       const nextStep = questionnaire.data.steps.find(_step => _step.step_type === optionSelected.action_property?.step);

@@ -12,7 +12,7 @@ export enum Action {
 export interface QuestionnaireData {
   sections: Section[];
   steps: Step[];
-  inputs: Input[];
+  inputs:  Record<string, Input>;
 }
 
 export interface Section {
@@ -29,6 +29,7 @@ export interface Step {
   inputs: number[]
   next_step?: StepType;
   data_from_input?: number;
+  updated_inputs?: string[]
 }
 
 export interface Option {
@@ -37,6 +38,16 @@ export interface Option {
   action: string;
   action_property: any;
   next_step: StepType;
+}
+
+export enum ArrowType {
+  null = "null",
+  straight = "straight",
+  reverse = "reverse",
+  right = "right",
+  left = "left",
+  straightRight = "straight_right",
+  straightLeft = "straight_left",
 }
 
 export enum SectionId {

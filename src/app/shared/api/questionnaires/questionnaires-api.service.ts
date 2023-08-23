@@ -29,14 +29,8 @@ export class QuestionnairesApiService extends BaseApiService<QuestionnaireModel>
   updateInputs(questionnaireId: number, inputs: Record<string, string>) {
     return this.httpClient.patch(`${this.endpoint}${questionnaireId}/update_inputs/`, inputs)
       .pipe(
-        map((models) => {
-          if (!Array.isArray(models)) {
-            return [];
-          }
-
-          return models.map(model => {
-            return new this.model(model);
-          });
+        map((model) => {
+          return new this.model(model);
         })
       );
   }

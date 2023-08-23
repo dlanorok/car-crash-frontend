@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
 import { Observable, take } from "rxjs";
 import { Store } from "@ngrx/store";
 import { HeaderService } from "@app/shared/services/header-service";
@@ -22,20 +22,17 @@ import { SectionId } from './flow.definition';
   styleUrls: ['./crash.component.scss']
 })
 export class CrashComponent implements OnInit {
+  private readonly changeDetectionRef: ChangeDetectorRef = inject(ChangeDetectorRef);
+  private readonly headerService: HeaderService = inject(HeaderService);
+  private readonly router: Router = inject(Router);
+  private readonly store: Store = inject(Store);
+  private readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
+  private readonly cookieService: CookieService = inject(CookieService);
+
   readonly ModelState = ModelState;
   questionnaires: QuestionnaireModel[] = [];
   crash$: Observable<CrashModel> = this.store.select(selectCrash);
   readonly SectionId: typeof SectionId = SectionId;
-
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly headerService: HeaderService,
-    private readonly router: Router,
-    private readonly store: Store,
-    private readonly questionnaireService: QuestionnaireService,
-    private readonly cookieService: CookieService
-  ) {
-  }
 
   ngOnInit(): void {
     this.headerService.setHeaderData({name: '§§Accident statement'});
@@ -60,7 +57,11 @@ export class CrashComponent implements OnInit {
     this.questionnaireService.questionnairesUpdates$.pipe(
       untilDestroyed(this)
     ).subscribe((questionnaires) => {
-      this.questionnaires = questionnaires;
+      this.questionnaires = [];
+      questionnaires.forEach(questionnaire => {
+        this.questionnaires.push(questionnaire);
+      });
+      this.changeDetectionRef.detectChanges();
     });
   }
 }

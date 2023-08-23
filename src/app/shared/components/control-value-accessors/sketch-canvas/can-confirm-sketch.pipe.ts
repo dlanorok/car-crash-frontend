@@ -14,6 +14,6 @@ export class CanConfirmSketchPipe implements PipeTransform {
       return false;
     }
 
-    return !sketch.confirmedEditors.includes(this.cookieService.get(CookieName.sessionId)) && (!sketch.editing || sketch.editor === this.cookieService.get(CookieName.sessionId));
+    return !sketch.confirmed_editors.includes(this.cookieService.get(CookieName.sessionId)) && (!sketch.editing || sketch.editor === this.cookieService.get(CookieName.sessionId));
   }
 }

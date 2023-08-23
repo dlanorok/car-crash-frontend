@@ -60,7 +60,7 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
 
       if (newQuestionnaire) {
         this.questionnaire = newQuestionnaire;
-        this.updateControls();
+        this.updateControls(true);
       }
     });
   }
@@ -129,11 +129,14 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
     }
   }
 
-  private updateControls() {
+  private updateControls(silent?: boolean) {
     if (this.step && this.questionnaire) {
       const inputs = this.getStepInputsPipe.transform(this.step, this.questionnaire);
       inputs.forEach(input => {
-        this.form.controls[input.id].setValue(input.value);
+        if (input.value === this.form.controls[input.id].value) {
+          return;
+        }
+        this.form.controls[input.id].setValue(input.value, { emitEvent: !silent });
       });
     }
   }
@@ -164,17 +167,17 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
         skip(1),
         takeUntil(this.destroy$)
       ).subscribe((value) => {
-        if (this.questionnaire && control.value.save) {
+        if (this.questionnaire && control.value.save && this.step) {
           control.value.save = false;
-          this.questionnaireService.updateInputs(value, this.questionnaire);
+          this.questionnaireService.updateInputs(value, this.questionnaire, this.step);
         }
       });
     }
   }
 
   updateAnswer(): void {
-    if (this.questionnaire) {
-      this.questionnaireService.updateInputs(this.form.value, this.questionnaire);
+    if (this.questionnaire && this.step) {
+      this.questionnaireService.updateInputs(this.form.value, this.questionnaire, this.step);
     }
   }
 
@@ -194,7 +197,7 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
 
     this.submitted = false;
     if (this.questionnaire && this.step && !this.form.disabled) {
-      this.questionnaireService.updateInputs(this.form.value, this.questionnaire);
+      this.questionnaireService.updateInputs(this.form.value, this.questionnaire, this.step);
     }
 
     if (!this.step) {
@@ -203,7 +206,7 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
     }
 
     // For now select first input of steps
-    const input = this.questionnaire?.data.inputs.find(input => input.id === this.step?.inputs[0]);
+    const input = this.questionnaire?.data.inputs[this.step?.inputs[0]];
 
     if (url) {
       this.router.navigate([url]);

@@ -8,7 +8,8 @@ import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
 export class GetStepInputsPipe implements PipeTransform {
 
   transform(step: Step, questionnaire: QuestionnaireModel): Input[] {
-    return questionnaire.data.inputs.filter(input => step.inputs.includes(input.id)).map((input) => {
+    return step.inputs.reduce((acc: Input[], inputId) => {
+      const input = questionnaire.data.inputs[inputId];
       if (input.type === InputType.date || input.type === InputType.dateTime) {
         if (input.value) {
           input.value = new Date(input.value);
@@ -16,7 +17,8 @@ export class GetStepInputsPipe implements PipeTransform {
           input.value = new Date();
         }
       }
-      return input;
-    });
+      acc.push(input);
+      return acc;
+    }, []);
   }
 }

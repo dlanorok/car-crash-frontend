@@ -6,33 +6,34 @@ import {
 import { PlaceSelectorData } from "@app/shared/components/control-value-accessors/place-selector/place-selector.component";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 import {
+  combineLatest,
   filter,
+  fromEvent,
   Observable,
-  of,
-  ReplaySubject,
+  of, pairwise,
+  ReplaySubject, startWith,
   Subject,
   switchMap,
+  take,
   takeUntil,
-  tap,
-  combineLatest,
-  fromEvent
+  tap
 } from "rxjs";
-import { Step } from "@app/home/pages/crash/flow.definition";
+import { ArrowType, Step } from "@app/home/pages/crash/flow.definition";
 import { map } from "rxjs/operators";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
-import LatLngLiteral = google.maps.LatLngLiteral;
 import { environment } from "../../../../../environments/environment";
 import Konva from "konva";
-import Vector2d = Konva.Vector2d;
 import { KonvaEventObject } from "konva/lib/Node";
 import { CookieService } from "ngx-cookie-service";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
+import LatLngLiteral = google.maps.LatLngLiteral;
+import Vector2d = Konva.Vector2d;
 
 export interface Sketch {
   cars: CarData[];
   editor: string;
   editing: boolean;
-  confirmedEditors: string[];
+  confirmed_editors: string[];
   save?: boolean;
 }
 
@@ -43,6 +44,8 @@ interface CarData {
   x: number;
   y: number;
   rotation: number;
+  arrow: ArrowType;
+  questionnaire_id: string;
 }
 
 interface PointData {
@@ -68,7 +71,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
   layer!: Konva.Layer;
   image!: Konva.Image;
   tr!: Konva.Transformer;
-  cars: Konva.Image[] = [];
+  cars: {group: Konva.Group, carData: CarData}[] = [];
   scale = 0;
   private lastCenter: PointData | null = null;
   private lastDist = 0;
@@ -86,7 +89,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
       if (step && step.data_from_input) {
         return this.questionnaireService.getOrFetchQuestionnaires().pipe(
           map(
-            (questionnaires: QuestionnaireModel[]) => questionnaires[0].data.inputs.find(input => input.id === step.data_from_input)?.value
+            (questionnaires: QuestionnaireModel[]) => questionnaires[0].data.inputs[step.data_from_input || 0]?.value
           ),
         );
       }
@@ -106,6 +109,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
   ngAfterViewInit(): void {
     this.setStageAndLayer();
     this.drawGoogleImageAndAddCars();
+
     window.addEventListener('touchend', this.onTouchEnd.bind(this));
     window.addEventListener('touchmove', this.onTouchMove.bind(this));
     window.addEventListener('wheel', this.onWheel.bind(this));
@@ -130,7 +134,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     this.imageUrl$.pipe(
       takeUntil(this.destroy$),
       switchMap((imageUrl: string) => {
-        const initialScale = 2;
+        const initialScale = 1;
         if (this.image) {
           return of(initialScale);
         }
@@ -165,17 +169,20 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
       }),
       switchMap((initialScale) => {
         return combineLatest([
-          this.value$,
+          this.value$.pipe(startWith(undefined), pairwise()),
           this.questionnaireService.getOrFetchQuestionnaires()
         ]).pipe(
           takeUntil(this.destroy$),
-          tap(([sketch, questionnaires]: [Sketch | undefined | null, QuestionnaireModel[]]) => {
-            if (sketch?.editor !== this.cookieService.get(CookieName.sessionId) || this.cars.length === 0) {
+          tap(([[prevSketch, currenSketch], questionnaires]: [[Sketch | undefined | null, Sketch| undefined | null], QuestionnaireModel[]]) => {
+            const sameArrows = prevSketch?.cars.map(car => car.arrow).sort().toString() === currenSketch?.cars.map(car => car.arrow).sort().toString();
+            const redraw = !prevSketch || this.cars.length === 0 || !sameArrows;
+
+            if (currenSketch?.editor !== this.cookieService.get(CookieName.sessionId) || redraw) {
               this.layer.scale({
                 x: initialScale,
                 y: initialScale
               });
-              this.reDrawCars(sketch, questionnaires.length, initialScale);
+              this.reDrawCars(currenSketch, questionnaires, initialScale);
             }
           })
         );
@@ -183,43 +190,21 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     ).subscribe();
   }
 
-  private reDrawCars(sketch: Sketch | undefined | null, questionnairesLength: number, scale: number) {
+  private reDrawCars(sketch: Sketch | undefined | null, questionnaires: QuestionnaireModel[], scale: number) {
+    if (!sketch) {
+      return;
+    }
     this.removeCars();
-    if (!sketch?.cars) {
-      for (let i = 0; i < Math.max(questionnairesLength, 2); i++) {
-        this.addCar();
-      }
-      this.saveCars();
-    } else {
-      sketch.cars.forEach(car => this.addCar(car));
+    let firstCar: CarData | undefined = undefined;
+    if (sketch.cars.length > 0 && sketch.cars[0].x) {
       this.layer.setPosition({
         x: -sketch.cars[0].x * scale + this.layer.width() / 2,
         y: -sketch.cars[0].y * scale + this.layer.height() / 2
       });
+      firstCar = sketch.cars[0];
     }
+    sketch.cars.forEach((car, index) => this.addCar(car, index, firstCar));
     this.observeDragPermissionsToCars();
-  }
-
-  saveCars() {
-    const value = this.value$.getValue();
-
-    if (!value) {
-      this.handleModelChange({
-        cars: this.cars.map(car => {
-          return {
-            x: car.x(),
-            y: car.y(),
-            scaleY: car.scaleY(),
-            scaleX: car.scaleX(),
-            id: car.id(),
-            rotation: car.rotation()
-          };
-        }),
-        editor: '',
-        editing: false,
-        confirmedEditors: []
-      });
-    }
   }
 
   editSketch() {
@@ -228,7 +213,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
       this.handleModelChange({
         ...value,
         editor: this.cookieService.get(CookieName.sessionId),
-        confirmedEditors: [],
+        confirmed_editors: [],
         editing: true,
         save: true
       });
@@ -240,20 +225,22 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     const value = this.value$.getValue();
 
     if (value) {
-      value.confirmedEditors.push(this.cookieService.get(CookieName.sessionId));
+      value.confirmed_editors.push(this.cookieService.get(CookieName.sessionId));
       this.handleModelChange({
         ...value,
         cars: this.cars.map(car => {
           return {
-            x: car.x(),
-            y: car.y(),
-            scaleY: car.scaleY() * this.scale,
-            scaleX: car.scaleX() * this.scale,
-            id: car.id(),
-            rotation: car.rotation()
+            x: car.group.x(),
+            y: car.group.y(),
+            scaleY: car.group.scaleY(),
+            scaleX: car.group.scaleX(),
+            id: car.group.id(),
+            rotation: car.group.rotation(),
+            arrow: car.carData.arrow,
+            questionnaire_id: car.carData.questionnaire_id
           };
         }),
-        confirmedEditors: [...new Set(value.confirmedEditors)],
+        confirmed_editors: [...new Set(value.confirmed_editors)],
         editing: false,
         save: true
       });
@@ -261,32 +248,52 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
   }
 
   removeCars() {
-    this.cars.forEach(car => car.remove());
+    this.cars.forEach(car => car.group.remove());
     this.cars = [];
     this.layer.draw();
   }
 
-  addCar(car?: CarData) {
+  addCar(car: CarData, index: number, firstCar?: CarData) {
     const imageObj = new Image();
-    const id = (car?.id || Object.keys(this.cars).length + 1).toString();
 
-    imageObj.src = `../../../assets/icons/google-car-${id}.svg`;
+    imageObj.src = `../../../assets/icons/google-car-${index + 1}.svg`;
 
-    const konvaImage = new Konva.Image({
-      image: imageObj,
-      draggable: true,
-      scaleX: (car?.scaleX || 0.06) / this.scale,
-      scaleY: (car?.scaleX || 0.06) / this.scale,
-      rotation: car?.rotation || 90,
-      x: car?.x || this.image.width() / 2 / this.stage.scaleX() + 20 * Object.keys(this.cars).length,
-      y: car?.y || this.image.height() / 2 / this.stage.scaleX(),
-      id: id
-    });
+    const x = car?.x || (firstCar?.x ? firstCar.x + 20 : undefined) || this.image.width() / 2 / this.stage.scaleX();
+    const y = car?.y || firstCar?.y || this.image.height() / 2 / this.stage.scaleX();
 
-    konvaImage.on('transformstart', this.onDragStart.bind(this));
-    this.cars.push(konvaImage);
-    this.layer.add(konvaImage);
-    this.layer.draw();
+    return fromEvent(imageObj, 'load').pipe(
+      tap(() => {
+        const konvaImage = new Konva.Image({
+          image: imageObj,
+          draggable: false,
+          scaleX: 0.08,
+          scaleY: 0.08,
+          rotation: 90,
+          x: 0,
+          y: 0,
+          id: car.id
+        });
+        const group = new Konva.Group({
+          x: x,
+          y: y,
+          draggable: true,
+          scaleX: car?.scaleX || 1,
+          scaleY: car?.scaleY || 1,
+          rotation: car?.rotation,
+          id: car.id
+        });
+
+        group.add(this.gerArrowFromType(car.arrow, konvaImage));
+        group.add(konvaImage);
+        this.layer.add(group);
+        this.layer.draw();
+
+        group.on('transformstart', this.onDragStart.bind(this));
+        group.on('dragstart', this.onDragStart.bind(this));
+        group.on('dragend', this.onDragEnd.bind(this));
+        this.cars.push({group: group, carData: car});
+      })
+    ).pipe(take(1)).subscribe();
   }
 
   private observeDragPermissionsToCars() {
@@ -299,16 +306,16 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
 
         if (value.editor === this.cookieService.get(CookieName.sessionId) || !value.editing) {
           this.cars.map((car) => {
-            car.setDraggable(true);
-            car.on("dragstart", this.onDragStart.bind(this));
-            car.on("dragend", this.onDragEnd.bind(this));
+            car.group.setDraggable(true);
+            car.group.on("dragstart", this.onDragStart.bind(this));
+            car.group.on("dragend", this.onDragEnd.bind(this));
           });
         } else {
           this.cars.map(car => {
             this.tr.nodes([]);
-            car.setDraggable(false);
-            car.removeEventListener('dragstart');
-            car.removeEventListener('dragend');
+            car.group.setDraggable(false);
+            car.group.removeEventListener('dragstart');
+            car.group.removeEventListener('dragend');
           });
         }
       })
@@ -322,7 +329,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     if (value && !value.editing) {
       this.handleModelChange({
         ...value,
-        confirmedEditors: [],
+        confirmed_editors: [],
         editing: true,
         editor: editor,
         save: true
@@ -344,8 +351,13 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     if ($event.target === this.image) {
       this.tr.nodes([]);
     } else {
-      this.tr.nodes([$event.target]);
-      this.layer.draw();
+      if ($event.target.parent) {
+        const parent = $event.target.parent.attrs.id === 'arrow' ? $event.target.parent.parent : $event.target.parent;
+        if (parent) {
+          this.tr.nodes([parent]);
+          this.layer.draw();
+        }
+      }
     }
   }
 
@@ -458,6 +470,165 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
       y
     };
   }
+
+  private gerArrowFromType(arrowType: ArrowType, carImage: Konva.Image): Konva.Group {
+    const group = new Konva.Group({
+      x: 0,
+      y: 0,
+      id: "arrow"
+    });
+
+    const initialX = -(carImage.width() * carImage.scaleX()) / 4;
+    const initialY = (carImage.height() * carImage.scaleX());
+
+    const quadraticLine = new Konva.Shape({
+      stroke: 'red',
+      strokeWidth: 2,
+      draggable: false
+    });
+
+    const bezierLine = new Konva.Shape({
+      stroke: 'red',
+      strokeWidth: 2,
+      draggable: false
+    });
+
+    const arrow = new Konva.Arrow({
+      points: [0, 0, 0, 0, 0, 0],
+      pointerLength: 3,
+      pointerWidth: 2,
+      fill: 'red',
+      stroke: 'red',
+      strokeWidth: 3,
+      draggable: false,
+      visible: false
+    });
+
+    if (arrowType === ArrowType.left) {
+      quadraticLine.sceneFunc(((ctx, shape) => {
+        ctx.beginPath();
+        ctx.moveTo(initialX, initialY);
+        ctx.quadraticCurveTo(
+          initialX,
+          initialY + 30,
+          initialX + 20,
+          initialY + 30
+        );
+        ctx.fillStrokeShape(shape);
+      }));
+      arrow.x(initialX + 20);
+      arrow.y(initialY + 30);
+      arrow.visible(true);
+    } else if (arrowType === ArrowType.right) {
+      quadraticLine.sceneFunc(((ctx, shape) => {
+        ctx.beginPath();
+        ctx.moveTo(initialX, initialY);
+        ctx.quadraticCurveTo(
+          initialX,
+          initialY + 30,
+          initialX - 20,
+          initialY + 30
+        );
+        ctx.fillStrokeShape(shape);
+      }));
+      arrow.x(initialX - 20);
+      arrow.y(initialY + 30);
+      arrow.visible(true);
+      arrow.rotation(180);
+    } else if (arrowType === ArrowType.reverse) {
+      quadraticLine.sceneFunc(((ctx, shape) => {
+        ctx.beginPath();
+        ctx.moveTo(initialX, initialY);
+        ctx.quadraticCurveTo(
+          initialX,
+          initialY - 25,
+          initialX,
+          initialY - 25
+        );
+        ctx.fillStrokeShape(shape);
+      }));
+      arrow.x(initialX);
+      arrow.y(initialY - 25);
+      arrow.visible(true);
+      arrow.rotation(270);
+    } else if (arrowType === ArrowType.straight) {
+      quadraticLine.sceneFunc(((ctx, shape) => {
+        ctx.beginPath();
+        ctx.moveTo(initialX, initialY);
+        ctx.quadraticCurveTo(
+          initialX,
+          initialY + 30,
+          initialX,
+          initialY + 30
+        );
+        ctx.fillStrokeShape(shape);
+      }));
+      arrow.x(initialX);
+      arrow.y(initialY + 30);
+      arrow.visible(true);
+      arrow.rotation(90);
+    } else if (arrowType === ArrowType.straightLeft) {
+      bezierLine.sceneFunc(((ctx, shape) => {
+        ctx.beginPath();
+        ctx.moveTo(initialX, initialY);
+        ctx.bezierCurveTo(
+          initialX,
+          initialY + 50,
+          initialX + 20,
+          initialY + 20,
+          initialX + 20,
+          initialY + 60
+        );
+        ctx.fillStrokeShape(shape);
+      }));
+      arrow.x(initialX + 20);
+      arrow.y(initialY + 60);
+      arrow.visible(true);
+      arrow.rotation(90);
+    } else if (arrowType === ArrowType.straightRight) {
+      bezierLine.sceneFunc(((ctx, shape) => {
+        ctx.beginPath();
+        ctx.moveTo(initialX, initialY);
+        ctx.bezierCurveTo(
+          initialX,
+          initialY + 50,
+          initialX - 20,
+          initialY + 20,
+          initialX - 20,
+          initialY + 60
+        );
+        ctx.fillStrokeShape(shape);
+      }));
+      arrow.x(initialX - 20);
+      arrow.y(initialY + 60);
+      arrow.visible(true);
+      arrow.rotation(90);
+    }
+
+    group.add(quadraticLine);
+    group.add(bezierLine);
+    group.add(arrow);
+    return group;
+
+
+    // const arrow = new Konva.Arrow({
+    //   x: -(carImage.width() * carImage.scaleX()) / 4,
+    //   y: (carImage.height() * carImage.scaleX()),
+    //   points: [0, 0, 0, 40],
+    //   pointerLength: 5,
+    //   pointerWidth: 6,
+    //   fill: 'red',
+    //   stroke: 'red',
+    //   strokeWidth: 2,
+    // });
+    //
+    // if (arrowType === ArrowType.reverse) {
+    //   arrow.rotation(180);
+    // }
+    //
+    // return arrow;
+  }
+
 
   dragBoundFunc = (pos: Vector2d) => {
     return this.boundFunc(pos, this.layer.scaleX());

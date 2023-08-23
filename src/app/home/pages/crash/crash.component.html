@@ -10,7 +10,7 @@
             {{ section.name }}
             <span
               style="font-size: 11px; color: #7a7a7a"
-              *ngIf="section.id === SectionId.accidentSketch && (section | getStateFromPipe : questionnaire) === ModelState.partial">
+              *ngIf="section.id === SectionId.accidentSketch && (questionnaire | getStateFromPipe : section) === ModelState.partial">
               §§ You must confirm the sketch before You can proceed
             </span>
             <small *ngIf="section.helpText">
@@ -18,7 +18,7 @@
             </small>
           </div>
           <div class="d-flex align-items-center">
-            <ng-container [ngSwitch]="(section | getStateFromPipe : questionnaire)">
+            <ng-container [ngSwitch]="(questionnaire | getStateFromPipe : section)">
               <i *ngSwitchCase="ModelState.empty" class="bi bi-circle"></i>
               <i *ngSwitchCase="ModelState.validated" class="bi bi-check-circle"></i>
               <i *ngSwitchCase="ModelState.partial" class="bi bi-question-circle"></i>
@@ -37,4 +37,5 @@
     </details>
   </ng-container>
 </div>
+
 

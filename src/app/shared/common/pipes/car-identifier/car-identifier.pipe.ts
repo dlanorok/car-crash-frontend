@@ -1,6 +1,6 @@
 import { inject, Pipe, PipeTransform } from '@angular/core';
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
-import { StepType } from "@app/home/pages/crash/flow.definition";
+import { Input, StepType } from "@app/home/pages/crash/flow.definition";
 import { CookieService } from "ngx-cookie-service";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
 
@@ -20,7 +20,13 @@ export class CarIdentifierPipe implements PipeTransform {
       return `§§Car ${alphabet[questionnaireIndex]} ${suffix}`;
     }
 
-    const inputs = questionnaire.data.inputs.filter(input => step.inputs.includes(input.id));
+    const inputs = step.inputs.reduce((acc: Input[], inputId) => {
+      const input = questionnaire.data.inputs[inputId];
+      if (input.required) {
+        acc.push(input);
+      }
+      return acc;
+    }, []);
     const values = inputs.map(input => input.value);
     if (values.length === 0 || values.filter(value => value !== null).length === 0) {
       return `§§Car ${alphabet[questionnaireIndex]} ${suffix}`;
