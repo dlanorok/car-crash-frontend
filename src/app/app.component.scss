@@ -1,4 +1,6 @@
 .main-outlet {
   height: calc(100% - 70px);
   padding-top: 57px;
+  padding-bottom: 57px;
+  overflow-x: hidden;
 }

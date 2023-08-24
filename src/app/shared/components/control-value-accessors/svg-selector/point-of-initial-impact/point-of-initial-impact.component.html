@@ -167,5 +167,6 @@
     <line x1="154.02" y1="474.27" x2="154.02" y2="399.85"/>
     <polygon points="154.02 385.72 162.15 405.62 154.02 400.9 145.89 405.62 154.02 385.72"/>
   </g>
-</svg
->
+</svg>
+
+<app-file-upload [uploadedFileIds]="((value$ | async)?.file_ids) || []" (fileUploaded)="onFileUpload($event)"></app-file-upload>

@@ -1,6 +1,9 @@
+<div class="progress" *ngIf="progress">
+  <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
+</div>
 <div class="image-container">
-  <ng-container *ngFor="let file of uploadedFiles; let i = index">
-    <img *ngIf="file" [src]="file" alt="Preview">
+  <ng-container *ngFor="let fileId of uploadedFileIds; let i = index">
+    <img appImage [imageId]="fileId" alt="Preview">
   </ng-container>
 </div>
 <input type="file" accept="image/*" (change)="onFileSelected($event)">

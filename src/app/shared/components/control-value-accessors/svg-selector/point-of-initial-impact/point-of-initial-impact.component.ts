@@ -12,7 +12,8 @@ export class PointOfInitialImpactComponent extends BaseSvgHoverComponent {
 
   override onViewReady() {
     this.value$.subscribe((value) => {
-      this.selectedParts = value || [];
+      this.selectedParts = value?.selectedParts || [];
+      this.file_ids = value?.file_ids || [];
       this.svgImage?.nativeElement.querySelectorAll('g').forEach((path) => {
         if (this.selectedParts?.includes(path.id)) {
           path.classList.add(this.selectedClass);

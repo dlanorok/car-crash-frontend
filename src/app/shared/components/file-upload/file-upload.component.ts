@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FilesApiService } from "../../api/files/files-api.service";
 import { UploadedFile } from "../../common/uploaded-file";
 import { tap } from "rxjs";
+import { HttpEventType } from "@angular/common/http";
 
 @Component({
   selector: 'app-file-upload',
@@ -9,8 +10,9 @@ import { tap } from "rxjs";
   styleUrls: ['./file-upload.component.scss']
 })
 export class FileUploadComponent {
-  uploadedFiles: (string | ArrayBuffer)[] = [];
+  progress: number | null = null;
 
+  @Input() uploadedFileIds: number[] = [];
   @Output() fileUploaded: EventEmitter<UploadedFile> = new EventEmitter<UploadedFile>();
 
   constructor(private readonly filesApiService: FilesApiService) {}
@@ -21,23 +23,17 @@ export class FileUploadComponent {
 
   uploadFile(selectedFile: File | null): void {
     if (selectedFile) {
-      this.generatePreview(selectedFile);
       this.filesApiService.uploadFile(selectedFile).pipe(
-        tap((uploadedFile: UploadedFile) => {
-          this.fileUploaded.next(uploadedFile);
+        tap((event: any) => {
+          if (event.type == HttpEventType.UploadProgress) {
+            this.progress = Math.round((100 / event.total) * event.loaded);
+          } else if (event.type == HttpEventType.Response) {
+            this.fileUploaded.next(event.body);
+            this.progress = null;
+          }
         })
       ).subscribe();
     }
-  }
-
-  private generatePreview(selectedFile: File) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.result) {
-        this.uploadedFiles.push(reader.result);
-      }
-    };
-    reader.readAsDataURL(selectedFile);
   }
 
 }

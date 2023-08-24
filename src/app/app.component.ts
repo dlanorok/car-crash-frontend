@@ -3,6 +3,7 @@ import { UrlParamService } from "./shared/services/url-param-service";
 import { NavigationEnd, Router } from "@angular/router";
 import { filter, tap } from "rxjs";
 import { WebSocketService } from "@app/shared/services/web-socket.service";
+import { SwUpdate } from "@angular/service-worker";
 
 @Component({
   selector: 'app-root',
@@ -15,8 +16,17 @@ export class AppComponent implements OnInit {
   constructor(
     private urlParamService: UrlParamService,
     private router: Router,
-    private webSocketService: WebSocketService
-  ) { }
+    private webSocketService: WebSocketService,
+    private swUpdate: SwUpdate
+  ) {
+    if (swUpdate.isEnabled) {
+      swUpdate.versionUpdates.subscribe(event => {
+        if (confirm('New version available. Refresh')) {
+          window.location.reload();
+        }
+      });
+    }
+  }
 
   ngOnInit(): void {
     this.router.events.pipe(

@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiModule } from "../api.module";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpEvent, HttpHeaders } from "@angular/common/http";
 import { map, Observable } from "rxjs";
-import { UploadedFile } from "../../common/uploaded-file";
+import { ImageModel } from "@app/shared/models/image.model";
 
 @Injectable({
   providedIn: ApiModule
@@ -12,17 +12,22 @@ export class FilesApiService {
 
   protected readonly httpClient: HttpClient = inject(HttpClient);
 
-  uploadFile(file: File): Observable<UploadedFile> {
+  uploadFile(file: File): Observable<HttpEvent<any>> {
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('name', file.name);
 
-    return this.httpClient.post<{id: number, file: string}>(`${this.endpoint}`, formData)
-      .pipe(
-        map((data: {id: number, file: string}) =>
-          ({
-            fileId: data.id,
-            uploadUrl: data.file,
-          } as { fileId: number; uploadUrl: string }),)
-      );
+    return this.httpClient.post<HttpEvent<any>>(`${this.endpoint}`, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
+  getFileData(fileId: number): Observable<ImageModel> {
+    const headers = new HttpHeaders().set('Cache-Control', 'max-age=3600');
+    const options = { headers: headers };
+    return this.httpClient.get<HttpEvent<ImageModel>>(`${this.endpoint}${fileId}/`, options).pipe(
+      map((data) => new ImageModel(data)),
+    );
   }
 }

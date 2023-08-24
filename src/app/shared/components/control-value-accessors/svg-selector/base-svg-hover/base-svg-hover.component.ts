@@ -13,11 +13,17 @@ import { CookieService } from "ngx-cookie-service";
 import {
   BaseFormControlComponent
 } from "@app/shared/form-controls/base-form-control.component";
+import { UploadedFile } from "@app/shared/common/uploaded-file";
+
+export interface BaseSvgData {
+  selectedParts: string[];
+  file_ids: number[]
+}
 
 @Component({
   template: '',
 })
-export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<string[]> implements AfterViewInit, OnDestroy, OnChanges, OnInit {
+export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<BaseSvgData> implements AfterViewInit, OnDestroy, OnChanges, OnInit {
   protected readonly renderer2: Renderer2 = inject(Renderer2);
   protected readonly cookieService: CookieService = inject(CookieService);
 
@@ -32,6 +38,7 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<str
 
   protected listeners: (()=>void)[] = [];
   protected selectedParts: string[] = [];
+  protected file_ids: number[] = [];
 
   abstract onViewReady(): void;
   abstract addListeners(): void;
@@ -62,7 +69,18 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<str
   }
 
   afterSvgItemClicked(): void {
-    this.handleModelChange(this.selectedParts);
+    this.handleModelChange({
+      file_ids: this.file_ids,
+      selectedParts: this.selectedParts
+    });
+  }
+
+  onFileUpload(file: UploadedFile) {
+    this.file_ids.push(file.id);
+    this.handleModelChange({
+      file_ids: this.file_ids,
+      selectedParts: this.selectedParts
+    });
   }
 
   protected onPathClick(event: PointerEvent) {

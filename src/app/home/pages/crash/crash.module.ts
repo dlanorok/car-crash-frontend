@@ -9,6 +9,7 @@ import { FormsModule } from "@angular/forms";
 import { GetStateFromSectionModule } from "@app/shared/common/pipes/get-state-from-section.module";
 import { CarIdentifierModule } from "@app/shared/common/pipes/car-identifier/car-identifier.module";
 import { AmICreatorModule } from "@app/shared/common/pipes/am-i-creator/am-i-creator.module";
+import { FileUploadModule } from "@app/shared/components/file-upload/file-upload.module";
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { AmICreatorModule } from "@app/shared/common/pipes/am-i-creator/am-i-cre
     GetStateFromSectionModule,
     CarIdentifierModule,
     AmICreatorModule,
+    FileUploadModule,
   ]
 })
 export class CrashModule { }

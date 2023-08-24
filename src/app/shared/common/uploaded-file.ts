@@ -1,4 +1,4 @@
 export interface UploadedFile {
-  fileId: number;
+  id: number;
   uploadUrl: string;
 }
