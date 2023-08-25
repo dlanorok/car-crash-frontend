@@ -3,9 +3,26 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
+
   img {
     width: 100px;
     height: 100px;
     object-fit: cover;
   }
+}
+
+.icon-wrapper {
+  padding: 5px;
+  background-color: var(--medium-ui-element);
+  border-radius: 50%;
+
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  cursor: pointer;
+}
+
+app-svg-comp {
+  width: 7px;
+  height: 7px;
 }

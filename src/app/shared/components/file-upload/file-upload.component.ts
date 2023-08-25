@@ -12,10 +12,19 @@ import { HttpEventType } from "@angular/common/http";
 export class FileUploadComponent {
   progress: number | null = null;
 
+  closeSvg = require('src/assets/icons/close.svg');
+
+  @Input() error: boolean | undefined = false;
   @Input() uploadedFileIds: number[] = [];
   @Output() fileUploaded: EventEmitter<UploadedFile> = new EventEmitter<UploadedFile>();
+  @Output() fileDeleted: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(private readonly filesApiService: FilesApiService) {}
+
+  removeFile(fileId: number) {
+    this.uploadedFileIds = this.uploadedFileIds.filter(_fileId => _fileId !== fileId);
+    this.fileDeleted.next(fileId);
+  }
 
   onFileSelected(event: any): void {
     this.uploadFile(event.target.files[0]);

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiModule } from "../api.module";
-import { HttpClient, HttpEvent, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpEvent } from "@angular/common/http";
 import { map, Observable } from "rxjs";
 import { ImageModel } from "@app/shared/models/image.model";
 
@@ -24,10 +24,12 @@ export class FilesApiService {
   }
 
   getFileData(fileId: number): Observable<ImageModel> {
-    const headers = new HttpHeaders().set('Cache-Control', 'max-age=3600');
-    const options = { headers: headers };
-    return this.httpClient.get<HttpEvent<ImageModel>>(`${this.endpoint}${fileId}/`, options).pipe(
+    return this.httpClient.get<HttpEvent<ImageModel>>(`${this.endpoint}${fileId}/`).pipe(
       map((data) => new ImageModel(data)),
     );
+  }
+
+  deleteFile(fileId: number): Observable<any> {
+    return this.httpClient.delete<any>(`${this.endpoint}${fileId}/`);
   }
 }

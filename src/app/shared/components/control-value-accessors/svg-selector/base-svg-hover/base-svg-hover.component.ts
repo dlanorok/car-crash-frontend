@@ -14,6 +14,7 @@ import {
   BaseFormControlComponent
 } from "@app/shared/form-controls/base-form-control.component";
 import { UploadedFile } from "@app/shared/common/uploaded-file";
+import { ValidatorsErrors } from "@app/shared/components/forms/common/enumerators/validators-errors";
 
 export interface BaseSvgData {
   selectedParts: string[];
@@ -57,6 +58,7 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
   }
 
   ngOnInit(): void {
+    super.ngOnInit();
     this.viewInitSub = combineLatest([this.viewInit$, this.change$])
       .pipe(
         tap(() => {
@@ -66,6 +68,24 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
           }
         })
       ).subscribe();
+
+
+    this.formControl.setValidators((control) => {
+      const value: BaseSvgData | null = control.value;
+      if (!value || !value.selectedParts && !value.file_ids) {
+        return {
+          [ValidatorsErrors.required]: true
+        };
+      }
+
+      if (value.selectedParts.length === 0 || value.file_ids.length === 0) {
+        return {
+          [ValidatorsErrors.required]: true
+        };
+      }
+
+      return null;
+    });
   }
 
   afterSvgItemClicked(): void {
@@ -80,6 +100,14 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
     this.handleModelChange({
       file_ids: this.file_ids,
       selectedParts: this.selectedParts
+    });
+  }
+
+  onFileDelete(file_id: number) {
+    this.file_ids = this.file_ids.filter(_file_id => _file_id !== file_id);
+    this.handleModelChange({
+      file_ids: this.file_ids,
+      selectedParts: this.selectedParts,
     });
   }
 

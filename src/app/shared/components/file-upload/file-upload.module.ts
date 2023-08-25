@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FileUploadComponent } from './file-upload.component';
 import { ApiModule } from "../../api/api.module";
 import { ImagesModule } from "@app/shared/common/directives/images/images.module";
+import { SvgIconModule } from "@app/shared/components/ui/svg-icon/svg-icon.module";
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { ImagesModule } from "@app/shared/common/directives/images/images.module
   imports: [
     CommonModule,
     ApiModule,
-    ImagesModule
+    ImagesModule,
+    SvgIconModule
   ],
   exports: [
     FileUploadComponent
