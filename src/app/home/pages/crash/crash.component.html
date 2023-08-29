@@ -1,5 +1,7 @@
 <div class="main-content" *ngIf="crash$ | async; let crash">
-  <app-file-upload></app-file-upload>
+  <div (click)="generatePDF(crash)">
+    GENERATE PDF
+  </div>
   <ng-container *ngFor="let questionnaire of questionnaires; let questionnaireIndex = index">
     <details [open]="questionnaireIndex === 0">
       <summary>{{ questionnaire | carIdentifier : questionnaireIndex }}</summary>

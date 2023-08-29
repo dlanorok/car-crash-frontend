@@ -32,7 +32,7 @@ export class FileUploadComponent {
 
   uploadFile(selectedFile: File | null): void {
     if (selectedFile) {
-      this.filesApiService.uploadFile(selectedFile).pipe(
+      this.filesApiService.uploadFileWithProgress(selectedFile).pipe(
         tap((event: any) => {
           if (event.type == HttpEventType.UploadProgress) {
             this.progress = Math.round((100 / event.total) * event.loaded);

@@ -7,7 +7,7 @@ import { PlaceSelectorData } from "@app/shared/components/control-value-accessor
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 import {
   combineLatest,
-  filter,
+  filter, from,
   fromEvent,
   Observable,
   of, pairwise,
@@ -28,12 +28,14 @@ import { CookieService } from "ngx-cookie-service";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
 import LatLngLiteral = google.maps.LatLngLiteral;
 import Vector2d = Konva.Vector2d;
+import { FilesApiService } from "@app/shared/api/files/files-api.service";
 
 export interface Sketch {
   cars: CarData[];
   editor: string;
   editing: boolean;
   confirmed_editors: string[];
+  file_id: number;
   save?: boolean;
 }
 
@@ -65,6 +67,7 @@ const imageHeight = 1000;
 export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> implements AfterViewInit, OnDestroy {
   private readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
   private readonly cookieService: CookieService = inject(CookieService);
+  private readonly filesApiService: FilesApiService = inject(FilesApiService);
 
   @ViewChild('container', { static: true }) container!: ElementRef;
   private stage!: Konva.Stage;
@@ -98,7 +101,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
   );
 
   readonly imageUrl$: Observable<string> = this.positionData$.pipe(
-    map((positionData) => positionData?.markerPosition),
+    map((positionData) => positionData?.marker_position),
     filter((markerPosition: LatLngLiteral | undefined): markerPosition is LatLngLiteral => !!markerPosition),
     map((markerPosition: LatLngLiteral) => {
       const imageSize = `${imageWidth}x${imageHeight}`;
@@ -226,23 +229,28 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
 
     if (value) {
       value.confirmed_editors.push(this.cookieService.get(CookieName.sessionId));
-      this.handleModelChange({
-        ...value,
-        cars: this.cars.map(car => {
-          return {
-            x: car.group.x(),
-            y: car.group.y(),
-            scaleY: car.group.scaleY(),
-            scaleX: car.group.scaleX(),
-            id: car.group.id(),
-            rotation: car.group.rotation(),
-            arrow: car.carData.arrow,
-            questionnaire_id: car.carData.questionnaire_id
-          };
-        }),
-        confirmed_editors: [...new Set(value.confirmed_editors)],
-        editing: false,
-        save: true
+      this.getUploadedImageFileId().pipe(
+        take(1)
+      ).subscribe((file_id) => {
+        this.handleModelChange({
+          ...value,
+          cars: this.cars.map(car => {
+            return {
+              x: car.group.x(),
+              y: car.group.y(),
+              scaleY: car.group.scaleY(),
+              scaleX: car.group.scaleX(),
+              id: car.group.id(),
+              rotation: car.group.rotation(),
+              arrow: car.carData.arrow,
+              questionnaire_id: car.carData.questionnaire_id,
+            };
+          }),
+          confirmed_editors: [...new Set(value.confirmed_editors)],
+          editing: false,
+          save: true,
+          file_id: file_id
+        });
       });
     }
   }
@@ -634,6 +642,18 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     return this.boundFunc(pos, this.layer.scaleX());
   };
 
+
+  getUploadedImageFileId(): Observable<number> {
+    return from(this.stage.toBlob({ pixelRatio: 1 })).pipe(
+      takeUntil(this.destroy$),
+      take(1),
+      switchMap((blob: any) => {
+        return this.filesApiService.uploadFile(new File([blob], 'test.png')).pipe(
+          map((response) => response.id)
+        );
+      })
+    );
+  }
 
   ngOnDestroy() {
     this.step$.complete();

@@ -7,7 +7,15 @@ import { DriverModel } from "@app/shared/models/driver.model";
 import { TextFieldType } from "@regulaforensics/document-reader-webclient";
 import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
 import { DriverFormComponent } from "@app/shared/components/forms/driver-form/driver-form.component";
-import { distinctUntilChanged, filter, Subject, takeUntil, tap } from "rxjs";
+import {
+  Subject,
+  takeUntil,
+  tap,
+  combineLatest,
+  BehaviorSubject,
+  filter, switchMap
+} from "rxjs";
+import { ValidatorsErrors } from "@app/shared/components/forms/common/enumerators/validators-errors";
 
 @Component({
   selector: 'app-driver-control',
@@ -19,37 +27,53 @@ import { distinctUntilChanged, filter, Subject, takeUntil, tap } from "rxjs";
 export class DriverControlComponent extends BaseFormControlComponent<DriverModel> implements AfterViewInit, OnDestroy {
   protected destroy$: Subject<void> = new Subject<void>();
   protected driverInitialized$: Subject<void> = new Subject<void>();
+  protected driverForm$: BehaviorSubject<DriverFormComponent | null> = new BehaviorSubject<DriverFormComponent | null>(null);
   loading = false;
 
-  @ViewChild('driverForm', {static: false}) protected driverForm?: DriverFormComponent;
+  @ViewChild('driverForm', {static: false}) set driverForm(driverForm: DriverFormComponent) {
+    this.driverForm$.next(driverForm);
+    this.formControl.setValidators((() => {
+      driverForm.submitForm();
+
+      if (driverForm.form.valid) {
+        return null;
+      }
+      return {
+        [ValidatorsErrors.required]: true
+      };
+    }));
+  }
 
   ngAfterViewInit() {
-    this.isDisabled$.pipe(
+    combineLatest([this.isDisabled$, this.driverForm$]).pipe(
       takeUntil(this.destroy$),
-      tap((disabled) => {
-        disabled ? this.driverForm?.form.disable({emitEvent: false}) : this.driverForm?.form.enable({emitEvent: false});
+      tap(([disabled, driverForm]) => {
+        if (disabled && !!driverForm) {
+          disabled ? driverForm.form.disable({emitEvent: false}) : this.driverForm?.form.enable({emitEvent: false});
+        }
       })
     ).subscribe();
 
-    this.value$.pipe(
+    combineLatest([this.value$, this.driverForm$]).pipe(
       takeUntil(this.driverInitialized$),
-      filter((driver: DriverModel | undefined | null): driver is DriverModel => !!driver),
-      tap((driver) => {
-        this.driverForm?.setDefaults(driver);
-        this.driverInitialized$.next();
+      tap(([driver, driverForm]: [DriverModel | undefined | null, DriverFormComponent | null]) => {
+        if (!!driver && driverForm) {
+          driverForm.setDefaults(driver);
+          this.driverInitialized$.next();
+        }
       })
     ).subscribe();
 
-    this.driverForm?.form.valueChanges.pipe(
-      distinctUntilChanged(),
+    this.driverForm$.pipe(
+      filter((driverForm): driverForm is DriverFormComponent=> !!driverForm),
+      switchMap(driverForm => driverForm.form.valueChanges),
       takeUntil(this.destroy$),
-      tap((value) => {
-        const driverModel = new DriverModel({
-          ...value
-        });
-        this.handleModelChange(driverModel);
-      })
-    ).subscribe();
+    ).subscribe((value) => {
+      const driverModel = new DriverModel({
+        ...value
+      });
+      this.handleModelChange(driverModel);
+    });
   }
 
   processOCRResponse(response: Response | undefined): void {
@@ -67,13 +91,13 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
         ...driver
       });
     }
-    this.driverForm?.setDefaults(driverModel);
     this.handleModelChange(driverModel);
   }
 
   ngOnDestroy() {
     this.driverInitialized$.next();
     this.driverInitialized$.complete();
+    this.driverForm$.complete();
     this.destroy$.next();
     this.destroy$.complete();
   }

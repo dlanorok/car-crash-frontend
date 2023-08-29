@@ -18,8 +18,8 @@ import {
 import { distinctUntilChanged, filter, take, tap } from "rxjs";
 
 export interface PlaceSelectorData {
-  markerPosition?: LatLngLiteral;
-  writtenPosition?: string;
+  marker_position?: LatLngLiteral;
+  written_position?: string;
 }
 
 @Component({
@@ -58,7 +58,7 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
         if (!value) {
           this.showCurrentLocation();
         } else {
-          this.setMapZoomAndPosition(18, value.markerPosition!.lat, value.markerPosition!.lng);
+          this.setMapZoomAndPosition(18, value.marker_position!.lat, value.marker_position!.lng);
         }
       })
     ).subscribe();
@@ -127,11 +127,13 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
   confirmLocation() {
     const value = this.value$.getValue();
     if (value) {
-      value.markerPosition = this.position;
+      value.marker_position = this.position;
+      value.written_position = '';
       this.handleModelChange(value);
     } else {
       this.handleModelChange({
-        markerPosition: this.position
+        marker_position: this.position,
+        written_position: ''
       });
     }
 

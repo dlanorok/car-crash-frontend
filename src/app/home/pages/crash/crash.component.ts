@@ -14,6 +14,7 @@ import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { CrashModel } from "@app/shared/models/crash.model";
 import { selectCrash } from "@app/app-state/crash/crash-selector";
 import { SectionId } from './flow.definition';
+import { CrashesApiService } from "@app/shared/api/crashes/crashes-api.service";
 
 @UntilDestroy()
 @Component({
@@ -28,6 +29,7 @@ export class CrashComponent implements OnInit {
   private readonly store: Store = inject(Store);
   private readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
   private readonly cookieService: CookieService = inject(CookieService);
+  private readonly crashesApiService: CrashesApiService = inject(CrashesApiService);
 
   readonly ModelState = ModelState;
   questionnaires: QuestionnaireModel[] = [];
@@ -63,5 +65,9 @@ export class CrashComponent implements OnInit {
       });
       this.changeDetectionRef.detectChanges();
     });
+  }
+
+  generatePDF(crash: CrashModel) {
+    this.crashesApiService.generatePdf(crash).subscribe();
   }
 }

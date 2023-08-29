@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EMPTY, filter, mergeMap, tap, withLatestFrom } from 'rxjs';
+import { EMPTY, filter, tap, withLatestFrom } from 'rxjs';
 import { catchError, exhaustMap, map } from 'rxjs/operators';
 import { CrashesApiService } from "../../shared/api/crashes/crashes-api.service";
 import { createCrash, loadCrash, loadCrashSuccessful, updateCrash } from "./crash-action";
@@ -9,7 +9,6 @@ import { Store } from "@ngrx/store";
 import { CarsApiService } from "../../shared/api/cars/cars-api.service";
 import { CrashModel } from "../../shared/models/crash.model";
 import { selectCrash } from "./crash-selector";
-import { CarModel } from "../../shared/models/car.model";
 
 @Injectable()
 export class CrashEffects {
@@ -44,14 +43,6 @@ export class CrashEffects {
       ofType(createCrash),
       exhaustMap((action) => this.crashesApiService.create(action.crash)
         .pipe(
-          mergeMap((crash: CrashModel) => {
-            return this.carsApiService.create(new CarModel({crash: crash.id}))
-              .pipe(map((car: CarModel) => {
-                crash.cars?.push(car.id);
-                crash.my_cars?.push(car.id);
-                return crash;
-              }));
-          }),
           tap((crash: CrashModel) => {
             this.router.navigate([`/crash/${crash.session_id}`]);
           }),

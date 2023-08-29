@@ -12,7 +12,15 @@ export class FilesApiService {
 
   protected readonly httpClient: HttpClient = inject(HttpClient);
 
-  uploadFile(file: File): Observable<HttpEvent<any>> {
+  uploadFile(file: File): Observable<{id: number}> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('name', file.name);
+
+    return this.httpClient.post<{id: number}>(`${this.endpoint}`, formData);
+  }
+
+  uploadFileWithProgress(file: File): Observable<HttpEvent<any>> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('name', file.name);
