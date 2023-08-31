@@ -1,6 +1,6 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { distinctUntilChanged, mergeMap, skip, Subject, takeUntil, tap } from "rxjs";
+import { distinctUntilChanged, mergeMap, skip, Subject, take, takeUntil, tap } from "rxjs";
 import { Store } from "@ngrx/store";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
@@ -15,6 +15,7 @@ import { CookieService } from "ngx-cookie-service";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { ToastrService } from "ngx-toastr";
+import { DynamicControlDirective } from "@app/shared/common/directives/dynamic-control.directive";
 
 @UntilDestroy()
 @Component({
@@ -46,6 +47,8 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
   step?: Step;
   form!: UntypedFormGroup;
   inputs: Input[] = [];
+
+  @ViewChild(DynamicControlDirective) private readonly dynamicControlDirective?: DynamicControlDirective<any>;
 
   ngOnInit(): void {
     this.getData();
@@ -186,6 +189,21 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
   }
 
   next(url?: string): void {
+    const componentRef = this.dynamicControlDirective?.controlComponentRef;
+    if (componentRef && typeof componentRef.instance.beforeSubmit === 'function') {
+      componentRef.instance.beforeSubmit().pipe(
+        take(1),
+        tap(() => {
+          this.afterNext(url);
+        })
+      ).subscribe();
+    } else {
+      this.afterNext(url);
+    }
+
+  }
+
+  private afterNext(url?: string) {
     this.submitted = true;
     updateEntireFormValidity(this.form);
 

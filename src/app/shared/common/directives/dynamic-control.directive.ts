@@ -18,7 +18,7 @@ export class DynamicControlDirective<C extends ControlValueAccessor> extends NgC
   });
 
   private readonly injector: Injector = inject(Injector);
-  private controlComponentRef: ComponentRef<C> | null = null;
+  controlComponentRef: ComponentRef<C> | null = null;
 
   private readonly controlComponentConfiguration$: Subject<DynamicControlComponentConfiguration<C>> = new Subject();
   @Input() set appDynamicControl(controlComponentConfiguration: DynamicControlComponentConfiguration<C> | null) {

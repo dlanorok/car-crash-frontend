@@ -644,12 +644,30 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
 
 
   getUploadedImageFileId(): Observable<number> {
-    return from(this.stage.toBlob({ pixelRatio: 1 })).pipe(
+    const sketch = this.value$.getValue();
+
+    const newKonva = this.stage.clone();
+    const layer = newKonva.getLayers()[0];
+    layer.scale({x: 1.5, y: 1.5});
+
+    if (sketch) {
+      const car = this.cars[0];
+      if (sketch.cars.length > 0 && sketch.cars[0].x) {
+        layer.setPosition({
+          x: -car.group.x() * layer.scaleX() + layer.width() / 2,
+          y: -car.group.y() * layer.scaleX() + layer.height() / 2
+        });
+        // this.layer.scale({x: 2, y: 2});
+      }
+    }
+
+    return from(newKonva.toBlob({ pixelRatio: 1 })).pipe(
       takeUntil(this.destroy$),
       take(1),
       switchMap((blob: any) => {
         return this.filesApiService.uploadFile(new File([blob], 'test.png')).pipe(
-          map((response) => response.id)
+          map((response) => response.id),
+          tap(() => newKonva.remove())
         );
       })
     );

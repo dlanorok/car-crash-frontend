@@ -8,16 +8,18 @@ import {
   OnInit, Renderer2,
   ViewChild
 } from '@angular/core';
-import { combineLatest, ReplaySubject, Subscription, tap } from "rxjs";
+import { combineLatest, Observable, ReplaySubject, Subscription, tap } from "rxjs";
 import { CookieService } from "ngx-cookie-service";
 import {
   BaseFormControlComponent
 } from "@app/shared/form-controls/base-form-control.component";
 import { UploadedFile } from "@app/shared/common/uploaded-file";
+import { FilesApiService } from "@app/shared/api/files/files-api.service";
 
 export interface BaseSvgData {
   selectedParts: string[];
-  file_ids: number[]
+  file_ids: number[],
+  file_id?: number
 }
 
 @Component({
@@ -26,6 +28,7 @@ export interface BaseSvgData {
 export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<BaseSvgData> implements AfterViewInit, OnDestroy, OnChanges, OnInit {
   protected readonly renderer2: Renderer2 = inject(Renderer2);
   protected readonly cookieService: CookieService = inject(CookieService);
+  protected readonly filesApiService: FilesApiService = inject(FilesApiService);
 
   protected selectedClass = 'selected';
 
@@ -39,9 +42,11 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
   protected listeners: (()=>void)[] = [];
   protected selectedParts: string[] = [];
   protected file_ids: number[] = [];
+  protected file_id?: number;
 
   abstract onViewReady(): void;
   abstract addListeners(): void;
+  abstract saveFile(): Observable<{id: number | null}>;
 
   ngAfterViewInit(): void {
     this.viewInit$.next();
@@ -72,7 +77,8 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
   afterSvgItemClicked(): void {
     this.handleModelChange({
       file_ids: this.file_ids,
-      selectedParts: this.selectedParts
+      selectedParts: this.selectedParts,
+      file_id: this.file_id
     });
   }
 
@@ -80,7 +86,8 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
     this.file_ids.push(file.id);
     this.handleModelChange({
       file_ids: this.file_ids,
-      selectedParts: this.selectedParts
+      selectedParts: this.selectedParts,
+      file_id: this.file_id
     });
   }
 
@@ -89,7 +96,20 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
     this.handleModelChange({
       file_ids: this.file_ids,
       selectedParts: this.selectedParts,
+      file_id: this.file_id
     });
+  }
+
+  beforeSubmit(): Observable<any> {
+    return this.saveFile().pipe(tap((response) => {
+      if (response.id) {
+        this.handleModelChange({
+          file_ids: this.file_ids,
+          selectedParts: this.selectedParts,
+          file_id: response.id
+        });
+      }
+    }));
   }
 
   protected onPathClick(event: PointerEvent) {
