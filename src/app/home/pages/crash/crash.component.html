@@ -1,7 +1,4 @@
 <div class="main-content" *ngIf="crash$ | async; let crash">
-  <div (click)="generatePDF(crash)">
-    GENERATE PDF
-  </div>
   <ng-container *ngFor="let questionnaire of questionnaires; let questionnaireIndex = index">
     <details [open]="questionnaireIndex === 0">
       <summary>{{ questionnaire | carIdentifier : questionnaireIndex }}</summary>
@@ -38,6 +35,21 @@
         </div>
       </ng-container>
     </details>
+  </ng-container>
+
+  <ng-container *ngFor="let questionnaire of questionnaires">
+    <ng-container *ngIf="questionnaire.creator | amICreator">
+      <ng-container *ngIf="questionnaire.crash_confirmed; else confirmButtonTpl">
+        <span class="badge bg-success">
+          CRASHED CONFIRMED
+        </span>
+      </ng-container>
+      <ng-template #confirmButtonTpl>
+        <button *ngIf="(questionnaire | allStepsCompleted)" type="submit" class="btn btn-primary mt-3" (click)="confirmCrash(crash)">
+          §§ Confirm crash
+        </button>
+      </ng-template>
+    </ng-container>
   </ng-container>
 </div>
 

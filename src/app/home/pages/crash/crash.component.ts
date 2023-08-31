@@ -70,4 +70,12 @@ export class CrashComponent implements OnInit {
   generatePDF(crash: CrashModel) {
     this.crashesApiService.generatePdf(crash).subscribe();
   }
+
+  confirmCrash(crash: CrashModel) {
+    this.crashesApiService.confirmCrash(crash).pipe(
+      take(1)
+    ).subscribe((questionnaire: QuestionnaireModel) => {
+      this.questionnaireService.updateQuestionnaire(questionnaire);
+    });
+  }
 }

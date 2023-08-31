@@ -24,4 +24,11 @@ export class CrashesApiService extends BaseApiService<CrashModel>{
         map((data) => new this.model(data))
       );
   }
+
+  confirmCrash(entity: CrashModel): Observable<any> {
+    return this.httpClient.post(`${this.endpoint}${entity.session_id}/confirm_crash/`, {})
+      .pipe(
+        map((data) => new this.model(data))
+      );
+  }
 }

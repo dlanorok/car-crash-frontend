@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
-import { HttpApiInterceptor } from "../services/http-api-interceptor";
+import { HttpApiInterceptor } from "@app/shared/services/interceptors/http-api.interceptor";
+import { ErrorBadRequestInterceptor } from "@app/shared/services/interceptors/error-bad-request.interceptor";
 
 
 @NgModule({
@@ -14,6 +15,11 @@ import { HttpApiInterceptor } from "../services/http-api-interceptor";
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpApiInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorBadRequestInterceptor,
       multi: true
     },
   ]
