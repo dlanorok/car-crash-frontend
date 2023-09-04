@@ -54,7 +54,7 @@ export class DriverFormComponent extends BaseFormComponent<DriverModel> {
   override setFromOCRResponse(response: Response): void {
     const dateOfExpiry: string | undefined = response.text?.getFieldValue(TextFieldType.DATE_OF_EXPIRY);
     this.form.patchValue({
-      name: response.text?.getFieldValue(TextFieldType.FIRST_NAME) || response.text?.getFieldValue(TextFieldType.GIVEN_NAME) ,
+      name: response.text?.getFieldValue(TextFieldType.FIRST_NAME) || response.text?.getFieldValue(TextFieldType.GIVEN_NAMES) ,
       surname: response.text?.getFieldValue(TextFieldType.SURNAME),
       address: response.text?.getFieldValue(TextFieldType.ADDRESS),
       driving_licence_number: response.text?.getFieldValue(TextFieldType.DOCUMENT_NUMBER),

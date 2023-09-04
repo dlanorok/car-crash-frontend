@@ -52,7 +52,7 @@ export class PolicyHolderFormComponent extends BaseFormComponent<PolicyHolderMod
 
   override setFromOCRResponse(response: Response): void {
     this.form.patchValue({
-      name: response.text?.getFieldValue(TextFieldType.FIRST_NAME) || response.text?.getFieldValue(TextFieldType.GIVEN_NAME) ,
+      name: response.text?.getFieldValue(TextFieldType.FIRST_NAME) || response.text?.getFieldValue(TextFieldType.GIVEN_NAMES) ,
       surname: response.text?.getFieldValue(TextFieldType.SURNAME),
       country_code: response.text?.getFieldValue(TextFieldType.NATIONALITY_CODE)
     });
