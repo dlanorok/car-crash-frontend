@@ -1614,10 +1614,10 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@ng-bootstrap/ng-bootstrap@^15.0.1":
-  version "15.1.1"
-  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-15.1.1.tgz#83c98f5e17b1b5b89bf09f8964e5a12c54c0abba"
-  integrity sha512-nZlIMMggtI3IHkGs0XPrUIUdpeEzQvfGV9M4I9IvCqiS2n4RwWoUvWK1ICo4csZqFNBDlCQx956gO6ZZUSL2mw==
+"@ng-bootstrap/ng-bootstrap@^14.2.0":
+  version "14.2.0"
+  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-14.2.0.tgz#2371e2c9ec6fd7809c1d7ca99597394df6cde003"
+  integrity sha512-nqEKVXauSontGKqC5WSKpch5TiAGDZB3hluvxkINS0r9LUE6sBQRP3qeYOe7Uwu+UbQcj28NG3qFHhpfnG8KHw==
   dependencies:
     tslib "^2.3.0"
 
@@ -6433,10 +6433,10 @@ ngx-cookie-service@^16.0.0:
   dependencies:
     tslib "^2.0.0"
 
-ngx-extended-pdf-viewer@^18.0.0-beta.6:
-  version "18.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/ngx-extended-pdf-viewer/-/ngx-extended-pdf-viewer-18.0.0-beta.6.tgz#0486b1ea9e6a495add219aa6fe71e7faeb1ae2f9"
-  integrity sha512-Xlj+TllY5MbaJ82KE/DLHXn3xkazio1I24pjRSEGv2UGJxAR2Imm32eMYfaFL5EOR16YIRbMf/A7Q7IBKEpr6Q==
+ngx-extended-pdf-viewer@^17.4.6:
+  version "17.4.6"
+  resolved "https://registry.yarnpkg.com/ngx-extended-pdf-viewer/-/ngx-extended-pdf-viewer-17.4.6.tgz#94bd0109fcb245cad9fa096a8f31e1a82d2de47c"
+  integrity sha512-vpdF4dd7dBV6mXQBHb3pBiEXatjWAnwziTGKFev9xnHATwzdqAoAO7cdiY3W9fa2MIzG9Rsx051BYroHNE5tzw==
   dependencies:
     lodash.deburr "^4.1.0"
     tslib "^2.3.0"
