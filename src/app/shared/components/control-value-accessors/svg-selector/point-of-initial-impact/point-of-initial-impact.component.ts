@@ -22,7 +22,7 @@ export class PointOfInitialImpactComponent extends BaseSvgHoverComponent impleme
         };
       }
 
-      if (value.selectedParts.length === 0 || value.file_ids.length === 0) {
+      if (value.selectedParts.length === 0) {
         return {
           [ValidatorsErrors.required]: true
         };
