@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from "@ngrx/store";
 import { CrashModel } from "../../../shared/models/crash.model";
-import { HeaderService } from "../../../shared/services/header-service";
 import { StorageItem } from "../../../shared/common/enumerators/storage";
 import { Observable } from "rxjs";
 import { createCrash } from '@app/app-state/crash/crash-action';
 import { crashLoading } from "@app/app-state/crash/crash-selector";
+import { PageDataService } from "@app/shared/services/page-data.service";
 
 @Component({
   selector: 'app-welcome',
@@ -18,7 +18,7 @@ export class WelcomeComponent implements OnInit {
 
   constructor(
     private readonly store: Store,
-    private readonly headerService: HeaderService,
+    private readonly pageDataService: PageDataService,
   ) {
   }
 
@@ -27,9 +27,9 @@ export class WelcomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.headerService.setHeaderData({
-      name: '§§Car Crash assist'
-    });
+    this.pageDataService.pageData = {
+      pageName: '§§Car Crash assist'
+    };
     this.localStorageCrash = localStorage.getItem(StorageItem.sessionId);
   }
 }

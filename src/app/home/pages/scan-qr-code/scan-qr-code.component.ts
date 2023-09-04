@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NgxScannerQrcodeComponent, ScannerQRCodeDevice } from "ngx-scanner-qrcode";
-import { HeaderService } from "../../../shared/services/header-service";
+import { PageDataService } from "@app/shared/services/page-data.service";
 
 @Component({
   selector: 'app-scan-qr-code',
@@ -11,12 +11,12 @@ export class ScanQrCodeComponent implements AfterViewInit, OnInit {
   @ViewChild('qrCodeScanner') qrCodeScanner!: NgxScannerQrcodeComponent;
 
   constructor(
-    private readonly headerService: HeaderService
+    private readonly pageDataService: PageDataService
   ) {
   }
 
   ngOnInit() {
-    this.headerService.setHeaderData({name: '§§Scan QR Code'});
+    this.pageDataService.pageData = {pageName: '§§Scan QR Code'};
   }
 
   ngAfterViewInit() {

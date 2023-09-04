@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseFooterComponent } from "@app/home/pages/accident-report-flow/base-footer.component";
-import { HeaderService } from "@app/shared/services/header-service";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { FormBuilder, UntypedFormGroup } from "@angular/forms";
 import { CommonApiService } from "@app/shared/api/common/common-api.service";
@@ -9,47 +7,36 @@ import { Observable } from "rxjs";
 import { CrashModel } from "@app/shared/models/crash.model";
 import { selectCrash } from "@app/app-state/crash/crash-selector";
 import { Store } from "@ngrx/store";
+import { PageDataService } from "@app/shared/services/page-data.service";
 
 @Component({
   selector: 'app-invite-participants',
   templateUrl: './invite-participants.component.html',
   styleUrls: ['./invite-participants.component.scss']
 })
-export class InviteParticipantsComponent extends BaseFooterComponent implements OnInit {
+export class InviteParticipantsComponent implements OnInit {
   location = `${window.origin}/crash/${localStorage.getItem(StorageItem.sessionId)}`;
   sessionId = localStorage.getItem(StorageItem.sessionId);
   form!: UntypedFormGroup;
   crash$: Observable<CrashModel> = this.store.select(selectCrash);
 
   constructor(
-    private readonly headerService: HeaderService,
+    private readonly pageDataService: PageDataService,
     private readonly formBuilder: FormBuilder,
     private readonly commonApiService: CommonApiService,
     private readonly store: Store
-  ) {
-    super();
-  }
+  ) {}
 
   ngOnInit() {
-    this.headerService.setHeaderData({
-      name: "§§ Invite other participants",
-    });
+    this.pageDataService.pageData = {
+      pageName: "§§ Invite other participants",
+    };
 
     this.form = this.formBuilder.group(
       {
         phone_number: [''],
       }
     );
-  }
-
-  next(): void {
-    const sessionId = localStorage.getItem(StorageItem.sessionId);
-    this.router.navigate([`/crash/${sessionId}`]);
-  }
-
-  previous(): void {
-    const sessionId = localStorage.getItem(StorageItem.sessionId);
-    this.router.navigate([`/crash/${sessionId}`]);
   }
 
   sendSms() {

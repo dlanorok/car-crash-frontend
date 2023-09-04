@@ -1,6 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { BaseFooterComponent } from "@app/home/pages/accident-report-flow/base-footer.component";
-import { HeaderService } from "@app/shared/services/header-service";
 import { Router } from "@angular/router";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { Store } from "@ngrx/store";
@@ -12,14 +10,15 @@ import { selectSketches } from "@app/app-state/sketch/sketch-selector";
 import { map } from "rxjs/operators";
 import { CookieService } from "ngx-cookie-service";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
+import { PageDataService } from "@app/shared/services/page-data.service";
 
 @Component({
   selector: 'app-accident-sketch',
   templateUrl: './accident-sketch.component.html',
   styleUrls: ['./accident-sketch.component.scss']
 })
-export class AccidentSketchComponent extends BaseFooterComponent implements OnInit {
-  protected readonly headerService: HeaderService = inject(HeaderService);
+export class AccidentSketchComponent implements OnInit {
+  protected readonly pageDataService: PageDataService = inject(PageDataService);
   protected readonly cookieService: CookieService = inject(CookieService);
   protected readonly router: Router = inject(Router);
   protected readonly store: Store = inject(Store);
@@ -46,7 +45,7 @@ export class AccidentSketchComponent extends BaseFooterComponent implements OnIn
   );
 
   ngOnInit(): void {
-    this.headerService.setHeaderData({name: '§§Accident sketch'});
+    this.pageDataService.pageData = {pageName: '§§Accident sketch'};
     const sessionId: string | null = localStorage.getItem(StorageItem.sessionId);
     if (!sessionId) {
       this.router.navigate(["/"]);
@@ -54,17 +53,6 @@ export class AccidentSketchComponent extends BaseFooterComponent implements OnIn
     }
     this.store.dispatch(loadCrash({sessionId: sessionId }));
     this.store.dispatch(loadSketches());
-  }
-
-  next(): void {
-    const sessionId = localStorage.getItem(StorageItem.sessionId);
-    this.router.navigate([`/crash/${sessionId}`]);
-  }
-
-  previous(): void {
-    const sessionId = localStorage.getItem(StorageItem.sessionId);
-    // TODO last car
-    this.router.navigate([`/crash/${sessionId}`]);
   }
 
 }

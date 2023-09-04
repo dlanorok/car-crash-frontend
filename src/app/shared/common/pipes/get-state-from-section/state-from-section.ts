@@ -17,7 +17,7 @@ export function getStateFromSection(questionnaire: QuestionnaireModel, section: 
       if (value && value.confirmed_editors?.length > 0) {
         return value.confirmed_editors.includes(questionnaire.creator) ? ModelState.validated : ModelState.partial;
       } else {
-        return (value.cars || []).length > 0 ? ModelState.partial : ModelState.empty;
+        return (value.cars || []).length > 0 && value.cars[0].x ? ModelState.partial : ModelState.empty;
       }
     }
   }

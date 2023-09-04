@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HeaderService } from "../../../shared/services/header-service";
+import { PageDataService } from "@app/shared/services/page-data.service";
 
 @Component({
   selector: 'app-join-crash',
@@ -8,11 +8,11 @@ import { HeaderService } from "../../../shared/services/header-service";
 })
 export class JoinCrashComponent implements OnInit {
   constructor(
-    private readonly headerService: HeaderService
+    private readonly pageDataService: PageDataService
   ) {
   }
 
   ngOnInit() {
-    this.headerService.setHeaderData({name: '§§Join other participant'});
+    this.pageDataService.pageData = {pageName: '§§Join other participant'};
   }
 }

@@ -4,7 +4,6 @@ import { Observable, Subscription, tap } from "rxjs";
 import { BaseModel } from "@app/shared/models/base.model";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TranslocoService } from "@ngneat/transloco";
-import { BaseFooterComponent } from "@app/home/pages/accident-report-flow/base-footer.component";
 import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
 import { CookieService } from "ngx-cookie-service";
 import { CarModel } from "@app/shared/models/car.model";
@@ -12,18 +11,16 @@ import { loadCars } from "@app/app-state/car/car-action";
 import { Store } from "@ngrx/store";
 import { selectCars } from "@app/app-state/car/car-selector";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
-import { WebSocketService } from "@app/shared/services/web-socket.service";
 
 @Component({
   template: '',
 })
-export abstract class BaseFlowComponent<T, C extends BaseModel> extends BaseFooterComponent implements OnInit, AfterViewInit {
+export abstract class BaseFlowComponent<T, C extends BaseModel> implements OnInit, AfterViewInit {
   protected readonly router: Router = inject(Router);
   protected readonly translateService: TranslocoService = inject(TranslocoService);
   protected readonly cookieService: CookieService = inject(CookieService);
   protected readonly route: ActivatedRoute = inject(ActivatedRoute);
   protected readonly store: Store = inject(Store);
-  protected readonly webSocketService: WebSocketService = inject(WebSocketService);
 
   cars$: Observable<CarModel[]> = this.store.select(selectCars);
 
@@ -75,14 +72,6 @@ export abstract class BaseFlowComponent<T, C extends BaseModel> extends BaseFoot
           this.saveForm(model, true);
         })
       ).subscribe();
-  }
-
-  next(): void {
-    if (this.formComponent?.form.disabled) {
-      this.nextPage();
-    } else {
-      this.submit();
-    }
   }
 
   submit(): void {

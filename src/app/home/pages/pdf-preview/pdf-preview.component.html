@@ -1,0 +1,19 @@
+<div class="w-100">
+  <ngx-extended-pdf-viewer
+    *ngIf="pdf$ | async; let pdf"
+    [src]="pdf"
+    [disableForms]="true"
+    [contextMenuAllowed]="false"
+    [showOpenFileButton]="false"
+    [showRotateButton]="false"
+    [showFreeFloatingBar]="false"
+    [showPropertiesButton]="false"
+    [showSidebarButton]="false"
+    [showToolbar]="true"
+    [showDrawEditor]="false"
+    [showStampEditor]="false"
+    [showTextEditor]="false"
+    [height]="'90vh'"
+  >
+  </ngx-extended-pdf-viewer>
+</div>

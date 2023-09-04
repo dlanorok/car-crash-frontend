@@ -29,6 +29,7 @@ import { CookieName } from "@app/shared/common/enumerators/cookies";
 import LatLngLiteral = google.maps.LatLngLiteral;
 import Vector2d = Konva.Vector2d;
 import { FilesApiService } from "@app/shared/api/files/files-api.service";
+import { StorageItem } from "@app/shared/common/enumerators/storage";
 
 export interface Sketch {
   cars: CarData[];
@@ -652,7 +653,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
 
     if (sketch) {
       const car = this.cars[0];
-      if (sketch.cars.length > 0 && sketch.cars[0].x) {
+      if (car) {
         layer.setPosition({
           x: -car.group.x() * layer.scaleX() + layer.width() / 2,
           y: -car.group.y() * layer.scaleX() + layer.height() / 2
@@ -665,7 +666,8 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
       takeUntil(this.destroy$),
       take(1),
       switchMap((blob: any) => {
-        return this.filesApiService.uploadFile(new File([blob], 'test.png')).pipe(
+        const sessionId = localStorage.getItem(StorageItem.sessionId);
+        return this.filesApiService.uploadFile(new File([blob], `${sessionId}.png`)).pipe(
           map((response) => response.id),
           tap(() => newKonva.remove())
         );

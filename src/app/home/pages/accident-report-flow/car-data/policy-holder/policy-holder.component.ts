@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { HeaderService } from "@app/shared/services/header-service";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { PolicyHolderFormComponent } from "@app/shared/components/forms/policy-holder-form/policy-holder-form.component";
 import { PolicyHolderModel } from "@app/shared/models/policy-holder.model";
@@ -7,6 +6,7 @@ import { updateCarSubModel } from "@app/app-state/car/car-action";
 import { CarModel } from "@app/shared/models/car.model";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { BaseFlowCarSubModelComponent } from "@app/home/pages/accident-report-flow/base-flow-car-sub-model.component";
+import { PageDataService } from "@app/shared/services/page-data.service";
 
 @Component({
   selector: 'app-policy-holder',
@@ -14,10 +14,10 @@ import { BaseFlowCarSubModelComponent } from "@app/home/pages/accident-report-fl
   styleUrls: ['./policy-holder.component.scss']
 })
 export class PolicyHolderComponent extends BaseFlowCarSubModelComponent<PolicyHolderFormComponent, PolicyHolderModel> implements OnInit {
-  protected readonly headerService: HeaderService = inject(HeaderService);
+  protected readonly pageDataService: PageDataService = inject(PageDataService);
 
   ngOnInit() {
-    this.headerService.setHeaderData({name: '§§Policy holder'});
+    this.pageDataService.pageData = {pageName: '§§Policy holder'};
     super.ngOnInit();
   }
 
@@ -46,10 +46,5 @@ export class PolicyHolderComponent extends BaseFlowCarSubModelComponent<PolicyHo
   protected nextPage() {
     const sessionId = localStorage.getItem(StorageItem.sessionId);
     this.router.navigate([`/crash/${sessionId}/cars/${this.model.car}/insurance-company`]);
-  }
-
-  previous(): void {
-    const sessionId = localStorage.getItem(StorageItem.sessionId);
-    this.router.navigate([`/crash/${sessionId}`]);
   }
 }

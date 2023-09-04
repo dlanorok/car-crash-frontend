@@ -20,4 +20,5 @@ export class CrashModel extends BaseModel {
   cars?: number[];
   my_cars?: number[];
   sketches?: number[];
+  pdf?: number;
 }

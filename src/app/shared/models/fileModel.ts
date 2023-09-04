@@ -1,4 +1,4 @@
-export class ImageModel {
+export class FileModel {
   id!: number;
   file!: string;
   name?: string;

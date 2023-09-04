@@ -4,6 +4,8 @@ import { NavigationEnd, Router } from "@angular/router";
 import { filter, tap } from "rxjs";
 import { WebSocketService } from "@app/shared/services/web-socket.service";
 import { SwUpdate } from "@angular/service-worker";
+import { PageDataService } from "@app/shared/services/page-data.service";
+import { FooterButton } from "@app/shared/components/footer-buttons/footer-buttons.component";
 
 @Component({
   selector: 'app-root',
@@ -12,12 +14,14 @@ import { SwUpdate } from "@angular/service-worker";
 })
 export class AppComponent implements OnInit {
   title = 'car-crash-frontend';
+  buttons: FooterButton[] = [];
 
   constructor(
     private urlParamService: UrlParamService,
     private router: Router,
     private webSocketService: WebSocketService,
-    private swUpdate: SwUpdate
+    private swUpdate: SwUpdate,
+    private pageDataService: PageDataService
   ) {
     if (swUpdate.isEnabled) {
       swUpdate.versionUpdates.subscribe(event => {
@@ -41,5 +45,9 @@ export class AppComponent implements OnInit {
         }
       })
     ).subscribe();
+
+    this.pageDataService.page$.subscribe((data) => {
+      this.buttons = data.footerButtons || [];
+    });
   }
 }

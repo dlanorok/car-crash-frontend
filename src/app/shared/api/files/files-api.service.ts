@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ApiModule } from "../api.module";
 import { HttpClient, HttpEvent } from "@angular/common/http";
 import { map, Observable } from "rxjs";
-import { ImageModel } from "@app/shared/models/image.model";
+import { FileModel } from "@app/shared/models/fileModel";
 
 @Injectable({
   providedIn: ApiModule
@@ -31,9 +31,9 @@ export class FilesApiService {
     });
   }
 
-  getFileData(fileId: number): Observable<ImageModel> {
-    return this.httpClient.get<HttpEvent<ImageModel>>(`${this.endpoint}${fileId}/`).pipe(
-      map((data) => new ImageModel(data)),
+  getFileData(fileId: number): Observable<FileModel> {
+    return this.httpClient.get<HttpEvent<FileModel>>(`${this.endpoint}${fileId}/`).pipe(
+      map((data) => new FileModel(data)),
     );
   }
 

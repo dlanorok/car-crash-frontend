@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HeaderService } from "@app/shared/services/header-service";
 import { filter, Observable, tap } from "rxjs";
 import { CrashFormComponent } from "@app/shared/components/forms/crash-form/crash-form.component";
 import { CrashModel } from "@app/shared/models/crash.model";
@@ -7,6 +6,7 @@ import { selectCrash } from "@app/app-state/crash/crash-selector";
 import { loadCrash, updateCrash } from "@app/app-state/crash/crash-action";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { BaseFlowComponent } from "@app/home/pages/accident-report-flow/base-flow.component";
+import { PageDataService } from "@app/shared/services/page-data.service";
 
 @Component({
   selector: 'app-accident-data',
@@ -17,13 +17,13 @@ export class AccidentDataComponent extends BaseFlowComponent<CrashFormComponent,
   crash$: Observable<CrashModel> = this.store.select(selectCrash);
 
   constructor(
-    private readonly headerService: HeaderService,
+    private readonly pageDataService: PageDataService,
   ) {
     super();
   }
 
   ngOnInit() {
-    this.headerService.setHeaderData({name: '§§Basic accident data'});
+    this.pageDataService.pageData = {pageName: '§§Basic accident data'};
     const sessionId: string | null = localStorage.getItem(StorageItem.sessionId);
     if (!sessionId) {
       this.router.navigate(["/"]);
@@ -59,9 +59,4 @@ export class AccidentDataComponent extends BaseFlowComponent<CrashFormComponent,
     this.router.navigate([`/crash/${sessionId}/invite`]);
   }
 
-
-  previous(): void {
-    const sessionId = localStorage.getItem(StorageItem.sessionId);
-    this.router.navigate([`/crash/${sessionId}`]);
-  }
 }

@@ -6,7 +6,7 @@
     Another person is editing the sketch, once finished you will have ability to confirm/edit it.
   </div>
   <div id="container-wrapper" class="container-wrapper">
-    <div style="position: absolute; z-index: 1">
+    <div *ngIf="imageUrl$ | async; else emptyTpl" style="position: absolute; z-index: 1">
       <div>
         <button *ngIf="value$ | async | canConfirmSketch" class="btn btn-primary me-3" (click)="confirmSketch()">Confirm sketch</button>
         <button *ngIf="value$ | async | canEditSketch" class="btn btn-primary"  (click)="editSketch()">Edit sketch</button>
@@ -15,4 +15,10 @@
     <div id="canvas-container" #container class="canvas-container"></div>
   </div>
 </div>
+
+<ng-template #emptyTpl>
+  <div class="alert alert-warning" role="alert">
+    First complete initial questions
+  </div>
+</ng-template>
 

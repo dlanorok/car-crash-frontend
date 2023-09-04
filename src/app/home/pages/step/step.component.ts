@@ -6,8 +6,6 @@ import { QuestionnaireService } from "@app/shared/services/questionnaire.service
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
 import { Action, Input, InputType, Option, Section, Step, StepType } from "@app/home/pages/crash/flow.definition";
 import { Location } from '@angular/common';
-import { BaseFooterComponent } from "@app/home/pages/accident-report-flow/base-footer.component";
-import { HeaderService } from "@app/shared/services/header-service";
 import { AbstractControl, FormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { GetStepInputsPipe } from "@app/home/pages/step/pipes/get-step-inputs.pipe";
 import { updateEntireFormValidity } from "@app/shared/forms/helpers/update-entire-form-validity";
@@ -16,6 +14,9 @@ import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { ToastrService } from "ngx-toastr";
 import { DynamicControlDirective } from "@app/shared/common/directives/dynamic-control.directive";
+import { PageDataService } from "@app/shared/services/page-data.service";
+import { StorageItem } from "@app/shared/common/enumerators/storage";
+import { TranslocoService } from "@ngneat/transloco";
 
 @UntilDestroy()
 @Component({
@@ -23,17 +24,18 @@ import { DynamicControlDirective } from "@app/shared/common/directives/dynamic-c
   templateUrl: './step.component.html',
   styleUrls: ['./step.component.scss']
 })
-export class StepComponent extends BaseFooterComponent implements OnInit, OnDestroy {
+export class StepComponent implements OnInit, OnDestroy {
   protected readonly router: Router = inject(Router);
   protected readonly route: ActivatedRoute = inject(ActivatedRoute);
   protected readonly store: Store = inject(Store);
   protected readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
   protected readonly location: Location = inject(Location);
-  protected readonly headerService: HeaderService = inject(HeaderService);
+  protected readonly pageDataService: PageDataService = inject(PageDataService);
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
   protected readonly getStepInputsPipe: GetStepInputsPipe = inject(GetStepInputsPipe);
   protected readonly cookieService: CookieService = inject(CookieService);
   protected readonly toastr: ToastrService = inject(ToastrService);
+  protected readonly translateService: TranslocoService = inject(TranslocoService);
 
   protected destroy$: Subject<void> = new Subject<void>();
 
@@ -93,7 +95,33 @@ export class StepComponent extends BaseFooterComponent implements OnInit, OnDest
                 this.questionnaire = questionnaires.find(questionnaire => questionnaire.id === this.questionnaireId);
                 if (sectionId) {
                   this.section = this.questionnaire?.data.sections.find(section => section.id === sectionId);
-                  this.headerService.setHeaderData({name: this.section?.name || ''});
+                  this.pageDataService.pageData = {
+                    pageName: this.section?.name || '',
+                    footerButtons: [
+                      {
+                        name$: this.translateService.selectTranslate('car-crash.shared.button.back'),
+                        action: () => {
+                          this.previous();
+                        },
+                        icon: 'bi-chevron-left'
+                      },
+                      {
+                        name$: this.translateService.selectTranslate('car-crash.shared.button.overview'),
+                        action: () => {
+                          const sessionId = localStorage.getItem(StorageItem.sessionId);
+                          return this.router.navigate([`/crash/${sessionId}`]);
+                        },
+                        icon: 'bi-house'
+                      },
+                      {
+                        name$: this.translateService.selectTranslate('car-crash.shared.button.next'),
+                        action: () => {
+                          this.next();
+                        },
+                        icon: 'bi-chevron-right'
+                      },
+                    ]
+                  };
                 }
                 this.defineInputs(stepType);
               })

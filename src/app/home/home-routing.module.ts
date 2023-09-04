@@ -19,6 +19,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/crash/crash.module').then(mod => mod.CrashModule),
   },
   {
+    path: 'crash/:sessionId/pdf-preview',
+    loadChildren: () => import('./pages/pdf-preview/pdf-preview.module').then(mod => mod.PdfPreviewModule),
+  },
+  {
     path: 'crash/:sessionId/accident-data',
     loadChildren: () => import('./pages/accident-report-flow/accident-data/accident-data.module').then(mod => mod.AccidentDataModule),
   },

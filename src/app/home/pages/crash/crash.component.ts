@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { Observable, take } from "rxjs";
 import { Store } from "@ngrx/store";
-import { HeaderService } from "@app/shared/services/header-service";
 import { ModelState } from "@app/shared/models/base.model";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
@@ -15,6 +14,7 @@ import { CrashModel } from "@app/shared/models/crash.model";
 import { selectCrash } from "@app/app-state/crash/crash-selector";
 import { SectionId } from './flow.definition';
 import { CrashesApiService } from "@app/shared/api/crashes/crashes-api.service";
+import { PageDataService } from "@app/shared/services/page-data.service";
 
 @UntilDestroy()
 @Component({
@@ -24,7 +24,7 @@ import { CrashesApiService } from "@app/shared/api/crashes/crashes-api.service";
 })
 export class CrashComponent implements OnInit {
   private readonly changeDetectionRef: ChangeDetectorRef = inject(ChangeDetectorRef);
-  private readonly headerService: HeaderService = inject(HeaderService);
+  private readonly pageDataService: PageDataService = inject(PageDataService);
   private readonly router: Router = inject(Router);
   private readonly store: Store = inject(Store);
   private readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
@@ -37,7 +37,7 @@ export class CrashComponent implements OnInit {
   readonly SectionId: typeof SectionId = SectionId;
 
   ngOnInit(): void {
-    this.headerService.setHeaderData({name: '§§Accident statement'});
+    this.pageDataService.pageData = { pageName: 'Overview' };
     const sessionId: string | null = localStorage.getItem(StorageItem.sessionId);
     if (!sessionId) {
       this.router.navigate(["/"]);

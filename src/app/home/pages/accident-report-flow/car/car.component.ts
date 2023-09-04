@@ -5,8 +5,6 @@ import { InsuranceModel } from "@app/shared/models/insurance.model";
 import { DriverModel } from "@app/shared/models/driver.model";
 import { BaseFormComponent } from "@app/shared/components/forms/base-form.component";
 import { Step } from "@app/shared/common/stepper-data";
-import { FooterButton } from "@app/shared/components/footer-buttons/footer-buttons.component";
-import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { PolicyHolderFormComponent } from "@app/shared/components/forms/policy-holder-form/policy-holder-form.component";
 import { InsuranceFormComponent } from "@app/shared/components/forms/insurance-form/insurance-form.component";
 import { DriverFormComponent } from "@app/shared/components/forms/driver-form/driver-form.component";
@@ -18,7 +16,6 @@ import { CarsApiService } from "@app/shared/api/cars/cars-api.service";
 import { InsurancesApiService } from "@app/shared/api/insurances/insurances-api.service";
 import { DriversApiService } from "@app/shared/api/drivers/drivers-api.service";
 import { CircumstancesApiService } from "@app/shared/api/circumstances/circumstances-api.service";
-import { HeaderService } from "@app/shared/services/header-service";
 import { Store } from "@ngrx/store";
 import { CookieService } from "ngx-cookie-service";
 import { TranslocoService } from "@ngneat/transloco";
@@ -28,6 +25,7 @@ import { loadCars, updateCarSubModel } from "@app/app-state/car/car-action";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { BaseApiService } from "@app/shared/api/base-api.service";
 import { BaseModel } from "@app/shared/models/base.model";
+import { PageDataService } from "@app/shared/services/page-data.service";
 
 @Component({
   selector: 'app-car',
@@ -59,29 +57,6 @@ export class CarComponent implements OnInit {
     {
       name: 'car-crash.car.driver',
       icon: 'bi-person-vcard'
-    },
-  ];
-
-  footerButtons: FooterButton[] = [
-    {
-      name$: this.translateService.selectTranslate('car-crash.shared.button.back'),
-      action: () => this.back(),
-      icon: 'bi-chevron-left'
-    },
-    {
-      name$: this.translateService.selectTranslate('car-crash.shared.button.overview'),
-      action: () => {
-        const sessionId = localStorage.getItem(StorageItem.sessionId);
-        return this.router.navigate([`/crash/${sessionId}`]);
-      },
-      icon: 'bi-house'
-    },
-    {
-      name$: this.translateService.selectTranslate('car-crash.shared.button.next'),
-      action: () => {
-        this.nextStep();
-      },
-      icon: 'bi-chevron-right'
     },
   ];
 
@@ -131,7 +106,7 @@ export class CarComponent implements OnInit {
     private readonly driversApiService: DriversApiService,
     private readonly circumstancesApiService: CircumstancesApiService,
     private readonly router: Router,
-    private readonly headerService: HeaderService,
+    private readonly pageDataService: PageDataService,
     private readonly store: Store,
     private readonly cookieService: CookieService,
     private readonly translateService: TranslocoService
@@ -141,7 +116,7 @@ export class CarComponent implements OnInit {
   ngOnInit(): void {
     this.getData();
     this.getStepFromRoute();
-    this.headerService.setHeaderData({name: '§§Your data'});
+    this.pageDataService.pageData = {pageName: '§§Your data'};
   }
 
   processOCRResponse(response: Response) {

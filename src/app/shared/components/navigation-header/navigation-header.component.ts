@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { HeaderService } from "../../services/header-service";
+import { Component, inject } from '@angular/core';
+import { PageDataService } from "@app/shared/services/page-data.service";
+import { Observable, startWith } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Component({
   selector: 'app-navigation-header',
@@ -7,17 +9,10 @@ import { HeaderService } from "../../services/header-service";
   styleUrls: ['./navigation-header.component.scss']
 })
 export class NavigationHeaderComponent {
-  pageTitle = '';
+  private readonly pageDataService: PageDataService = inject(PageDataService);
 
-  constructor(
-    private readonly headerService: HeaderService
-  ) {}
-
-  get headerTitle(): string | undefined {
-    return this.headerService.header;
-  }
-
-  navigateBack() {
-    this.headerService.navigateToPrevious();
-  }
+  header$: Observable<string> = this.pageDataService.page$.pipe(
+    map((pageData) => pageData.pageName),
+    startWith(''),
+  );
 }

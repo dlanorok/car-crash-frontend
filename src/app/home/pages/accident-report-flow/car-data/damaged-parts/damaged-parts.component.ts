@@ -1,33 +1,46 @@
 import { Component, OnInit } from '@angular/core';
 import { filter, map, Observable, of, switchMap, tap } from "rxjs";
-import { ActivatedRoute } from "@angular/router";
-import { HeaderService } from "@app/shared/services/header-service";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { loadCars } from "@app/app-state/car/car-action";
 import { CarModel } from "@app/shared/models/car.model";
 import { selectCars } from "@app/app-state/car/car-selector";
-import { BaseFooterComponent } from "@app/home/pages/accident-report-flow/base-footer.component";
+import { PageDataService } from "@app/shared/services/page-data.service";
+import { TranslocoService } from "@ngneat/transloco";
 
 @Component({
   selector: 'app-damaged-parts',
   templateUrl: './damaged-parts.component.html',
   styleUrls: ['./damaged-parts.component.scss']
 })
-export class DamagedPartsComponent extends BaseFooterComponent implements OnInit {
+export class DamagedPartsComponent implements OnInit {
   cars$: Observable<CarModel[]> = this.store.select(selectCars);
   car?: CarModel;
 
   constructor(
-    private readonly headerService: HeaderService,
+    private readonly pageDataService: PageDataService,
     private readonly store: Store,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly translateService: TranslocoService
   ) {
-    super();
   }
 
   ngOnInit() {
-    this.headerService.setHeaderData({name: '§§Damaged parts'});
+    this.pageDataService.pageData = {
+      pageName: '§§Damaged parts',
+      footerButtons: [
+        {
+          name$: this.translateService.selectTranslate('car-crash.shared.button.overview'),
+          action: () => {
+            const sessionId = localStorage.getItem(StorageItem.sessionId);
+            return this.router.navigate([`/crash/${sessionId}`]);
+          },
+          icon: 'bi-house'
+        },
+      ]
+    };
     const sessionId: string | null = localStorage.getItem(StorageItem.sessionId);
     if (!sessionId) {
       this.router.navigate(["/"]);
@@ -62,15 +75,5 @@ export class DamagedPartsComponent extends BaseFooterComponent implements OnInit
             );
         })
       ).subscribe();
-  }
-
-  next() {
-    const sessionId = localStorage.getItem(StorageItem.sessionId);
-    this.router.navigate([`/crash/${sessionId}/cars/${this.car?.id}/initial-impact`]);
-  }
-
-  previous(): void {
-    const sessionId = localStorage.getItem(StorageItem.sessionId);
-    this.router.navigate([`/crash/${sessionId}/cars/${this.car?.id}/circumstances`]);
   }
 }

@@ -53,4 +53,8 @@
   </ng-container>
 </div>
 
+<div *ngIf="(crash$ | async)?.pdf" [routerLink]="'pdf-preview'">
+  Open Preview
+</div>
+
 
