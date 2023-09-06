@@ -59,7 +59,6 @@ export class DynamicControlFromInputPipe implements PipeTransform {
         module = DateTimeControlModule;
         break;
       case InputType.select:
-      case InputType.insurance_picker:
         component = StackedSelectControlComponent;
         module = StackedSelectControlModule;
         additionalOptions = { options: input.options };
