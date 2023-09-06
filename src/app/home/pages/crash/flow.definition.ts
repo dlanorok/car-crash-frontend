@@ -26,6 +26,8 @@ export interface Section {
 export interface Step {
   step_type: StepType
   question: string;
+  help_text: string;
+  additional_help: string;
   inputs: number[]
   next_step?: StepType;
   data_from_input?: number;

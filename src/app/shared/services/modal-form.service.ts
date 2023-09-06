@@ -10,7 +10,7 @@ import { handleApiValidationErrors } from "../components/forms/common/helpers/ha
 @Injectable({
   providedIn: 'root'
 })
-export class ModalService {
+export class ModalFormService {
   private modalOptions: NgbModalOptions = {
     backdrop: 'static',
     centered: true,

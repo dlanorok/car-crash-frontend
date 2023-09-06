@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VisibleDamageSelectorComponent } from './visible-damage-selector.component';
+import { FileUploadModule } from "@app/shared/components/file-upload/file-upload.module";
 
 
 
@@ -11,8 +12,9 @@ import { VisibleDamageSelectorComponent } from './visible-damage-selector.compon
     exports: [
         VisibleDamageSelectorComponent
     ],
-    imports: [
-        CommonModule
-    ]
+  imports: [
+    CommonModule,
+    FileUploadModule
+  ]
 })
 export class VisibleDamageSelectorModule { }

@@ -1,7 +1,7 @@
 <div class="main-content" *ngIf="crash$ | async; let crash">
   <ng-container *ngFor="let questionnaire of questionnaires; let questionnaireIndex = index">
     <details [open]="questionnaireIndex === 0">
-      <summary>{{ questionnaire | carIdentifier : questionnaireIndex }}</summary>
+      <summary>{{ questionnaire | carIdentifier : questionnaireIndex }} {{ questionnaire.id }}</summary>
       <ng-container *ngFor="let section of questionnaire.data.sections; let i = index">
         <div class="todo-item"
              [routerLink]="'questionnaires/' + questionnaire.id + '/sections/' + section.id + '/steps/' + section.starting_step"

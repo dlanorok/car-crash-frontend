@@ -29,10 +29,13 @@ export function getStateFromSection(questionnaire: QuestionnaireModel, section: 
     return acc;
   }, []);
 
+  const notRequiredInputs: Input[] = [];
   const inputs = inputIds.reduce((acc: Input[], inputId) => {
     const input = questionnaire.data.inputs[inputId];
     if (input.required) {
       acc.push(input);
+    } else {
+      notRequiredInputs.push(input);
     }
     return acc;
   }, []);
@@ -44,7 +47,14 @@ export function getStateFromSection(questionnaire: QuestionnaireModel, section: 
     return acc;
   }, 0);
 
-  return inputIds.length === completedInputs ? ModelState.validated : completedInputs === 0 ? ModelState.empty : ModelState.partial;
+  const notRequiredCompletedFields = notRequiredInputs.reduce((acc: number, currInput: Input) => {
+    if (currInput.value !== null) {
+      acc += 1;
+    }
+    return acc;
+  }, 0);
+
+  return ((inputs.length === 0 && notRequiredCompletedFields > 0) || inputIds.length === completedInputs) ? ModelState.validated : completedInputs === 0 ? ModelState.empty : ModelState.partial;
 }
 
 function getNextStep(questionnaire: QuestionnaireModel, step: Step, value: Step[]): Step[] {

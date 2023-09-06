@@ -1,7 +1,9 @@
 <ng-container *ngIf="questionnaire && step && section && form">
   <div class="p-3 h-100">
     <form [formGroup]="form" class="h-100 form-layout">
-      <span>{{ step.question }}</span>
+      <h4><b>{{ step.question }}</b></h4>
+      <small *ngIf="step.help_text">{{ step.help_text }}</small>
+      <i *ngIf="step.additional_help" (click)="openInfoModal(step)" class="bi bi-info-circle"></i>
       <ng-container *ngFor="let input of inputs">
         <ng-container *appDynamicControl="input | dynamicControlFromInput : submitted : step; name: input.id"></ng-container>
       </ng-container>

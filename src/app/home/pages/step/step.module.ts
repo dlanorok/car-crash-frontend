@@ -8,6 +8,7 @@ import { FooterButtonsModule } from "@app/shared/components/footer-buttons/foote
 import { ToDatePipe } from "@app/home/pages/step/pipes/to-date.pipe";
 import { DynamicControlFromInputModule } from "@app/shared/common/pipes/dynamic-control-from-input/dynamic-control-from-input.module";
 import { DynamicControlDirective } from "@app/shared/common/directives/dynamic-control.directive";
+import { DialogModule } from "@app/shared/services/dialog/dialog.module";
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { DynamicControlDirective } from "@app/shared/common/directives/dynamic-c
     ]),
     FooterButtonsModule,
     DynamicControlFromInputModule,
+    DialogModule
   ]
 })
 export class StepModule { }

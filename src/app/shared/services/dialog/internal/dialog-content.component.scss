@@ -1,0 +1,30 @@
+.dialog-panel-header {
+  display: flex;
+  height: 52px;
+  border-bottom: 1px solid var(--light-ui-element);
+
+  & > h3 {
+    flex-grow: 1;
+    align-self: center;
+    margin: 0 var(--theme-spacing);
+  }
+  & > a {
+    display: flex;
+    width: 52px;
+    height: 52px;
+
+    & > i {
+      justify-self: center;
+      align-self: center;
+      font-size: 22px;
+      cursor: pointer;
+    }
+  }
+}
+
+.dialog-panel-content {
+  border-radius: var(--border-radius-normal) var(--border-radius-normal);
+  max-height: 70vh;
+  overflow-y: auto;
+  margin: var(--theme-spacing);
+}

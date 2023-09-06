@@ -106,7 +106,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     filter((markerPosition: LatLngLiteral | undefined): markerPosition is LatLngLiteral => !!markerPosition),
     map((markerPosition: LatLngLiteral) => {
       const imageSize = `${imageWidth}x${imageHeight}`;
-      return `${environment.googleApiUrl}/staticmap?center=${markerPosition?.lat},${markerPosition.lng}&zoom=18&size=${imageSize}&key=${environment.googleApiKey}&scale=2&maptype=satellite`;
+      return `${environment.googleApiUrl}/staticmap?center=${markerPosition?.lat},${markerPosition.lng}&zoom=18&size=${imageSize}&key=${environment.googleApiKey}&scale=2&maptype=map`;
     }),
   );
 
@@ -267,7 +267,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
 
     imageObj.src = `../../../assets/icons/google-car-${index + 1}.svg`;
 
-    const x = car?.x || (firstCar?.x ? firstCar.x + 20 : undefined) || this.image.width() / 2 / this.stage.scaleX();
+    const x = car?.x || (firstCar?.x ? firstCar.x + 20 : undefined) || (this.image.width() / 2 / this.stage.scaleX() + 20 * index);
     const y = car?.y || firstCar?.y || this.image.height() / 2 / this.stage.scaleX();
 
     return fromEvent(imageObj, 'load').pipe(
@@ -648,6 +648,8 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     const sketch = this.value$.getValue();
 
     const newKonva = this.stage.clone();
+    newKonva.width(1000);
+    newKonva.height(1000);
     const layer = newKonva.getLayers()[0];
     layer.scale({x: 1.5, y: 1.5});
 
