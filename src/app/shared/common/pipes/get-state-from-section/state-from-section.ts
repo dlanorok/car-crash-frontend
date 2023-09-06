@@ -54,7 +54,7 @@ export function getStateFromSection(questionnaire: QuestionnaireModel, section: 
     return acc;
   }, 0);
 
-  return ((inputs.length === 0 && notRequiredCompletedFields > 0) || inputIds.length === completedInputs) ? ModelState.validated : completedInputs === 0 ? ModelState.empty : ModelState.partial;
+  return ((inputs.length === 0 && notRequiredCompletedFields > 0) || inputs.length === completedInputs) ? ModelState.validated : completedInputs === 0 ? ModelState.empty : ModelState.partial;
 }
 
 function getNextStep(questionnaire: QuestionnaireModel, step: Step, value: Step[]): Step[] {
