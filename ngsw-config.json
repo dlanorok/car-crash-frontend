@@ -26,18 +26,5 @@
         ]
       }
     }
-  ],
-  "dataGroups": [
-    {
-      "name": "aws-cdn",
-      "urls": [
-        "https://nito-carcrashassist.s3.amazonaws.com/**"
-      ],
-      "cacheConfig": {
-        "maxSize": 10,
-        "maxAge": "1d",
-        "strategy": "performance"
-      }
-    }
   ]
 }
