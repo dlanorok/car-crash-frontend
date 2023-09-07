@@ -79,7 +79,8 @@ export enum InputType {
   country_picker = 'country_picker',
   insurance_picker = 'insurance_picker',
   driving_license = 'driving_license',
-  sketch = 'sketch'
+  sketch = 'sketch',
+  imageUpload = 'image_upload',
 }
 
 export enum StepType {

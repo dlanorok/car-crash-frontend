@@ -1,0 +1,7 @@
+<app-file-upload
+  [error]="!formControl.valid && submitted"
+  [uploadedFileIds]="(value$ | async) || []"
+  (fileUploaded)="onFileUpload($event)"
+  (fileDeleted)="onFileDelete($event)"></app-file-upload>
+
+<app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>

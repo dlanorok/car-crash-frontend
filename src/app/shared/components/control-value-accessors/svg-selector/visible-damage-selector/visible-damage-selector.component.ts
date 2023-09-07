@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
-import { BaseSvgHoverComponent } from "../base-svg-hover/base-svg-hover.component";
+import { Component, OnInit } from '@angular/core';
+import { BaseSvgData, BaseSvgHoverComponent } from "../base-svg-hover/base-svg-hover.component";
 import { provideControlValueAccessor } from "@app/shared/form-controls/base-form-control.component";
-import { Observable, of, take } from "rxjs";
+import { Observable, of, take, tap } from "rxjs";
+import { map } from "rxjs/operators";
+import { ValidatorsErrors } from "@app/shared/components/forms/common/enumerators/validators-errors";
 
 @Component({
   selector: 'app-visible-damage-selector',
@@ -9,7 +11,22 @@ import { Observable, of, take } from "rxjs";
   styleUrls: ['./visible-damage-selector.component.scss'],
   providers: [provideControlValueAccessor(VisibleDamageSelectorComponent)],
 })
-export class VisibleDamageSelectorComponent extends BaseSvgHoverComponent {
+export class VisibleDamageSelectorComponent extends BaseSvgHoverComponent implements OnInit {
+  step = 0;
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.formControl.addValidators((control) => {
+      const value: BaseSvgData | null = control.value;
+      if ((!value || !value.file_ids || value.file_ids.length === 0) && this.step === 1) {
+        return {
+          [ValidatorsErrors.required]: true
+        };
+      }
+
+      return null;
+    });
+  }
 
   override onViewReady() {
     this.value$.subscribe((value) => {
@@ -33,7 +50,7 @@ export class VisibleDamageSelectorComponent extends BaseSvgHoverComponent {
   }
 
   saveFile(): Observable<{id: number | null}> {
-    const element = this.svgImage?.nativeElement;
+    const element = this.svgImage?.nativeElement.cloneNode(true) as HTMLElement;
 
     if (element) {
       element.querySelectorAll("path").forEach(g => g.setAttribute("style", "fill: #9D9BA0FF;"));
@@ -46,4 +63,27 @@ export class VisibleDamageSelectorComponent extends BaseSvgHoverComponent {
     return of({id: null});
   }
 
+  beforeSubmit(): Observable<boolean> {
+    return super.beforeSubmit().pipe(
+      map(() => {
+        return this.step > 0;
+      }),
+      tap(() => {
+        if (this.step === 0) {
+          this.step += 1;
+        }
+      })
+    );
+  }
+
+  beforeBack(): Observable<boolean> {
+    return of(undefined).pipe(
+      map(() => this.step < 1),
+      tap(() => {
+        if (this.step > 0) {
+          this.step -= 1;
+        }
+      })
+    );
+  }
 }

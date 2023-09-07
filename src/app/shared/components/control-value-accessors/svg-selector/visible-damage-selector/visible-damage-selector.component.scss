@@ -5,6 +5,10 @@
   width: 100%;
   max-width: 350px;
 
+  &.small {
+    width: 100px;
+  }
+
   path {
     fill: transparent;
     stroke: var(--medium-ui-element);

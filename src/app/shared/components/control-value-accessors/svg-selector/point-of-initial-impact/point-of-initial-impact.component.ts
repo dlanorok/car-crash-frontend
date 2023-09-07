@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { BaseSvgData, BaseSvgHoverComponent } from "../base-svg-hover/base-svg-hover.component";
+import { Component } from '@angular/core';
+import { BaseSvgHoverComponent } from "../base-svg-hover/base-svg-hover.component";
 import { provideControlValueAccessor } from "@app/shared/form-controls/base-form-control.component";
-import { ValidatorsErrors } from "@app/shared/components/forms/common/enumerators/validators-errors";
 import { Observable, of, take } from "rxjs";
 
 @Component({
@@ -10,27 +9,7 @@ import { Observable, of, take } from "rxjs";
   styleUrls: ['./point-of-initial-impact.component.scss'],
   providers: [provideControlValueAccessor(PointOfInitialImpactComponent)],
 })
-export class PointOfInitialImpactComponent extends BaseSvgHoverComponent implements OnInit {
-
-  ngOnInit() {
-    super.ngOnInit();
-    this.formControl.setValidators((control) => {
-      const value: BaseSvgData | null = control.value;
-      if (!value || !value.selectedParts && !value.file_ids) {
-        return {
-          [ValidatorsErrors.required]: true
-        };
-      }
-
-      if (value.selectedParts.length === 0) {
-        return {
-          [ValidatorsErrors.required]: true
-        };
-      }
-
-      return null;
-    });
-  }
+export class PointOfInitialImpactComponent extends BaseSvgHoverComponent {
 
   override onViewReady() {
     this.value$.subscribe((value) => {
@@ -54,7 +33,7 @@ export class PointOfInitialImpactComponent extends BaseSvgHoverComponent impleme
   }
 
   saveFile(): Observable<{id: number | null}> {
-    const element = this.svgImage?.nativeElement;
+    const element = this.svgImage?.nativeElement.cloneNode(true) as HTMLElement;
 
     if (element) {
       element.querySelectorAll("path").forEach(g => g.setAttribute("style", "fill: transparent; stroke: #9D9BA0FF;"));

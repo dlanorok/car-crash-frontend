@@ -13,8 +13,10 @@ import { CookieService } from "ngx-cookie-service";
 import {
   BaseFormControlComponent
 } from "@app/shared/form-controls/base-form-control.component";
-import { UploadedFile } from "@app/shared/common/uploaded-file";
 import { FilesApiService } from "@app/shared/api/files/files-api.service";
+import { map } from "rxjs/operators";
+import { UploadedFile } from "@app/shared/common/uploaded-file";
+import { ValidatorsErrors } from "@app/shared/components/forms/common/enumerators/validators-errors";
 
 export interface BaseSvgData {
   selectedParts: string[];
@@ -39,14 +41,16 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
 
   private viewInitSub?: Subscription;
 
-  protected listeners: (()=>void)[] = [];
+  protected listeners: (() => void)[] = [];
   protected selectedParts: string[] = [];
   protected file_ids: number[] = [];
   protected file_id?: number;
 
   abstract onViewReady(): void;
+
   abstract addListeners(): void;
-  abstract saveFile(): Observable<{id: number | null}>;
+
+  abstract saveFile(): Observable<{ id: number | null }>;
 
   ngAfterViewInit(): void {
     this.viewInit$.next();
@@ -63,6 +67,18 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
 
   ngOnInit(): void {
     super.ngOnInit();
+
+    this.formControl.setValidators((control) => {
+      const value: BaseSvgData | null = control.value;
+      if (!value || !value.selectedParts || value.selectedParts.length === 0) {
+        return {
+          [ValidatorsErrors.required]: true
+        };
+      }
+
+      return null;
+    });
+
     this.viewInitSub = combineLatest([this.viewInit$, this.change$])
       .pipe(
         tap(() => {
@@ -100,19 +116,25 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
     });
   }
 
-  beforeSubmit(): Observable<any> {
+  beforeSubmit(): Observable<boolean> {
     return this.saveFile().pipe(tap((response) => {
-      if (response.id) {
-        this.handleModelChange({
-          file_ids: this.file_ids,
-          selectedParts: this.selectedParts,
-          file_id: response.id
-        });
-      }
-    }));
+        if (response.id) {
+          this.handleModelChange({
+            file_ids: this.file_ids,
+            selectedParts: this.selectedParts,
+            file_id: response.id
+          });
+        }
+      }),
+      map(() => true)
+    );
   }
 
   protected onPathClick(event: PointerEvent) {
+    if (this.isDisabled$.getValue() === true) {
+      return;
+    }
+
     const clickedElement = event.currentTarget as HTMLElement;
 
     if (clickedElement.classList.contains(this.selectedClass)) {

@@ -212,7 +212,19 @@ export class StepComponent implements OnInit, OnDestroy {
   }
 
   previous(): void {
-    this.location.back();
+    const componentRef = this.dynamicControlDirective?.controlComponentRef;
+    if (componentRef && typeof componentRef.instance.beforeBack === 'function') {
+      componentRef.instance.beforeBack().pipe(
+        take(1),
+        tap((canContinue: boolean) => {
+          if (canContinue) {
+            this.location.back();
+          }
+        })
+      ).subscribe();
+    } else {
+      this.location.back();
+    }
   }
 
   next(url?: string): void {
@@ -220,8 +232,10 @@ export class StepComponent implements OnInit, OnDestroy {
     if (componentRef && typeof componentRef.instance.beforeSubmit === 'function') {
       componentRef.instance.beforeSubmit().pipe(
         take(1),
-        tap(() => {
-          this.afterNext(url);
+        tap((canContinue: boolean) => {
+          if (canContinue) {
+            this.afterNext(url);
+          }
         })
       ).subscribe();
     } else {
