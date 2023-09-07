@@ -25,7 +25,7 @@
           "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
         ],
         "urls": [
-          "https://nito-carcrashassist.s3.amazonaws.com/**"
+          "**nito-carcrashassist.s3.amazonaws.com/**"
         ]
       }
     }
