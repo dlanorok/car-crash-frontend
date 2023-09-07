@@ -29,11 +29,14 @@
   ],
   "dataGroups": [
     {
-      "name": "photos",
-      "urls": ["https://nito-carcrashassist.s3.amazonaws.com/***"],
+      "name": "aws-cdn",
+      "urls": [
+        "https://nito-carcrashassist.s3.amazonaws.com/**"
+      ],
       "cacheConfig": {
-        "maxSize": 250,
-        "maxAge": "7d"
+        "maxSize": 10,
+        "maxAge": "1d",
+        "strategy": "performance"
       }
     }
   ]
