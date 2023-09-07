@@ -15,7 +15,7 @@ export class FilesApiService {
   uploadFile(file: File): Observable<{id: number}> {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('name', file.name);
+    formData.append('file_name', file.name);
 
     return this.httpClient.post<{id: number}>(`${this.endpoint}`, formData);
   }
@@ -23,7 +23,7 @@ export class FilesApiService {
   uploadFileWithProgress(file: File): Observable<HttpEvent<any>> {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('name', file.name);
+    formData.append('file_name', file.name);
 
     return this.httpClient.post<HttpEvent<any>>(`${this.endpoint}`, formData, {
       reportProgress: true,
