@@ -12,6 +12,7 @@
 
 <div
   [class.d-none]="!showOCRComponent"
+  [class.full-screen]="cameraOpened"
   class="ocr-reader">
   <ng-container *ngIf="loading; else documentReaderTpl">
     Loading...

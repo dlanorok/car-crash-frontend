@@ -8,5 +8,12 @@ import { BaseFormControlComponent, provideControlValueAccessor } from "../base-f
 })
 export class TextControlComponent extends BaseFormControlComponent<string>{
   @Input() type = 'text';
+  @Input() onChangeAction: 'capitalize' | null = null;
 
+  override handleModelChange(value: string) {
+    if (this.onChangeAction === 'capitalize') {
+      value = value.toUpperCase();
+    }
+    super.handleModelChange(value);
+  }
 }

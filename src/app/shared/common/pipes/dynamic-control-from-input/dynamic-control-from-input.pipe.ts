@@ -40,7 +40,7 @@ export class DynamicControlFromInputPipe implements PipeTransform {
       case InputType.text:
         component = TextControlComponent;
         module = TextControlModule;
-        additionalOptions = { type: input.input_type };
+        additionalOptions = { type: input.input_type, onChangeAction: input.on_change_action };
         break;
       case InputType.number:
         component = NumberControlComponent;

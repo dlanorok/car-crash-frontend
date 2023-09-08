@@ -81,12 +81,15 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
     if (response) {
       const dateOfExpiry: string | undefined = response.text?.getFieldValue(TextFieldType.DATE_OF_EXPIRY);
       const driver = {
-        name: response.text?.getFieldValue(TextFieldType.FIRST_NAME) || response.text?.getFieldValue(TextFieldType.GIVEN_NAMES),
-        surname: response.text?.getFieldValue(TextFieldType.SURNAME),
+        name: response.text?.getFieldValue(TextFieldType.FIRST_NAME) || response.text?.getFieldValue(TextFieldType.GIVEN_NAMES) || '',
+        surname: response.text?.getFieldValue(TextFieldType.SURNAME) || '',
         address: response.text?.getFieldValue(TextFieldType.ADDRESS),
         driving_licence_number: response.text?.getFieldValue(TextFieldType.DOCUMENT_NUMBER),
         driving_licence_valid_to: dateOfExpiry ? new Date(dateOfExpiry) : ''
       };
+
+      driver.name = driver.name.length > 1 ? driver.name.charAt(0).toUpperCase() + driver.name.slice(1) : driver.name;
+      driver.surname = driver.surname.length > 1 ? driver.surname.charAt(0).toUpperCase() + driver.surname.slice(1) : driver.surname;
       driverModel = new DriverModel({
         ...driver
       });

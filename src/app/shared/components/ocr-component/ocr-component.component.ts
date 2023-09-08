@@ -21,6 +21,7 @@ import { catchError } from "rxjs/operators";
 export class OcrComponentComponent implements AfterViewInit, OnInit {
 
   loading = false;
+  cameraOpened = false;
 
   @Input() showOCRComponent = false;
   @Input() title!: string;
@@ -59,17 +60,33 @@ export class OcrComponentComponent implements AfterViewInit, OnInit {
       return;
     }
 
+    console.log(data);
+
+    if (data.detail.action === 'PRESS_CAMERA_BUTTON') {
+      this.cameraOpened = true;
+      return;
+    }
+
+    if (data.detail.action === 'CAMERA_PROCESS_CLOSED') {
+      this.cameraOpened = false;
+      return;
+    }
+
 
     if (data.detail.action === 'PROCESS_FINISHED') {
       this.loading = true;
       const status = data.detail.data?.status;
       const isFinishStatus = status === 1;
 
-      if (!isFinishStatus || !data.detail.data?.response) return;
+      if (!isFinishStatus || !data.detail.data?.response) {
+        this.loading = false;
+        return;
+      }
       const componentResponse = data.detail.data.response;
       if (componentResponse.images) {
         const imageField = componentResponse.images.getField(GraphicFieldType.DOCUMENT_FRONT);
         if (!imageField) {
+          this.loading = false;
           return;
         }
 
@@ -96,6 +113,7 @@ export class OcrComponentComponent implements AfterViewInit, OnInit {
             finalize(() => this.loading = false)
           ).subscribe();
       }
+      this.loading = false;
     }
   }
 }

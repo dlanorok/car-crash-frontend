@@ -1,6 +1,6 @@
 import { Component, inject, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { distinctUntilChanged, mergeMap, of, skip, Subject, take, takeUntil, tap } from "rxjs";
+import { distinctUntilChanged, mergeMap, of, Subject, take, takeUntil, tap } from "rxjs";
 import { Store } from "@ngrx/store";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
@@ -63,13 +63,11 @@ export class StepComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToQuestionnaire() {
-    this.questionnaireService.questionnairesUpdates$.pipe(
+    this.questionnaireService.questionnaireUpdates$.pipe(
       untilDestroyed(this)
-    ).subscribe((questionnaires) => {
-      const newQuestionnaire = questionnaires.find(questionnaire => this.questionnaire?.id === questionnaire.id);
-
-      if (newQuestionnaire) {
-        this.questionnaire = newQuestionnaire;
+    ).subscribe((questionnaire) => {
+      if (questionnaire && questionnaire.id === this.questionnaire?.id) {
+        this.questionnaire = questionnaire;
         this.updateControls(true);
       }
     });
@@ -113,8 +111,7 @@ export class StepComponent implements OnInit, OnDestroy {
                       {
                         name$: this.translateService.selectTranslate('car-crash.shared.button.overview'),
                         action: () => {
-                          const sessionId = localStorage.getItem(StorageItem.sessionId);
-                          return this.router.navigate([`/crash/${sessionId}`]);
+                          this.home();
                         },
                         icon: 'bi-house'
                       },
@@ -178,11 +175,11 @@ export class StepComponent implements OnInit, OnDestroy {
   }
 
   private listenToChanges(input: Input, control: AbstractControl) {
-    if (input.type === InputType.select) {
-      control.valueChanges.pipe(
-        distinctUntilChanged(),
-        takeUntil(this.destroy$)
-      ).subscribe((value) => {
+    control.valueChanges.pipe(
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe((value) => {
+      if (input.type === InputType.select) {
         const selectedOption: Option | undefined = input.options?.find(option => option.value === value);
         switch (selectedOption?.action) {
           case Action.call:
@@ -196,18 +193,32 @@ export class StepComponent implements OnInit, OnDestroy {
             }
             break;
         }
-      });
-    } else if (input.type === InputType.sketch) {
-      this.form.valueChanges.pipe(
-        distinctUntilChanged(),
-        skip(1),
-        takeUntil(this.destroy$)
-      ).subscribe((value) => {
+      }
+
+      if (input.type === InputType.sketch) {
         if (this.questionnaire && control.value.save && this.step) {
           control.value.save = false;
           this.questionnaireService.updateInputs(value, this.questionnaire, this.step);
         }
-      });
+      }
+
+      if (input.value !== control.value) {
+        control.markAsTouched();
+      }
+    });
+  }
+
+  private checkFormTouched(): boolean {
+    if (this.form?.touched) {
+      return confirm('You have unsaved changes, do you want to continue?');
+    }
+    return true;
+  }
+
+  private home(): void {
+    if (this.checkFormTouched()) {
+      const sessionId = localStorage.getItem(StorageItem.sessionId);
+      this.router.navigate([`/crash/${sessionId}`]);
     }
   }
 
@@ -218,12 +229,16 @@ export class StepComponent implements OnInit, OnDestroy {
         take(1),
         tap((canContinue: boolean) => {
           if (canContinue) {
-            this.location.back();
+            if (this.checkFormTouched()) {
+              this.location.back();
+            }
           }
         })
       ).subscribe();
     } else {
-      this.location.back();
+      if (this.checkFormTouched()) {
+        this.location.back();
+      }
     }
   }
 

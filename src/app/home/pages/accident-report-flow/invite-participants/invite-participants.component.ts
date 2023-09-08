@@ -36,6 +36,14 @@ export class InviteParticipantsComponent implements OnInit {
           },
           icon: 'bi-house'
         },
+        {
+          name$: this.translateService.selectTranslate('car-crash.shared.button.next'),
+          action: () => {
+            const sessionId = localStorage.getItem(StorageItem.sessionId);
+            return this.router.navigate([`/crash/${sessionId}`]);
+          },
+          icon: 'bi-chevron-right'
+        },
       ]
     };
 

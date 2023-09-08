@@ -96,5 +96,6 @@ export interface Input {
   required?: boolean;
   placeholder?: string;
   input_type?: string;
+  on_change_action?: string;
   label?: string;
 }

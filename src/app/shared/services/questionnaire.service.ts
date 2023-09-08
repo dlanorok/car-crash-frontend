@@ -21,6 +21,7 @@ export class QuestionnaireService implements OnDestroy {
 
 
   questionnairesUpdates$: Subject<QuestionnaireModel[]> = new Subject<QuestionnaireModel[]>();
+  questionnaireUpdates$: Subject<QuestionnaireModel> = new Subject<QuestionnaireModel>();
 
   questionnaires: QuestionnaireModel[] = [];
 
@@ -105,14 +106,17 @@ export class QuestionnaireService implements OnDestroy {
     const index = this.questionnaires.findIndex(q => q.id === questionnaire.id);
     if (index < 0) {
       this.questionnaires.push({...questionnaire});
+      this.questionnairesUpdates$.next(this.questionnaires);
+      this.toastr.success('§§ Invited vehicle joined');
     } else {
       this.questionnaires[index] = {...questionnaire};
+      this.questionnaireUpdates$.next(questionnaire);
     }
-    this.questionnairesUpdates$.next(this.questionnaires);
   }
 
   ngOnDestroy() {
     this.questionnairesUpdates$.complete();
+    this.questionnaireUpdates$.complete();
   }
 }
 
