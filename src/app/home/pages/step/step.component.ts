@@ -1,6 +1,6 @@
 import { Component, inject, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { distinctUntilChanged, mergeMap, of, Subject, take, takeUntil, tap } from "rxjs";
+import { distinctUntilChanged, mergeMap, of, skip, Subject, take, takeUntil, tap } from "rxjs";
 import { Store } from "@ngrx/store";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
@@ -194,13 +194,7 @@ export class StepComponent implements OnInit, OnDestroy {
             break;
         }
       }
-
-      if (input.type === InputType.sketch) {
-        if (this.questionnaire && control.value.save && this.step) {
-          control.value.save = false;
-          this.questionnaireService.updateInputs(value, this.questionnaire, this.step);
-        }
-      } else if (input.type === InputType.place) {
+      if (input.type === InputType.place) {
         this.next();
       }
 
@@ -208,6 +202,19 @@ export class StepComponent implements OnInit, OnDestroy {
         control.markAsTouched();
       }
     });
+
+    if (input.type === InputType.sketch) {
+      this.form.valueChanges.pipe(
+        distinctUntilChanged(),
+        skip(1),
+        takeUntil(this.destroy$)
+      ).subscribe((value) => {
+        if (this.questionnaire && control.value.save && this.step) {
+          control.value.save = false;
+          this.questionnaireService.updateInputs(value, this.questionnaire, this.step);
+        }
+      });
+    }
   }
 
   private checkFormTouched(): boolean {
