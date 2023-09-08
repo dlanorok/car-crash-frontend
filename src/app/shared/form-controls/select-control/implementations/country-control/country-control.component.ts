@@ -18,7 +18,7 @@ export class CountryControlComponent extends BaseFormControlComponent<string> im
     this.value$.pipe(
       tap((value) => {
         if (!value) {
-          super.writeValue('SI');
+          this.formControl.setValue('SI', {emitEvent: false});
         }
       })
     ).subscribe();
