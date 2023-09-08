@@ -3,8 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  inject,
-  OnInit,
+  inject, OnInit,
   ViewChild
 } from '@angular/core';
 import MapOptions = google.maps.MapOptions;
@@ -15,11 +14,13 @@ import {
   BaseFormControlComponent,
   provideControlValueAccessor
 } from "@app/shared/form-controls/base-form-control.component";
-import { distinctUntilChanged, filter, take, tap } from "rxjs";
+import { distinctUntilChanged, Observable, of, switchMap, take, tap } from "rxjs";
+import { filter, map } from "rxjs/operators";
+import { Option } from "@app/home/pages/crash/flow.definition";
 
 export interface PlaceSelectorData {
+  at_place: 'yes' | 'no' | null;
   marker_position?: LatLngLiteral;
-  written_position?: string;
 }
 
 @Component({
@@ -28,12 +29,44 @@ export interface PlaceSelectorData {
   styleUrls: ['./place-selector.component.scss'],
   providers: [provideControlValueAccessor(PlaceSelectorComponent)],
 })
-export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelectorData> implements OnInit, AfterViewChecked {
+export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelectorData> implements AfterViewChecked, OnInit {
+  step = 0;
+  options: Option[] = [
+    {
+      value: 'yes',
+      label: 'yes'
+    },
+    {
+      value: 'no',
+      label: 'no'
+    },
+  ];
+  atPlace: 'yes' | 'no' | null = null;
   protected readonly changeDetectorRef: ChangeDetectorRef = inject(ChangeDetectorRef);
 
   @ViewChild(GoogleMap, { static: false }) map!: GoogleMap;
   @ViewChild('currentLocation', { read: ElementRef }) currentLocation!: ElementRef;
   @ViewChild('confirmLocationBtn', { read: ElementRef }) confirmLocationBtn!: ElementRef;
+  @ViewChild('searchPlaceInput', { read: ElementRef }) searchPlaceInput!: ElementRef;
+
+  // set setSearchPlaceInput(searchPlaceInput: ElementRef<HTMLInputElement>) {
+  //   if (searchPlaceInput) {
+  //     const searchBox = new google.maps.places.SearchBox(searchPlaceInput.nativeElement);
+  //     searchBox.addListener('places_changed', () => {
+  //       const places = searchBox.getPlaces();
+  //
+  //       if (!places || (places || []).length == 0) {
+  //         return;
+  //       }
+  //
+  //       const location = places[0].geometry?.location;
+  //       if (location) {
+  //         this.map.googleMap?.setCenter(location);
+  //       }
+  //     });
+  //   }
+  // }
+
 
   mapOptions: MapOptions = {
     zoom: 5,
@@ -54,12 +87,11 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
     this.value$.pipe(
       filter((value) => value !== undefined),
       take(1),
-      tap((value) => {
-        if (!value) {
-          this.showCurrentLocation();
-        } else {
-          this.setMapZoomAndPosition(18, value.marker_position!.lat, value.marker_position!.lng);
+      switchMap((value) => {
+        if (value?.at_place) {
+          return this.beforeSubmit();
         }
+        return of(undefined);
       })
     ).subscribe();
   }
@@ -79,8 +111,23 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
           }
 
           if (this.map.googleMap) {
-            this.map.googleMap.controls[ControlPosition.TOP_CENTER].push(this.currentLocation.nativeElement);
-            this.map.googleMap.controls[ControlPosition.TOP_CENTER].push(this.confirmLocationBtn.nativeElement);
+            this.map.googleMap.controls[ControlPosition.BOTTOM_CENTER].push(this.confirmLocationBtn.nativeElement);
+            this.map.googleMap.controls[ControlPosition.TOP_CENTER].push(this.searchPlaceInput.nativeElement);
+            this.map.googleMap.controls[ControlPosition.RIGHT_BOTTOM].push(this.currentLocation.nativeElement);
+            const searchBox = new google.maps.places.SearchBox(this.searchPlaceInput.nativeElement);
+            searchBox.addListener('places_changed', () => {
+              const places = searchBox.getPlaces();
+
+              if (!places || (places || []).length == 0) {
+                return;
+              }
+
+              const location = places[0].geometry?.location;
+              if (location) {
+                this.map.googleMap?.setCenter(location);
+                this.map.googleMap?.setZoom(18);
+              }
+            });
             this.map.googleMap.setOptions({draggable: true});
           }
           this.addMapCenterChangeListener();
@@ -114,12 +161,14 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
           paragraph?.appendChild(text);
           const text1 = document.createTextNode(error.code.toString());
           paragraph?.appendChild(text1);
+          this.atPlace = 'no';
           console.error('Error getting current location:', error);
         }
       );
     } else {
       const text = document.createTextNode("NOT SUPPORTED");
       paragraph?.appendChild(text);
+      this.atPlace = 'no';
       console.error('Geolocation is not supported by this browser.');
     }
   }
@@ -128,12 +177,11 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
     const value = this.value$.getValue();
     if (value) {
       value.marker_position = this.position;
-      value.written_position = '';
       this.handleModelChange(value);
     } else {
       this.handleModelChange({
+        at_place: this.atPlace,
         marker_position: this.position,
-        written_position: ''
       });
     }
 
@@ -163,5 +211,44 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
       lng: longitude
     };
     this.changeDetectorRef.detectChanges();
+  }
+
+  private askForCurrentLocation() {
+    const value = this.value$.getValue();
+    if (!value) {
+      this.showCurrentLocation();
+    } else {
+      this.setMapZoomAndPosition(18, value.marker_position!.lat, value.marker_position!.lng);
+    }
+  }
+
+  beforeSubmit(): Observable<boolean> {
+    return of(undefined).pipe(
+      map(() => {
+        return this.step > 0;
+      }),
+      tap(() => {
+        if (this.step === 0) {
+          this.step += 1;
+          this.askForCurrentLocation();
+        }
+      })
+    );
+  }
+
+  beforeBack(): Observable<boolean> {
+    return of(undefined).pipe(
+      map(() => this.step < 1),
+      tap(() => {
+        if (this.step > 0) {
+          this.step -= 1;
+        }
+      })
+    );
+  }
+
+  handleSelectChange(value: 'yes' | 'no'): void {
+    this.beforeSubmit().pipe(take(1)).subscribe();
+    this.atPlace = value;
   }
 }

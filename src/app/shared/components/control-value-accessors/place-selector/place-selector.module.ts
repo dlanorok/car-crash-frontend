@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { PlaceSelectorComponent } from './place-selector.component';
 import { GoogleMapsModule } from "@angular/google-maps";
 import { GoogleMapsButtonModule } from "@app/shared/components/ui/google-maps-button/google-maps-button.module";
+import { StackedSelectControlModule } from "@app/shared/form-controls/stacked-select-control/stacked-select-control.module";
+import { FormsModule } from "@angular/forms";
 
 
 
@@ -16,7 +18,9 @@ import { GoogleMapsButtonModule } from "@app/shared/components/ui/google-maps-bu
   imports: [
     CommonModule,
     GoogleMapsModule,
-    GoogleMapsButtonModule
+    GoogleMapsButtonModule,
+    StackedSelectControlModule,
+    FormsModule
   ]
 })
 export class PlaceSelectorModule { }

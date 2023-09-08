@@ -1,8 +1,13 @@
-<div class="h-100 d-block w-100 overflow-hidden">
-  <p id="test"></p>
+<div *ngIf="step === 0">
+  <h4><b>§§ Are you ate the place of accident</b></h4>
+  <app-stacked-select-control [ngModel]="(value$ | async)?.at_place"  [options]="options" (ngModelChange)="handleSelectChange($event)">
+  </app-stacked-select-control>
+</div>
+<div [class.d-none]="step !== 1" class="h-100 d-block w-100 overflow-hidden">
   <google-map
     #map
     id="map"
+    style="flex: 1"
     height="100%"
     width="100%"
     [options]="mapOptions"
@@ -12,9 +17,19 @@
     </ng-container>
   </google-map>
 
-  <app-google-maps-button *ngIf="(isDisabled$ | async) === false" #currentLocation [buttonText]="'§§ Current location'"
+  <app-google-maps-button *ngIf="(isDisabled$ | async) === false" #currentLocation [icon]="'bi bi-geo-alt-fill'"
                           (click)="showCurrentLocation()"></app-google-maps-button>
   <app-google-maps-button *ngIf="(isDisabled$ | async) === false" #confirmLocationBtn [buttonText]="'§§ Confirm location'"
+                          style="margin-bottom: 10px"
                           (click)="confirmLocation()"></app-google-maps-button>
+  <input
+    *ngIf="(isDisabled$ | async) === false"
+    #searchPlaceInput
+    class="form-control mt-3"
+    style="width: 50%"
+    [class.invisible]="atPlace === 'yes'"
+    type="text"
+    placeholder="Search Box"
+  />
 
 </div>

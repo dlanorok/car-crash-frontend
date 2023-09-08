@@ -6,5 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./google-maps-button.component.scss']
 })
 export class GoogleMapsButtonComponent {
-  @Input() buttonText!: string;
+  @Input() buttonText?: string;
+  @Input() icon?: string;
 }

@@ -37,9 +37,9 @@ export interface Step {
 export interface Option {
   label: string;
   value: any;
-  action: string;
-  action_property: any;
-  next_step: StepType;
+  action?: string;
+  action_property?: any;
+  next_step?: StepType;
 }
 
 export enum ArrowType {
