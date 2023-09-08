@@ -200,6 +200,8 @@ export class StepComponent implements OnInit, OnDestroy {
           control.value.save = false;
           this.questionnaireService.updateInputs(value, this.questionnaire, this.step);
         }
+      } else if (input.type === InputType.place) {
+        this.next();
       }
 
       if (input.value !== control.value) {
