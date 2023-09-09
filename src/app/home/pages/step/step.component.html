@@ -2,7 +2,6 @@
   <div class="p-3 h-100">
     <form [formGroup]="form" class="h-100 form-layout">
       <h4 *ngIf="step.question"><b>{{ step.question }}</b></h4>
-      {{ form.value | json }}
       <small *ngIf="step.help_text">{{ step.help_text }}</small>
       <i *ngIf="step.additional_help" (click)="openInfoModal(step)" class="bi bi-info-circle"></i>
       <ng-container *ngFor="let input of inputs">
