@@ -88,6 +88,10 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     this.step$.next(step);
   }
 
+  get scale1(): number {
+    return window.devicePixelRatio;
+  }
+
   readonly positionData$: Observable<PlaceSelectorData | undefined> = this.step$.pipe(
     switchMap((step) => {
       if (step && step.data_from_input) {
@@ -239,8 +243,8 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
             return {
               x: car.group.x(),
               y: car.group.y(),
-              scaleY: car.group.scaleY(),
-              scaleX: car.group.scaleX(),
+              scaleY: car.group.scaleY() * window.devicePixelRatio,
+              scaleX: car.group.scaleX() * window.devicePixelRatio,
               id: car.group.id(),
               rotation: car.group.rotation(),
               arrow: car.carData.arrow,
@@ -275,8 +279,8 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
         const konvaImage = new Konva.Image({
           image: imageObj,
           draggable: false,
-          scaleX: 0.08,
-          scaleY: 0.08,
+          scaleX: 0.08 / window.devicePixelRatio,
+          scaleY: 0.08 / window.devicePixelRatio,
           rotation: 90,
           x: 0,
           y: 0,
