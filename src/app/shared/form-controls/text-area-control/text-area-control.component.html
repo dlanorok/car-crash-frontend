@@ -7,7 +7,7 @@
     [class.is-invalid]="submitted && formControl.errors"
     (ngModelChange)="handleModelChange($event)"
     class="form-control"
-    rows="15"
+    [rows]="rows"
     [ngModel]="value$ | async">
   </textarea>
 

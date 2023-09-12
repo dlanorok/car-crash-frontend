@@ -16,6 +16,7 @@ import {
   filter, switchMap
 } from "rxjs";
 import { ValidatorsErrors } from "@app/shared/components/forms/common/enumerators/validators-errors";
+import { LCID } from "@regulaforensics/document-reader-webclient";
 
 @Component({
   selector: 'app-driver-control',
@@ -79,12 +80,12 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
   processOCRResponse(response: Response | undefined): void {
     let driverModel = new DriverModel({});
     if (response) {
-      const dateOfExpiry: string | undefined = response.text?.getFieldValue(TextFieldType.DATE_OF_EXPIRY);
+      const dateOfExpiry: string | undefined = this.findLocaleFieldValue(response, TextFieldType.DATE_OF_EXPIRY);
       const driver = {
-        name: response.text?.getFieldValue(TextFieldType.FIRST_NAME) || response.text?.getFieldValue(TextFieldType.GIVEN_NAMES) || '',
-        surname: response.text?.getFieldValue(TextFieldType.SURNAME) || '',
-        address: response.text?.getFieldValue(TextFieldType.ADDRESS),
-        driving_licence_number: response.text?.getFieldValue(TextFieldType.DOCUMENT_NUMBER),
+        name: this.findLocaleFieldValue(response, TextFieldType.FIRST_NAME) || this.findLocaleFieldValue(response, TextFieldType.GIVEN_NAMES) || '',
+        surname: this.findLocaleFieldValue(response, TextFieldType.SURNAME) || '',
+        address: this.findLocaleFieldValue(response, TextFieldType.ADDRESS),
+        driving_licence_number: this.findLocaleFieldValue(response, TextFieldType.DOCUMENT_NUMBER),
         driving_licence_valid_to: dateOfExpiry ? new Date(dateOfExpiry) : ''
       };
 
@@ -95,6 +96,24 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
       });
     }
     this.handleModelChange(driverModel);
+  }
+
+  private findLocaleFieldValue(response: Response, type: TextFieldType) {
+    let latinValue = undefined;
+    let localeValue = undefined;
+    for (const field of (response.text?.fieldList || [])) {
+      if (field.fieldType == type) {
+        if (field.lcid && field.lcid > 0) {
+          localeValue = field;
+        }
+
+        if (!field.lcid || field.lcid === LCID.LATIN) {
+          latinValue = field;
+        }
+      }
+    }
+
+    return localeValue ? localeValue.getValue() : (latinValue?.getValue() || '');
   }
 
   ngOnDestroy() {

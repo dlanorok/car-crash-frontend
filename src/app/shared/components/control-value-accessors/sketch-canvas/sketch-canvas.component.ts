@@ -161,7 +161,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
             this.layer.draw();
           }),
           map(() => {
-            this.tr = new Konva.Transformer({enabledAnchors: ['top-left', 'top-right', 'bottom-left', 'bottom-right']});
+            this.tr = new Konva.Transformer({enabledAnchors: []});
             this.layer.add(this.tr);
             this.tr.nodes([]);
 

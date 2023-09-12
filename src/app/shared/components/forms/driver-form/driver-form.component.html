@@ -14,12 +14,14 @@
     [submitted]="submitted">
   </app-text-control>
 
-  <app-text-control
+  <app-text-area-control
     [formControl]="$any(form.controls['address'])"
     [label]="'car-crash.driver.address.label' | transloco"
     [placeholder]="'car-crash.driver.address.placeholder' | transloco"
-    [submitted]="submitted">
-  </app-text-control>
+    [submitted]="submitted"
+    [rows]="2"
+  >
+  </app-text-area-control>
 
   <app-text-control
     [formControl]="$any(form.controls['driving_licence_number'])"

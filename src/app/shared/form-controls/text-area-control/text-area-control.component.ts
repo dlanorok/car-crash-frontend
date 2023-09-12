@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   BaseFormControlComponent,
   provideControlValueAccessor
@@ -11,4 +11,5 @@ import {
   providers: [provideControlValueAccessor(TextAreaControlComponent)]
 })
 export class TextAreaControlComponent extends BaseFormControlComponent<string>{
+  @Input() rows = 15;
 }

@@ -5,6 +5,7 @@ import { TranslocoModule } from "@ngneat/transloco";
 import { DriverFormComponent } from "./driver-form.component";
 import { DateControlModule } from "../../../form-controls/date-control/date-control.module";
 import { TextControlModule } from "../../../form-controls/text-control/text-control.module";
+import { TextAreaControlModule } from "@app/shared/form-controls/text-area-control/text-area-control.module";
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { TextControlModule } from "../../../form-controls/text-control/text-cont
     ReactiveFormsModule,
     TranslocoModule,
     DateControlModule,
-    TextControlModule
+    TextControlModule,
+    TextAreaControlModule
   ]
 })
 export class DriverFormModule { }

@@ -60,8 +60,6 @@ export class OcrComponentComponent implements AfterViewInit, OnInit {
       return;
     }
 
-    console.log(data);
-
     if (data.detail.action === 'PRESS_CAMERA_BUTTON') {
       this.cameraOpened = true;
       return;
@@ -113,7 +111,6 @@ export class OcrComponentComponent implements AfterViewInit, OnInit {
             finalize(() => this.loading = false)
           ).subscribe();
       }
-      this.loading = false;
     }
   }
 }
