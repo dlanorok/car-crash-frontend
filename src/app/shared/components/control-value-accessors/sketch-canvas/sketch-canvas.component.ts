@@ -49,6 +49,7 @@ interface CarData {
   rotation: number;
   arrow: ArrowType;
   questionnaire_id: string;
+  pixelRatio: number;
 }
 
 interface PointData {
@@ -71,7 +72,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
   private readonly filesApiService: FilesApiService = inject(FilesApiService);
 
   @ViewChild('container', { static: true }) container!: ElementRef;
-  private stage!: Konva.Stage;
+  stage!: Konva.Stage;
   layer!: Konva.Layer;
   image!: Konva.Image;
   tr!: Konva.Transformer;
@@ -192,6 +193,15 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
               });
               this.reDrawCars(currenSketch, questionnaires, initialScale);
             }
+            const circle = new Konva.Circle({
+              x: 100,
+              y: 200,
+              radius: 70,
+              fill: 'red',
+              stroke: 'black',
+              strokeWidth: 4,
+            });
+            this.layer.add(circle);
           })
         );
       })
@@ -243,12 +253,13 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
             return {
               x: car.group.x(),
               y: car.group.y(),
-              scaleY: car.group.scaleY() * window.devicePixelRatio,
-              scaleX: car.group.scaleX() * window.devicePixelRatio,
+              scaleY: car.carData.scaleY,
+              scaleX: car.carData.scaleX,
               id: car.group.id(),
               rotation: car.group.rotation(),
               arrow: car.carData.arrow,
               questionnaire_id: car.carData.questionnaire_id,
+              pixelRatio: window.devicePixelRatio
             };
           }),
           confirmed_editors: [...new Set(value.confirmed_editors)],
@@ -271,16 +282,17 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
 
     imageObj.src = `../../../assets/icons/google-car-${index + 1}.svg`;
 
-    const x = car?.x || (firstCar?.x ? firstCar.x + 20 : undefined) || (this.image.width() / 2 / this.stage.scaleX() + 20 * index);
-    const y = car?.y || firstCar?.y || this.image.height() / 2 / this.stage.scaleX();
-
     return fromEvent(imageObj, 'load').pipe(
       tap(() => {
+        const x = car?.x || (firstCar?.x ? firstCar.x + 20 : undefined) || (this.image.width() / 2 / this.stage.scaleX() + 30 * index);
+        const y = car?.y || firstCar?.y || this.image.height() / 2 / this.stage.scaleX();
         const konvaImage = new Konva.Image({
           image: imageObj,
           draggable: false,
-          scaleX: 0.08 / window.devicePixelRatio,
-          scaleY: 0.08 / window.devicePixelRatio,
+          height: imageObj.height / window.devicePixelRatio,
+          width: imageObj.width / window.devicePixelRatio,
+          scaleX: 0.14,
+          scaleY: 0.14,
           rotation: 90,
           x: 0,
           y: 0,
@@ -290,8 +302,8 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
           x: x,
           y: y,
           draggable: true,
-          scaleX: car?.scaleX || 1,
-          scaleY: car?.scaleY || 1,
+          scaleX: (car?.scaleX || 1),
+          scaleY: (car?.scaleY || 1),
           rotation: car?.rotation,
           id: car.id
         });
@@ -523,14 +535,14 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
         ctx.moveTo(initialX, initialY);
         ctx.quadraticCurveTo(
           initialX,
-          initialY + 30,
+          initialY + 40,
           initialX + 20,
-          initialY + 30
+          initialY + 40
         );
         ctx.fillStrokeShape(shape);
       }));
       arrow.x(initialX + 20);
-      arrow.y(initialY + 30);
+      arrow.y(initialY + 40);
       arrow.visible(true);
     } else if (arrowType === ArrowType.right) {
       quadraticLine.sceneFunc(((ctx, shape) => {
@@ -538,14 +550,14 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
         ctx.moveTo(initialX, initialY);
         ctx.quadraticCurveTo(
           initialX,
-          initialY + 30,
+          initialY + 40,
           initialX - 20,
-          initialY + 30
+          initialY + 40
         );
         ctx.fillStrokeShape(shape);
       }));
       arrow.x(initialX - 20);
-      arrow.y(initialY + 30);
+      arrow.y(initialY + 40);
       arrow.visible(true);
       arrow.rotation(180);
     } else if (arrowType === ArrowType.reverse) {
@@ -554,14 +566,14 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
         ctx.moveTo(initialX, initialY);
         ctx.quadraticCurveTo(
           initialX,
-          initialY - 25,
+          initialY - 45,
           initialX,
-          initialY - 25
+          initialY - 45
         );
         ctx.fillStrokeShape(shape);
       }));
       arrow.x(initialX);
-      arrow.y(initialY - 25);
+      arrow.y(initialY - 45);
       arrow.visible(true);
       arrow.rotation(270);
     } else if (arrowType === ArrowType.straight) {
@@ -570,14 +582,14 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
         ctx.moveTo(initialX, initialY);
         ctx.quadraticCurveTo(
           initialX,
-          initialY + 30,
+          initialY + 45,
           initialX,
-          initialY + 30
+          initialY + 45
         );
         ctx.fillStrokeShape(shape);
       }));
       arrow.x(initialX);
-      arrow.y(initialY + 30);
+      arrow.y(initialY + 45);
       arrow.visible(true);
       arrow.rotation(90);
     } else if (arrowType === ArrowType.straightLeft) {
@@ -590,12 +602,12 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
           initialX + 20,
           initialY + 20,
           initialX + 20,
-          initialY + 60
+          initialY + 70
         );
         ctx.fillStrokeShape(shape);
       }));
       arrow.x(initialX + 20);
-      arrow.y(initialY + 60);
+      arrow.y(initialY + 70);
       arrow.visible(true);
       arrow.rotation(90);
     } else if (arrowType === ArrowType.straightRight) {
@@ -608,12 +620,12 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
           initialX - 20,
           initialY + 20,
           initialX - 20,
-          initialY + 60
+          initialY + 70
         );
         ctx.fillStrokeShape(shape);
       }));
       arrow.x(initialX - 20);
-      arrow.y(initialY + 60);
+      arrow.y(initialY + 70);
       arrow.visible(true);
       arrow.rotation(90);
     }
