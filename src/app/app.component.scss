@@ -1,8 +1,4 @@
 .main-outlet {
-  height: calc(100% - 70px);
-  padding-top: 57px;
-}
-
-.error {
-  color: var(--bs-form-invalid-color)
+  background-color: var(--theme-color-dark);
+  height: 100%;
 }

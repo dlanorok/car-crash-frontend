@@ -1,4 +1,4 @@
-import { isDevMode, NgModule } from '@angular/core';
+import { APP_INITIALIZER, isDevMode, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -27,6 +27,11 @@ import { sketchReducer } from "@app/app-state/sketch/sketch-reducer";
 import { SketchEffects } from "@app/app-state/sketch/sketch-effects";
 import { ToastrModule } from "ngx-toastr";
 import { FooterButtonsModule } from "@app/shared/components/footer-buttons/footer-buttons.module";
+import { AppLoadService } from "@app/app-load.service";
+
+export function initApp(appLoadService: AppLoadService): () => void {
+  return () => appLoadService.initApp();
+}
 
 @NgModule({
   declarations: [
@@ -53,6 +58,8 @@ import { FooterButtonsModule } from "@app/shared/components/footer-buttons/foote
     FooterButtonsModule,
   ],
   providers: [
+    AppLoadService,
+    { provide: APP_INITIALIZER, useFactory: initApp, deps: [AppLoadService], multi: true },
     {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},
     {provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n},

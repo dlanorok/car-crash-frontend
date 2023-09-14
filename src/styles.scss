@@ -1,7 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins');
-html, body { height: 100%; }
+html, body {
+  height: 100%;
+}
+
 body {
   margin: 0;
 }
@@ -13,12 +16,13 @@ app-root {
 }
 @import "styles/variables";
 
-@import "node_modules/bootstrap/scss/bootstrap";
 @import 'node_modules/bootstrap/scss/functions';
 @import 'node_modules/bootstrap/scss/variables';
 @import 'node_modules/bootstrap/scss/mixins';
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 //@import 'node_modules/ngx-toastr/toastr';
+@import "styles/base-css-overwrite";
+@import "styles/helpers.scss";
 
 .form-control::placeholder {
   opacity: 0.4; /* set the opacity value as desired */
@@ -56,16 +60,26 @@ app-root {
   }
 }
 
+@media screen and (max-width: 1920px) {
+  html {
+    font-size: 1rem;
+  }
+}
+@media screen and (max-width: 1440px) {
+  html {
+    font-size: 1rem;
+  }
+}
+@media screen and (max-width: 479px) {
+  html {
+    font-size: calc(0.7494769874476988rem + 0.8368200836820083vw);
+  }
+}
+
 app-svg-comp svg {
   display: block;
   height: 100%;
   width: 100%;
-}
-
-.main-content {
-  padding: 10px 15px;
-  height: calc(100%);
-  overflow-y: auto;
 }
 
 // TODO create UI component for info text

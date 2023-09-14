@@ -1,0 +1,36 @@
+.gap-half {
+  gap: var(--theme-spacing-rem-half)
+}
+
+.gap {
+  gap: var(--theme-spacing-rem)
+}
+
+.flex {
+  display: flex;
+}
+
+.padding {
+  padding: var(--theme-spacing-rem);
+}
+
+.padding-half {
+   padding: var(--theme-spacing-rem-half);
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-end {
+  justify-content: end;
+}
+
+.align-items-end {
+  align-items: end;
+}
+
