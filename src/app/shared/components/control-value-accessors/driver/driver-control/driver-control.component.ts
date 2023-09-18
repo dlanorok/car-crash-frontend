@@ -32,17 +32,17 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
   loading = false;
 
   @ViewChild('driverForm', {static: false}) set driverForm(driverForm: DriverFormComponent) {
-    this.driverForm$.next(driverForm);
-    this.formControl.setValidators((() => {
-      driverForm.submitForm();
-
-      if (driverForm.form.valid) {
-        return null;
-      }
-      return {
-        [ValidatorsErrors.required]: true
-      };
-    }));
+    if (driverForm) {
+      this.driverForm$.next(driverForm);
+      this.formControl.setValidators((() => {
+        if (driverForm.form.valid) {
+          return null;
+        }
+        return {
+          [ValidatorsErrors.required]: true
+        };
+      }));
+    }
   }
 
   ngAfterViewInit() {
@@ -84,7 +84,7 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
       const driver = {
         name: this.findLocaleFieldValue(response, TextFieldType.FIRST_NAME) || this.findLocaleFieldValue(response, TextFieldType.GIVEN_NAMES) || '',
         surname: this.findLocaleFieldValue(response, TextFieldType.SURNAME) || '',
-        address: this.findLocaleFieldValue(response, TextFieldType.ADDRESS),
+        address: this.findLocaleFieldValue(response, TextFieldType.ADDRESS)?.replace("^", "\n"),
         driving_licence_number: this.findLocaleFieldValue(response, TextFieldType.DOCUMENT_NUMBER),
         driving_licence_valid_to: dateOfExpiry ? new Date(dateOfExpiry) : ''
       };

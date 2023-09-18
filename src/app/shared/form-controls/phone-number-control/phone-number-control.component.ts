@@ -16,4 +16,11 @@ export class PhoneNumberControlComponent extends BaseFormControlComponent<Change
   readonly CountryISO = CountryISO;
   readonly SearchCountryField = SearchCountryField;
 
+  override handleModelChange(value: ChangeData) {
+    const currentValue = this.value$.getValue();
+    if (currentValue?.number !== value?.number) {
+      super.handleModelChange(value);
+    }
+  }
+
 }

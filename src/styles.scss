@@ -113,3 +113,20 @@ app-root {
 .heading-small {
   font-size: 1.3rem;
 }
+
+.form-control {
+  padding: 0.5rem 1rem;
+}
+
+.ng-select-container {
+  height: unset !important;
+  padding: var(--theme-spacing-rem-half) var(--theme-spacing-rem);
+
+  .ng-value-container {
+    padding-left: unset !important;
+  }
+
+  .ng-input {
+    padding-left: var(--theme-spacing-rem) !important;
+  }
+}

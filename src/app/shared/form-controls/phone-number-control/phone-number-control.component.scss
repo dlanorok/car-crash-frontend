@@ -1,13 +1,13 @@
 .iti {
   display: block !important;
-  margin-bottom: 20px;
 }
 
-.iti .dropdown-menu.country-dropdown {
+.dropdown-menu.country-dropdown {
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
   border-color: #c7cace;
-  margin-top: -1px;
+  margin: 0!important;
+  transform: translateY(-262px) !important;
 }
 
 .iti .iti__country-list {
