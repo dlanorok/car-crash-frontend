@@ -35,11 +35,11 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
   options: Option[] = [
     {
       value: 'yes',
-      label: 'yes',
+      label: '§§Yes',
     },
     {
       value: 'no',
-      label: 'no'
+      label: '§§No'
     },
   ];
   atPlace: 'yes' | 'no' | null = null;

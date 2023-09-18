@@ -32,7 +32,7 @@
 </div>
 
 <app-input-section
-  [title]="step === 1 ? ('§§ Potrdite lokacijo' | transloco) : undefined"
+  [title]="step === 1 ? ('§§ Potrdite lokacijo' | transloco) : ('§§Are you at the place of accident' | transloco)"
   [info]="step === 1 ? 'CONTENT OF INFO??' : undefined"
   [buttonName]="step === 0 ? '§§Next' : '§§Confirm Location'" (next)="onSubmit()" (back)="onBack()" [disabledButton]="!(value$ | async)?.at_place">
   <app-stacked-select-control *ngIf="step === 0" [ngModel]="(value$ | async)?.at_place"  [options]="options" (ngModelChange)="handleSelectChange($event)">
