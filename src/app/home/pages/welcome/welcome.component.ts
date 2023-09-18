@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from "@ngrx/store";
-import { CrashModel } from "../../../shared/models/crash.model";
-import { StorageItem } from "../../../shared/common/enumerators/storage";
-import { Observable } from "rxjs";
+import { CrashModel } from "@app/shared/models/crash.model";
+import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { createCrash } from '@app/app-state/crash/crash-action';
-import { crashLoading } from "@app/app-state/crash/crash-selector";
 import { PageDataService } from "@app/shared/services/page-data.service";
 
 @Component({
@@ -14,7 +12,6 @@ import { PageDataService } from "@app/shared/services/page-data.service";
 })
 export class WelcomeComponent implements OnInit {
   localStorageCrash?: string | null;
-  loading$: Observable<boolean> = this.store.select(crashLoading);
 
   constructor(
     private readonly store: Store,

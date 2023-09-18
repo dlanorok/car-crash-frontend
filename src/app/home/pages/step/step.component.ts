@@ -1,6 +1,6 @@
-import { Component, inject, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { distinctUntilChanged, mergeMap, of, skip, Subject, take, takeUntil, tap } from "rxjs";
+import { distinctUntilChanged, mergeMap, skip, Subject, take, takeUntil, tap } from "rxjs";
 import { Store } from "@ngrx/store";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
@@ -17,9 +17,6 @@ import { DynamicControlDirective } from "@app/shared/common/directives/dynamic-c
 import { PageDataService } from "@app/shared/services/page-data.service";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { TranslocoService } from "@ngneat/transloco";
-import { DialogService } from "@app/shared/services/dialog/dialog.service";
-import { HelpTextComponent } from "@app/shared/components/ui/help-text/help-text.component";
-import { HelpTextModule } from "@app/shared/components/ui/help-text/help-text.module";
 
 @UntilDestroy()
 @Component({
@@ -39,8 +36,6 @@ export class StepComponent implements OnInit, OnDestroy {
   protected readonly cookieService: CookieService = inject(CookieService);
   protected readonly toastr: ToastrService = inject(ToastrService);
   protected readonly translateService: TranslocoService = inject(TranslocoService);
-  protected readonly dialogService: DialogService = inject(DialogService);
-  protected readonly injector: Injector = inject(Injector);
 
   protected destroy$: Subject<void> = new Subject<void>();
 
@@ -54,6 +49,7 @@ export class StepComponent implements OnInit, OnDestroy {
   step?: Step;
   form!: UntypedFormGroup;
   inputs: Input[] = [];
+  readonly InputType = InputType;
 
   @ViewChild(DynamicControlDirective) private readonly dynamicControlDirective?: DynamicControlDirective<any>;
 
@@ -298,7 +294,7 @@ export class StepComponent implements OnInit, OnDestroy {
 
     if (input?.type === InputType.select) {
       const selectedOption: Option | undefined = input.options?.find(option => option.value === input.value);
-      if (selectedOption?.action === Action.nextStep && selectedOption?.action_property?.step) {
+      if (selectedOption?.action_property?.step) {
         this.router.navigate([`/crash/${this.sessionId}/questionnaires/${this.questionnaireId}/sections/${this.section?.id}/steps/${selectedOption?.action_property.step}`]);
         return;
       }
@@ -310,25 +306,6 @@ export class StepComponent implements OnInit, OnDestroy {
     }
 
     this.router.navigate([`/crash/${this.sessionId}`]);
-  }
-
-  openInfoModal(step: Step) {
-    this.dialogService.openDialog({
-      componentData: {
-        component: HelpTextComponent,
-        module: HelpTextModule,
-        parentInjector: this.injector
-      },
-      componentParams: {
-        step: step
-      },
-      options: {
-        size: 'xl',
-        centered: true
-      },
-      isClosable: true,
-      title$: of("§§ help")
-    }).pipe(take(1)).subscribe();
   }
 
   ngOnDestroy() {

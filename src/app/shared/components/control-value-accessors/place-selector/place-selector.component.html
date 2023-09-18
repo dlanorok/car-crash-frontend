@@ -1,35 +1,40 @@
-<div *ngIf="step === 0">
-  <h4><b>§§ Are you ate the place of accident</b></h4>
-  <app-stacked-select-control [ngModel]="(value$ | async)?.at_place"  [options]="options" (ngModelChange)="handleSelectChange($event)">
+<div class="map-container flex flex-1">
+  <div [class.d-none]="step !== 1" class="h-100 d-block w-100 overflow-hidden">
+    <google-map
+      #map
+      id="map"
+      style="flex: 1"
+      height="100%"
+      width="100%"
+      [options]="mapOptions"
+    >
+      <ng-container>
+        <map-marker *ngIf="position" [position]="position"></map-marker>
+      </ng-container>
+    </google-map>
+
+    <div class="buttons" #currentLocation>
+      <app-svg-comp *ngIf="(isDisabled$ | async) === false" name="place" width="1.8rem" (click)="showCurrentLocation()"></app-svg-comp>
+      <app-svg-comp name="plus" width="1.8rem" (click)="zoom(true)"></app-svg-comp>
+      <app-svg-comp name="minus" width="1.8rem" (click)="zoom(false)"></app-svg-comp>
+    </div>
+
+    <input
+      *ngIf="(isDisabled$ | async) === false"
+      #searchPlaceInput
+      class="form-control mt-3"
+      style="width: 50%"
+      [class.invisible]="atPlace === 'yes'"
+      type="text"
+      placeholder="Search Box"
+    />
+  </div>
+</div>
+
+<app-input-section
+  [title]="step === 1 ? ('§§ Potrdite lokacijo' | transloco) : undefined"
+  [info]="step === 1 ? 'CONTENT OF INFO??' : undefined"
+  [buttonName]="step === 0 ? '§§Next' : '§§Confirm Location'" (next)="onSubmit()" (back)="onBack()" [disabledButton]="!(value$ | async)?.at_place">
+  <app-stacked-select-control *ngIf="step === 0" [ngModel]="(value$ | async)?.at_place"  [options]="options" (ngModelChange)="handleSelectChange($event)">
   </app-stacked-select-control>
-</div>
-<div [class.d-none]="step !== 1" class="h-100 d-block w-100 overflow-hidden">
-  <google-map
-    #map
-    id="map"
-    style="flex: 1"
-    height="100%"
-    width="100%"
-    [options]="mapOptions"
-  >
-    <ng-container>
-      <map-marker *ngIf="position" [position]="position"></map-marker>
-    </ng-container>
-  </google-map>
-
-  <app-google-maps-button *ngIf="(isDisabled$ | async) === false" #currentLocation [icon]="'bi bi-geo-alt-fill'"
-                          (click)="showCurrentLocation()"></app-google-maps-button>
-  <app-google-maps-button *ngIf="(isDisabled$ | async) === false" #confirmLocationBtn [buttonText]="'§§ Confirm location'"
-                          style="margin-bottom: 10px"
-                          (click)="confirmLocation()"></app-google-maps-button>
-  <input
-    *ngIf="(isDisabled$ | async) === false"
-    #searchPlaceInput
-    class="form-control mt-3"
-    style="width: 50%"
-    [class.invisible]="atPlace === 'yes'"
-    type="text"
-    placeholder="Search Box"
-  />
-
-</div>
+</app-input-section>

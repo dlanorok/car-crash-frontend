@@ -5,7 +5,7 @@
   <ng-container *ngFor="let fileId of uploadedFileIds; let i = index">
     <div class="position-relative">
       <div class="icon-wrapper" (click)="removeFile(fileId)">
-        <app-svg-comp [src]="closeSvg"></app-svg-comp>
+        remove
       </div>
       <img appImage [imageId]="fileId" alt="Preview">
     </div>

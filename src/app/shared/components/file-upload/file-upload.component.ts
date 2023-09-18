@@ -12,8 +12,6 @@ import { HttpEventType } from "@angular/common/http";
 export class FileUploadComponent {
   progress: number | null = null;
 
-  closeSvg = require('src/assets/icons/close.svg');
-
   @Input() error: boolean | undefined = false;
   @Input() uploadedFileIds: number[] = [];
   @Output() fileUploaded: EventEmitter<UploadedFile> = new EventEmitter<UploadedFile>();

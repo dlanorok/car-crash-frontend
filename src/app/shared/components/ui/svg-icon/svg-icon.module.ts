@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SvgIconComponent } from "./svg-icon.component";
+import { IconSpriteModule } from "ng-svg-icon-sprite";
 
 
 
@@ -8,7 +9,8 @@ import { SvgIconComponent } from "./svg-icon.component";
   declarations: [SvgIconComponent],
   exports: [SvgIconComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    IconSpriteModule
   ]
 })
 export class SvgIconModule { }

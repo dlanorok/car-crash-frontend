@@ -1,11 +1,19 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-svg-comp',
   templateUrl: './svg-icon.component.html',
-  styles: [':host {display: block;}'],
+  styles: [':host {display: block; line-height: 0;}'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SvgIconComponent {
-  @Input() src: {default: string} | undefined;
+export class SvgIconComponent implements OnInit {
+  @Input() name?: string;
+  @Input() width = '100%';
+  @Input() height!: string;
+
+  ngOnInit() {
+    if (typeof this.height === 'undefined') {
+      this.height = this.width;
+    }
+  }
 }

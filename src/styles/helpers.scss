@@ -26,11 +26,27 @@
   flex: 1;
 }
 
-.flex-end {
+.justify-content-end {
   justify-content: end;
+}
+
+.justify-content-space-between {
+  justify-content: space-between;
+}
+
+.justify-content-center {
+  justify-content: center;
 }
 
 .align-items-end {
   align-items: end;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.m-t-auto {
+  margin-top: auto;
 }
 

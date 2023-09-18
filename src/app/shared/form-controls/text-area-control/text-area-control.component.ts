@@ -11,5 +11,5 @@ import {
   providers: [provideControlValueAccessor(TextAreaControlComponent)]
 })
 export class TextAreaControlComponent extends BaseFormControlComponent<string>{
-  @Input() rows = 15;
+  @Input() rows = 4;
 }

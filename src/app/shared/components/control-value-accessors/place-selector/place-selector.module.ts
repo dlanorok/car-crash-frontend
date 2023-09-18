@@ -2,9 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlaceSelectorComponent } from './place-selector.component';
 import { GoogleMapsModule } from "@angular/google-maps";
-import { GoogleMapsButtonModule } from "@app/shared/components/ui/google-maps-button/google-maps-button.module";
 import { StackedSelectControlModule } from "@app/shared/form-controls/stacked-select-control/stacked-select-control.module";
 import { FormsModule } from "@angular/forms";
+import { InputSectionModule } from "@app/shared/components/input-section/input-section.module";
+import { SvgIconModule } from "@app/shared/components/ui/svg-icon/svg-icon.module";
+import { TranslocoModule } from "@ngneat/transloco";
 
 
 
@@ -18,9 +20,11 @@ import { FormsModule } from "@angular/forms";
   imports: [
     CommonModule,
     GoogleMapsModule,
-    GoogleMapsButtonModule,
     StackedSelectControlModule,
-    FormsModule
+    FormsModule,
+    InputSectionModule,
+    SvgIconModule,
+    TranslocoModule
   ]
 })
 export class PlaceSelectorModule { }

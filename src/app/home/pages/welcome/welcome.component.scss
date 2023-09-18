@@ -2,6 +2,15 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  flex: 1;
+
+  .main-icon {
+    color: var(--theme-color-primary);
+  }
+
+  .next-icon {
+    color: var(--theme-color-light-highlight);
+  }
 
   .content-top {
     display: flex;
@@ -21,19 +30,19 @@
     }
   }
 
+  .scan {
+    border-bottom: var(--border-small) var(--theme-color-light-highlight);
+  }
+
   .scan, .help {
+    font-weight: 600;
     background-color: var(--theme-color-background);
+    border-right: var(--border-small) var(--theme-color-light-highlight);
   }
 
   .edit {
+    font-weight: 600;
     background-color: var(--theme-color-background-light-base);
-  }
-
-  .content-bottom {
-    grid-template-rows: auto auto;
-    grid-template-columns: 1fr 1fr;
-    grid-auto-columns: 1fr;
-    display: grid;
   }
 }
 

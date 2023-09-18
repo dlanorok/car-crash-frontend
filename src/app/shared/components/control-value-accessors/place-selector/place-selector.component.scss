@@ -1,5 +1,30 @@
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
+
+  app-input-section {
+    z-index: 1;
+  }
+
+  .map-container {
+    margin-bottom: calc(var(--theme-spacing-rem) * -2);
+  }
+
+  .buttons {
+    border-radius: calc(var(--border-radius-rem) * 2);
+    background-color: #fff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: var(--theme-spacing-rem-half);
+    margin-bottom: calc(var(--theme-spacing-rem) * 2);
+    padding: var(--theme-spacing-rem) var(--theme-spacing-rem-half);
+    margin-right: var(--theme-spacing-rem);
+
+    app-svg-comp {
+      color: var(--theme-color-primary)
+    }
+  }
 }

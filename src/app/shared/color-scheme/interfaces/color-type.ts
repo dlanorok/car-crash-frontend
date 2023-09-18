@@ -4,4 +4,5 @@ export type ColorType =
   | 'light'
   | 'background'
   | 'strokes'
+  | 'basic'
   | 'type';

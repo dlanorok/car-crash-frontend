@@ -1,5 +1,5 @@
 import { ModelState } from "@app/shared/models/base.model";
-import { Action, Input, Section, SectionId, Step } from "@app/home/pages/crash/flow.definition";
+import { Input, Section, SectionId, Step } from "@app/home/pages/crash/flow.definition";
 import { Sketch } from "@app/shared/components/control-value-accessors/sketch-canvas/sketch-canvas.component";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
 
@@ -69,7 +69,7 @@ function getNextStep(questionnaire: QuestionnaireModel, step: Step, value: Step[
 
   const input = questionnaire.data.inputs[step.inputs[0]];
   const optionSelected = input?.options?.find(option => option.value === input?.value);
-  if (input && optionSelected && optionSelected.action === Action.nextStep && optionSelected.action_property?.step) {
+  if (input && optionSelected && optionSelected.action_property?.step) {
     const nextStep = questionnaire.data.steps.find(_step => _step.step_type === optionSelected.action_property?.step);
     if (nextStep) {
       getNextStep(questionnaire, nextStep, value);

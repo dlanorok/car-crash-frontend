@@ -8,7 +8,6 @@ import { CarFormModule } from "../../../../shared/components/forms/car-form/car-
 import { InsuranceFormModule } from "../../../../shared/components/forms/insurance-form/insurance-form.module";
 import { DriverFormModule } from "../../../../shared/components/forms/driver-form/driver-form.module";
 import { PolicyHolderFormModule } from "../../../../shared/components/forms/policy-holder-form/policy-holder-form.module";
-import { StepperModule } from "../../../../shared/components/stepper/stepper.module";
 import { CircumstanceFormModule } from "../../../../shared/components/forms/circumstance-form/circumstance-form.module";
 import { OcrComponentModule } from "../../../../shared/components/ocr-component/ocr-component.module";
 import { SvgIconModule } from "../../../../shared/components/ui/svg-icon/svg-icon.module";
@@ -35,7 +34,6 @@ import { ApiModule } from "../../../../shared/api/api.module";
     InsuranceFormModule,
     DriverFormModule,
     PolicyHolderFormModule,
-    StepperModule,
     CircumstanceFormModule,
     OcrComponentModule,
     SvgIconModule,

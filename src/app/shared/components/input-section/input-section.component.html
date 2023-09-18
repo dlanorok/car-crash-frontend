@@ -1,0 +1,14 @@
+<div class="flex input-section flex-column gap">
+  <div *ngIf="!!title || !!info" class="flex justify-content-space-between">
+    <h1 class="heading-small" *ngIf="title">{{ title }}</h1>
+    <app-svg-comp *ngIf="info" name="info" width="2rem"></app-svg-comp>
+  </div>
+  <ng-content></ng-content>
+
+  <div class="flex gap justify-content-center align-items-center">
+    <div class="arrow">
+      <app-svg-comp name="back" width="1.5rem" (click)="back.next()"></app-svg-comp>
+    </div>
+    <app-button [buttonText]="buttonName" [disabled]="disabledButton" (click)="next.next()"></app-button>
+  </div>
+</div>

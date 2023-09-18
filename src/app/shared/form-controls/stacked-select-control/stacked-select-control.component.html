@@ -1,13 +1,24 @@
-<div *ngFor="let option of (options || [])">
-  <div
-    class="option mt-3"
-    [class.is-invalid]="submitted && formControl && formControl.errors"
-    [class.selected]="(value$ | async) === option.value"
-    [class.disabled]="(isDisabled$ | async) === true"
-    (click)="onOptionClick(option.value)">
-    {{ option.label }}
-  </div>
-</div>
+<ng-container *ngIf="options">
 
-<app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
+  <div class="flex gap-half" [class.flex-column]="(options || []).length > 2">
+    <div
+      *ngFor="let option of (options || [])"
+      class="option"
+      [class.selected]="(value$ | async) === option.value"
+    >
+      <div class="gap flex-1 flex flex-column">
+        <app-svg-comp *ngIf="options.length < 3 && option.icon" [name]="option.icon" width="1.5rem"></app-svg-comp>
+        <div
+          [class.is-invalid]="submitted && formControl && formControl.errors"
+          [class.disabled]="(isDisabled$ | async) === true"
+          (click)="onOptionClick(option.value)">
+          {{ option.label }}
+        </div>
+      </div>
+      <app-svg-comp *ngIf="(value$ | async) === option.value" class="tick" name="tick" width="1.3rem"></app-svg-comp>
+    </div>
+  </div>
+
+  <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
+</ng-container>
 

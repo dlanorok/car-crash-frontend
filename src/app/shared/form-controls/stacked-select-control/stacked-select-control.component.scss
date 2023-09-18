@@ -1,14 +1,24 @@
 .option {
-  width: 100%;
-  border-radius: var(--border-radius-normal);
-  border: var(--border-small) var(--medium-ui-element);
+  flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--theme-spacing-half);
+  padding: var(--theme-spacing-rem);
+  background-color: var(--theme-color-basic);
+  border: var(--border-small) var(--theme-color-strokes);
+  border-radius: var(--border-radius-rem-half);
+  font-weight: 600;
+  align-items: flex-start;
 
   &.selected {
-    background-color: #97ff4d;
+    border-color: var(--theme-color-primary);
+    color: var(--theme-color-primary)
+  }
+
+  app-svg-comp {
+    color: var(--theme-color-light-highlight)
+  }
+
+  .tick {
+    color: var(--theme-color-primary)
   }
 
   &.disabled {

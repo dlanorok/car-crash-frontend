@@ -28,6 +28,7 @@ import { SketchEffects } from "@app/app-state/sketch/sketch-effects";
 import { ToastrModule } from "ngx-toastr";
 import { FooterButtonsModule } from "@app/shared/components/footer-buttons/footer-buttons.module";
 import { AppLoadService } from "@app/app-load.service";
+import { IconSpriteModule } from "ng-svg-icon-sprite";
 
 export function initApp(appLoadService: AppLoadService): () => void {
   return () => appLoadService.initApp();
@@ -56,6 +57,7 @@ export function initApp(appLoadService: AppLoadService): () => void {
       preventDuplicates: true
     }),
     FooterButtonsModule,
+    IconSpriteModule
   ],
   providers: [
     AppLoadService,

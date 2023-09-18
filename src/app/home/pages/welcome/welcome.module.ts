@@ -6,6 +6,8 @@ import { TranslocoModule } from "@ngneat/transloco";
 import { WelcomeComponent } from "./welcome.component";
 import { CrashFormModule } from "@app/shared/components/forms/crash-form/crash-form.module";
 import { BaseFormModalModule } from "@app/shared/components/modals/base-form-modal/base-form-modal.module";
+import { SvgIconModule } from "@app/shared/components/ui/svg-icon/svg-icon.module";
+import { IconSpriteModule } from "ng-svg-icon-sprite";
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { BaseFormModalModule } from "@app/shared/components/modals/base-form-mod
     ]),
     RouterModule,
     TranslocoModule,
-    CrashFormModule
+    CrashFormModule,
+    SvgIconModule,
+    IconSpriteModule
   ],
 })
 export class WelcomeModule {

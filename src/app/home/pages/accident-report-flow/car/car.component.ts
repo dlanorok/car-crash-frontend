@@ -33,8 +33,6 @@ import { PageDataService } from "@app/shared/services/page-data.service";
   styleUrls: ['./car.component.scss']
 })
 export class CarComponent implements OnInit {
-  carCrashSvg = require('src/assets/icons/car-crash.svg');
-  ocrSvg = require('src/assets/icons/ocr.svg');
 
   car!: CarModel;
   policyHolder?: PolicyHolderModel;

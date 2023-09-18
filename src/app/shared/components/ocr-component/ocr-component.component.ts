@@ -31,8 +31,6 @@ export class OcrComponentComponent implements AfterViewInit, OnInit {
 
   @ViewChild('reader', { static: false }) reader?: ElementRef<DocumentReaderWebComponent>;
 
-  ocrSvg = require('src/assets/icons/ocr.svg');
-
   constructor(private readonly regularForensicsApi: RegularForensicsApi) {
   }
 

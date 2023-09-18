@@ -9,6 +9,10 @@ import { ToDatePipe } from "@app/home/pages/step/pipes/to-date.pipe";
 import { DynamicControlFromInputModule } from "@app/shared/common/pipes/dynamic-control-from-input/dynamic-control-from-input.module";
 import { DynamicControlDirective } from "@app/shared/common/directives/dynamic-control.directive";
 import { DialogModule } from "@app/shared/services/dialog/dialog.module";
+import { SvgIconModule } from "@app/shared/components/ui/svg-icon/svg-icon.module";
+import { ButtonModule } from "@app/shared/components/ui/button/button.module";
+import { InputSectionModule } from "@app/shared/components/input-section/input-section.module";
+import { InfoSectionModule } from "@app/shared/components/info-section/info-section.module";
 
 
 @NgModule({
@@ -31,7 +35,11 @@ import { DialogModule } from "@app/shared/services/dialog/dialog.module";
     ]),
     FooterButtonsModule,
     DynamicControlFromInputModule,
-    DialogModule
+    DialogModule,
+    SvgIconModule,
+    ButtonModule,
+    InputSectionModule,
+    InfoSectionModule
   ]
 })
 export class StepModule { }

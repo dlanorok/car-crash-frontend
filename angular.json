@@ -17,14 +17,8 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "./webpack.js",
-              "mergeRules": {
-                "externals": "merge"
-              }
-            },
             "outputPath": "dist/car-crash-frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -106,7 +100,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
               "browserTarget": "car-crash-frontend:build:production"

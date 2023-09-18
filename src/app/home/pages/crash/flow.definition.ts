@@ -32,6 +32,7 @@ export interface Step {
   next_step?: StepType;
   data_from_input?: number;
   updated_inputs?: string[]
+  main_screen?: boolean,
 }
 
 export interface Option {
@@ -40,6 +41,7 @@ export interface Option {
   action?: string;
   action_property?: any;
   next_step?: StepType;
+  icon?: string;
 }
 
 export enum ArrowType {

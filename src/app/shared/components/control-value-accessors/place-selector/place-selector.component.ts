@@ -17,6 +17,7 @@ import {
 import { distinctUntilChanged, Observable, of, switchMap, take, tap } from "rxjs";
 import { filter, map } from "rxjs/operators";
 import { Option } from "@app/home/pages/crash/flow.definition";
+import { Location } from "@angular/common";
 
 export interface PlaceSelectorData {
   at_place: 'yes' | 'no' | null;
@@ -34,7 +35,7 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
   options: Option[] = [
     {
       value: 'yes',
-      label: 'yes'
+      label: 'yes',
     },
     {
       value: 'no',
@@ -43,10 +44,10 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
   ];
   atPlace: 'yes' | 'no' | null = null;
   protected readonly changeDetectorRef: ChangeDetectorRef = inject(ChangeDetectorRef);
+  protected readonly location: Location = inject(Location);
 
   @ViewChild(GoogleMap, { static: false }) map!: GoogleMap;
   @ViewChild('currentLocation', { read: ElementRef }) currentLocation!: ElementRef;
-  @ViewChild('confirmLocationBtn', { read: ElementRef }) confirmLocationBtn!: ElementRef;
   @ViewChild('searchPlaceInput', { read: ElementRef }) searchPlaceInput!: ElementRef;
 
   // set setSearchPlaceInput(searchPlaceInput: ElementRef<HTMLInputElement>) {
@@ -76,6 +77,7 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
     fullscreenControl: false,
     tilt: 0,
     rotateControl: false,
+    zoomControl: false,
     mapTypeControlOptions: { mapTypeIds: [] },
   };
 
@@ -111,7 +113,6 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
           }
 
           if (this.map.googleMap) {
-            this.map.googleMap.controls[ControlPosition.BOTTOM_CENTER].push(this.confirmLocationBtn.nativeElement);
             this.map.googleMap.controls[ControlPosition.TOP_CENTER].push(this.searchPlaceInput.nativeElement);
             this.map.googleMap.controls[ControlPosition.RIGHT_BOTTOM].push(this.currentLocation.nativeElement);
             const searchBox = new google.maps.places.SearchBox(this.searchPlaceInput.nativeElement);
@@ -144,6 +145,14 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
     this.mapOptions.center = {lat: lat, lng: lng};
     this.mapOptions.zoom = zoom;
     this.position = {lat: lat, lng: lng};
+  }
+
+
+  zoom(zoomIn: boolean): void {
+    if (this.map.googleMap) {
+      let currentZoom = this.map.googleMap.getZoom() || 18;
+      this.map.googleMap.setZoom(zoomIn ? ++currentZoom : --currentZoom);
+    }
   }
 
   showCurrentLocation() {
@@ -215,10 +224,10 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
 
   private askForCurrentLocation() {
     const value = this.value$.getValue();
-    if (!value) {
+    if (!value?.marker_position) {
       this.showCurrentLocation();
     } else {
-      this.setMapZoomAndPosition(18, value.marker_position!.lat, value.marker_position!.lng);
+      this.setMapZoomAndPosition(18, value.marker_position.lat, value.marker_position.lng);
     }
   }
 
@@ -231,6 +240,8 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
         if (this.step === 0) {
           this.step += 1;
           this.askForCurrentLocation();
+        } else if (this.step === 1) {
+          this.confirmLocation();
         }
       })
     );
@@ -242,13 +253,31 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
       tap(() => {
         if (this.step > 0) {
           this.step -= 1;
+        } else {
+          this.location.back();
         }
       })
     );
   }
 
-  handleSelectChange(value: 'yes' | 'no'): void {
+  onSubmit() {
     this.beforeSubmit().pipe(take(1)).subscribe();
-    this.atPlace = value;
+  }
+
+  onBack() {
+    this.beforeBack().pipe(take(1)).subscribe();
+  }
+
+  handleSelectChange(value: 'yes' | 'no'): void {
+    const placeLocation = this.value$.getValue();
+    if (placeLocation) {
+      placeLocation.at_place = value;
+      this.writeValue(placeLocation);
+    } else {
+      this.writeValue({
+        at_place: value,
+        marker_position: this.position,
+      });
+    }
   }
 }

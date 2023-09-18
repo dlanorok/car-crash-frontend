@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { StackedSelectControlComponent } from './stacked-select-control.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FormErrorsModule } from "@app/shared/components/forms/shell/form-errors/form-errors.module";
+import { SvgIconModule } from "@app/shared/components/ui/svg-icon/svg-icon.module";
 
 
 
@@ -15,7 +16,7 @@ import { FormErrorsModule } from "@app/shared/components/forms/shell/form-errors
   ],
   imports: [
     CommonModule, FormsModule,
-    ReactiveFormsModule, FormErrorsModule,
+    ReactiveFormsModule, FormErrorsModule, SvgIconModule,
   ]
 })
 export class StackedSelectControlModule { }

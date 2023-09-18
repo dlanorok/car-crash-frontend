@@ -4,34 +4,45 @@
     <h1>
       Car crash assist
     </h1>
-    <div>
+    <p>
       §§ Zanesljiv partner na evropskih cestah
-    </div>
+    </p>
   </div>
 </div>
 
 <div class="flex">
   <div class="flex flex-1 flex-column">
-    <div class="padding scan">
-      §§ Scan QR code to join another participant
+    <div class="padding scan flex flex-column gap">
+      <app-svg-comp class="main-icon" name="qr-code" width="2.5rem"></app-svg-comp>
+      <div class="flex flex-column">
+        §§ Scan QR code to join another participant
+        <div class="flex justify-content-end">
+          <app-svg-comp name="next" width="20px" class="next-icon"></app-svg-comp>
+        </div>
+      </div>
     </div>
-    <div class="padding help">
-      Get help about Car crash assist
+
+    <div class="padding scan flex flex-column gap">
+      <app-svg-comp class="main-icon" name="info" width="2.5rem"></app-svg-comp>
+      <div class="flex flex-column">
+        Get help about Car crash assist
+        <div class="flex justify-content-end">
+          <app-svg-comp name="next" width="20px" class="next-icon"></app-svg-comp>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="flex flex-1 padding align-items-end edit">
-    Start editing the European accident statement form
+
+  <div class="flex flex-1 edit" (click)="createCrash()">
+    <div class="padding flex flex-column justify-content-space-between flex-1">
+      <app-svg-comp class="main-icon" name="ballot-check" width="2.5rem"></app-svg-comp>
+      <div>
+        Start editing the European accident statement form
+        <div class="flex justify-content-end">
+          <app-svg-comp name="next" width="20px" class="next-icon"></app-svg-comp>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
-
-<!--<div class="section border-top border-bottom pt-3 pb-3 ps-3" (click)="createCrash()">-->
-<!--  Start editing the European accident statement form-->
-<!--</div>-->
-
-<!--<div class="section border-bottom pt-3 pb-3 ps-3" [routerLink]="['/join']">-->
-<!--  Scan QR code to join another participant-->
-<!--</div>-->
-
-<!--<div class="section border-bottom pt-3 pb-3 ps-3">-->
-<!--  Get help about Car crash assist2-->
-<!--</div>-->

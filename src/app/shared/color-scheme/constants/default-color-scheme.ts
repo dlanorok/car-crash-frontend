@@ -8,4 +8,5 @@ export const defaultColorScheme = new ColorPalette({
   background: new Color({ base: '#e9e9e9'}),
   strokes: new Color({ base: '#d8d8d8'}),
   type: new Color({ base: '#273131'}),
+  basic: new Color({ base: '#ffffff'}),
 });

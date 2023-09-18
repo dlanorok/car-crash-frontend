@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex: 1;
+
+  .information-panel {
+    color: var(--theme-color-background);
+
+    app-svg-comp {
+      color: var(--theme-color-light)
+    }
+  }
+}
+
+

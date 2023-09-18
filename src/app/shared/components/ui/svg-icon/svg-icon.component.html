@@ -1,3 +1,1 @@
-<svg *ngIf="src">
-  <use attr.xlink:href="{{ src.default }}"></use>
-</svg>
+<svg-icon-sprite *ngIf="name" [src]="'assets/sprites/sprite.svg#' + name" [width]="width" [height]="height"></svg-icon-sprite>

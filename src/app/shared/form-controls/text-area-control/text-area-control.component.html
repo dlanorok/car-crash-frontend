@@ -1,5 +1,5 @@
 <div class="form-group">
-  <label [htmlFor]="_id">{{ label }}</label>
+  <label *ngIf="label" [htmlFor]="_id">{{ label }}</label>
   <textarea
     [id]="_id"
     [placeholder]="placeholder"
