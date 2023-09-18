@@ -74,5 +74,6 @@
   [title]="step === 0 ? ('§§ Onzačite poškodovane dele' | transloco) : 'Upload documents'"
   [info]="'CONTENT OF INFO??' | transloco"
   [buttonName]="'§§ naprej'" [disabledButton]="((value$ | async)?.selectedParts || []).length === 0"
-  (next)="next.emit()">
+  (next)="next.emit()"
+  (back)="back.emit()">
 </app-input-section>

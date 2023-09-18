@@ -33,6 +33,7 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
   protected readonly filesApiService: FilesApiService = inject(FilesApiService);
 
   @Output() next: EventEmitter<void> = new EventEmitter<void>();
+  @Output() back: EventEmitter<void> = new EventEmitter<void>();
 
   protected selectedClass = 'selected';
 
