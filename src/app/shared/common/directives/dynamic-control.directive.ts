@@ -1,5 +1,5 @@
 import { ComponentRef, createNgModule, Directive, inject, Injector, Input, ViewContainerRef } from '@angular/core';
-import { combineLatest, debounceTime, Subject } from "rxjs";
+import { combineLatest, debounceTime, Observable, Subject, Subscription } from "rxjs";
 import { writeComponentRefChanges } from '@app/shared/common/write-component-ref-changes';
 import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
 import { DynamicControlComponentConfiguration } from "@app/shared/form-controls/dynamic-control-component-configuration";
@@ -18,6 +18,7 @@ export class DynamicControlDirective<C extends ControlValueAccessor> extends NgC
   });
 
   private readonly injector: Injector = inject(Injector);
+  private componentReactiveOutputsChangesSubscriptions?: Subscription[];
   controlComponentRef: ComponentRef<C> | null = null;
 
   private readonly controlComponentConfiguration$: Subject<DynamicControlComponentConfiguration<C>> = new Subject();
@@ -73,8 +74,40 @@ export class DynamicControlDirective<C extends ControlValueAccessor> extends NgC
     });
     this.setupNgControl(controlComponentRef);
     this.writeComponentRefChanges(controlComponentRef, controlComponentConfiguration.componentStaticInputs);
+    this.observeComponentReactiveOutputsChanges(
+      controlComponentRef,
+      controlComponentConfiguration.componentReactiveOutputs,
+    );
 
     return controlComponentRef;
+  }
+
+  private observeComponentReactiveOutputsChanges(
+    componentRef: ComponentRef<C & Record<any, any>>,
+    reactiveOutputs: DynamicControlComponentConfiguration<C>['componentReactiveOutputs'],
+  ): void {
+    this.unsubscribeComponentReactiveOutputsChangesSubscriptions();
+
+    if (!reactiveOutputs) {
+      return;
+    }
+
+    this.componentReactiveOutputsChangesSubscriptions = Object.entries(reactiveOutputs)
+      .filter(([outputPropertyName]) => componentRef.instance?.[outputPropertyName] instanceof Observable)
+      .map(([outputPropertyName, outputValueChangesCallbackFn]) =>
+        (componentRef.instance?.[outputPropertyName] as Observable<any>).pipe(untilDestroyed(this)).subscribe(value => {
+          outputValueChangesCallbackFn(value);
+        }),
+      );
+  }
+
+
+  private unsubscribeComponentReactiveOutputsChangesSubscriptions(): void {
+    if (!this.componentReactiveOutputsChangesSubscriptions) {
+      return;
+    }
+    this.componentReactiveOutputsChangesSubscriptions.forEach(subscription => subscription.unsubscribe());
+    this.componentReactiveOutputsChangesSubscriptions = undefined;
   }
 
   private writeComponentRefChanges(controlComponentRef: ComponentRef<C>, changes: Partial<C>): void {

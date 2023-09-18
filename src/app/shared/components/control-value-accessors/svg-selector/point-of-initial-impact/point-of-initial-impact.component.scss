@@ -1,50 +1,32 @@
-
-#initial-impact {
+:host {
+  height: 100%;
   width: 100%;
-  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-  path {
-    fill: transparent;
-    stroke: var(--medium-ui-element);
+  #initial-impact {
+    flex: 1;
+    width: 80%;
+    max-width: 400px;
   }
 
-  &:not(.disabled) {
-    g {
-      @media (hover: hover) {
-        &:hover {
-          cursor: pointer;
-          line {
-            stroke-width: 5px;
-            stroke: var(--bs-danger);
-          }
-
-          polygon {
-            fill: var(--bs-danger);
-          }
-        }
-      }
-    }
+  .arrow-wrapper,.arrow {
+    cursor: pointer;
   }
 
-  g {
-    line {
-      stroke: var(--medium-ui-element);
-      stroke-width: 3px;
-    }
+ .selected {
+   .arrow-wrapper {
+     .cls-4 {
+       opacity: 1;
+     }
+   }
 
-    polygon {
-      fill: var(--medium-ui-element);
-    }
-
-    &.selected {
-      line {
-        stroke: var(--bs-danger);
-      }
-
-      polygon {
-        fill: var(--bs-danger);
-      }
-
-    }
-  }
+   .arrow {
+     .cls-3 {
+       fill: var(--theme-color-dark)
+     }
+   }
+ }
 }

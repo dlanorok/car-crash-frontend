@@ -49,13 +49,14 @@ export class StepComponent implements OnInit, OnDestroy {
   step?: Step;
   form!: UntypedFormGroup;
   inputs: Input[] = [];
-  readonly InputType = InputType;
 
+  readonly next$: Subject<void> = new Subject<void>();
   @ViewChild(DynamicControlDirective) private readonly dynamicControlDirective?: DynamicControlDirective<any>;
 
   ngOnInit(): void {
     this.getData();
     this.subscribeToQuestionnaire();
+    this.subscribeToNextSubject();
   }
 
   private subscribeToQuestionnaire() {
@@ -66,6 +67,12 @@ export class StepComponent implements OnInit, OnDestroy {
         this.questionnaire = questionnaire;
         this.updateControls(true);
       }
+    });
+  }
+
+  private subscribeToNextSubject() {
+    this.next$.pipe(untilDestroyed(this)).subscribe(() => {
+      this.next();
     });
   }
 

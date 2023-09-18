@@ -1,20 +1,29 @@
-.input-section {
-  border-top-right-radius: calc( var(--border-radius-normal) * 4);
-  border-top-left-radius: calc( var(--border-radius-normal) * 4);
-  background-color: var(--theme-color-background);
-  padding: var(--theme-spacing-rem) var(--theme-spacing-rem) calc(var(--theme-spacing-rem) *2);
+:host {
+  width: 100%;
 
-  .arrow {
-    width: 2.7rem;
-    height: 2.7rem;
-    border: var(--border-large) var(--theme-color-primary);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .input-section {
+    border-top-right-radius: calc( var(--border-radius-normal) * 4);
+    border-top-left-radius: calc( var(--border-radius-normal) * 4);
+    background-color: var(--theme-color-background);
+    padding: var(--theme-spacing-rem) var(--theme-spacing-rem) calc(var(--theme-spacing-rem) *2);
+
+    .arrow {
+      width: 2.7rem;
+      height: 2.7rem;
+      border: var(--border-large) var(--theme-color-primary);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    app-svg-comp {
+      color: var(--theme-color-primary)
+    }
   }
 
-  app-svg-comp {
-    color: var(--theme-color-primary)
+  .next-button {
+    cursor: pointer;
   }
 }

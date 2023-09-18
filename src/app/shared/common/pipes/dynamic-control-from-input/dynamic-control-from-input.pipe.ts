@@ -26,6 +26,7 @@ import { SketchCanvasComponent } from "@app/shared/components/control-value-acce
 import { SketchCanvasModule } from "@app/shared/components/control-value-accessors/sketch-canvas/sketch-canvas.module";
 import { TextAreaControlComponent } from "@app/shared/form-controls/text-area-control/text-area-control.component";
 import { TextAreaControlModule } from "@app/shared/form-controls/text-area-control/text-area-control.module";
+import { Subject } from "rxjs";
 
 @Pipe({
   name: 'dynamicControlFromInput',
@@ -33,9 +34,10 @@ import { TextAreaControlModule } from "@app/shared/form-controls/text-area-contr
 export class DynamicControlFromInputPipe implements PipeTransform {
   private injector: Injector = inject(Injector);
 
-  transform(input: Input, submitted: boolean, step: Step): DynamicControlComponentConfiguration<any> | null {
+  transform(input: Input, submitted: boolean, step: Step, next: Subject<void>): DynamicControlComponentConfiguration<any> | null {
     let component, module;
     let additionalOptions = {};
+    let componentReactiveOutputs = {};
     switch (input.type) {
       case InputType.text:
         component = TextControlComponent;
@@ -66,10 +68,16 @@ export class DynamicControlFromInputPipe implements PipeTransform {
       case InputType.collision_direction:
         component = PointOfInitialImpactComponent;
         module = PointOfInitialImpactModule;
+        componentReactiveOutputs = {
+          next: () => next.next()
+        };
         break;
       case InputType.damaged_parts:
         component = VisibleDamageSelectorComponent;
         module = VisibleDamageSelectorModule;
+        componentReactiveOutputs = {
+          next: () => next.next()
+        };
         break;
       case InputType.place:
         component = PlaceSelectorComponent;
@@ -107,7 +115,8 @@ export class DynamicControlFromInputPipe implements PipeTransform {
         placeholder: input.placeholder || '',
         submitted: submitted,
         ...additionalOptions
-      }
+      },
+      componentReactiveOutputs: componentReactiveOutputs
     };
   }
 }

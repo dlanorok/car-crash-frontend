@@ -1,11 +1,11 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
+  ElementRef, EventEmitter,
   inject,
   OnChanges,
   OnDestroy,
-  OnInit, Renderer2,
+  OnInit, Output, Renderer2,
   ViewChild
 } from '@angular/core';
 import { combineLatest, Observable, ReplaySubject, Subscription, tap } from "rxjs";
@@ -31,6 +31,8 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
   protected readonly renderer2: Renderer2 = inject(Renderer2);
   protected readonly cookieService: CookieService = inject(CookieService);
   protected readonly filesApiService: FilesApiService = inject(FilesApiService);
+
+  @Output() next: EventEmitter<void> = new EventEmitter<void>();
 
   protected selectedClass = 'selected';
 

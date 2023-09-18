@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseSvgData, BaseSvgHoverComponent } from "../base-svg-hover/base-svg-hover.component";
+import { BaseSvgHoverComponent } from "../base-svg-hover/base-svg-hover.component";
 import { provideControlValueAccessor } from "@app/shared/form-controls/base-form-control.component";
 import { Observable, of, take, tap } from "rxjs";
 import { map } from "rxjs/operators";
-import { ValidatorsErrors } from "@app/shared/components/forms/common/enumerators/validators-errors";
 
 @Component({
   selector: 'app-visible-damage-selector',
@@ -16,16 +15,16 @@ export class VisibleDamageSelectorComponent extends BaseSvgHoverComponent implem
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.formControl.addValidators((control) => {
-      const value: BaseSvgData | null = control.value;
-      if ((!value || !value.file_ids || value.file_ids.length === 0) && this.step === 1) {
-        return {
-          [ValidatorsErrors.required]: true
-        };
-      }
-
-      return null;
-    });
+    // this.formControl.addValidators((control) => {
+    //   const value: BaseSvgData | null = control.value;
+    //   if ((!value || !value.file_ids || value.file_ids.length === 0) && this.step === 1) {
+    //     return {
+    //       [ValidatorsErrors.required]: true
+    //     };
+    //   }
+    //
+    //   return null;
+    // });
   }
 
   override onViewReady() {
