@@ -11,6 +11,7 @@ import { QuestionnaireService } from "@app/shared/services/questionnaire.service
 import { CookieService } from "ngx-cookie-service";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
+import { StorageItem } from "@app/shared/common/enumerators/storage";
 
 @Injectable()
 export class CrashEffects {
@@ -46,6 +47,7 @@ export class CrashEffects {
       exhaustMap((action) => this.crashesApiService.create(action.crash)
         .pipe(
           switchMap((crash) => {
+            localStorage.setItem(StorageItem.sessionId, crash.session_id);
             return this.questionnaireService.getOrFetchQuestionnaires().pipe(
               map((questionnaires) => {
                 return questionnaires.find(q => q.creator === this.cookieService.get(CookieName.sessionId));
@@ -56,6 +58,7 @@ export class CrashEffects {
                   this.router.navigate([`/crash/${crash.session_id}/questionnaires/${questionnaire.id}/sections/${section.id}/steps/${section.starting_step}`]);
                 }
               }),
+              map(() => crash)
             );
           }),
           map(crash => ({type: loadCrashSuccessful.type, crash})),

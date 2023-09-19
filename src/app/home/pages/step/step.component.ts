@@ -292,7 +292,7 @@ export class StepComponent implements OnInit, OnDestroy {
     }
 
     const previousSectionId = this.questionnaire?.data.sections.map(section => section.id).indexOf(this.section?.id || '');
-    if (previousSectionId) {
+    if (previousSectionId !== undefined) {
       const newSection = this.questionnaire?.data.sections[previousSectionId + 1];
       this.router.navigate([`/crash/${this.sessionId}/questionnaires/${this.questionnaireId}/sections/${newSection?.id}/steps/${newSection?.starting_step}`]);
       return;

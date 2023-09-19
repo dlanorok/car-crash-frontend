@@ -12,10 +12,9 @@
           </ng-container>
         </form>
       </ng-container>
-
       <ng-template #baseScreenTpl>
         <app-info-section [step]="step"></app-info-section>
-        <app-input-section (back)="previous()" (next)="next()" [disabledButton]="!form.value" [buttonName]="'§§Next'">
+        <app-input-section (back)="previous()" (next)="next()" [disabledButton]="form.invalid" [buttonName]="'§§Next'">
           <div>
             <form [formGroup]="form" class="form-layout">
               <ng-container *ngFor="let input of inputs">
