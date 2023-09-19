@@ -1,4 +1,4 @@
-<div class="h-100 position-relative" [class.blur-canvas]="(value$ | async | canConfirmSketch) === false && (value$ | async | canEditSketch) === false">
+<div class="flex flex-1" [class.blur-canvas]="(value$ | async | canConfirmSketch) === false && (value$ | async | canEditSketch) === false">
   <div
     *ngIf="(value$ | async | canConfirmSketch) === false && (value$ | async | canEditSketch) === false"
     class="wait-notification"
@@ -21,4 +21,8 @@
     First complete initial questions
   </div>
 </ng-template>
+
+<app-input-section
+  [buttonName]="'§§Confirm sketch'" (next)="confirmSketch()" (back)="back.emit()">
+</app-input-section>
 

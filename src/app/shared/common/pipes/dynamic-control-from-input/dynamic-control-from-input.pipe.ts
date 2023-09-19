@@ -101,6 +101,10 @@ export class DynamicControlFromInputPipe implements PipeTransform {
         component = SketchCanvasComponent;
         module = SketchCanvasModule;
         additionalOptions = { step: step };
+        componentReactiveOutputs = {
+          next: () => next.next(),
+          back: () => back.next()
+        };
         break;
     }
 

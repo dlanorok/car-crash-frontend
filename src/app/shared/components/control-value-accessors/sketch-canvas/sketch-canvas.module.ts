@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { SketchCanvasComponent } from './sketch-canvas.component';
 import { CanEditSketchPipe } from "@app/shared/components/control-value-accessors/sketch-canvas/can-edit-sketch.pipe";
 import { CanConfirmSketchPipe } from "@app/shared/components/control-value-accessors/sketch-canvas/can-confirm-sketch.pipe";
+import { InputSectionModule } from "@app/shared/components/input-section/input-section.module";
+import { TranslocoModule } from "@ngneat/transloco";
 
 
 
@@ -13,7 +15,9 @@ import { CanConfirmSketchPipe } from "@app/shared/components/control-value-acces
     CanConfirmSketchPipe
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    InputSectionModule,
+    TranslocoModule
   ],
   providers: [
     CanEditSketchPipe,

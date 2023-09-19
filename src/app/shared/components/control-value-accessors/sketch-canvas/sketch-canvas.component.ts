@@ -1,4 +1,14 @@
-import { AfterViewInit, Component, ElementRef, inject, Input, OnDestroy, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Input,
+  OnDestroy,
+  Output,
+  ViewChild
+} from '@angular/core';
 import {
   BaseFormControlComponent,
   provideControlValueAccessor
@@ -89,9 +99,8 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     this.step$.next(step);
   }
 
-  get scale1(): number {
-    return window.devicePixelRatio;
-  }
+  @Output() back: EventEmitter<void> = new EventEmitter<void>();
+  @Output() next: EventEmitter<void> = new EventEmitter<void>();
 
   readonly positionData$: Observable<PlaceSelectorData | undefined> = this.step$.pipe(
     switchMap((step) => {
@@ -268,6 +277,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
           file_id: file_id
         });
       });
+      this.next.emit();
     }
   }
 

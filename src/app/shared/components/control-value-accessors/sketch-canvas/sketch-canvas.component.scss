@@ -1,9 +1,7 @@
 :host {
-  height: 100%;
-  margin-left: -1rem;
-  margin-right: -1rem;
-  overflow: hidden;
-  margin-bottom: -1rem;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 
   .container-wrapper {
     margin: auto;
