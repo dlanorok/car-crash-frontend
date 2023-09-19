@@ -24,15 +24,16 @@ export interface Section {
 }
 
 export interface Step {
-  step_type: StepType
+  step_type: StepType;
   question: string;
   help_text: string;
   additional_help: string;
-  inputs: number[]
+  inputs: number[];
   next_step?: StepType;
   data_from_input?: number;
-  updated_inputs?: string[]
-  main_screen?: boolean,
+  updated_inputs?: string[];
+  main_screen?: boolean;
+  chapter?: boolean;
 }
 
 export interface Option {

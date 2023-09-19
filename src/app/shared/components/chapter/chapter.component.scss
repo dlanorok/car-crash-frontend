@@ -1,0 +1,43 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .chapter {
+    color: var(--theme-color-basic);
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: start;
+    padding: 0 var(--theme-spacing-rem) var(--theme-spacing-rem);
+    padding-bottom: calc(var(--theme-spacing-rem) * 4);
+
+    h1 {
+      line-height: 1.2;
+      font-size: 2.6rem;
+    }
+
+    .help-text {
+      font-size: 1.3rem;
+    }
+
+    .img-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      align-items: center;
+      margin-left: auto;
+      justify-content: center;
+
+      img {
+        max-width: 400px;
+      }
+    }
+
+    .chapter-info {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--theme-spacing-rem) + var(--theme-spacing-rem-half));
+    }
+  }
+}

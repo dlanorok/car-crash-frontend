@@ -5,13 +5,13 @@
       *ngFor="let option of (options || [])"
       class="option"
       [class.selected]="(value$ | async) === option.value"
+      (click)="onOptionClick(option.value)"
     >
       <div class="gap flex-1 flex flex-column">
         <app-svg-comp *ngIf="options.length < 3 && option.icon" [name]="option.icon" width="1.5rem"></app-svg-comp>
         <div
           [class.is-invalid]="submitted && formControl && formControl.errors"
-          [class.disabled]="(isDisabled$ | async) === true"
-          (click)="onOptionClick(option.value)">
+          [class.disabled]="(isDisabled$ | async) === true">
           {{ option.label }}
         </div>
       </div>

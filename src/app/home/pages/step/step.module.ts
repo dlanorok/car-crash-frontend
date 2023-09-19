@@ -13,6 +13,7 @@ import { SvgIconModule } from "@app/shared/components/ui/svg-icon/svg-icon.modul
 import { ButtonModule } from "@app/shared/components/ui/button/button.module";
 import { InputSectionModule } from "@app/shared/components/input-section/input-section.module";
 import { InfoSectionModule } from "@app/shared/components/info-section/info-section.module";
+import { ChapterModule } from "@app/shared/components/chapter/chapter.module";
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { InfoSectionModule } from "@app/shared/components/info-section/info-sect
     SvgIconModule,
     ButtonModule,
     InputSectionModule,
-    InfoSectionModule
+    InfoSectionModule,
+    ChapterModule
   ]
 })
 export class StepModule { }

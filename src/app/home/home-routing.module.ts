@@ -51,10 +51,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/accident-report-flow/car-data/initial-impact/initial-impact.module').then(mod => mod.InitialImpactModule),
   },
   {
-    path: 'crash/:sessionId/cars/:carId',
-    loadChildren: () => import('./pages/accident-report-flow/car/car.module').then(mod => mod.CarModule),
-  },
-  {
     path: 'crash/:sessionId/cars/:carId/policy-holder',
     loadChildren: () => import('./pages/accident-report-flow/car-data/policy-holder/policy-holder.module').then(mod => mod.PolicyHolderModule),
   },

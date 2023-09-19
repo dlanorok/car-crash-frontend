@@ -106,32 +106,6 @@ export class StepComponent implements OnInit, OnDestroy {
                 this.questionnaire = questionnaires.find(questionnaire => questionnaire.id === this.questionnaireId);
                 if (sectionId) {
                   this.section = this.questionnaire?.data.sections.find(section => section.id === sectionId);
-                  this.pageDataService.pageData = {
-                    pageName: this.section?.name || '',
-                    footerButtons: [
-                      {
-                        name$: this.translateService.selectTranslate('car-crash.shared.button.back'),
-                        action: () => {
-                          this.previous();
-                        },
-                        icon: 'bi-chevron-left'
-                      },
-                      {
-                        name$: this.translateService.selectTranslate('car-crash.shared.button.overview'),
-                        action: () => {
-                          this.home();
-                        },
-                        icon: 'bi-house'
-                      },
-                      {
-                        name$: this.translateService.selectTranslate('car-crash.shared.button.next'),
-                        action: () => {
-                          this.next();
-                        },
-                        icon: 'bi-chevron-right'
-                      },
-                    ]
-                  };
                 }
                 this.defineInputs(stepType);
               })
@@ -287,7 +261,7 @@ export class StepComponent implements OnInit, OnDestroy {
     this.toastr.clear();
 
     this.submitted = false;
-    if (this.questionnaire && this.step && !this.form.disabled) {
+    if (this.questionnaire && this.step && !this.form.disabled && !this.step.chapter) {
       this.questionnaireService.updateInputs(this.form.value, this.questionnaire, this.step);
     }
 
@@ -317,6 +291,12 @@ export class StepComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const previousSectionId = this.questionnaire?.data.sections.map(section => section.id).indexOf(this.section?.id || '');
+    if (previousSectionId) {
+      const newSection = this.questionnaire?.data.sections[previousSectionId + 1];
+      this.router.navigate([`/crash/${this.sessionId}/questionnaires/${this.questionnaireId}/sections/${newSection?.id}/steps/${newSection?.starting_step}`]);
+      return;
+    }
     this.router.navigate([`/crash/${this.sessionId}`]);
   }
 

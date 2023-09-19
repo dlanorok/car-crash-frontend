@@ -53,7 +53,10 @@ export class QuestionnaireService implements OnDestroy {
       if (_questionnaire.id === questionnaire.id) {
         const inputIds = Object.keys(inputs);
         inputIds.forEach(inputId => {
-          questionnaire.data.inputs[inputId].value = inputs[inputId];
+          questionnaire.data.inputs[inputId] = {
+            ...questionnaire.data.inputs[inputId],
+            value: inputs[inputId]
+          };
         });
         return questionnaire;
       } else {
