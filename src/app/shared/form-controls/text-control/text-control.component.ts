@@ -4,6 +4,7 @@ import { BaseFormControlComponent, provideControlValueAccessor } from "../base-f
 @Component({
   selector: 'app-text-control',
   templateUrl: './text-control.component.html',
+  styleUrls: ['./text-control.component.scss'],
   providers: [provideControlValueAccessor(TextControlComponent)]
 })
 export class TextControlComponent extends BaseFormControlComponent<string>{

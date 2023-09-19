@@ -1,6 +1,4 @@
 <div class="form-group">
-  <label [htmlFor]="_id">{{ label }}</label>
-
   <input
     [id]="_id"
     class="form-control"
@@ -10,6 +8,7 @@
     [ngModel]="value$ | async"
     (ngModelChange)="handleModelChange($event)"
     [class.is-invalid]="submitted && formControl.errors">
+  <label [htmlFor]="_id">{{ label }}</label>
 
   <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
 </div>
