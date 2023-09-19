@@ -100,7 +100,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
   }
 
   @Output() back: EventEmitter<void> = new EventEmitter<void>();
-  @Output() next: EventEmitter<void> = new EventEmitter<void>();
+  @Output() next: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   readonly positionData$: Observable<PlaceSelectorData | undefined> = this.step$.pipe(
     switchMap((step) => {
@@ -202,15 +202,6 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
               });
               this.reDrawCars(currenSketch, questionnaires, initialScale);
             }
-            const circle = new Konva.Circle({
-              x: 100,
-              y: 200,
-              radius: 70,
-              fill: 'red',
-              stroke: 'black',
-              strokeWidth: 4,
-            });
-            this.layer.add(circle);
           })
         );
       })
@@ -276,8 +267,8 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
           save: true,
           file_id: file_id
         });
+        this.next.emit(true);
       });
-      this.next.emit();
     }
   }
 

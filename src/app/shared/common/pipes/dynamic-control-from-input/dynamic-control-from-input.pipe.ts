@@ -34,7 +34,7 @@ import { Subject } from "rxjs";
 export class DynamicControlFromInputPipe implements PipeTransform {
   private injector: Injector = inject(Injector);
 
-  transform(input: Input, submitted: boolean, step: Step, next: Subject<void>, back: Subject<void>): DynamicControlComponentConfiguration<any> | null {
+  transform(input: Input, submitted: boolean, step: Step, next: Subject<boolean>, back: Subject<void>): DynamicControlComponentConfiguration<any> | null {
     let component, module;
     let additionalOptions = {};
     let componentReactiveOutputs = {};
@@ -69,7 +69,7 @@ export class DynamicControlFromInputPipe implements PipeTransform {
         component = PointOfInitialImpactComponent;
         module = PointOfInitialImpactModule;
         componentReactiveOutputs = {
-          next: () => next.next(),
+          next: () => next.next(false),
           back: () => back.next()
         };
         break;
@@ -77,7 +77,7 @@ export class DynamicControlFromInputPipe implements PipeTransform {
         component = VisibleDamageSelectorComponent;
         module = VisibleDamageSelectorModule;
         componentReactiveOutputs = {
-          next: () => next.next(),
+          next: () => next.next(false),
           back: () => back.next()
         };
         break;
@@ -102,7 +102,7 @@ export class DynamicControlFromInputPipe implements PipeTransform {
         module = SketchCanvasModule;
         additionalOptions = { step: step };
         componentReactiveOutputs = {
-          next: () => next.next(),
+          next: (save: boolean) => next.next(save),
           back: () => back.next()
         };
         break;

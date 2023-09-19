@@ -1,19 +1,19 @@
-<div class="flex flex-1" [class.blur-canvas]="(value$ | async | canConfirmSketch) === false && (value$ | async | canEditSketch) === false">
+<div class="flex flex-1 flex-column" [class.blur-canvas]="(value$ | async | canConfirmSketch) === false && (value$ | async | canEditSketch) === false">
   <div
     *ngIf="(value$ | async | canConfirmSketch) === false && (value$ | async | canEditSketch) === false"
     class="wait-notification"
   >
     Another person is editing the sketch, once finished you will have ability to confirm/edit it.
   </div>
-  <div id="container-wrapper" class="container-wrapper">
-    <div *ngIf="imageUrl$ | async; else emptyTpl" style="position: absolute; z-index: 1">
-      <div>
-        <button *ngIf="value$ | async | canConfirmSketch" class="btn btn-primary me-3" (click)="confirmSketch()">Confirm sketch</button>
-        <button *ngIf="value$ | async | canEditSketch" class="btn btn-primary"  (click)="editSketch()">Edit sketch</button>
-      </div>
-    </div>
-    <div id="canvas-container" #container class="canvas-container"></div>
-  </div>
+<!--  <div id="container-wrapper" class="container-wrapper">-->
+<!--    <div *ngIf="imageUrl$ | async; else emptyTpl" style="position: absolute; z-index: 1">-->
+<!--      <div>-->
+<!--        <button *ngIf="value$ | async | canConfirmSketch" class="btn btn-primary me-3" (click)="confirmSketch()">Confirm sketch</button>-->
+<!--        <button *ngIf="value$ | async | canEditSketch" class="btn btn-primary"  (click)="editSketch()">Edit sketch</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+  <div id="canvas-container" #container class="canvas-container"></div>
 </div>
 
 <ng-template #emptyTpl>
@@ -23,6 +23,6 @@
 </ng-template>
 
 <app-input-section
-  [buttonName]="'§§Confirm sketch'" (next)="confirmSketch()" (back)="back.emit()">
+  [buttonName]="'§§Confirm sketch'" (next)="confirmSketch()" (back)="back.emit()" [disabledButton]="(value$ | async | canConfirmSketch) === false">
 </app-input-section>
 

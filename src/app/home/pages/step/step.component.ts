@@ -50,7 +50,7 @@ export class StepComponent implements OnInit, OnDestroy {
   form!: UntypedFormGroup;
   inputs: Input[] = [];
 
-  readonly next$: Subject<void> = new Subject<void>();
+  readonly next$: Subject<boolean> = new Subject<boolean>();
   readonly back$: Subject<void> = new Subject<void>();
   @ViewChild(DynamicControlDirective) private readonly dynamicControlDirective?: DynamicControlDirective<any>;
 
@@ -72,8 +72,8 @@ export class StepComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToNavigationSubjects() {
-    this.next$.pipe(untilDestroyed(this)).subscribe(() => {
-      this.next();
+    this.next$.pipe(untilDestroyed(this)).subscribe((skipSave) => {
+      this.next(undefined, skipSave);
     });
 
     this.back$.pipe(untilDestroyed(this)).subscribe(() => {
@@ -233,24 +233,24 @@ export class StepComponent implements OnInit, OnDestroy {
     }
   }
 
-  next(url?: string): void {
+  next(url?: string, skipSave?: boolean): void {
     const componentRef = this.dynamicControlDirective?.controlComponentRef;
     if (componentRef && typeof componentRef.instance.beforeSubmit === 'function') {
       componentRef.instance.beforeSubmit().pipe(
         take(1),
         tap((canContinue: boolean) => {
           if (canContinue) {
-            this.afterNext(url);
+            this.afterNext(url, skipSave);
           }
         })
       ).subscribe();
     } else {
-      this.afterNext(url);
+      this.afterNext(url, skipSave);
     }
 
   }
 
-  private afterNext(url?: string) {
+  private afterNext(url?: string, skipSave?: boolean) {
     this.submitted = true;
     updateEntireFormValidity(this.form);
 
@@ -261,7 +261,7 @@ export class StepComponent implements OnInit, OnDestroy {
     this.toastr.clear();
 
     this.submitted = false;
-    if (this.questionnaire && this.step && !this.form.disabled && !this.step.chapter) {
+    if (this.questionnaire && this.step && !this.form.disabled && !this.step.chapter && !skipSave) {
       this.questionnaireService.updateInputs(this.form.value, this.questionnaire, this.step);
     }
 
