@@ -5,6 +5,7 @@ import { CanEditSketchPipe } from "@app/shared/components/control-value-accessor
 import { CanConfirmSketchPipe } from "@app/shared/components/control-value-accessors/sketch-canvas/can-confirm-sketch.pipe";
 import { InputSectionModule } from "@app/shared/components/input-section/input-section.module";
 import { TranslocoModule } from "@ngneat/transloco";
+import { ButtonModule } from "@app/shared/components/ui/button/button.module";
 
 
 
@@ -17,7 +18,8 @@ import { TranslocoModule } from "@ngneat/transloco";
   imports: [
     CommonModule,
     InputSectionModule,
-    TranslocoModule
+    TranslocoModule,
+    ButtonModule
   ],
   providers: [
     CanEditSketchPipe,

@@ -1,4 +1,4 @@
-<div class="flex flex-1 flex-column" [class.blur-canvas]="(value$ | async | canConfirmSketch) === false && (value$ | async | canEditSketch) === false">
+<div class="flex flex-1 flex-column sketch-wrapper" [class.blur-canvas]="(value$ | async | canConfirmSketch) === false && (value$ | async | canEditSketch) === false">
   <div
     *ngIf="(value$ | async | canConfirmSketch) === false && (value$ | async | canEditSketch) === false"
     class="wait-notification"
@@ -14,6 +14,8 @@
 <!--    </div>-->
 <!--  </div>-->
   <div id="canvas-container" #container class="canvas-container"></div>
+
+  <app-button class="next-button" [buttonText]="'§§ Edit sketch'" (click)="editSketch()"></app-button>
 </div>
 
 <ng-template #emptyTpl>

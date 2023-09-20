@@ -3,15 +3,26 @@
   flex: 1;
   flex-direction: column;
 
-  .container-wrapper {
-    margin: auto;
-    max-width: 930px;
-    height: 100%;
+  app-input-section {
+    z-index: 1;
+  }
+  
+  .sketch-wrapper {
+    position: relative;
+
+    app-button {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+    }
   }
 
   .canvas-container {
     flex: 1;
     height: 100%;
+    margin-bottom: calc(var(--theme-spacing-rem) * -2);
   }
 
   .wait-notification {
