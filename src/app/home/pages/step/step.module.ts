@@ -14,6 +14,9 @@ import { ButtonModule } from "@app/shared/components/ui/button/button.module";
 import { InputSectionModule } from "@app/shared/components/input-section/input-section.module";
 import { InfoSectionModule } from "@app/shared/components/info-section/info-section.module";
 import { ChapterModule } from "@app/shared/components/chapter/chapter.module";
+import { NavigationHeaderModule } from "@app/shared/components/headers/navigation-header/navigation-header.module";
+import { GetStepIndexDataPipe } from "@app/home/pages/step/pipes/get-step-index-data.pipe";
+import { GetSectionIndexDataPipe } from "@app/home/pages/step/pipes/get-section-index-data.pipe";
 
 
 @NgModule({
@@ -21,7 +24,9 @@ import { ChapterModule } from "@app/shared/components/chapter/chapter.module";
     StepComponent,
     GetStepInputsPipe,
     ToDatePipe,
-    DynamicControlDirective
+    DynamicControlDirective,
+    GetStepIndexDataPipe,
+    GetSectionIndexDataPipe
   ],
   providers: [GetStepInputsPipe],
   imports: [
@@ -41,7 +46,8 @@ import { ChapterModule } from "@app/shared/components/chapter/chapter.module";
     ButtonModule,
     InputSectionModule,
     InfoSectionModule,
-    ChapterModule
+    ChapterModule,
+    NavigationHeaderModule
   ]
 })
 export class StepModule { }

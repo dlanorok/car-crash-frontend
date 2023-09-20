@@ -1,4 +1,10 @@
 <ng-container *ngIf="questionnaire && step && section && form">
+  <app-navigation-header
+    [sectionName]="section.name"
+    [stepData]="step | getStepIndexData : questionnaire : section"
+    [sectionData]="section | getSectionIndexData : questionnaire"
+    [crash]="crash$ | async">
+  </app-navigation-header>
   <div class="flex flex-column flex-1">
     <ng-container *ngIf="step.chapter; else inputTpl">
       <app-chapter (next)="next()" (back)="previous()" [step]="step"></app-chapter>

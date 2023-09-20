@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { distinctUntilChanged, mergeMap, skip, Subject, take, takeUntil, tap } from "rxjs";
+import { distinctUntilChanged, mergeMap, Observable, skip, Subject, take, takeUntil, tap } from "rxjs";
 import { Store } from "@ngrx/store";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
@@ -16,7 +16,9 @@ import { ToastrService } from "ngx-toastr";
 import { DynamicControlDirective } from "@app/shared/common/directives/dynamic-control.directive";
 import { PageDataService } from "@app/shared/services/page-data.service";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
-import { TranslocoService } from "@ngneat/transloco";
+import { CrashModel } from "@app/shared/models/crash.model";
+import { selectCrash } from "@app/app-state/crash/crash-selector";
+import { loadCrash } from "@app/app-state/crash/crash-action";
 
 @UntilDestroy()
 @Component({
@@ -35,8 +37,8 @@ export class StepComponent implements OnInit, OnDestroy {
   protected readonly getStepInputsPipe: GetStepInputsPipe = inject(GetStepInputsPipe);
   protected readonly cookieService: CookieService = inject(CookieService);
   protected readonly toastr: ToastrService = inject(ToastrService);
-  protected readonly translateService: TranslocoService = inject(TranslocoService);
 
+  crash$: Observable<CrashModel> = this.store.select(selectCrash);
   protected destroy$: Subject<void> = new Subject<void>();
 
   stepType!: StepType;
@@ -58,6 +60,13 @@ export class StepComponent implements OnInit, OnDestroy {
     this.getData();
     this.subscribeToQuestionnaire();
     this.subscribeToNavigationSubjects();
+
+    const sessionId: string | null = localStorage.getItem(StorageItem.sessionId);
+    if (!sessionId) {
+      this.router.navigate(["/"]);
+      return;
+    }
+    this.store.dispatch(loadCrash({sessionId: sessionId }));
   }
 
   private subscribeToQuestionnaire() {

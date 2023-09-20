@@ -1,7 +1,8 @@
 import { ModelState } from "@app/shared/models/base.model";
-import { Input, Section, SectionId, Step } from "@app/home/pages/crash/flow.definition";
+import { Input, Section, SectionId } from "@app/home/pages/crash/flow.definition";
 import { Sketch } from "@app/shared/components/control-value-accessors/sketch-canvas/sketch-canvas.component";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
+import { getNextStep } from "@app/shared/common/utils/get-next-step";
 
 export function getStateFromSection(questionnaire: QuestionnaireModel, section: Section): ModelState {
   const startingStep = questionnaire.data.steps.find(step => step.step_type === section.starting_step);
@@ -57,24 +58,4 @@ export function getStateFromSection(questionnaire: QuestionnaireModel, section: 
   return ((inputs.length === 0 && notRequiredCompletedFields > 0) || inputs.length === completedInputs) ? ModelState.validated : completedInputs === 0 ? ModelState.empty : ModelState.partial;
 }
 
-function getNextStep(questionnaire: QuestionnaireModel, step: Step, value: Step[]): Step[] {
-  value.push(step);
-  if (step.next_step) {
-    const nextStep = questionnaire.data.steps.find(_step => _step.step_type === step.next_step);
-    if (!nextStep) {
-      return value;
-    }
-    getNextStep(questionnaire, nextStep, value);
-  }
 
-  const input = questionnaire.data.inputs[step.inputs[0]];
-  const optionSelected = input?.options?.find(option => option.value === input?.value);
-  if (input && optionSelected && optionSelected.action_property?.step) {
-    const nextStep = questionnaire.data.steps.find(_step => _step.step_type === optionSelected.action_property?.step);
-    if (nextStep) {
-      getNextStep(questionnaire, nextStep, value);
-    }
-  }
-
-  return value;
-}

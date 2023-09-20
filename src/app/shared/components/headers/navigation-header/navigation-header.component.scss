@@ -1,0 +1,74 @@
+:host {
+  .navigation-bar {
+    display: flex;
+    padding: var(--theme-spacing-rem);
+    gap: var(--theme-spacing-rem);
+    color: var(--theme-color-light);
+
+    .app-progress-bar {
+      height: 0.5rem;
+      background-color: var(--theme-color-primary);
+      display: flex;
+
+      .section {
+        flex: 1;
+        margin-right: 2px;
+        display: flex;
+        &.completed {
+          background-color: var(--theme-color-light);
+        }
+
+        &:last-child {
+          margin-right: unset;
+        }
+      }
+
+      .step {
+        flex: 1;
+        &.completed {
+          background-color: var(--theme-color-light);
+        }
+      }
+    }
+
+    .burger-menu-wrapper {
+      width: 2.5rem;
+      height: 2.5rem;
+      background-color: var(--theme-color-primary);
+      display: flex;
+      border-radius: var(--theme-border-radius);
+      cursor: pointer;
+      justify-content: center;
+      align-items: center;
+
+      app-svg-comp {
+        color: var(--theme-color-light);
+      }
+    }
+
+    .section-name {
+      display: flex;
+      text-transform: uppercase;
+      color: var(--theme-color-light);
+      justify-content: space-between;
+
+      .step-number {
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 1;
+      }
+    }
+
+    .car-identifier {
+      width: 2.5rem;
+      height: 2.5rem;
+      text-align: center;
+      background-color: var(--theme-color-primary);
+      border-radius: 50%;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.4rem;
+      display: flex;
+    }
+  }
+}
