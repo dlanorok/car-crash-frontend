@@ -10,24 +10,22 @@ import { Observable, of, take } from "rxjs";
   providers: [provideControlValueAccessor(PointOfInitialImpactComponent)],
 })
 export class PointOfInitialImpactComponent extends BaseSvgHoverComponent {
-
-  override onViewReady() {
-    this.value$.subscribe((value) => {
-      this.selectedParts = value?.selectedParts || [];
-      this.file_ids = value?.file_ids || [];
-      this.file_id = value?.file_id;
-      this.svgImage?.nativeElement.querySelectorAll('g').forEach((path) => {
-        if (this.selectedParts?.includes(path.id)) {
-          path.classList.add(this.selectedClass);
-        } else {
-          path.classList.remove(this.selectedClass);
-        }
-      });
+  override addClasses(): void {
+    this.svgImage?.nativeElement.querySelectorAll('g').forEach((path) => {
+      if (this.selectedParts?.includes(path.id)) {
+        path.classList.add(this.selectedClass);
+      } else {
+        path.classList.remove(this.selectedClass);
+      }
     });
   }
 
   override addListeners() {
-    this.svgImage?.nativeElement.querySelectorAll('g').forEach((path) => {
+    this.svgImage?.nativeElement.querySelectorAll('g[id]').forEach((path) => {
+      if (path.id === "car") {
+        return;
+      }
+
       this.listeners.push(this.renderer2.listen(path, 'click', this.onPathClick.bind(this)));
     });
   }

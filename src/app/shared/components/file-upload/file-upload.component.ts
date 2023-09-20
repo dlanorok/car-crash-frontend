@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FilesApiService } from "../../api/files/files-api.service";
 import { UploadedFile } from "../../common/uploaded-file";
 import { tap } from "rxjs";
@@ -14,8 +14,11 @@ export class FileUploadComponent {
 
   @Input() error: boolean | undefined = false;
   @Input() uploadedFileIds: number[] = [];
+  @Input() fileListRenderer?: TemplateRef<void>;
   @Output() fileUploaded: EventEmitter<UploadedFile> = new EventEmitter<UploadedFile>();
   @Output() fileDeleted: EventEmitter<number> = new EventEmitter<number>();
+
+  @ViewChild('fileUploadInput', { read: ElementRef }) fileUploadInput!: ElementRef;
 
   constructor(private readonly filesApiService: FilesApiService) {}
 
@@ -41,6 +44,10 @@ export class FileUploadComponent {
         })
       ).subscribe();
     }
+  }
+
+  onFileUpload(): void {
+    this.fileUploadInput.nativeElement.click();
   }
 
 }

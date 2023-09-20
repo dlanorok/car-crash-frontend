@@ -17,6 +17,7 @@ import { FilesApiService } from "@app/shared/api/files/files-api.service";
 import { map } from "rxjs/operators";
 import { UploadedFile } from "@app/shared/common/uploaded-file";
 import { ValidatorsErrors } from "@app/shared/components/forms/common/enumerators/validators-errors";
+import { FileModel } from "@app/shared/models/fileModel";
 
 export interface BaseSvgData {
   selectedParts: string[];
@@ -47,9 +48,20 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
   protected listeners: (() => void)[] = [];
   protected selectedParts: string[] = [];
   protected file_ids: number[] = [];
+  protected files: FileModel[] = [];
   protected file_id?: number;
 
-  abstract onViewReady(): void;
+  abstract addClasses(): void;
+
+  onViewReady(): void {
+    this.value$
+      .subscribe((value) => {
+        this.selectedParts = value?.selectedParts || [];
+        this.file_ids = value?.file_ids || [];
+        this.file_id = value?.file_id;
+        this.addClasses();
+      });
+  }
 
   abstract addListeners(): void;
 
@@ -102,7 +114,7 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
   }
 
   onFileUpload(file: UploadedFile) {
-    this.file_ids.push(file.id);
+    this.file_ids = [...this.file_ids, file.id];
     this.handleModelChange({
       file_ids: this.file_ids,
       selectedParts: this.selectedParts,

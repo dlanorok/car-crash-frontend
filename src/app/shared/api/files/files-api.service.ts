@@ -16,6 +16,7 @@ export class FilesApiService {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('file_name', file.name);
+    formData.append('file_size', file.size.toString());
 
     return this.httpClient.post<{id: number}>(`${this.endpoint}`, formData);
   }
@@ -24,6 +25,7 @@ export class FilesApiService {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('file_name', file.name);
+    formData.append('file_size', file.size.toString());
 
     return this.httpClient.post<HttpEvent<any>>(`${this.endpoint}`, formData, {
       reportProgress: true,

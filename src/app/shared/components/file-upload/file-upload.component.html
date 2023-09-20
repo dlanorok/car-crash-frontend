@@ -1,15 +1,22 @@
-<div class="progress" *ngIf="progress">
-  <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
-</div>
-<div class="image-container">
-  <ng-container *ngFor="let fileId of uploadedFileIds; let i = index">
-    <div class="position-relative">
-      <div class="icon-wrapper" (click)="removeFile(fileId)">
-        remove
-      </div>
-      <img appImage [imageId]="fileId" alt="Preview">
-    </div>
+<div class="flex-1 form-layout">
+  <div class="progress" *ngIf="progress">
+    <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
+  </div>
+
+  <ng-container *ngIf="fileListRenderer; else defaultRendererTpl">
+    <ng-container
+      *ngTemplateOutlet="fileListRenderer"
+    ></ng-container>
   </ng-container>
+
+  <ng-template #defaultRendererTpl>
+    <app-file-list-renderer [fileIds]="uploadedFileIds" (removeFile)="removeFile($event)"></app-file-list-renderer>
+  </ng-template>
+
+  <div class="file-input-wrapper flex-1">
+    <app-button class="next-button" [buttonText]="'Upload image'" [outline]="true" (click)="onFileUpload()"></app-button>
+    <input #fileUploadInput [class.error]="error" type="file" accept="image/*" (change)="onFileSelected($event)">
+  </div>
 </div>
-<input [class.error]="error" type="file" accept="image/*" (change)="onFileSelected($event)">
+
 

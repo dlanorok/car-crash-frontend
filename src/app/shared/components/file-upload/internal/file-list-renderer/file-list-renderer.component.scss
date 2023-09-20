@@ -1,0 +1,23 @@
+:host {
+  .image-container {
+    overflow: auto;
+    max-height: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-right: -1rem;
+    padding-right: 1rem;
+
+    img {
+      width: 7rem;
+      height: 5rem;
+      object-fit: cover;
+      border-radius: var(--theme-border-radius);
+    }
+  }
+
+  app-svg-comp {
+    cursor: pointer;
+    color: var(--theme-color-strokes-highlight);
+  }
+}

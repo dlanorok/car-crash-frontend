@@ -30,6 +30,8 @@ export class ImageDirective implements OnChanges {
   @Input() imageId!: number;
   @HostBinding('src') src: SafeResourceUrl = '';
   @HostBinding('alt') alt: SafeResourceUrl = '';
+  @HostBinding('attr.data-size') dataSize = '';
+  @HostBinding('attr.data-name') dataName = '';
 
   @HostListener('click', ['$event.target'])
   onClick(imageElement: HTMLImageElement) {
@@ -82,16 +84,22 @@ export class ImageDirective implements OnChanges {
   private loadImage() {
     this.filesApiService.getFileData(this.imageId).pipe(
       take(1),
-      map(image => [this.sanitizer.bypassSecurityTrustResourceUrl(image.file), image.name]),
-      catchError(() => of([this.defaultSrc || './assets/svg/404.svg', this.defaultAlt || 'no image'])),
+      map(image => [this.sanitizer.bypassSecurityTrustResourceUrl(image.file), image.file_name, image.file_size]),
+      catchError(() => of([this.defaultSrc || './assets/svg/404.svg', this.defaultAlt || 'no image', "0"])),
       finalize(() => this.changeDetectorRef.detectChanges()),
-    ).subscribe(([src, alt]) => {
+    ).subscribe(([src, name, fileSize]) => {
+
       if (src) {
         this.src = src;
       }
 
-      if (alt) {
-        this.alt = alt;
+      if (fileSize) {
+        this.dataSize = fileSize.toString();
+      }
+
+      if (name) {
+        this.alt = name;
+        this.dataName = name.toString();
       }
     });
   }

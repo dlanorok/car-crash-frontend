@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BaseSvgHoverComponent } from "../base-svg-hover/base-svg-hover.component";
 import { provideControlValueAccessor } from "@app/shared/form-controls/base-form-control.component";
 import { Observable, of, take, tap } from "rxjs";
-import { map } from "rxjs/operators";
+import {  map } from "rxjs/operators";
 
 @Component({
   selector: 'app-visible-damage-selector',
@@ -27,18 +27,13 @@ export class VisibleDamageSelectorComponent extends BaseSvgHoverComponent implem
     // });
   }
 
-  override onViewReady() {
-    this.value$.subscribe((value) => {
-      this.selectedParts = value?.selectedParts || [];
-      this.file_ids = value?.file_ids || [];
-      this.file_id = value?.file_id;
-      this.svgImage?.nativeElement.querySelectorAll('path').forEach((path) => {
-        if (this.selectedParts?.includes(path.id)) {
-          path.classList.add(this.selectedClass);
-        } else {
-          path.classList.remove(this.selectedClass);
-        }
-      });
+  override addClasses(): void {
+    this.svgImage?.nativeElement.querySelectorAll('path').forEach((path) => {
+      if (this.selectedParts?.includes(path.id)) {
+        path.classList.add(this.selectedClass);
+      } else {
+        path.classList.remove(this.selectedClass);
+      }
     });
   }
 

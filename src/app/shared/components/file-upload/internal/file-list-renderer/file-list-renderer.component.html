@@ -1,0 +1,18 @@
+<div class="image-container">
+  <ng-container *ngFor="let file of files; let i = index">
+    <div class="flex gap">
+      <img appImagePreview [src]="file.file" alt="Preview">
+      <div class="flex flex-1 align-items-center">
+        <div class="flex flex-1 flex-column">
+          <div>
+            <strong>{{ file.file_name }}</strong>
+          </div>
+          <div>
+            {{ file.file_size | sizeToBytes }}
+          </div>
+        </div>
+        <app-svg-comp width="1.5rem" [name]="'trash'" (click)="removeFileFromList(file.id)"></app-svg-comp>
+      </div>
+    </div>
+  </ng-container>
+</div>

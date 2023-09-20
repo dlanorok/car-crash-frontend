@@ -14,6 +14,12 @@
     color: var(--theme-color-background);
     line-height: 1;
 
+    &.outline {
+      background-color: unset;
+      color: var(--theme-color-primary);
+      border: var(--border-small) var(--theme-color-primary);
+    }
+
     &.disabled {
       cursor: not-allowed;
       opacity: 0.36;
