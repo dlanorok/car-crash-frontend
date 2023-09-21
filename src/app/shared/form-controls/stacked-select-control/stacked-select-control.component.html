@@ -1,6 +1,6 @@
 <ng-container *ngIf="options">
 
-  <div class="flex gap-half" [class.flex-column]="(options || []).length > 2">
+  <div class="flex gap-half" [class.flex-column]="(options || []).length > 1 && !options[0].icon">
     <div
       *ngFor="let option of (options || [])"
       class="option"
@@ -8,7 +8,7 @@
       (click)="onOptionClick(option.value)"
     >
       <div class="gap flex-1 flex flex-column">
-        <app-svg-comp *ngIf="options.length < 3 && option.icon" [name]="option.icon" width="1.5rem"></app-svg-comp>
+        <app-svg-comp *ngIf="option.icon" [name]="option.icon" width="1.5rem"></app-svg-comp>
         <div
           [class.is-invalid]="submitted && formControl && formControl.errors"
           [class.disabled]="(isDisabled$ | async) === true">

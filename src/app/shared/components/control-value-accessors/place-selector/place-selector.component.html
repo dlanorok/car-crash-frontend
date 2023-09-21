@@ -1,5 +1,5 @@
 <div class="map-container flex flex-1">
-  <div [class.d-none]="step !== 1" class="h-100 d-block w-100 overflow-hidden">
+  <div class="h-100 d-block w-100 overflow-hidden">
     <google-map
       #map
       id="map"
@@ -32,9 +32,7 @@
 </div>
 
 <app-input-section
-  [title]="step === 1 ? ('§§ Potrdite lokacijo' | transloco) : ('§§Are you at the place of accident' | transloco)"
-  [info]="step === 1 ? 'CONTENT OF INFO??' : undefined"
-  [buttonName]="step === 0 ? '§§Next' : '§§Confirm Location'" (next)="onSubmit()" (back)="onBack()" [disabledButton]="!(value$ | async)?.at_place">
-  <app-stacked-select-control *ngIf="step === 0" [ngModel]="(value$ | async)?.at_place"  [options]="options" (ngModelChange)="handleSelectChange($event)">
-  </app-stacked-select-control>
+  [title]="'§§ Potrdite lokacijo' | transloco"
+  [info]="'CONTENT OF INFO??'"
+  [buttonName]="'§§Confirm Location'" (next)="onSubmit()" (back)="onBack()">
 </app-input-section>
