@@ -84,6 +84,14 @@ app-root {
   }
 }
 
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  select,
+  textarea,
+  input {
+    font-size: 16px;
+  }
+}
+
 // TODO create UI component for info text
 .qr-code-info {
   text-align: center;
