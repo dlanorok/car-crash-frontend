@@ -8,13 +8,13 @@
 
     .app-progress-bar {
       height: 0.5rem;
-      background-color: var(--theme-color-primary);
       display: flex;
 
       .section {
         flex: 1;
         margin-right: 2px;
         display: flex;
+        background-color: var(--theme-color-primary);
         &.completed {
           background-color: var(--theme-color-light);
         }
