@@ -36,9 +36,8 @@
 
 <!--  <div *ngIf="i === 0 && (crash.creator | amICreator) && (questionnaire.creator | amICreator)" class="todo-item" [routerLink]="'invite'">-->
 <!--    Invite others-->
-<!--    <div class="d-flex align-items-center">-->
-<!--      <i *ngIf="questionnaires.length <= 1" class="bi bi-circle"></i>-->
-<!--      <i *ngIf="questionnaires.length > 1" class="bi bi-check-circle"></i>-->
+<!--    <div class="d-flex align-items-center list-action">-->
+<!--      <app-svg-comp *ngSwitchCase="ModelState.validated" name="tick" width="28px"></app-svg-comp>-->
 <!--    </div>-->
 <!--  </div>-->
 </ng-container>

@@ -76,6 +76,7 @@
   .menu {
     position: absolute;
     height: 0;
+    z-index: 100;
     top: 0;
     right: -100%; /* Hide the menu by default */
     width: 100%;
