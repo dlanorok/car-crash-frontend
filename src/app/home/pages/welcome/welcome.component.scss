@@ -23,9 +23,13 @@
     gap: var(--theme-spacing-rem-half);
 
     .logo-img {
-      margin-left: auto;
-      margin-bottom: auto;
       width: 80%;
+      opacity: .84;
+      position: absolute;
+      top: 0;
+      bottom: auto;
+      left: auto;
+      right: 0;
       max-width: 500px;
     }
   }
