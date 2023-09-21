@@ -1,6 +1,7 @@
 :host {
   display: flex;
   flex: 1;
+  overflow-wrap: anywhere;
 
   .information-panel {
     color: var(--theme-color-background);

@@ -1,16 +1,19 @@
-<div class="chapter justify-content-space-between">
-  <div class="flex flex-1 img-wrapper">
-    <img class="logo-img" src="./assets/images/car-bot.png" alt="car-crash" width="60%"/>
-  </div>
-  <div class="chapter-info">
-    <ng-container *ngIf="step">
-      <h1> {{ step.question}} </h1>
-      <div class="help-text">
-        {{ step.help_text }}
-      </div>
-    </ng-container>
-  </div>
-</div>
+<div class="flex-container non-scrollable">
 
-<app-input-section (back)="back.emit()" (next)="next.emit()" [buttonName]="'§§Next'">
-</app-input-section>
+  <div class="chapter justify-content-space-between scrollable">
+    <div class="flex flex-1 img-wrapper">
+      <img class="logo-img" src="./assets/images/car-bot.png" alt="car-crash" width="60%"/>
+    </div>
+    <div class="chapter-info">
+      <ng-container *ngIf="step">
+        <h1> {{ step.question}} </h1>
+        <div class="help-text">
+          {{ step.help_text }}
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <app-input-section (back)="back.emit()" (next)="next.emit()" [buttonName]="'§§Next'">
+  </app-input-section>
+</div>

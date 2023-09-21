@@ -4,22 +4,16 @@
   align-items: center;
   justify-content: center;
 
-  .svg-wrapper {
-    padding: var(--theme-spacing-rem);
-    display: flex;
-    flex: 1;
-    width: 70%;
-    max-width: 400px;
+  .smaller {
+    width: 40%!important;
     align-items: center;
-
-    &.smaller {
-      width: 40%;
-      align-items: center;
-      margin-right: auto;
-    }
+    margin-right: auto;
+    flex: unset!important;
   }
 
   #damaged-parts {
+    width: 70%;
+    max-width: 400px;
     path {
       cursor: pointer;
       &.selected {

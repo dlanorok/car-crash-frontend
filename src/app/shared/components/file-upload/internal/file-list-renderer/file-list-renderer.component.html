@@ -3,8 +3,8 @@
     <div class="flex gap">
       <img appImagePreview [src]="file.file" alt="Preview">
       <div class="flex flex-1 align-items-center">
-        <div class="flex flex-1 flex-column">
-          <div>
+        <div class="flex flex-1 flex-column" style="width: 0">
+          <div class="text-overflow">
             <strong>{{ file.file_name }}</strong>
           </div>
           <div>

@@ -1,7 +1,7 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef, EventEmitter,
+  ElementRef, EventEmitter, HostBinding,
   inject,
   OnChanges,
   OnDestroy,
@@ -39,6 +39,7 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
   protected selectedClass = 'selected';
 
   @ViewChild('svgImage') svgImage?: ElementRef<SVGElement>;
+  @HostBinding('class.scrollable') someField = true;
 
   private readonly viewInit$: ReplaySubject<void> = new ReplaySubject<void>(1);
   private readonly change$: ReplaySubject<void> = new ReplaySubject<void>(1);
