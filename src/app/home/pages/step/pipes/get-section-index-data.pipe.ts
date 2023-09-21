@@ -10,7 +10,7 @@ export class GetSectionIndexDataPipe implements PipeTransform {
 
   transform(section: Section, questionnaire: QuestionnaireModel): SectionData {
     return {
-      currentSectionIndex: questionnaire.data.sections.map(section => section.id).indexOf(section.id),
+      currentSectionIndex: questionnaire.data.sections.map(section => section.id).indexOf(section.id) + 1,
       sectionsLength: questionnaire.data.sections.length
     };
   }

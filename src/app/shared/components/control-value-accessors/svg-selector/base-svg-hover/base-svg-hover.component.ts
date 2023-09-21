@@ -115,7 +115,7 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
   }
 
   onFileUpload(file: UploadedFile) {
-    this.file_ids = [...this.file_ids, file.id];
+    this.file_ids = [file.id, ...this.file_ids];
     this.handleModelChange({
       file_ids: this.file_ids,
       selectedParts: this.selectedParts,

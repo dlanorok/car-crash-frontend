@@ -64,6 +64,9 @@
               d="m30.47,208.06c-13.1,0-23.72,10.62-23.72,23.72s10.62,23.72,23.72,23.72,23.72-10.62,23.72-23.72-10.62-23.72-23.72-23.72Zm0,36.11c-6.83,0-12.39-5.56-12.39-12.39s5.56-12.39,12.39-12.39,12.39,5.56,12.39,12.39-5.56,12.39-12.39,12.39Z"/>
       </g>
     </svg>
+    <div *ngIf="step === 1" class="flex justify-content-center align-items-center flex-1">
+      Text that has to be changed but
+    </div>
   </div>
 
   <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
