@@ -1,15 +1,16 @@
 <div class="navigation-bar">
   <div class="burger-menu-wrapper">
-    <app-svg-comp name="burger-menu" width="1.7rem"></app-svg-comp>
+    <app-svg-comp name="burger-menu" width="1.7rem" (click)="toggleMenu()"></app-svg-comp>
   </div>
+
   <div class="flex flex-1">
     <div class="flex flex-column flex-1 gap-half">
-      <div *ngIf="sectionName" class="section-name">
+      <div *ngIf="section" class="section-name">
         <div>
-          {{ sectionName }}
+          {{ section.name }}
         </div>
         <div class="step-number">
-          {{ sectionData.currentSectionIndex }}/{{ sectionData.sectionsLength }}
+          {{ sectionData.currentSectionIndex + 1 }}/{{ sectionData.sectionsLength }}
         </div>
       </div>
       <div class="app-progress-bar">
@@ -30,5 +31,30 @@
     <div class="car-identifier">
       {{ (crash.creator | amICreator) ? 'A' : 'B' }}
     </div>
+  </div>
+  <div class="menu" [class.open]="menuOpened">
+    <div class="flex flex-column form-layout top">
+      <div class="flex justify-content-end">
+        <app-svg-comp name="close" width="2rem" (click)="toggleMenu()"></app-svg-comp>
+      </div>
+      <div *ngIf="questionnaires$ | async; let questionnaires" class="flex">
+        <ng-container *ngFor="let questionnaire of questionnaires; let i=index; let last=last; let first=first">
+          <div class="car-selector" [class.selected]="selectedCar === i" [class.last]="last" [class.first]="first" (click)="selectedCar=i">
+            {{ (questionnaire.creator | amICreator) ? '§§ME' : '§§Soudeleženec' }}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <ng-container *ngIf="questionnaires$ | async; let questionnaires">
+      <app-section-overview
+        *ngIf="crash"
+        [questionnaires]="questionnaires"
+        [questionnaire]="questionnaires[selectedCar]"
+        [crash]="crash"
+        [currentSection]="section"
+        (sectionClicked)="toggleMenu()"
+      >
+      </app-section-overview>
+    </ng-container>
   </div>
 </div>

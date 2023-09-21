@@ -20,7 +20,7 @@ export class GetStepIndexDataPipe implements PipeTransform {
 
     const steps = getNextStep(questionnaire, startingStep, []);
     return {
-      currentStepIndex: steps.map(step => step.step_type).indexOf(step.step_type) + 1,
+      currentStepIndex: steps.map(step => step.step_type).indexOf(step.step_type),
       stepsLength: steps.length
     };
   }

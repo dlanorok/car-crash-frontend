@@ -1,6 +1,7 @@
 :host {
   .navigation-bar {
     display: flex;
+    position: relative;
     padding: var(--theme-spacing-rem);
     gap: var(--theme-spacing-rem);
     color: var(--theme-color-light);
@@ -68,7 +69,62 @@
       justify-content: center;
       align-items: center;
       font-size: 1.4rem;
-      display: flex;
     }
   }
+
+  .menu {
+    position: absolute;
+    height: 0;
+    top: 0;
+    right: -100%; /* Hide the menu by default */
+    width: 100%;
+    background-color: #ffffff;
+    transition: right 0.3s ease-in-out;
+    overflow-x: hidden;
+
+    &.open {
+      right: 0;
+      height: 100vh;
+    }
+
+    .top {
+      padding: var(--theme-spacing-rem);
+      background-color: var(--theme-color-dark);
+
+      app-svg-comp {
+        color: var(--theme-color-basic);
+      }
+    }
+    .car-selector {
+      flex: 1;
+      color: var(--theme-color-basic);
+      background-color: var(--theme-color-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: calc(var(--theme-spacing-rem) * 0.75);
+      border: var(--border-small) var(--theme-color-basic);
+      font-weight: 600;
+
+      &.first {
+        border-top-left-radius: var(--border-radius-rem-half);
+        border-bottom-left-radius: var(--border-radius-rem-half);
+      }
+
+      &.last {
+        border-top-right-radius: var(--border-radius-rem-half);
+        border-bottom-right-radius: var(--border-radius-rem-half);
+      }
+
+      &.selected {
+        color: var(--theme-color-dark);
+        background-color: var(--theme-color-basic);
+      }
+    }
+  }
+
+  .menu.open {
+    right: 0; /* Show the menu when 'open' class is applied */
+  }
+
 }

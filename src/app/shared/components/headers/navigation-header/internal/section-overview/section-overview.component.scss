@@ -1,0 +1,30 @@
+:host {
+  font-family: Open Sans, sans-serif;
+  .section {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 21px;
+    border-bottom: var(--border-small) var(--theme-color-light-shade);
+    color: var(--theme-color-type);
+    display: flex;
+    flex-direction: column;
+    gap: var(--theme-spacing-rem);
+
+    .current-section {
+      font-weight: 700;
+    }
+  }
+
+  .step-num {
+    width: 3rem;
+  }
+
+  .list-action {
+    width: 40px;
+    height: 40px;
+
+    app-svg-comp {
+      color: var(--theme-color-dark);
+    }
+  }
+}

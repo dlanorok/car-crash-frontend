@@ -15,7 +15,7 @@
 <!--  </div>-->
   <div id="canvas-container" #container class="canvas-container"></div>
 
-  <app-button class="next-button" [buttonText]="'§§ Edit sketch'" (click)="editSketch()"></app-button>
+  <app-button *ngIf="!(value$ | async)?.editing" class="next-button" [buttonText]="'§§ Edit sketch'" (click)="editSketch()"></app-button>
 </div>
 
 <ng-template #emptyTpl>
