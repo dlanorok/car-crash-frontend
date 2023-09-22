@@ -7,10 +7,10 @@
       position: absolute;
       padding: 0.375rem 0.75rem;
       opacity: 0.5;
-      top:0;
+      top: 3px;
     }
 
-    input:focus + label, input:not(:placeholder-shown) + label{
+    input:focus + label {
       opacity:1;
       transform: scale(0.75) translateY(-100%) translateX(-30px);
     }
