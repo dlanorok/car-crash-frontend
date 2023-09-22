@@ -16,7 +16,6 @@ import {
 } from "@app/shared/form-controls/base-form-control.component";
 import { distinctUntilChanged, Observable, of, switchMap, take, tap } from "rxjs";
 import { filter, map } from "rxjs/operators";
-import { Option } from "@app/home/pages/crash/flow.definition";
 import { Location } from "@angular/common";
 
 export interface PlaceSelectorData {
@@ -31,18 +30,6 @@ export interface PlaceSelectorData {
   providers: [provideControlValueAccessor(PlaceSelectorComponent)],
 })
 export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelectorData> implements AfterViewChecked, OnInit {
-  step = 0;
-  options: Option[] = [
-    {
-      value: 'yes',
-      label: '§§Yes',
-    },
-    {
-      value: 'no',
-      label: '§§No'
-    },
-  ];
-  atPlace: 'yes' | 'no' | null = null;
   protected readonly changeDetectorRef: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected readonly location: Location = inject(Location);
 
@@ -132,6 +119,7 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
             this.map.googleMap.setOptions({draggable: true});
           }
           this.addMapCenterChangeListener();
+          this.askForCurrentLocation();
         })
       ).subscribe();
     }
@@ -170,14 +158,12 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
           paragraph?.appendChild(text);
           const text1 = document.createTextNode(error.code.toString());
           paragraph?.appendChild(text1);
-          this.atPlace = 'no';
           console.error('Error getting current location:', error);
         }
       );
     } else {
       const text = document.createTextNode("NOT SUPPORTED");
       paragraph?.appendChild(text);
-      this.atPlace = 'no';
       console.error('Geolocation is not supported by this browser.');
     }
   }
@@ -189,7 +175,7 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
       this.handleModelChange(value);
     } else {
       this.handleModelChange({
-        at_place: this.atPlace,
+        at_place: null,
         marker_position: this.position,
       });
     }
@@ -233,30 +219,10 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
 
   beforeSubmit(): Observable<boolean> {
     return of(undefined).pipe(
-      map(() => {
-        return this.step > 0;
+      tap(() => {
+        this.confirmLocation();
       }),
-      tap(() => {
-        if (this.step === 0) {
-          this.step += 1;
-          this.askForCurrentLocation();
-        } else if (this.step === 1) {
-          this.confirmLocation();
-        }
-      })
-    );
-  }
-
-  beforeBack(): Observable<boolean> {
-    return of(undefined).pipe(
-      map(() => this.step < 1),
-      tap(() => {
-        if (this.step > 0) {
-          this.step -= 1;
-        } else {
-          this.location.back();
-        }
-      })
+      map(() => true)
     );
   }
 
@@ -265,7 +231,7 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
   }
 
   onBack() {
-    this.beforeBack().pipe(take(1)).subscribe();
+    this.location.back();
   }
 
   handleSelectChange(value: 'yes' | 'no'): void {
