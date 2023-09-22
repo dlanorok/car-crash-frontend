@@ -1,6 +1,7 @@
 <div class="form-group">
-  <label [htmlFor]="_id">{{ label }}</label>
+  <label class="floating-label" [htmlFor]="_id">{{ label }}</label>
   <ngx-intl-tel-input
+    #telInput
     [id]="_id"
     [cssClass]="'custom'"
     [preferredCountries]="[CountryISO.Slovenia, CountryISO.Croatia]"

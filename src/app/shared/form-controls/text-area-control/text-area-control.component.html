@@ -1,8 +1,7 @@
 <div class="form-group">
-  <label *ngIf="label" [htmlFor]="_id">{{ label }}</label>
   <textarea
     [id]="_id"
-    [placeholder]="placeholder"
+    [placeholder]="' '"
     [disabled]="(isDisabled$ | async) === true"
     [class.is-invalid]="submitted && formControl.errors"
     (ngModelChange)="handleModelChange($event)"
@@ -10,6 +9,7 @@
     [rows]="rows"
     [ngModel]="value$ | async">
   </textarea>
+  <label *ngIf="label" [htmlFor]="_id">{{ label }}</label>
 
   <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
 </div>

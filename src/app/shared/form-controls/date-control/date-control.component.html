@@ -1,5 +1,4 @@
 <div class="form-group">
-  <label for="date-picker">{{ label }}</label>
   <input
     id="date-picker"
     class="form-control"
@@ -12,6 +11,7 @@
     (ngModelChange)="handleModelChange($event)"
     [class.is-invalid]="submitted && formControl.errors"
   />
+  <label *ngIf="label" [class.floating-label]="value$ | async " for="date-picker">{{ label }}</label>
 
   <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
 </div>

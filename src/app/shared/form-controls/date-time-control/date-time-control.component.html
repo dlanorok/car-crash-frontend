@@ -1,5 +1,4 @@
 <div class="form-group">
-  <label *ngIf="label" for="date-picker">{{ label }}</label>
 
   <div class="d-flex">
     <input
@@ -14,6 +13,7 @@
       (ngModelChange)="handleDateChange($event)"
       [class.is-invalid]="submitted && formControl.errors"
     />
+    <label *ngIf="label" [class.floating-label]="value$ | async " for="date-picker">{{ label }}</label>
 
     <ngb-timepicker
       class="ms-3"

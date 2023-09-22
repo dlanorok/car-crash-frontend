@@ -3,7 +3,7 @@
     [id]="_id"
     class="form-control"
     [type]="type"
-    [placeholder]="placeholder"
+    [placeholder]="' '"
     [disabled]="(isDisabled$ | async) === true"
     [ngModel]="value$ | async"
     (ngModelChange)="handleModelChange($event)"
@@ -12,3 +12,4 @@
 
   <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
 </div>
+
