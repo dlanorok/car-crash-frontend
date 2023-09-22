@@ -88,7 +88,8 @@ export enum InputType {
 
 export enum StepType {
   injuries = 'injuries',
-  registration_number = 'registration_number'
+  registration_number = 'registration_number',
+  accident_sketch = 'accident_sketch'
 }
 
 export interface Input {

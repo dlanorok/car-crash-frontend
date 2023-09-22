@@ -1,5 +1,5 @@
 import { ModelState } from "@app/shared/models/base.model";
-import { Input, Section, SectionId } from "@app/home/pages/crash/flow.definition";
+import { Input, Section, SectionId, StepType } from "@app/home/pages/crash/flow.definition";
 import { Sketch } from "@app/shared/components/control-value-accessors/sketch-canvas/sketch-canvas.component";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
 import { getNextStep } from "@app/shared/common/utils/get-next-step";
@@ -10,8 +10,15 @@ export function getStateFromSection(questionnaire: QuestionnaireModel, section: 
     return ModelState.empty;
   }
 
+  const steps = getNextStep(questionnaire, startingStep, []);
+
   if (section.id === SectionId.accidentSketch) {
-    const inputId = startingStep.inputs[0];
+    const step = steps.find(step => step.step_type === StepType.accident_sketch);
+    if (!step) {
+      return ModelState.empty;
+    }
+
+    const inputId = step.inputs[0];
     const input = questionnaire.data.inputs[inputId];
     if (input) {
       const value: Sketch = input.value;
@@ -23,7 +30,6 @@ export function getStateFromSection(questionnaire: QuestionnaireModel, section: 
     }
   }
 
-  const steps = getNextStep(questionnaire, startingStep, []);
 
   const inputIds: number[] = steps.reduce((acc: number[], step) => {
     step.inputs.forEach((input: number) => acc.push(input));
@@ -55,7 +61,7 @@ export function getStateFromSection(questionnaire: QuestionnaireModel, section: 
     return acc;
   }, 0);
 
-  return ((inputs.length === 0 && notRequiredCompletedFields > 0) || inputs.length === completedInputs) ? ModelState.validated : completedInputs === 0 ? ModelState.empty : ModelState.partial;
-}
+  return ((inputs.length === 0 && notRequiredCompletedFields > 0) || (inputs.length > 0 && inputs.length === completedInputs)) ? ModelState.validated : completedInputs === 0 ? ModelState.empty : ModelState.partial;
 
+}
 
