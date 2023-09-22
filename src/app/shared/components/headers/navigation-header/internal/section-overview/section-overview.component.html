@@ -1,9 +1,11 @@
 <ng-container *ngFor="let section of questionnaire.data.sections; let i = index">
   <div class="padding section"
+       [ngClass]="(questionnaire | getStateFromPipe : section)"
+       [class.current-section]="section.id === currentSection.id"
        [routerLink]="'/crash/' + crash.session_id + '/questionnaires/' + questionnaire.id + '/sections/' + section.id + '/steps/' + section.starting_step"
        (click)="sectionClicked.next()"
   >
-    <div *ngIf="section.id === currentSection.id" class="current-section">
+    <div *ngIf="section.id === currentSection.id" class="current-section-wrapper">
       §§ TRENUTNO ODGOVARJATE
     </div>
     <div class="flex justify-content-space-between gap-half">
@@ -23,12 +25,10 @@
 <!--      </small>-->
       <div class="d-flex align-items-center list-action">
         <ng-container *ngIf="section.id === currentSection.id; else stateTpl">
-          <app-svg-comp name="next-circle" width="28px"></app-svg-comp>
+          <app-svg-comp name="next-circle" width="1.5rem"></app-svg-comp>
         </ng-container>
         <ng-template #stateTpl>
-          <ng-container [ngSwitch]="(questionnaire | getStateFromPipe : section)">
-            <app-svg-comp *ngSwitchCase="ModelState.validated" name="tick" width="28px"></app-svg-comp>
-          </ng-container>
+          <app-svg-comp class="tick" name="tick" width="1.5rem"></app-svg-comp>
         </ng-template>
       </div>
     </div>

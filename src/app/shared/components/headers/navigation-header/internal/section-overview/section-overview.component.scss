@@ -10,8 +10,15 @@
     flex-direction: column;
     gap: var(--theme-spacing-rem);
 
-    .current-section {
+    .current-section-wrapper {
       font-weight: 700;
+    }
+
+    &.empty {
+      font-weight: unset;
+    }
+    &.current-section {
+      font-weight: 600;
     }
   }
 
@@ -19,10 +26,14 @@
     width: 3rem;
   }
 
-  .list-action {
-    width: 40px;
-    height: 40px;
 
+  .empty {
+    .tick {
+      display: none;
+    }
+  }
+
+  .list-action {
     app-svg-comp {
       color: var(--theme-color-dark);
     }
