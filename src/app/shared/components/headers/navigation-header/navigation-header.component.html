@@ -47,7 +47,7 @@
     </div>
     <ng-container *ngIf="questionnaires$ | async; let questionnaires">
       <app-section-overview
-        *ngIf="crash"
+        *ngIf="crash && menuOpened"
         [questionnaires]="questionnaires"
         [questionnaire]="questionnaires[selectedCar]"
         [crash]="crash"

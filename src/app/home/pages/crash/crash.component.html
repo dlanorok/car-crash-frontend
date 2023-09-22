@@ -1,60 +1,60 @@
-<div class="main-content" *ngIf="crash$ | async; let crash">
-  <ng-container *ngFor="let questionnaire of questionnaires; let questionnaireIndex = index">
-    <details [open]="questionnaireIndex === 0">
-      <summary>{{ questionnaire | carIdentifier : questionnaireIndex }} {{ questionnaire.id }}</summary>
-      <ng-container *ngFor="let section of questionnaire.data.sections; let i = index">
-        <div class="todo-item"
-             [routerLink]="'questionnaires/' + questionnaire.id + '/sections/' + section.id + '/steps/' + section.starting_step"
-        >
-          <div>
-            {{ section.name }}
-            <span
-              style="font-size: 11px; color: #7a7a7a"
-              *ngIf="section.id === SectionId.accidentSketch && (questionnaire | getStateFromPipe : section) === ModelState.partial">
-              §§ You must confirm the sketch before You can proceed
-            </span>
-            <small *ngIf="section.helpText">
-              {{ section.helpText }}
-            </small>
-          </div>
-          <div class="d-flex align-items-center">
-            <ng-container [ngSwitch]="(questionnaire | getStateFromPipe : section)">
-              <i *ngSwitchCase="ModelState.empty" class="bi bi-circle"></i>
-              <i *ngSwitchCase="ModelState.validated" class="bi bi-check-circle"></i>
-              <i *ngSwitchCase="ModelState.partial" class="bi bi-question-circle"></i>
-            </ng-container>
-          </div>
-        </div>
+<!--<div class="main-content" *ngIf="crash$ | async; let crash">-->
+<!--  <ng-container *ngFor="let questionnaire of questionnaires; let questionnaireIndex = index">-->
+<!--    <details [open]="questionnaireIndex === 0">-->
+<!--      <summary>{{ questionnaire | carIdentifier : questionnaireIndex }} {{ questionnaire.id }}</summary>-->
+<!--      <ng-container *ngFor="let section of questionnaire.data.sections; let i = index">-->
+<!--        <div class="todo-item"-->
+<!--             [routerLink]="'questionnaires/' + questionnaire.id + '/sections/' + section.id + '/steps/' + section.starting_step"-->
+<!--        >-->
+<!--          <div>-->
+<!--            {{ section.name }}-->
+<!--            <span-->
+<!--              style="font-size: 11px; color: #7a7a7a"-->
+<!--              *ngIf="section.id === SectionId.accidentSketch && (questionnaire | getStateFromPipe : section) === ModelState.partial">-->
+<!--              §§ You must confirm the sketch before You can proceed-->
+<!--            </span>-->
+<!--            <small *ngIf="section.helpText">-->
+<!--              {{ section.helpText }}-->
+<!--            </small>-->
+<!--          </div>-->
+<!--          <div class="d-flex align-items-center">-->
+<!--            <ng-container [ngSwitch]="(questionnaire | getStateFromPipe : section)">-->
+<!--              <i *ngSwitchCase="ModelState.empty" class="bi bi-circle"></i>-->
+<!--              <i *ngSwitchCase="ModelState.validated" class="bi bi-check-circle"></i>-->
+<!--              <i *ngSwitchCase="ModelState.partial" class="bi bi-question-circle"></i>-->
+<!--            </ng-container>-->
+<!--          </div>-->
+<!--        </div>-->
 
-        <div *ngIf="i === 0 && (crash.creator | amICreator) && (questionnaire.creator | amICreator)" class="todo-item" [routerLink]="'invite'">
-          Invite others
-          <div class="d-flex align-items-center">
-            <i *ngIf="questionnaires.length <= 1" class="bi bi-circle"></i>
-            <i *ngIf="questionnaires.length > 1" class="bi bi-check-circle"></i>
-          </div>
-        </div>
-      </ng-container>
-    </details>
-  </ng-container>
+<!--        <div *ngIf="i === 0 && (crash.creator | amICreator) && (questionnaire.creator | amICreator)" class="todo-item" [routerLink]="'invite'">-->
+<!--          Invite others-->
+<!--          <div class="d-flex align-items-center">-->
+<!--            <i *ngIf="questionnaires.length <= 1" class="bi bi-circle"></i>-->
+<!--            <i *ngIf="questionnaires.length > 1" class="bi bi-check-circle"></i>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </ng-container>-->
+<!--    </details>-->
+<!--  </ng-container>-->
 
-  <ng-container *ngFor="let questionnaire of questionnaires">
-    <ng-container *ngIf="questionnaire.creator | amICreator">
-      <ng-container *ngIf="questionnaire.crash_confirmed; else confirmButtonTpl">
-        <span class="badge bg-success">
-          CRASHED CONFIRMED
-        </span>
-      </ng-container>
-      <ng-template #confirmButtonTpl>
-        <button *ngIf="(questionnaire | allStepsCompleted)" type="submit" class="btn btn-primary mt-3" (click)="confirmCrash(crash)">
-          §§ Confirm crash
-        </button>
-      </ng-template>
-    </ng-container>
-  </ng-container>
-</div>
+<!--  <ng-container *ngFor="let questionnaire of questionnaires">-->
+<!--    <ng-container *ngIf="questionnaire.creator | amICreator">-->
+<!--      <ng-container *ngIf="questionnaire.crash_confirmed; else confirmButtonTpl">-->
+<!--        <span class="badge bg-success">-->
+<!--          CRASHED CONFIRMED-->
+<!--        </span>-->
+<!--      </ng-container>-->
+<!--      <ng-template #confirmButtonTpl>-->
+<!--        <button *ngIf="(questionnaire | allStepsCompleted)" type="submit" class="btn btn-primary mt-3" (click)="confirmCrash(crash)">-->
+<!--          §§ Confirm crash-->
+<!--        </button>-->
+<!--      </ng-template>-->
+<!--    </ng-container>-->
+<!--  </ng-container>-->
+<!--</div>-->
 
-<div *ngIf="(crash$ | async)?.pdf" [routerLink]="'pdf-preview'">
-  Open Preview
-</div>
+<!--<div *ngIf="(crash$ | async)?.pdf" [routerLink]="'pdf-preview'">-->
+<!--  Open Preview-->
+<!--</div>-->
 
 
