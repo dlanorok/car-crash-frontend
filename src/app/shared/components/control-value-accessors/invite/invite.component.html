@@ -1,0 +1,19 @@
+<div class="flex-container non-scrollable">
+
+  <div class="scrollable flex">
+    <app-info-section [step]="step" [isSmall]="true">
+      <qrcode
+        *ngIf="location"
+        [qrdata]="location"
+        [width]="150"
+        [cssClass]="'custom-qr'"
+        [errorCorrectionLevel]="'M'"
+        class="margin-top">
+      </qrcode>
+    </app-info-section>
+  </div>
+
+  <app-input-section (back)="back.emit()" (next)="next.emit()" [buttonName]="'car-crash.shared.next' | transloco" [title]="'car-crash.invite.with-sms' | transloco">
+    <app-phone-number-control [formControl]="formControl" [submitted]="submitted"></app-phone-number-control>
+  </app-input-section>
+</div>

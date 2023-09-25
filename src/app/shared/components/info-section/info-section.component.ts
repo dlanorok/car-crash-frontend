@@ -15,6 +15,7 @@ export class InfoSectionComponent {
   protected readonly injector: Injector = inject(Injector);
 
   @Input() step!: Step;
+  @Input() isSmall?: boolean;
 
   openInfoModal(step: Step) {
     this.dialogService.openDialog({

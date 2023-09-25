@@ -1,4 +1,5 @@
-<div class="flex flex-1 information-panel flex-column padding justify-content-center gap-half">
+<div class="flex flex-1 information-panel flex-column padding justify-content-center gap-half" [class.small]="isSmall">
   <app-svg-comp class="main-icon" name="info" width="2rem" (click)="openInfoModal(step)"></app-svg-comp>
   <h2 *ngIf="step.question">{{ step.question }}</h2>
+  <ng-content></ng-content>
 </div>

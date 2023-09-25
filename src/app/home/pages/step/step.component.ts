@@ -271,6 +271,8 @@ export class StepComponent implements OnInit, OnDestroy {
     }
     this.toastr.clear();
 
+    this.afterSubmitCheck();
+
     this.submitted = false;
     if (this.questionnaire && this.step && !this.form.disabled && !this.step.chapter && !skipSave) {
       this.questionnaireService.updateInputs(this.form.value, this.questionnaire, this.step);
@@ -309,6 +311,15 @@ export class StepComponent implements OnInit, OnDestroy {
       return;
     }
     this.router.navigate([`/crash/${this.sessionId}`]);
+  }
+
+  private afterSubmitCheck() {
+    const componentRef = this.dynamicControlDirective?.controlComponentRef;
+    if (componentRef && typeof componentRef.instance.afterSubmit === 'function') {
+      componentRef.instance.afterSubmit().pipe(
+        take(1)
+      ).subscribe();
+    }
   }
 
   ngOnDestroy() {

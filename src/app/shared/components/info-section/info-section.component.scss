@@ -3,6 +3,12 @@
   flex: 1;
   overflow-wrap: anywhere;
 
+  .small {
+    h2 {
+      font-size: 1.3rem;
+    }
+  }
+
   .information-panel {
     color: var(--theme-color-background);
 

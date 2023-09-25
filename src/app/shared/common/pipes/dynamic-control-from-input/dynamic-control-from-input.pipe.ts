@@ -27,6 +27,8 @@ import { SketchCanvasModule } from "@app/shared/components/control-value-accesso
 import { TextAreaControlComponent } from "@app/shared/form-controls/text-area-control/text-area-control.component";
 import { TextAreaControlModule } from "@app/shared/form-controls/text-area-control/text-area-control.module";
 import { Subject } from "rxjs";
+import { InviteComponent } from "@app/shared/components/control-value-accessors/invite/invite.component";
+import { InviteModule } from "@app/shared/components/control-value-accessors/invite/invite.module";
 
 @Pipe({
   name: 'dynamicControlFromInput',
@@ -100,6 +102,15 @@ export class DynamicControlFromInputPipe implements PipeTransform {
       case InputType.sketch:
         component = SketchCanvasComponent;
         module = SketchCanvasModule;
+        additionalOptions = { step: step };
+        componentReactiveOutputs = {
+          next: (save: boolean) => next.next(save),
+          back: () => back.next()
+        };
+        break;
+      case InputType.invite:
+        component = InviteComponent;
+        module = InviteModule;
         additionalOptions = { step: step };
         componentReactiveOutputs = {
           next: (save: boolean) => next.next(save),

@@ -84,6 +84,7 @@ export enum InputType {
   driving_license = 'driving_license',
   sketch = 'sketch',
   imageUpload = 'image_upload',
+  invite = 'invite',
 }
 
 export enum StepType {

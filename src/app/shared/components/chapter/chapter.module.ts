@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChapterComponent } from './chapter.component';
 import { InputSectionModule } from "@app/shared/components/input-section/input-section.module";
+import { TranslocoModule } from "@ngneat/transloco";
 
 
 
@@ -14,7 +15,8 @@ import { InputSectionModule } from "@app/shared/components/input-section/input-s
   ],
   imports: [
     CommonModule,
-    InputSectionModule
+    InputSectionModule,
+    TranslocoModule
   ]
 })
 export class ChapterModule { }
