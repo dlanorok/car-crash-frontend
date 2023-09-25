@@ -31,6 +31,9 @@
   "car-crash.questionnaire.service.sketch-changed": "Sketch data has been changed. You have to confirm the sketch again",
   "car-crash.questionnaire.vehicle.joined": "Invited vehicle joined",
 
+  "car-crash.navigation-header.me": "Me",
+  "car-crash.navigation-header.co-participant": "Soudeleženec",
+
   "car-crash.shared.next": "Next",
 
 

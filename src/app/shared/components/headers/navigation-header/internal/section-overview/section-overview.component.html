@@ -1,43 +1,45 @@
-<ng-container *ngFor="let section of questionnaire.data.sections; let i = index">
-  <div class="padding section"
-       [ngClass]="(questionnaire | getStateFromPipe : section)"
-       [class.current-section]="section.id === currentSection.id"
-       [routerLink]="'/crash/' + crash.session_id + '/questionnaires/' + questionnaire.id + '/sections/' + section.id + '/steps/' + section.starting_step"
-       (click)="sectionClicked.next()"
-  >
-    <div *ngIf="section.id === currentSection.id" class="current-section-wrapper">
-      {{ 'car-crash.overview.currently-editing' | transloco }}
+<div [class.creator]="crash.creator | amICreator">
+  <ng-container *ngFor="let section of questionnaire.data.sections; let i = index">
+    <div class="padding section"
+         [ngClass]="(questionnaire | getStateFromPipe : section)"
+         [class.current-section]="section.id === currentSection.id"
+         [routerLink]="'/crash/' + crash.session_id + '/questionnaires/' + questionnaire.id + '/sections/' + section.id + '/steps/' + section.starting_step"
+         (click)="sectionClicked.next()"
+    >
+      <div *ngIf="section.id === currentSection.id" class="current-section-wrapper">
+        {{ 'car-crash.overview.currently-editing' | transloco }}
+      </div>
+      <div class="flex justify-content-space-between gap-half">
+        <div class="step-num">
+          0{{ i + 1 }}
+        </div>
+        <div class="flex-1">
+          {{ section.name }}
+        </div>
+        <!--      <span-->
+        <!--        style="font-size: 11px; color: #7a7a7a"-->
+        <!--        *ngIf="section.id === SectionId.accidentSketch && (questionnaire | getStateFromPipe : section) === ModelState.partial">-->
+        <!--              §§ You must confirm the sketch before You can proceed-->
+        <!--            </span>-->
+        <!--      <small *ngIf="section.helpText">-->
+        <!--        {{ section.helpText }}-->
+        <!--      </small>-->
+        <div class="d-flex align-items-center list-action">
+          <ng-container *ngIf="section.id === currentSection.id; else stateTpl">
+            <app-svg-comp name="next-circle" width="1.5rem"></app-svg-comp>
+          </ng-container>
+          <ng-template #stateTpl>
+            <app-svg-comp class="tick" name="tick" width="1.5rem"></app-svg-comp>
+          </ng-template>
+        </div>
+      </div>
     </div>
-    <div class="flex justify-content-space-between gap-half">
-      <div class="step-num">
-        0{{ i + 1 }}
-      </div>
-      <div class="flex-1">
-        {{ section.name }}
-      </div>
-<!--      <span-->
-<!--        style="font-size: 11px; color: #7a7a7a"-->
-<!--        *ngIf="section.id === SectionId.accidentSketch && (questionnaire | getStateFromPipe : section) === ModelState.partial">-->
-<!--              §§ You must confirm the sketch before You can proceed-->
-<!--            </span>-->
-<!--      <small *ngIf="section.helpText">-->
-<!--        {{ section.helpText }}-->
-<!--      </small>-->
-      <div class="d-flex align-items-center list-action">
-        <ng-container *ngIf="section.id === currentSection.id; else stateTpl">
-          <app-svg-comp name="next-circle" width="1.5rem"></app-svg-comp>
-        </ng-container>
-        <ng-template #stateTpl>
-          <app-svg-comp class="tick" name="tick" width="1.5rem"></app-svg-comp>
-        </ng-template>
-      </div>
-    </div>
-  </div>
 
-<!--  <div *ngIf="i === 0 && (crash.creator | amICreator) && (questionnaire.creator | amICreator)" class="todo-item" [routerLink]="'invite'">-->
-<!--    Invite others-->
-<!--    <div class="d-flex align-items-center list-action">-->
-<!--      <app-svg-comp *ngSwitchCase="ModelState.validated" name="tick" width="28px"></app-svg-comp>-->
-<!--    </div>-->
-<!--  </div>-->
-</ng-container>
+    <!--  <div *ngIf="i === 0 && (crash.creator | amICreator) && (questionnaire.creator | amICreator)" class="todo-item" [routerLink]="'invite'">-->
+    <!--    Invite others-->
+    <!--    <div class="d-flex align-items-center list-action">-->
+    <!--      <app-svg-comp *ngSwitchCase="ModelState.validated" name="tick" width="28px"></app-svg-comp>-->
+    <!--    </div>-->
+    <!--  </div>-->
+  </ng-container>
+</div>

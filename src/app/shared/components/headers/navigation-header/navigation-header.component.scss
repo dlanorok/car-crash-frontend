@@ -64,12 +64,24 @@
       width: 2.5rem;
       height: 2.5rem;
       text-align: center;
-      background-color: var(--theme-color-primary);
+      background-color: var(--yellow-car);
+      color: var(--theme-color-type);
       border-radius: 50%;
+      font-weight: 700;
       justify-content: center;
       align-items: center;
       font-size: 1.4rem;
       display: flex;
+
+      &.smaller {
+        width: 2rem;
+        height: 2rem;
+        font-weight: 600;
+      }
+
+      &.creator {
+        background-color: var(--blue-car);
+      }
     }
   }
 
@@ -103,10 +115,10 @@
       background-color: var(--theme-color-dark);
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: calc(var(--theme-spacing-rem) * 0.75);
+      padding: calc(var(--theme-spacing-rem) * 0.45) calc(var(--theme-spacing-rem) * 0.75);
       border: var(--border-small) var(--theme-color-basic);
       font-weight: 600;
+      gap: var(--theme-spacing-rem-half);
 
       &.first {
         border-top-left-radius: var(--border-radius-rem-half);
@@ -119,7 +131,7 @@
       }
 
       &.selected {
-        color: var(--theme-color-dark);
+        color: var(--theme-color-type);
         background-color: var(--theme-color-basic);
       }
     }
