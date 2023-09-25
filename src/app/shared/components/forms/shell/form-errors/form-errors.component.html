@@ -9,7 +9,7 @@
 
       <ng-container *ngIf="control?.hasError(validatorErrors.validatePhoneNumber) && !control?.errors?.[validatorErrors.validatePhoneNumber]['valid'];">
         <span>
-          §§ invalid phone number
+          {{ 'shared.forms/validators.labels.phone_number.val' | transloco }}
         </span>
       </ng-container>
 

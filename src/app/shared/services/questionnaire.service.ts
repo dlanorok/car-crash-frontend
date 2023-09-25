@@ -9,6 +9,7 @@ import { CookieService } from "ngx-cookie-service";
 import { ToastrService } from "ngx-toastr";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { TranslocoService } from "@ngneat/transloco";
 
 @UntilDestroy()
 @Injectable({
@@ -18,6 +19,7 @@ export class QuestionnaireService implements OnDestroy {
   private readonly questionnairesApiService: QuestionnairesApiService = inject(QuestionnairesApiService);
   private readonly cookieService: CookieService = inject(CookieService);
   protected readonly toastr: ToastrService = inject(ToastrService);
+  protected readonly translateService: TranslocoService = inject(TranslocoService);
 
 
   questionnairesUpdates$: Subject<QuestionnaireModel[]> = new Subject<QuestionnaireModel[]>();
@@ -100,7 +102,7 @@ export class QuestionnaireService implements OnDestroy {
       const currentConfirmedEditors = current[0].data.inputs[sketchInputId].value.confirmed_editors || [];
       const editor = this.cookieService.get(CookieName.sessionId);
       if (previousConfirmedEditors.includes(editor) && !currentConfirmedEditors.includes(editor)) {
-        this.toastr.warning('§§ Sketch data has been changed. You have to confirm the sketch again');
+        this.toastr.warning(this.translateService.translate('car-crash.questionnaire.service.sketch-changed'));
       }
     });
   }
@@ -110,7 +112,7 @@ export class QuestionnaireService implements OnDestroy {
     if (index < 0) {
       this.questionnaires.push({...questionnaire});
       this.questionnairesUpdates$.next(this.questionnaires);
-      this.toastr.success('§§ Invited vehicle joined');
+      this.toastr.success(this.translateService.translate('car-crash.questionnaire.vehicle.joined'));
     } else {
       this.questionnaires[index] = {...questionnaire};
       this.questionnaireUpdates$.next(questionnaire);

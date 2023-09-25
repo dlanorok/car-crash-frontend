@@ -6,7 +6,7 @@
        (click)="sectionClicked.next()"
   >
     <div *ngIf="section.id === currentSection.id" class="current-section-wrapper">
-      §§ TRENUTNO ODGOVARJATE
+      {{ 'car-crash.overview.currently-editing' | transloco }}
     </div>
     <div class="flex justify-content-space-between gap-half">
       <div class="step-num">

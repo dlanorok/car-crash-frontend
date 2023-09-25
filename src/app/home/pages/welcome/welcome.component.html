@@ -2,10 +2,10 @@
   <img class="logo-img" src="./assets/images/car-bot.png" alt="car-crash" />
   <div class="gap-half flex flex-column z-index-1">
     <h1>
-      Car crash assist
+      {{ 'car-crash.name' | transloco }}
     </h1>
     <p>
-      §§ Zanesljiv partner na evropskih cestah
+      {{ 'car-crash.description' | transloco }}
     </p>
   </div>
 </div>
@@ -15,7 +15,7 @@
     <div class="padding scan flex flex-column gap">
       <app-svg-comp class="main-icon" name="qr-code" width="2.5rem"></app-svg-comp>
       <div class="flex flex-column">
-        §§ Scan QR code to join another participant
+        {{ 'car-crash.welcome.scan-qr-code' | transloco }}
         <div class="flex justify-content-end">
           <app-svg-comp name="next" width="20px" class="next-icon"></app-svg-comp>
         </div>
@@ -25,7 +25,7 @@
     <div class="padding scan flex flex-column gap">
       <app-svg-comp class="main-icon" name="info" width="2.5rem"></app-svg-comp>
       <div class="flex flex-column">
-        Get help about Car crash assist
+        {{ 'car-crash.welcome.get-help' | transloco }}
         <div class="flex justify-content-end">
           <app-svg-comp name="next" width="20px" class="next-icon"></app-svg-comp>
         </div>
@@ -37,7 +37,7 @@
     <div class="padding flex flex-column justify-content-space-between flex-1">
       <app-svg-comp class="main-icon" name="ballot-check" width="2.5rem"></app-svg-comp>
       <div>
-        Start editing the European accident statement form
+        {{ 'car-crash.welcome.start-editing' | transloco }}
         <div class="flex justify-content-end">
           <app-svg-comp name="next" width="20px" class="next-icon"></app-svg-comp>
         </div>

@@ -128,9 +128,9 @@
   <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
 </div>
 <app-input-section
-  [title]="'§§ Onzačite smer naleta' | transloco"
-  [info]="'CONTENT OF INFO??' | transloco"
-  [buttonName]="'§§ naprej'" [disabledButton]="((value$ | async)?.selectedParts || []).length === 0"
+  [title]="'car-crash.initial-impact.direction' | transloco"
+  [info]="'car-crash.initial-impact.info' | transloco"
+  [buttonName]="'car-crash.shared.next' | transloco " [disabledButton]="((value$ | async)?.selectedParts || []).length === 0"
   (next)="next.emit()"
   (back)="back.emit()">
 </app-input-section>

@@ -65,7 +65,7 @@
       </g>
     </svg>
     <div *ngIf="step === 1" class="flex justify-content-center align-items-center flex-1">
-      Text that has to be changed but
+      {{ 'car-crash.damaged-parts.upload-images.info' | transloco }}
     </div>
   </div>
 
@@ -73,9 +73,9 @@
 </div>
 
 <app-input-section
-  [title]="step === 0 ? ('§§ Onzačite poškodovane dele' | transloco) : 'Upload images'"
-  [info]="'CONTENT OF INFO??' | transloco"
-  [buttonName]="'§§ naprej'" [disabledButton]="((value$ | async)?.selectedParts || []).length === 0"
+  [title]="step === 0 ? ('car-crash.damaged-parts.title' | transloco) : 'car-crash.damaged-parts.upload-images' | transloco"
+  [info]="'car-crash.damaged-parts.info' | transloco"
+  [buttonName]="'car-crash.shared.next' | transloco" [disabledButton]="((value$ | async)?.selectedParts || []).length === 0"
   (next)="next.emit()"
   (back)="back.emit()">
 

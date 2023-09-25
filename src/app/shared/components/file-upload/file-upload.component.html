@@ -14,7 +14,7 @@
   </ng-template>
 
   <div class="file-input-wrapper flex-1">
-    <app-button class="next-button" [buttonText]="'Upload image'" [outline]="true" (click)="onFileUpload()"></app-button>
+    <app-button class="next-button" [buttonText]="'car-crash.file-upload.button.text' | transloco" [outline]="true" (click)="onFileUpload()"></app-button>
     <input #fileUploadInput [class.error]="error" type="file" accept="image/*" (change)="onFileSelected($event)">
   </div>
 </div>

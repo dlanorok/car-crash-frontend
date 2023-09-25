@@ -3,7 +3,7 @@
     *ngIf="(value$ | async | canConfirmSketch) === false && (value$ | async | canEditSketch) === false"
     class="wait-notification"
   >
-    Another person is editing the sketch, once finished you will have ability to confirm/edit it.
+    {{ 'car-crash.sketch.editing-disabled' | transloco }}
   </div>
 <!--  <div id="container-wrapper" class="container-wrapper">-->
 <!--    <div *ngIf="imageUrl$ | async; else emptyTpl" style="position: absolute; z-index: 1">-->
@@ -15,16 +15,16 @@
 <!--  </div>-->
   <div id="canvas-container" #container class="canvas-container"></div>
 
-  <app-button *ngIf="!(value$ | async)?.editing" class="next-button" [buttonText]="'§§ Edit sketch'" (click)="editSketch()"></app-button>
+  <app-button *ngIf="!(value$ | async)?.editing" class="next-button" [buttonText]="'car-crash.sketch.edit' | transloco" (click)="editSketch()"></app-button>
 </div>
 
 <ng-template #emptyTpl>
   <div class="alert alert-warning" role="alert">
-    First complete initial questions
+    {{ 'car-crash.sketch.complete-other-questions' | transloco}}
   </div>
 </ng-template>
 
 <app-input-section
-  [buttonName]="'§§Confirm sketch'" (next)="confirmSketch()" (back)="back.emit()" [disabledButton]="(value$ | async | canConfirmSketch) === false">
+  [buttonName]="'car-crash.sketch.confirm' | transloco" (next)="confirmSketch()" (back)="back.emit()" [disabledButton]="(value$ | async | canConfirmSketch) === false">
 </app-input-section>
 

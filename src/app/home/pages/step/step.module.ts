@@ -17,6 +17,7 @@ import { ChapterModule } from "@app/shared/components/chapter/chapter.module";
 import { NavigationHeaderModule } from "@app/shared/components/headers/navigation-header/navigation-header.module";
 import { GetStepIndexDataPipe } from "@app/home/pages/step/pipes/get-step-index-data.pipe";
 import { GetSectionIndexDataPipe } from "@app/home/pages/step/pipes/get-section-index-data.pipe";
+import { TranslocoModule } from "@ngneat/transloco";
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { GetSectionIndexDataPipe } from "@app/home/pages/step/pipes/get-section-
     InputSectionModule,
     InfoSectionModule,
     ChapterModule,
-    NavigationHeaderModule
+    NavigationHeaderModule,
+    TranslocoModule
   ]
 })
 export class StepModule { }

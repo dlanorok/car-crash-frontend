@@ -24,9 +24,6 @@ export class WelcomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.pageDataService.pageData = {
-      pageName: '§§Car Crash assist'
-    };
     this.localStorageCrash = localStorage.getItem(StorageItem.sessionId);
   }
 }

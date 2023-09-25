@@ -5,6 +5,7 @@ import { GetStateFromSectionModule } from "@app/shared/common/pipes/get-state-fr
 import { AmICreatorModule } from "@app/shared/common/pipes/am-i-creator/am-i-creator.module";
 import { RouterModule } from "@angular/router";
 import { SvgIconModule } from "@app/shared/components/ui/svg-icon/svg-icon.module";
+import { TranslocoModule } from "@ngneat/transloco";
 
 
 
@@ -20,7 +21,8 @@ import { SvgIconModule } from "@app/shared/components/ui/svg-icon/svg-icon.modul
     GetStateFromSectionModule,
     AmICreatorModule,
     RouterModule,
-    SvgIconModule
+    SvgIconModule,
+    TranslocoModule
   ]
 })
 export class SectionOverviewModule { }

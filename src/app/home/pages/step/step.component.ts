@@ -19,6 +19,7 @@ import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { CrashModel } from "@app/shared/models/crash.model";
 import { selectCrash } from "@app/app-state/crash/crash-selector";
 import { loadCrash } from "@app/app-state/crash/crash-action";
+import { TranslocoService } from "@ngneat/transloco";
 
 @UntilDestroy()
 @Component({
@@ -37,6 +38,7 @@ export class StepComponent implements OnInit, OnDestroy {
   protected readonly getStepInputsPipe: GetStepInputsPipe = inject(GetStepInputsPipe);
   protected readonly cookieService: CookieService = inject(CookieService);
   protected readonly toastr: ToastrService = inject(ToastrService);
+  protected readonly translateService: TranslocoService = inject(TranslocoService);
 
   crash$: Observable<CrashModel> = this.store.select(selectCrash);
   protected destroy$: Subject<void> = new Subject<void>();
@@ -264,7 +266,7 @@ export class StepComponent implements OnInit, OnDestroy {
     updateEntireFormValidity(this.form);
 
     if (!this.form?.valid && !this.form.disabled) {
-      this.toastr.error('§§ This field is required');
+      this.toastr.error(this.translateService.translate('shared.forms/validators.labels.control_required.val'));
       return;
     }
     this.toastr.clear();

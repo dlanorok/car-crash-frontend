@@ -25,7 +25,7 @@
       <div class="scrollable">
         <app-info-section [step]="step"></app-info-section>
       </div>
-      <app-input-section *ngIf="!step.main_screen && !step.chapter" (back)="previous()" (next)="next()" [disabledButton]="form.invalid" [buttonName]="'§§Next'">
+      <app-input-section *ngIf="!step.main_screen && !step.chapter" (back)="previous()" (next)="next()" [disabledButton]="form.invalid" [buttonName]="'car-crash.shared.next' | transloco">
         <div>
           <form [formGroup]="form" class="form-layout">
             <ng-container *ngFor="let input of inputs">
