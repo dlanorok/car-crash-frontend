@@ -1,14 +1,14 @@
-import { Component, forwardRef, inject, Injector, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, inject, Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
 import { customAlphabet } from 'nanoid';
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subject } from "rxjs";
 
 @Component(
   {
     template: '',
   },
 )
-export abstract class BaseFormControlComponent<T> implements ControlValueAccessor, OnInit {
+export abstract class BaseFormControlComponent<T> implements ControlValueAccessor, OnInit, OnDestroy {
   private injector: Injector = inject(Injector);
 
   @Input() label?: string;
@@ -19,6 +19,7 @@ export abstract class BaseFormControlComponent<T> implements ControlValueAccesso
 
   readonly value$: BehaviorSubject<T | undefined | null> = new BehaviorSubject<T | undefined | null>(undefined);
   readonly isDisabled$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  protected destroy$: Subject<void> = new Subject<void>();
 
   readonly _id: string = customAlphabet('abcdefgijz', 12)();
 
@@ -69,6 +70,11 @@ export abstract class BaseFormControlComponent<T> implements ControlValueAccesso
     } else {
       this.formControl.enable();
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

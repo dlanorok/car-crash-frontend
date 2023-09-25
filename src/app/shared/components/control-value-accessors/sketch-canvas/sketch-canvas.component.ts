@@ -22,7 +22,6 @@ import {
   Observable,
   of, pairwise,
   ReplaySubject, startWith,
-  Subject,
   switchMap,
   take,
   takeUntil,
@@ -92,7 +91,6 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
   private lastDist = 0;
   private isDragging = false;
 
-  private readonly destroy$: Subject<void> = new Subject<void>();
   private readonly step$: ReplaySubject<Step> = new ReplaySubject<Step>();
 
   @Input() set step(step: Step) {

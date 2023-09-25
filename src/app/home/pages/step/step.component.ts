@@ -1,6 +1,17 @@
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { distinctUntilChanged, mergeMap, Observable, skip, Subject, take, takeUntil, tap } from "rxjs";
+import {
+  distinctUntilChanged,
+  mergeMap,
+  Observable,
+  of,
+  skip,
+  Subject,
+  take,
+  takeUntil,
+  tap,
+  zip
+} from "rxjs";
 import { Store } from "@ngrx/store";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
@@ -56,7 +67,7 @@ export class StepComponent implements OnInit, OnDestroy {
 
   readonly next$: Subject<boolean> = new Subject<boolean>();
   readonly back$: Subject<void> = new Subject<void>();
-  @ViewChild(DynamicControlDirective) private readonly dynamicControlDirective?: DynamicControlDirective<any>;
+  @ViewChildren(DynamicControlDirective) private readonly dynamicControlDirectives?: QueryList<DynamicControlDirective<any>>;
 
   ngOnInit(): void {
     this.getData();
@@ -225,18 +236,30 @@ export class StepComponent implements OnInit, OnDestroy {
   }
 
   previous(): void {
-    const componentRef = this.dynamicControlDirective?.controlComponentRef;
-    if (componentRef && typeof componentRef.instance.beforeBack === 'function') {
-      componentRef.instance.beforeBack().pipe(
-        take(1),
-        tap((canContinue: boolean) => {
+    if ((this.dynamicControlDirectives?.length || 0) > 0) {
+      const observables = this.dynamicControlDirectives?.map(dynamicControlDirective => {
+        const componentRef = dynamicControlDirective?.controlComponentRef;
+        if (componentRef && typeof componentRef.instance.beforeBack === 'function') {
+          return componentRef.instance.beforeBack().pipe(take(1));
+        } else {
+          return of(true);
+        }
+      });
+      if (observables && observables.length > 0) {
+        zip(observables).pipe(
+          take(1)
+        ).subscribe((values: boolean[]) => {
+          const canContinue = values.reduce((acc: boolean, curr: boolean) => {
+            return acc && curr;
+          }, true);
+
           if (canContinue) {
             if (this.checkFormTouched()) {
               this.location.back();
             }
           }
-        })
-      ).subscribe();
+        });
+      }
     } else {
       if (this.checkFormTouched()) {
         this.location.back();
@@ -245,24 +268,31 @@ export class StepComponent implements OnInit, OnDestroy {
   }
 
   next(url?: string, skipSave?: boolean): void {
-    const componentRef = this.dynamicControlDirective?.controlComponentRef;
-    if (componentRef && typeof componentRef.instance.beforeSubmit === 'function') {
-      componentRef.instance.beforeSubmit().pipe(
-        take(1),
-        tap((canContinue: boolean) => {
-          if (canContinue) {
-            this.afterNext(url, skipSave);
-          }
-        })
-      ).subscribe();
+    this.submitted = true;
+    const observables = this.dynamicControlDirectives?.map(dynamicControlDirective => {
+      const componentRef = dynamicControlDirective?.controlComponentRef;
+      if (componentRef && typeof componentRef.instance.beforeSubmit === 'function') {
+        return componentRef.instance.beforeSubmit().pipe(take(1));
+      } else {
+        return of(true);
+      }
+    });
+
+    if (observables && observables.length > 0) {
+      zip(observables).pipe(take(1)).subscribe((values) => {
+        const canContinue = values.reduce((acc: boolean, curr: boolean) => {
+          return acc && curr;
+        }, true);
+        if (canContinue) {
+          this.afterNext(url, skipSave);
+        }
+      });
     } else {
       this.afterNext(url, skipSave);
     }
-
   }
 
   private afterNext(url?: string, skipSave?: boolean) {
-    this.submitted = true;
     updateEntireFormValidity(this.form);
 
     if (!this.form?.valid && !this.form.disabled) {
@@ -314,11 +344,16 @@ export class StepComponent implements OnInit, OnDestroy {
   }
 
   private afterSubmitCheck() {
-    const componentRef = this.dynamicControlDirective?.controlComponentRef;
-    if (componentRef && typeof componentRef.instance.afterSubmit === 'function') {
-      componentRef.instance.afterSubmit().pipe(
-        take(1)
-      ).subscribe();
+    const observables = this.dynamicControlDirectives?.map(dynamicControlDirective => {
+      const componentRef = dynamicControlDirective?.controlComponentRef;
+      if (componentRef && typeof componentRef.instance.afterSubmit === 'function') {
+        return componentRef.instance.afterSubmit().pipe(take(1));
+      } else {
+        return of(true);
+      }
+    });
+    if (observables && observables.length > 0) {
+      zip(observables).pipe(take(1)).subscribe();
     }
   }
 

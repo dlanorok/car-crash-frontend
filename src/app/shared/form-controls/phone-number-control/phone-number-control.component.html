@@ -1,22 +1,22 @@
-<div class="form-group">
-  <label class="floating-label" [htmlFor]="_id">{{ label }}</label>
-  <ngx-intl-tel-input
-    #telInput
-    [id]="_id"
-    [cssClass]="'custom'"
-    [preferredCountries]="[CountryISO.Slovenia, CountryISO.Croatia]"
-    [enableAutoCountrySelect]="false"
-    [enablePlaceholder]="true"
-    [searchCountryFlag]="true"
-    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
-    [selectFirstCountry]="false"
-    [separateDialCode]="true"
-    [selectedCountryISO]="CountryISO.Slovenia"
-    [maxLength]="15"
-    [phoneValidation]="true"
-    [disabled]="(isDisabled$ | async) === true"
-    [ngModel]="value$ | async"
-    (ngModelChange)="handleModelChange($event)"
-  ></ngx-intl-tel-input>
-  <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
-</div>
+<form [formGroup]="phoneForm">
+  <div class="form-group">
+    <label class="floating-label" [htmlFor]="_id">{{ label }}</label>
+    <ngx-intl-tel-input
+      #telInput
+      [id]="_id"
+      [cssClass]="'custom'"
+      [preferredCountries]="[CountryISO.Slovenia, CountryISO.Croatia]"
+      [enableAutoCountrySelect]="false"
+      [enablePlaceholder]="true"
+      [searchCountryFlag]="true"
+      [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+      [selectFirstCountry]="false"
+      [separateDialCode]="true"
+      [selectedCountryISO]="CountryISO.Slovenia"
+      [maxLength]="15"
+      [phoneValidation]="true"
+      formControlName="phone"
+    ></ngx-intl-tel-input>
+    <app-form-errors *ngIf="submitted" [control]="phoneForm.controls['phone']"></app-form-errors>
+  </div>
+</form>
