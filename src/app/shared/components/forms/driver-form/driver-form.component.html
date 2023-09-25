@@ -3,21 +3,18 @@
   <app-text-control
     [formControl]="$any(form.controls['name'])"
     [label]="'car-crash.driver.name.label' | transloco"
-    [placeholder]="'car-crash.driver.name.placeholder' | transloco"
     [submitted]="submitted">
   </app-text-control>
 
   <app-text-control
     [formControl]="$any(form.controls['surname'])"
     [label]="'car-crash.driver.surname.label' | transloco"
-    [placeholder]="'car-crash.driver.surname.placeholder' | transloco"
     [submitted]="submitted">
   </app-text-control>
 
   <app-text-area-control
     [formControl]="$any(form.controls['address'])"
     [label]="'car-crash.driver.address.label' | transloco"
-    [placeholder]="'car-crash.driver.address.placeholder' | transloco"
     [submitted]="submitted"
     [rows]="2"
   >
@@ -26,15 +23,20 @@
   <app-text-control
     [formControl]="$any(form.controls['driving_licence_number'])"
     [label]="'car-crash.driver.driving-licence-number.label' | transloco"
-    [placeholder]="'car-crash.driver.driving-licence-number.placeholder' | transloco"
     [submitted]="submitted">
   </app-text-control>
 
   <app-date-control
     *ngIf="form.get('driving_licence_valid_to')"
     [label]="'car-crash.driver.driving-licence-valid-to.label' | transloco"
-    [placeholder]="'car-crash.driver.driving-licence-valid-to.placeholder' | transloco"
     [formControl]="$any(form.controls['driving_licence_valid_to'])"
     [submitted]="submitted">
   </app-date-control>
+
+  <app-country-control
+    *ngIf="form.get('country') && !form.controls['country']"
+    [label]="'car-crash.driver.country.label' | transloco"
+    [formControl]="$any(form.controls['country'])"
+    [submitted]="submitted">
+  </app-country-control>
 </form>

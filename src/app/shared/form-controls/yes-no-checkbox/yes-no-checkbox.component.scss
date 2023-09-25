@@ -6,3 +6,7 @@
   background-color: var(--bs-gray-700) !important;
   color: var(--bs-gray-100) !important;
 }
+
+:host {
+  margin-top: -10px;
+}

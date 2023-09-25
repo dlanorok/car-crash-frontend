@@ -85,6 +85,7 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
         name: this.findLocaleFieldValue(response, TextFieldType.FIRST_NAME) || this.findLocaleFieldValue(response, TextFieldType.GIVEN_NAMES) || '',
         surname: this.findLocaleFieldValue(response, TextFieldType.SURNAME) || '',
         address: this.findLocaleFieldValue(response, TextFieldType.ADDRESS)?.replace("^", "\n"),
+        country: this.findLocaleFieldValue(response, TextFieldType.ISSUING_STATE_CODE),
         driving_licence_number: this.findLocaleFieldValue(response, TextFieldType.DOCUMENT_NUMBER),
         driving_licence_valid_to: dateOfExpiry ? new Date(dateOfExpiry) : ''
       };

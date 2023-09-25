@@ -1,15 +1,12 @@
-<div class="form-group mt-3">
-
-  <label [htmlFor]="_id" class="form-check-label">{{ label }}</label>
+<div class="form-group">
+  <div class="form-check-label">{{ label }}</div>
   <div class="d-flex gap-2">
     <div>
-      <input (click)="writeValue(true)" [name]="'options' + _id" type="radio" class="btn-check" [id]="'1' + _id" autocomplete="off">
-      <label [class.checked]=" formControl.value === true"  class="btn btn-custom-checkbox" [htmlFor]="'1' + _id">Yes</label><br>
+      <div [class.checked]=" formControl.value === true"  class="btn btn-custom-checkbox" (click)="handleModelChange(true)" >Yes</div><br>
     </div>
 
     <div>
-      <input (click)="writeValue(false)" [name]="'options' + _id" type="radio" class="btn-check" [id]="'2' + _id" autocomplete="off">
-      <label [class.checked]=" formControl.value === false" class="btn btn-custom-checkbox" [htmlFor]="'2' + _id">NO</label><br>
+      <div [class.checked]="formControl.value === false" class="btn btn-custom-checkbox" (click)="handleModelChange(false)">NO</div><br>
     </div>
   </div>
 

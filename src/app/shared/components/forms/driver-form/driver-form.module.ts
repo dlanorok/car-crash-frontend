@@ -6,6 +6,7 @@ import { DriverFormComponent } from "./driver-form.component";
 import { DateControlModule } from "../../../form-controls/date-control/date-control.module";
 import { TextControlModule } from "../../../form-controls/text-control/text-control.module";
 import { TextAreaControlModule } from "@app/shared/form-controls/text-area-control/text-area-control.module";
+import { CountryControlModule } from "@app/shared/form-controls/select-control/implementations/country-control/country-control.module";
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { TextAreaControlModule } from "@app/shared/form-controls/text-area-contr
     TranslocoModule,
     DateControlModule,
     TextControlModule,
-    TextAreaControlModule
+    TextAreaControlModule,
+    CountryControlModule
   ]
 })
 export class DriverFormModule { }

@@ -7,7 +7,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/welcome/welcome.module').then(mod => mod.WelcomeModule),
   },
   {
-    path: 'join',
+    path: 'crash/:sessionId/join',
     loadChildren: () => import('./pages/join-crash/join-crash.module').then(mod => mod.JoinCrashModule),
   },
   {
@@ -25,10 +25,6 @@ const routes: Routes = [
   {
     path: 'crash/:sessionId/accident-data',
     loadChildren: () => import('./pages/accident-report-flow/accident-data/accident-data.module').then(mod => mod.AccidentDataModule),
-  },
-  {
-    path: 'crash/:sessionId/invite',
-    loadChildren: () => import('./pages/accident-report-flow/invite-participants/invite-participants.module').then(mod => mod.InviteParticipantsModule),
   },
   {
     path: 'crash/:sessionId/questionnaires/:questionnaireId/sections/:sectionId/steps/:stepType',

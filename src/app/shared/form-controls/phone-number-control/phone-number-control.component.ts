@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   BaseFormControlComponent,
   provideControlValueAccessor
 } from "@app/shared/form-controls/base-form-control.component";
 import { CountryISO, SearchCountryField } from 'ngx-intl-tel-input';
 import { ChangeData } from "ngx-intl-tel-input/lib/interfaces/change-data";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Observable, of } from "rxjs";
+import { FormControl, FormGroup } from "@angular/forms";
+import { Observable, of, takeUntil, filter } from "rxjs";
 import { updateEntireFormValidity } from '@app/shared/forms/helpers/update-entire-form-validity';
-import { map } from "rxjs/operators";
+import { map, take } from "rxjs/operators";
 
 @Component({
   selector: 'app-phone-number-control',
@@ -16,12 +16,12 @@ import { map } from "rxjs/operators";
   styleUrls: ['./phone-number-control.component.scss'],
   providers: [provideControlValueAccessor(PhoneNumberControlComponent)],
 })
-export class PhoneNumberControlComponent extends BaseFormControlComponent<ChangeData> {
+export class PhoneNumberControlComponent extends BaseFormControlComponent<ChangeData> implements OnInit {
   readonly CountryISO = CountryISO;
   readonly SearchCountryField = SearchCountryField;
 
   phoneForm = new FormGroup({
-    phone: new FormControl(undefined, Validators.required)
+    phone: new FormControl({})
   });
 
   override handleModelChange(value: ChangeData) {
@@ -38,6 +38,24 @@ export class PhoneNumberControlComponent extends BaseFormControlComponent<Change
         return this.phoneForm.controls.phone.valid;
       }),
     );
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.phoneForm.controls.phone.valueChanges.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((value) => {
+      if (value) {
+        this.handleModelChange(value);
+      }
+    });
+
+    this.value$.pipe(
+      filter((value): value is ChangeData => !!value),
+      take(1)
+    ).subscribe((value) => {
+      this.phoneForm.controls.phone.setValue(value);
+    });
   }
 
 }

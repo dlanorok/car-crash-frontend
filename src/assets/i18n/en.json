@@ -38,6 +38,12 @@
 
   "car-crash.shared.next": "Next",
 
+  "car-crash.driver.name.label": "Name",
+  "car-crash.driver.surname.label": "Surname",
+  "car-crash.driver.address.label": "Address",
+  "car-crash.driver.driving-licence-number.label": "Driving license number",
+  "car-crash.driver.driving-licence-valid-to.label": "Valid to",
+  "car-crash.driver.country.label": "Country",
 
   "car-crash.date-picker.weekday.week-label" : "Week",
   "car-crash.date-picker.weekday.0": "Mon",

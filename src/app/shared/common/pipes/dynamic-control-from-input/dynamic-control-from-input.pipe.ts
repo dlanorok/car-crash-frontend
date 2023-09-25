@@ -29,6 +29,8 @@ import { TextAreaControlModule } from "@app/shared/form-controls/text-area-contr
 import { Subject } from "rxjs";
 import { InviteComponent } from "@app/shared/components/control-value-accessors/invite/invite.component";
 import { InviteModule } from "@app/shared/components/control-value-accessors/invite/invite.module";
+import { YesNoCheckboxComponent } from "@app/shared/form-controls/yes-no-checkbox/yes-no-checkbox.component";
+import { YesNoCheckboxModule } from "@app/shared/form-controls/yes-no-checkbox/yes-no-checkbox.module";
 
 @Pipe({
   name: 'dynamicControlFromInput',
@@ -86,6 +88,10 @@ export class DynamicControlFromInputPipe implements PipeTransform {
       case InputType.place:
         component = PlaceSelectorComponent;
         module = PlaceSelectorModule;
+        break;
+      case InputType.boolean:
+        component = YesNoCheckboxComponent;
+        module = YesNoCheckboxModule;
         break;
       case InputType.phone_picker:
         component = PhoneNumberControlComponent;
