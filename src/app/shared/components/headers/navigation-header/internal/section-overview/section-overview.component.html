@@ -3,8 +3,10 @@
     <div class="padding section"
          [ngClass]="(questionnaire | getStateFromPipe : section)"
          [class.current-section]="section.id === currentSection.id"
-         [routerLink]="'/crash/' + crash.session_id + '/questionnaires/' + questionnaire.id + '/sections/' + section.id + '/steps/' + section.starting_step"
-         (click)="sectionClicked.next()"
+         (click)="handleSectionClicked(
+         '/crash/' + crash.session_id + '/questionnaires/' + questionnaire.id + '/sections/' + section.id + '/steps/' + section.starting_step,
+         section
+         )"
     >
       <div *ngIf="section.id === currentSection.id" class="current-section-wrapper">
         {{ 'car-crash.overview.currently-editing' | transloco }}
@@ -15,6 +17,10 @@
         </div>
         <div class="flex-1">
           {{ section.name }}
+
+          <div *ngIf="section.id === SectionId.confirmation && !(questionnaires | areAllCompleted)" class="not-finished">
+            {{ 'car-crash.confirmation.questionnaires-no-finished' | transloco }}
+          </div>
         </div>
         <!--      <span-->
         <!--        style="font-size: 11px; color: #7a7a7a"-->

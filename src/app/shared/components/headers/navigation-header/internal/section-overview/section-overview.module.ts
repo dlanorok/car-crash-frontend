@@ -6,12 +6,14 @@ import { AmICreatorModule } from "@app/shared/common/pipes/am-i-creator/am-i-cre
 import { RouterModule } from "@angular/router";
 import { SvgIconModule } from "@app/shared/components/ui/svg-icon/svg-icon.module";
 import { TranslocoModule } from "@ngneat/transloco";
+import { AreAllCompletedPipe } from "@app/shared/components/headers/navigation-header/internal/section-overview/are-all-completed.pipe";
 
 
 
 @NgModule({
   declarations: [
-    SectionOverviewComponent
+    SectionOverviewComponent,
+    AreAllCompletedPipe
   ],
   exports: [
     SectionOverviewComponent

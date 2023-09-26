@@ -62,7 +62,8 @@ export enum SectionId {
   accidentSketch = 'accident_sketch',
   carAndInsurance = 'car_and_insurance',
   driver = 'driver',
-  additional = 'additional'
+  additional = 'additional',
+  confirmation = 'confirmation'
 }
 
 export enum InputType {

@@ -37,6 +37,7 @@
   "car-crash.invite.with-sms": "Or send invite using SMS",
 
   "car-crash.confirmation.confirm": "Confirm",
+  "car-crash.confirmation.questionnaires-no-finished": "Both participant have to finish all sections first",
   "car-crash.confirmation.summary.participated-driver-data.title": "Data of another participant",
   "car-crash.confirmation.summary.participated-driver-data.name.label": "Name",
   "car-crash.confirmation.summary.participated-driver-data.address.label": "Address",
