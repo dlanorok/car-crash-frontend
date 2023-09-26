@@ -4,9 +4,9 @@ import {
   distinctUntilChanged,
   mergeMap,
   Observable,
-  of,
-  skip,
-  Subject,
+  of, publishReplay, refCount,
+  skip, startWith,
+  Subject, switchMap,
   take,
   takeUntil,
   tap,
@@ -70,7 +70,17 @@ export class StepComponent implements OnInit, OnDestroy {
   readonly back$: Subject<void> = new Subject<void>();
   @ViewChildren(DynamicControlDirective) private readonly dynamicControlDirectives?: QueryList<DynamicControlDirective<any>>;
 
-  readonly questionnaires$: Observable<QuestionnaireModel[]> = this.questionnaireService.getOrFetchQuestionnaires();
+  readonly questionnaires$: Observable<QuestionnaireModel[]> = this.questionnaireService.questionnaireUpdates$.pipe(
+    startWith(undefined),
+    switchMap(() => {
+      return this.questionnaireService.getOrFetchQuestionnaires();
+    }),
+    tap((a) => {
+      console.log("UPDATED", a);
+    }),
+    publishReplay(1),
+    refCount()
+  );
 
   ngOnInit(): void {
     this.getData();
@@ -125,7 +135,7 @@ export class StepComponent implements OnInit, OnDestroy {
             this.stepType = stepType as StepType;
           }
 
-          return this.questionnaireService.getOrFetchQuestionnaires()
+          return this.questionnaires$
             .pipe(
               tap((questionnaires) => {
                 this.questionnaire = questionnaires.find(questionnaire => questionnaire.id === this.questionnaireId);
