@@ -292,3 +292,12 @@ ng-select {
     height: 150px;
   }
 }
+
+
+.warning-text {
+  padding: var(--theme-spacing-rem);
+  border: 1px solid transparent;
+  border-radius: calc(var(--theme-spacing-rem) * 0.25);
+  background-color: #ffbd70;
+  font-weight: 600;
+}

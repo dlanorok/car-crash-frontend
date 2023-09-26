@@ -9,6 +9,6 @@
     <div class="arrow">
       <app-svg-comp name="back" width="1.5rem" (click)="back.next()"></app-svg-comp>
     </div>
-    <app-button class="next-button" [buttonText]="buttonName" [disabled]="disabledButton" (click)="next.next()"></app-button>
+    <app-button class="next-button" [buttonText]="buttonName" [disabled]="disabledButton" (click)="handleNext()"></app-button>
   </div>
 </div>

@@ -42,4 +42,10 @@ export class InputSectionComponent {
     }).pipe(take(1)).subscribe();
   }
 
+  handleNext() {
+    if(!this.disabledButton) {
+      this.next.next();
+    }
+  }
+
 }

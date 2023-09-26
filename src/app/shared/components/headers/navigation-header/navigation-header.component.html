@@ -40,8 +40,8 @@
       <div *ngIf="questionnaires$ | async; let questionnaires" class="flex">
         <ng-container *ngFor="let questionnaire of questionnaires; let i=index; let last=last; let first=first">
           <div *ngIf="crash" class="car-selector" [class.selected]="selectedCar === i" [class.last]="last" [class.first]="first" (click)="selectedCar=i">
-            <div class="car-identifier smaller" [class.creator]="crash.creator | amICreator">
-              {{ (crash.creator | amICreator) ? 'A' : 'B' }}
+            <div class="car-identifier smaller" [class.creator]="crash.creator === questionnaire.creator">
+              {{ crash.creator === questionnaire.creator ? 'A' : 'B' }}
             </div>
             {{ (questionnaire.creator | amICreator) ? '§§VI' : '§§Soudeleženec' }}
           </div>

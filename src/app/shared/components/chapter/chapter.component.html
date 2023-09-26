@@ -14,6 +14,9 @@
     </div>
   </div>
 
-  <app-input-section (back)="back.emit()" (next)="next.emit()" [buttonName]="nextButtonName || ('car-crash.shared.next' | transloco)">
+  <app-input-section (back)="back.emit()" (next)="next.emit()" [disabledButton]="!!errorText" [buttonName]="nextButtonName || ('car-crash.shared.next' | transloco)">
+    <div *ngIf="errorText" class="warning-text">
+      {{ errorText }}
+    </div>
   </app-input-section>
 </div>

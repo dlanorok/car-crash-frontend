@@ -4,7 +4,7 @@ import { ModelState } from '@app/shared/models/base.model';
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
 import { CrashModel } from "@app/shared/models/crash.model";
 import { Router } from "@angular/router";
-import { AreAllCompletedPipe } from "@app/shared/components/headers/navigation-header/internal/section-overview/are-all-completed.pipe";
+import { AreAllCompletedPipe } from "@app/shared/common/pipes/are-all-completed/are-all-completed.pipe";
 
 @Component({
   selector: 'app-section-overview',

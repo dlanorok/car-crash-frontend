@@ -26,7 +26,7 @@ export class InviteComponent extends BaseFormControlComponent<ChangeData> implem
   @Output() back: EventEmitter<void> = new EventEmitter<void>();
   @Output() next: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  location = `${window.origin}/crash/${localStorage.getItem(StorageItem.sessionId)}`;
+  location = `${window.origin}/crash/${localStorage.getItem(StorageItem.sessionId)}/join`;
 
   afterSubmit(): Observable<boolean> {
     return of(this.formControl.value).pipe(

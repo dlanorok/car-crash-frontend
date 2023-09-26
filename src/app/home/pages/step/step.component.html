@@ -7,9 +7,14 @@
       [crash]="crash$ | async">
     </app-navigation-header>
 
-
     <ng-container *ngIf="step.chapter; else inputTpl">
-      <app-chapter (next)="next()" (back)="previous()" [step]="step" class="flex-container non-scrollable"></app-chapter>
+      <app-chapter
+        (next)="next()"
+        (back)="previous()"
+        [step]="step"
+        [errorText]="section.id === SectionId.confirmation && !(((questionnaires$ | async) || []) | areAllCompleted) ? ('car-crash.confirmation.questionnaires-no-finished' | transloco) : undefined"
+        class="flex-container non-scrollable">
+      </app-chapter>
     </ng-container>
     <ng-template #inputTpl>
       <ng-container *ngIf="step.main_screen; else baseScreenTpl">
@@ -25,7 +30,12 @@
       <div class="scrollable">
         <app-info-section [step]="step"></app-info-section>
       </div>
-      <app-input-section *ngIf="!step.main_screen && !step.chapter" (back)="previous()" (next)="next()" [disabledButton]="form.invalid" [buttonName]="'car-crash.shared.next' | transloco">
+      <app-input-section
+        *ngIf="!step.main_screen && !step.chapter"
+        (back)="previous()"
+        (next)="next()"
+        [disabledButton]="form.invalid || (section.id === SectionId.confirmation && !questionnaire.completed)"
+        [buttonName]="'car-crash.shared.next' | transloco">
         <div>
           <form [formGroup]="form" class="form-layout">
             <ng-container *ngFor="let input of inputs">

@@ -15,7 +15,7 @@ import {
 import { Store } from "@ngrx/store";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
-import { Action, Input, InputType, Option, Section, Step, StepType } from "@app/home/pages/crash/flow.definition";
+import { Action, Input, InputType, Option, Section, SectionId, Step, StepType } from "@app/home/pages/crash/flow.definition";
 import { Location } from '@angular/common';
 import { AbstractControl, FormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { GetStepInputsPipe } from "@app/home/pages/step/pipes/get-step-inputs.pipe";
@@ -64,10 +64,13 @@ export class StepComponent implements OnInit, OnDestroy {
   step?: Step;
   form!: UntypedFormGroup;
   inputs: Input[] = [];
+  readonly SectionId: typeof SectionId = SectionId;
 
   readonly next$: Subject<boolean> = new Subject<boolean>();
   readonly back$: Subject<void> = new Subject<void>();
   @ViewChildren(DynamicControlDirective) private readonly dynamicControlDirectives?: QueryList<DynamicControlDirective<any>>;
+
+  readonly questionnaires$: Observable<QuestionnaireModel[]> = this.questionnaireService.getOrFetchQuestionnaires();
 
   ngOnInit(): void {
     this.getData();

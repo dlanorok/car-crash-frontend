@@ -9,6 +9,7 @@ import { Step } from "@app/home/pages/crash/flow.definition";
 export class ChapterComponent {
   @Input() step?: Step;
   @Input() nextButtonName?: string;
+  @Input() errorText?: string;
 
   @Output() back: EventEmitter<void> = new EventEmitter<void>();
   @Output() next: EventEmitter<void> = new EventEmitter<void>();

@@ -6,14 +6,13 @@ import { AmICreatorModule } from "@app/shared/common/pipes/am-i-creator/am-i-cre
 import { RouterModule } from "@angular/router";
 import { SvgIconModule } from "@app/shared/components/ui/svg-icon/svg-icon.module";
 import { TranslocoModule } from "@ngneat/transloco";
-import { AreAllCompletedPipe } from "@app/shared/components/headers/navigation-header/internal/section-overview/are-all-completed.pipe";
+import { AreAllCompletedModule } from "@app/shared/common/pipes/are-all-completed/are-all-completed.module";
 
 
 
 @NgModule({
   declarations: [
     SectionOverviewComponent,
-    AreAllCompletedPipe
   ],
   exports: [
     SectionOverviewComponent
@@ -24,7 +23,8 @@ import { AreAllCompletedPipe } from "@app/shared/components/headers/navigation-h
     AmICreatorModule,
     RouterModule,
     SvgIconModule,
-    TranslocoModule
+    TranslocoModule,
+    AreAllCompletedModule
   ]
 })
 export class SectionOverviewModule { }
