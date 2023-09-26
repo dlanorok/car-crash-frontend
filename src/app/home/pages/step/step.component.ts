@@ -75,9 +75,6 @@ export class StepComponent implements OnInit, OnDestroy {
     switchMap(() => {
       return this.questionnaireService.getOrFetchQuestionnaires();
     }),
-    tap((a) => {
-      console.log("UPDATED", a);
-    }),
     publishReplay(1),
     refCount()
   );
@@ -99,7 +96,7 @@ export class StepComponent implements OnInit, OnDestroy {
     this.questionnaireService.questionnaireUpdates$.pipe(
       untilDestroyed(this)
     ).subscribe((questionnaire) => {
-      if (questionnaire && questionnaire.id === this.questionnaire?.id) {
+      if (questionnaire && questionnaire.id === this.questionnaire?.id && this.section?.id === SectionId.accidentSketch) {
         this.questionnaire = questionnaire;
         this.updateControls(true);
       }
@@ -137,6 +134,7 @@ export class StepComponent implements OnInit, OnDestroy {
 
           return this.questionnaires$
             .pipe(
+              take(1),
               tap((questionnaires) => {
                 this.questionnaire = questionnaires.find(questionnaire => questionnaire.id === this.questionnaireId);
                 if (sectionId) {

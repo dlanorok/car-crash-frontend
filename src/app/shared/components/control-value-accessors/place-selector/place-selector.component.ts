@@ -40,24 +40,6 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
   @ViewChild('currentLocation', { read: ElementRef }) currentLocation!: ElementRef;
   @ViewChild('searchPlaceInput', { read: ElementRef }) searchPlaceInput!: ElementRef;
 
-  // set setSearchPlaceInput(searchPlaceInput: ElementRef<HTMLInputElement>) {
-  //   if (searchPlaceInput) {
-  //     const searchBox = new google.maps.places.SearchBox(searchPlaceInput.nativeElement);
-  //     searchBox.addListener('places_changed', () => {
-  //       const places = searchBox.getPlaces();
-  //
-  //       if (!places || (places || []).length == 0) {
-  //         return;
-  //       }
-  //
-  //       const location = places[0].geometry?.location;
-  //       if (location) {
-  //         this.map.googleMap?.setCenter(location);
-  //       }
-  //     });
-  //   }
-  // }
-
 
   mapOptions: MapOptions = {
     zoom: 5,
@@ -147,17 +129,26 @@ export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelect
   }
 
   showCurrentLocation() {
+    const div = document.getElementById('test');
+    if (!div) {
+      return;
+    }
+
+    div.innerHTML += "ASKED";
     if (navigator.geolocation) {
+      div.innerHTML += "Get current position";
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           this.setMapZoomAndPosition(18, latitude, longitude);
         },
         (error) => {
+          div.innerHTML += `Error: ${JSON.stringify(error)}`;
           console.error('Error getting current location:', error);
         }
       );
     } else {
+      div.innerHTML += `Error udnefined`;
       console.error('Geolocation is not supported by this browser.');
     }
   }
