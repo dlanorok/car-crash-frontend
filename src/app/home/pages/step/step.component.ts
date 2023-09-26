@@ -4,7 +4,7 @@ import {
   distinctUntilChanged,
   mergeMap,
   Observable,
-  of, publishReplay, refCount,
+  of,
   skip, startWith,
   Subject, switchMap,
   take,
@@ -74,9 +74,7 @@ export class StepComponent implements OnInit, OnDestroy {
     startWith(undefined),
     switchMap(() => {
       return this.questionnaireService.getOrFetchQuestionnaires();
-    }),
-    publishReplay(1),
-    refCount()
+    })
   );
 
   ngOnInit(): void {
@@ -96,8 +94,8 @@ export class StepComponent implements OnInit, OnDestroy {
     this.questionnaireService.questionnaireUpdates$.pipe(
       untilDestroyed(this)
     ).subscribe((questionnaire) => {
+      this.questionnaire = questionnaire;
       if (questionnaire && questionnaire.id === this.questionnaire?.id && this.section?.id === SectionId.accidentSketch) {
-        this.questionnaire = questionnaire;
         this.updateControls(true);
       }
     });

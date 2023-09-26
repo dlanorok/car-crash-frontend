@@ -1,8 +1,18 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnDestroy } from '@angular/core';
 import { CrashModel } from "@app/shared/models/crash.model";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
-import { Observable, publishReplay, refCount } from "rxjs";
+import {
+  BehaviorSubject,
+  filter,
+  merge,
+  Observable,
+  publishReplay,
+  refCount,
+  startWith,
+  switchMap,
+  timer
+} from "rxjs";
 import { Section } from "@app/home/pages/crash/flow.definition";
 import { CookieService } from "ngx-cookie-service";
 import { map } from "rxjs/operators";
@@ -23,7 +33,7 @@ export interface StepData {
   templateUrl: './navigation-header.component.html',
   styleUrls: ['./navigation-header.component.scss']
 })
-export class NavigationHeaderComponent {
+export class NavigationHeaderComponent implements OnDestroy {
   private readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
   private readonly cookieService: CookieService = inject(CookieService);
 
@@ -32,12 +42,23 @@ export class NavigationHeaderComponent {
   @Input() stepData: StepData = {currentStepIndex: 2, stepsLength: 12};
   @Input() crash?: CrashModel | null;
 
+  private readonly menuOpened$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   menuOpened = false;
   selectedCar = 0;
 
-  questionnaires$: Observable<QuestionnaireModel[]> = this.questionnaireService.getOrFetchQuestionnaires().pipe(
+  questionnaires$: Observable<QuestionnaireModel[]> = merge(
+    this.questionnaireService.questionnaireUpdates$,
+    this.menuOpened$.pipe(filter(opened => opened)),
+    timer(0, 10000).pipe(filter(() => this.menuOpened))
+  ).pipe(
+    filter(() => this.menuOpened),
+    startWith(undefined),
+    switchMap(() => {
+      return this.questionnaireService.getOrFetchQuestionnaires(true);
+    }),
     map((questionnaires) => {
-      return questionnaires.sort((a,b) => a.creator === this.cookieService.get(CookieName.sessionId) ? -1 : 1);
+      return questionnaires.sort((a, b) => a.creator === this.cookieService.get(CookieName.sessionId) ? -1 : 1);
     }),
     publishReplay(1),
     refCount()
@@ -45,5 +66,10 @@ export class NavigationHeaderComponent {
 
   toggleMenu() {
     this.menuOpened = !this.menuOpened;
+    this.menuOpened$.next(this.menuOpened);
+  }
+
+  ngOnDestroy() {
+    this.menuOpened$.complete();
   }
 }

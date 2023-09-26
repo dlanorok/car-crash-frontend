@@ -31,8 +31,8 @@ export class QuestionnaireService implements OnDestroy {
     this.observeSketchChanges();
   }
 
-  getOrFetchQuestionnaires(): Observable<QuestionnaireModel[]> {
-    if (this.questionnaires.length > 0) {
+  getOrFetchQuestionnaires(forceFetch?: boolean): Observable<QuestionnaireModel[]> {
+    if (this.questionnaires.length > 0 && !forceFetch) {
       return of(this.questionnaires);
     } else {
       return this.questionnairesApiService.getQuestionnaires()
@@ -114,7 +114,7 @@ export class QuestionnaireService implements OnDestroy {
       this.questionnairesUpdates$.next(this.questionnaires);
       this.toastr.success(this.translateService.translate('car-crash.questionnaire.vehicle.joined'));
     } else {
-      this.questionnaires[index] = {...questionnaire};
+      this.questionnaires[index] = new QuestionnaireModel({...questionnaire});
       this.questionnaireUpdates$.next(questionnaire);
     }
   }

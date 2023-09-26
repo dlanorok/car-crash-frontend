@@ -2,13 +2,13 @@
   <ng-container *ngFor="let section of questionnaire.data.sections; let i = index">
     <div class="padding section"
          [ngClass]="(questionnaire | getStateFromPipe : section)"
-         [class.current-section]="section.id === currentSection.id"
+         [class.current-section]="section.id === currentSection.id && questionnaire.creator | amICreator"
          (click)="handleSectionClicked(
          '/crash/' + crash.session_id + '/questionnaires/' + questionnaire.id + '/sections/' + section.id + '/steps/' + section.starting_step,
          section
          )"
     >
-      <div *ngIf="section.id === currentSection.id" class="current-section-wrapper">
+      <div *ngIf="section.id === currentSection.id && questionnaire.creator | amICreator" class="current-section-wrapper">
         {{ 'car-crash.overview.currently-editing' | transloco }}
       </div>
       <div class="flex justify-content-space-between gap-half">
