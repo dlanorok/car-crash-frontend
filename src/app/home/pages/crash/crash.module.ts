@@ -6,7 +6,6 @@ import { ApiModule } from "@app/shared/api/api.module";
 import { TranslocoModule } from "@ngneat/transloco";
 import { CheckboxControlModule } from "@app/shared/form-controls/checkbox-control/checkbox-control.module";
 import { FormsModule } from "@angular/forms";
-import { CarIdentifierModule } from "@app/shared/common/pipes/car-identifier/car-identifier.module";
 import { AmICreatorModule } from "@app/shared/common/pipes/am-i-creator/am-i-creator.module";
 import { GetStateFromSectionModule } from "@app/shared/common/pipes/get-state-from-section/get-state-from-section.module";
 import { AllStepsCompletedModule } from "@app/shared/common/pipes/all-steps-completed/all-steps-completed.module";
@@ -30,7 +29,6 @@ import { AllStepsCompletedModule } from "@app/shared/common/pipes/all-steps-comp
     FormsModule,
     GetStateFromSectionModule,
     AllStepsCompletedModule,
-    CarIdentifierModule,
     AmICreatorModule,
   ]
 })

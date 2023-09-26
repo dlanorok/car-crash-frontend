@@ -12,9 +12,6 @@
   "car-crash.place-selector.info": "Lokacija info",
   "car-crash.place-selector.confirm": "Confirm location",
 
-  "car-crash.initial-impact.direction": "Onzačite smer naleta",
-  "car-crash.initial-impact.info": "Information about smer naleta",
-
   "car-crash.damaged-parts.title": "Označite poškodovane dele",
   "car-crash.damaged-parts.info": "Information about damaged parts",
   "car-crash.damaged-parts.upload-images": "Upload images",
@@ -53,6 +50,7 @@
   "car-crash.confirmation.finish": "Finish",
 
   "car-crash.shared.next": "Next",
+  "car-crash.info-section.modal.title": "Additional info",
 
   "car-crash.driver.name.label": "Name",
   "car-crash.driver.surname.label": "Surname",

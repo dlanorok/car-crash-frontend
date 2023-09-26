@@ -1,7 +1,7 @@
 <div class="flex input-section flex-column gap">
   <div *ngIf="!!title || !!info" class="flex justify-content-space-between">
     <h1 class="heading-small" *ngIf="title">{{ title }}</h1>
-    <app-svg-comp *ngIf="info" name="info" width="2rem"></app-svg-comp>
+    <app-svg-comp *ngIf="info" name="info" width="2rem" (click)="openInfoModal()"></app-svg-comp>
   </div>
   <ng-content></ng-content>
 

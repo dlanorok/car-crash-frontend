@@ -31,7 +31,7 @@
 </div>
 
 <app-input-section
-  [title]="'car-crash.place-selector.title' | transloco"
-  [info]="'car-crash.place-selector.info' | transloco"
+  [title]="step.question"
+  [info]="step.help_text"
   [buttonName]="'car-crash.place-selector.confirm' | transloco" (next)="onSubmit()" (back)="onBack()">
 </app-input-section>

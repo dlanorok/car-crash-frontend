@@ -92,6 +92,7 @@ export class DynamicControlFromInputPipe implements PipeTransform {
       case InputType.place:
         component = PlaceSelectorComponent;
         module = PlaceSelectorModule;
+        additionalOptions = { step: step };
         break;
       case InputType.boolean:
         component = YesNoCheckboxComponent;

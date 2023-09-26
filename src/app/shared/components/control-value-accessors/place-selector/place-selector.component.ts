@@ -3,7 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  inject, OnInit,
+  inject, Input, OnInit,
   ViewChild
 } from '@angular/core';
 import MapOptions = google.maps.MapOptions;
@@ -17,6 +17,7 @@ import {
 import { distinctUntilChanged, Observable, of, switchMap, take, tap } from "rxjs";
 import { filter, map } from "rxjs/operators";
 import { Location } from "@angular/common";
+import { Step } from "@app/home/pages/crash/flow.definition";
 
 export interface PlaceSelectorData {
   at_place: 'yes' | 'no' | null;
@@ -32,6 +33,8 @@ export interface PlaceSelectorData {
 export class PlaceSelectorComponent extends BaseFormControlComponent<PlaceSelectorData> implements AfterViewChecked, OnInit {
   protected readonly changeDetectorRef: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected readonly location: Location = inject(Location);
+
+  @Input() step!: Step;
 
   @ViewChild(GoogleMap, { static: false }) map!: GoogleMap;
   @ViewChild('currentLocation', { read: ElementRef }) currentLocation!: ElementRef;
