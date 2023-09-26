@@ -1,0 +1,29 @@
+<div class="flex-1">
+
+</div>
+<app-input-section [buttonName]="'car-crash.confirmation.confirm' | transloco" [title]="step.question"
+                   (back)="back.emit()" (next)="handleNext()"
+                   [info]="step.help_text">
+  <div class="flex flex-column gap">
+    <ng-container *ngFor="let groups of questionnairesGroup$ | async">
+      <ng-container *ngFor="let group of groups">
+        <div class="section-summary">
+          <h3>
+            {{ group.name }}
+          </h3>
+          <ng-container *ngFor="let item of group.items">
+            <div class="flex">
+              <div class="half label">
+                {{ item.label }}
+              </div>
+              <div class="half">
+                {{ item.value }}
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+
+    </ng-container>
+  </div>
+</app-input-section>

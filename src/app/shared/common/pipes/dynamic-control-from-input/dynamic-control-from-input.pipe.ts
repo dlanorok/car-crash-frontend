@@ -31,6 +31,10 @@ import { InviteComponent } from "@app/shared/components/control-value-accessors/
 import { InviteModule } from "@app/shared/components/control-value-accessors/invite/invite.module";
 import { YesNoCheckboxComponent } from "@app/shared/form-controls/yes-no-checkbox/yes-no-checkbox.component";
 import { YesNoCheckboxModule } from "@app/shared/form-controls/yes-no-checkbox/yes-no-checkbox.module";
+import { FinalStepComponent } from "@app/shared/components/control-value-accessors/confirmation/final-step/final-step.component";
+import { FinalStepModule } from "@app/shared/components/control-value-accessors/confirmation/final-step/final-step.module";
+import { SummaryComponent } from "@app/shared/components/control-value-accessors/confirmation/summary/summary.component";
+import { SummaryModule } from "@app/shared/components/control-value-accessors/confirmation/summary/summary.module";
 
 @Pipe({
   name: 'dynamicControlFromInput',
@@ -117,6 +121,24 @@ export class DynamicControlFromInputPipe implements PipeTransform {
       case InputType.invite:
         component = InviteComponent;
         module = InviteModule;
+        additionalOptions = { step: step };
+        componentReactiveOutputs = {
+          next: (save: boolean) => next.next(save),
+          back: () => back.next()
+        };
+        break;
+      case InputType.confirmation:
+        component = SummaryComponent;
+        module = SummaryModule;
+        additionalOptions = { step: step };
+        componentReactiveOutputs = {
+          next: (save: boolean) => next.next(save),
+          back: () => back.next()
+        };
+        break;
+      case InputType.final_step:
+        component = FinalStepComponent;
+        module = FinalStepModule;
         additionalOptions = { step: step };
         componentReactiveOutputs = {
           next: (save: boolean) => next.next(save),

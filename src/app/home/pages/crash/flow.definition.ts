@@ -85,6 +85,8 @@ export enum InputType {
   sketch = 'sketch',
   imageUpload = 'image_upload',
   invite = 'invite',
+  confirmation = 'confirmation',
+  final_step = 'final_step',
 }
 
 export enum StepType {

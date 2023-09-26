@@ -36,6 +36,22 @@
 
   "car-crash.invite.with-sms": "Or send invite using SMS",
 
+  "car-crash.confirmation.confirm": "Confirm",
+  "car-crash.confirmation.summary.participated-driver-data.title": "Data of another participant",
+  "car-crash.confirmation.summary.participated-driver-data.name.label": "Name",
+  "car-crash.confirmation.summary.participated-driver-data.address.label": "Address",
+  "car-crash.confirmation.summary.participated-driver-data.phone.label": "Phone number",
+  "car-crash.confirmation.summary.participated-driver-data.email.label": "Ime in priimek",
+
+  "car-crash.confirmation.summary.participated-vehicle-data.title": "Vehicle",
+  "car-crash.confirmation.summary.participated-vehicle-data.type.label": "Type",
+  "car-crash.confirmation.summary.participated-vehicle-data.registration-number.label": "Registration number",
+
+  "car-crash.confirmation.summary.participated-insurance-data.title": "Insurance policy",
+  "car-crash.confirmation.summary.participated-insurance-data.number.label": "Insurance number",
+  "car-crash.confirmation.summary.participated-insurance-data.policy-valid-to.label": "Valid to",
+  "car-crash.confirmation.finish": "Finish",
+
   "car-crash.shared.next": "Next",
 
   "car-crash.driver.name.label": "Name",

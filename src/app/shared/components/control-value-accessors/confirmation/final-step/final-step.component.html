@@ -1,0 +1,3 @@
+<ng-container *ngIf="crash$ | async; let crash">
+  <app-chapter [step]="step" (back)="back.emit()" (next)="confirmCrash(crash)" [nextButtonName]="'car-crash.confirmation.finish' | transloco"></app-chapter>
+</ng-container>
