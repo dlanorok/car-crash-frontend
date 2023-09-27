@@ -2,11 +2,11 @@
   <div class="form-check-label">{{ label }}</div>
   <div class="d-flex gap-2">
     <div>
-      <div [class.checked]=" formControl.value === true"  class="btn btn-custom-checkbox" (click)="handleModelChange(true)" >Yes</div><br>
+      <div [class.checked]=" formControl.value === true"  class="btn btn-custom-checkbox" (click)="handleModelChange(true)" >{{ 'shared.yes' | transloco }}</div><br>
     </div>
 
     <div>
-      <div [class.checked]="formControl.value === false" class="btn btn-custom-checkbox" (click)="handleModelChange(false)">NO</div><br>
+      <div [class.checked]="formControl.value === false" class="btn btn-custom-checkbox" (click)="handleModelChange(false)">{{ 'shared.no' | transloco }}</div><br>
     </div>
   </div>
 

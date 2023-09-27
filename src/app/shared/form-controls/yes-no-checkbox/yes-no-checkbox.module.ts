@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { YesNoCheckboxComponent } from './yes-no-checkbox.component';
 import { FormErrorsModule } from "../../components/forms/shell/form-errors/form-errors.module";
 import { ReactiveFormsModule } from "@angular/forms";
+import { TranslocoModule } from "@ngneat/transloco";
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { ReactiveFormsModule } from "@angular/forms";
     CommonModule,
     FormErrorsModule,
     ReactiveFormsModule,
-    FormErrorsModule
+    FormErrorsModule,
+    TranslocoModule
   ]
 })
 export class YesNoCheckboxModule {

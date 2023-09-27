@@ -12,7 +12,7 @@
         (next)="next()"
         (back)="previous()"
         [step]="step"
-        [errorText]="section.id === SectionId.confirmation && !(((questionnaires$ | async) || []) | areAllCompleted) ? ('car-crash.confirmation.questionnaires-no-finished' | transloco) : undefined"
+        [errorText]="section.id === SectionId.confirmation && !(((questionnaires$ | async) || []) | areAllCompleted) ? ('car-crash.confirmation.questionnaires-not-finished' | transloco) : undefined"
         class="flex-container non-scrollable">
       </app-chapter>
     </ng-container>
