@@ -95,6 +95,7 @@ export class StepComponent implements OnInit, OnDestroy {
     this.questionnaireService.questionnaireUpdates$.pipe(
       untilDestroyed(this)
     ).subscribe((questionnaire) => {
+      console.log(questionnaire);
       if (questionnaire && questionnaire.id === this.questionnaire?.id) {
         this.questionnaire = questionnaire;
         if (this.section?.id === SectionId.accidentSketch) {
@@ -238,13 +239,6 @@ export class StepComponent implements OnInit, OnDestroy {
       return confirm('You have unsaved changes, do you want to continue?');
     }
     return true;
-  }
-
-  private home(): void {
-    if (this.checkFormTouched()) {
-      const sessionId = localStorage.getItem(StorageItem.sessionId);
-      this.router.navigate([`/crash/${sessionId}`]);
-    }
   }
 
   previous(): void {

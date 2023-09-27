@@ -12,7 +12,6 @@ import { CrashModel } from "@app/shared/models/crash.model";
 import { addCar, crashUpdateWS } from "@app/app-state/crash/crash-action";
 import { CarModel } from "@app/shared/models/car.model";
 import { CookieService } from "ngx-cookie-service";
-import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { CircumstanceModel } from "@app/shared/models/circumstance.model";
 import { environment } from "../../../environments/environment";
 import { wsSketchCarUpdated, wsSketchPolygonsUpdated, wsSketchUpdated } from "@app/app-state/sketch/sketch-action";
@@ -64,9 +63,9 @@ export class WebSocketService implements OnDestroy {
       .pipe(
         tap((message: WebSocketMessage) => {
           // Skip events created from me
-          if (message.sender_id === this.cookieService.get(CookieName.sessionId)) {
-            return;
-          }
+          // if (message.sender_id === this.cookieService.get(CookieName.sessionId)) {
+          //   return;
+          // }
 
           if (message.type === EventType.modelUpdated || message.type === EventType.modelCreated) {
             this.processModelEvents(message);

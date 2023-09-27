@@ -7,9 +7,9 @@
     [disabled]="(isDisabled$ | async) === true"
     [ngModel]="value$ | async"
     (ngModelChange)="handleModelChange($event)"
-    [class.is-invalid]="submitted && formControl.errors">
+    [class.is-invalid]="formControl.touched && formControl.errors">
   <label [htmlFor]="_id">{{ label }}</label>
 
-  <app-form-errors *ngIf="submitted" [control]="formControl"></app-form-errors>
+  <app-form-errors *ngIf="formControl.touched" [control]="formControl"></app-form-errors>
 </div>
 

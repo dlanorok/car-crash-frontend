@@ -31,6 +31,11 @@ export class PhoneNumberControlComponent extends BaseFormControlComponent<Change
     }
   }
 
+  get countryCode() {
+    const value = this.value$.getValue();
+    return (value && value.countryCode) ? value.countryCode : CountryISO.Slovenia;
+  }
+
   beforeSubmit(): Observable<boolean> {
     return of(undefined).pipe(
       map(() => {
