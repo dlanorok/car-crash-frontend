@@ -122,6 +122,12 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     }),
   );
 
+  get devicePixelRatio() {
+    const realWidth = this.container.nativeElement.clientWidth;
+    const realHeight = this.container.nativeElement.clientHeight;
+    return realWidth  + " " + realHeight;
+  }
+
   ngAfterViewInit(): void {
     this.setStageAndLayer();
     this.drawGoogleImageAndAddCars();
@@ -142,7 +148,6 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
       draggable: true,
       dragBoundFunc: this.dragBoundFunc,
     });
-    this.scale = window.screen.availHeight / window.screen.availWidth;
     this.stage.add(this.layer);
   }
 
@@ -288,8 +293,8 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
         const konvaImage = new Konva.Image({
           image: imageObj,
           draggable: false,
-          height: imageObj.height / window.devicePixelRatio,
-          width: imageObj.width / window.devicePixelRatio,
+          height: 158,
+          width: 320,
           scaleX: 0.14,
           scaleY: 0.14,
           rotation: 90,
