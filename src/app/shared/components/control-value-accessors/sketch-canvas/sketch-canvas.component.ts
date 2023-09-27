@@ -57,7 +57,7 @@ interface CarData {
   y: number;
   rotation: number;
   arrow: ArrowType;
-  questionnaire_id: string;
+  questionnaire_id: number;
   pixelRatio: number;
 }
 
@@ -219,7 +219,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
       });
       firstCar = sketch.cars[0];
     }
-    sketch.cars.forEach((car, index) => this.addCar(car, index, firstCar));
+    sketch.cars.sort((a: CarData,b: CarData) => (a.questionnaire_id - b.questionnaire_id)).forEach((car, index) => this.addCar(car, index, firstCar));
     this.observeDragPermissionsToCars();
   }
 
