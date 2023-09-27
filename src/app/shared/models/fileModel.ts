@@ -4,7 +4,6 @@ export class FileModel {
   file_name?: string;
   file_size?: string;
 
-  isLoading?: boolean;
   constructor(data?: any) {
     Object.assign(this, data);
   }

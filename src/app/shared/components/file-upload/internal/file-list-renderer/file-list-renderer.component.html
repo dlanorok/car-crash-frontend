@@ -2,7 +2,9 @@
   <ng-container *ngFor="let file of files; let i = index">
     <div class="flex gap">
       <img *ngIf="file.id" appImagePreview [src]="file.file" alt="Preview">
-      <ng-lottie *ngIf="!file.id" [options]="options"></ng-lottie>
+      <div *ngIf="!file.id" class="lottie-wrapper">
+        <ng-lottie [options]="options" width="32px" height="32px"></ng-lottie>
+      </div>
       <ng-container
         [ngTemplateOutlet]="fileRenderTpl"
         [ngTemplateOutletContext]="{ name: file.file_name, size: file.file_size, id: file.id }">

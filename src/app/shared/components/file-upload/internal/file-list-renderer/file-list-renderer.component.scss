@@ -7,12 +7,20 @@
     gap: 10px;
     margin-right: -1rem;
     padding-right: 1rem;
+    color: var(--theme-color-type);
 
-    img, ng-lottie {
+    img, .lottie-wrapper {
       width: 7rem;
       height: 5rem;
       object-fit: cover;
       border-radius: var(--theme-border-radius);
+    }
+
+    .lottie-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--theme-color-basic);
     }
   }
 

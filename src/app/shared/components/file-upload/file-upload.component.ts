@@ -38,7 +38,6 @@ export class FileUploadComponent {
       const newFile = new FileModel({
         file_name: selectedFile.name,
         file_size: selectedFile.size,
-        isLoading: true
       });
       this.uploadedFiles = [newFile, ...this.uploadedFiles];
       this.filesApiService.uploadFileWithProgress(selectedFile).pipe(
