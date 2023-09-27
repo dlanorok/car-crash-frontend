@@ -10,6 +10,7 @@ import { ToastrService } from "ngx-toastr";
 import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { TranslocoService } from "@ngneat/transloco";
+import { Params } from "@angular/router";
 
 @UntilDestroy()
 @Injectable({
@@ -31,19 +32,23 @@ export class QuestionnaireService implements OnDestroy {
     this.observeSketchChanges();
   }
 
-  getOrFetchQuestionnaires(forceFetch?: boolean): Observable<QuestionnaireModel[]> {
+  getOrFetchQuestionnaires(forceFetch?: boolean) {
     if (this.questionnaires.length > 0 && !forceFetch) {
       return of(this.questionnaires);
     } else {
-      return this.questionnairesApiService.getQuestionnaires()
-        .pipe(
-          take(1),
-          tap((questionnaires) => {
-            this.questionnaires = questionnaires;
-          }),
-          map(() => this.questionnaires)
-        );
+      return this.fetchQuestionnaires();
     }
+  }
+
+  fetchQuestionnaires(queryParams?: Params): Observable<QuestionnaireModel[]> {
+    return this.questionnairesApiService.getQuestionnaires(queryParams)
+      .pipe(
+        take(1),
+        tap((questionnaires) => {
+          this.questionnaires = questionnaires;
+        }),
+        map(() => this.questionnaires)
+      );
   }
 
   saveQuestionnaire(questionnaire: QuestionnaireModel): void {

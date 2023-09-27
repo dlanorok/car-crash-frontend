@@ -48,7 +48,7 @@ export class CrashEffects {
         .pipe(
           switchMap((crash) => {
             localStorage.setItem(StorageItem.sessionId, crash.session_id);
-            return this.questionnaireService.getOrFetchQuestionnaires().pipe(
+            return this.questionnaireService.fetchQuestionnaires(action.queryParams).pipe(
               map((questionnaires) => {
                 return questionnaires.find(q => q.creator === this.cookieService.get(CookieName.sessionId));
               }),

@@ -1,9 +1,10 @@
 import { createAction, props } from '@ngrx/store';
 import { CrashModel } from "../../shared/models/crash.model";
+import { Params } from "@angular/router";
 
 export const createCrash = createAction(
   '[CreateCrash Component] Create',
-  props<{crash: CrashModel}>()
+  props<{crash: CrashModel, queryParams?: Params}>()
 );
 
 export const createCrashSuccessful = createAction(
