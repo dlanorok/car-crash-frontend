@@ -51,8 +51,8 @@ export enum ArrowType {
   reverse = "reverse",
   right = "right",
   left = "left",
-  straightRight = "straight_right",
-  straightLeft = "straight_left",
+  straightRight = "right",
+  straightLeft = "left",
 }
 
 export enum SectionId {

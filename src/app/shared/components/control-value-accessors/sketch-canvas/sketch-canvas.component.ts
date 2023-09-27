@@ -68,6 +68,8 @@ interface PointData {
 
 const imageWidth = 1000;
 const imageHeight = 1000;
+const carWidth = 150;
+const carHeight = 150;
 
 @Component({
   selector: 'app-sketch-canvas',
@@ -219,12 +221,12 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     let firstCar: CarData | undefined = undefined;
     if (sketch.cars.length > 0 && sketch.cars[0].x) {
       this.layer.setPosition({
-        x: -sketch.cars[0].x * scale + this.layer.width() / 2,
+        x: -sketch.cars[0].x * scale + this.layer.width() / 2 - (carWidth / 2),
         y: -sketch.cars[0].y * scale + this.layer.height() / 2
       });
       firstCar = sketch.cars[0];
     }
-    sketch.cars.sort((a: CarData,b: CarData) => (a.questionnaire_id - b.questionnaire_id)).forEach((car, index) => this.addCar(car, index, firstCar));
+    sketch.cars.sort((a: CarData,b: CarData) => a.questionnaire_id - b.questionnaire_id).forEach((car, index) => this.addCar(car, index, firstCar));
     this.observeDragPermissionsToCars();
   }
 
@@ -284,20 +286,19 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
   addCar(car: CarData, index: number, firstCar?: CarData) {
     const imageObj = new Image();
 
-    imageObj.src = `../../../assets/icons/google-car-${index + 1}.svg`;
+    imageObj.src = `../../../assets/icons/car-${index + 1}-${car.arrow === undefined ? null : car.arrow}.svg`;
 
     return fromEvent(imageObj, 'load').pipe(
       tap(() => {
-        const x = car?.x || (firstCar?.x ? firstCar.x + 20 : undefined) || (this.image.width() / 2 / this.stage.scaleX() + 30 * index);
+        const x = car?.x || (firstCar?.x ? firstCar.x + 20 : undefined) || (this.image.width() / 2 / this.stage.scaleX() + 40 * index - (carWidth / 2));
         const y = car?.y || firstCar?.y || this.image.height() / 2 / this.stage.scaleX();
         const konvaImage = new Konva.Image({
           image: imageObj,
           draggable: false,
-          height: 158,
-          width: 320,
-          scaleX: 0.14,
-          scaleY: 0.14,
-          rotation: 90,
+          height: carHeight,
+          width: carWidth,
+          scaleX: 1,
+          scaleY: 1,
           x: 0,
           y: 0,
           id: car.id
@@ -312,7 +313,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
           id: car.id
         });
 
-        group.add(this.gerArrowFromType(car.arrow, konvaImage));
+        // group.add(this.gerArrowFromType(car.arrow, konvaImage));
         group.add(konvaImage);
         this.layer.add(group);
         this.layer.draw();
@@ -500,163 +501,163 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     };
   }
 
-  private gerArrowFromType(arrowType: ArrowType, carImage: Konva.Image): Konva.Group {
-    const group = new Konva.Group({
-      x: 0,
-      y: 0,
-      id: "arrow"
-    });
-
-    const initialX = -(carImage.width() * carImage.scaleX()) / 4;
-    const initialY = (carImage.height() * carImage.scaleX());
-
-    const quadraticLine = new Konva.Shape({
-      stroke: 'red',
-      strokeWidth: 2,
-      draggable: false
-    });
-
-    const bezierLine = new Konva.Shape({
-      stroke: 'red',
-      strokeWidth: 2,
-      draggable: false
-    });
-
-    const arrow = new Konva.Arrow({
-      points: [0, 0, 0, 0, 0, 0],
-      pointerLength: 3,
-      pointerWidth: 2,
-      fill: 'red',
-      stroke: 'red',
-      strokeWidth: 3,
-      draggable: false,
-      visible: false
-    });
-
-    if (arrowType === ArrowType.left) {
-      quadraticLine.sceneFunc(((ctx, shape) => {
-        ctx.beginPath();
-        ctx.moveTo(initialX, initialY);
-        ctx.quadraticCurveTo(
-          initialX,
-          initialY + 40,
-          initialX + 20,
-          initialY + 40
-        );
-        ctx.fillStrokeShape(shape);
-      }));
-      arrow.x(initialX + 20);
-      arrow.y(initialY + 40);
-      arrow.visible(true);
-    } else if (arrowType === ArrowType.right) {
-      quadraticLine.sceneFunc(((ctx, shape) => {
-        ctx.beginPath();
-        ctx.moveTo(initialX, initialY);
-        ctx.quadraticCurveTo(
-          initialX,
-          initialY + 40,
-          initialX - 20,
-          initialY + 40
-        );
-        ctx.fillStrokeShape(shape);
-      }));
-      arrow.x(initialX - 20);
-      arrow.y(initialY + 40);
-      arrow.visible(true);
-      arrow.rotation(180);
-    } else if (arrowType === ArrowType.reverse) {
-      quadraticLine.sceneFunc(((ctx, shape) => {
-        ctx.beginPath();
-        ctx.moveTo(initialX, initialY);
-        ctx.quadraticCurveTo(
-          initialX,
-          initialY - 45,
-          initialX,
-          initialY - 45
-        );
-        ctx.fillStrokeShape(shape);
-      }));
-      arrow.x(initialX);
-      arrow.y(initialY - 45);
-      arrow.visible(true);
-      arrow.rotation(270);
-    } else if (arrowType === ArrowType.straight) {
-      quadraticLine.sceneFunc(((ctx, shape) => {
-        ctx.beginPath();
-        ctx.moveTo(initialX, initialY);
-        ctx.quadraticCurveTo(
-          initialX,
-          initialY + 45,
-          initialX,
-          initialY + 45
-        );
-        ctx.fillStrokeShape(shape);
-      }));
-      arrow.x(initialX);
-      arrow.y(initialY + 45);
-      arrow.visible(true);
-      arrow.rotation(90);
-    } else if (arrowType === ArrowType.straightLeft) {
-      bezierLine.sceneFunc(((ctx, shape) => {
-        ctx.beginPath();
-        ctx.moveTo(initialX, initialY);
-        ctx.bezierCurveTo(
-          initialX,
-          initialY + 50,
-          initialX + 20,
-          initialY + 20,
-          initialX + 20,
-          initialY + 70
-        );
-        ctx.fillStrokeShape(shape);
-      }));
-      arrow.x(initialX + 20);
-      arrow.y(initialY + 70);
-      arrow.visible(true);
-      arrow.rotation(90);
-    } else if (arrowType === ArrowType.straightRight) {
-      bezierLine.sceneFunc(((ctx, shape) => {
-        ctx.beginPath();
-        ctx.moveTo(initialX, initialY);
-        ctx.bezierCurveTo(
-          initialX,
-          initialY + 50,
-          initialX - 20,
-          initialY + 20,
-          initialX - 20,
-          initialY + 70
-        );
-        ctx.fillStrokeShape(shape);
-      }));
-      arrow.x(initialX - 20);
-      arrow.y(initialY + 70);
-      arrow.visible(true);
-      arrow.rotation(90);
-    }
-
-    group.add(quadraticLine);
-    group.add(bezierLine);
-    group.add(arrow);
-    return group;
-
-
-    // const arrow = new Konva.Arrow({
-    //   x: -(carImage.width() * carImage.scaleX()) / 4,
-    //   y: (carImage.height() * carImage.scaleX()),
-    //   points: [0, 0, 0, 40],
-    //   pointerLength: 5,
-    //   pointerWidth: 6,
-    //   fill: 'red',
-    //   stroke: 'red',
-    //   strokeWidth: 2,
-    // });
-    //
-    // if (arrowType === ArrowType.reverse) {
-    //   arrow.rotation(180);
-    // }
-    //
-    // return arrow;
-  }
+  // private gerArrowFromType(arrowType: ArrowType, carImage: Konva.Image): Konva.Group {
+  //   const group = new Konva.Group({
+  //     x: 0,
+  //     y: 0,
+  //     id: "arrow"
+  //   });
+  //
+  //   const initialX = -(carImage.width() * carImage.scaleX()) / 4;
+  //   const initialY = (carImage.height() * carImage.scaleX());
+  //
+  //   const quadraticLine = new Konva.Shape({
+  //     stroke: 'red',
+  //     strokeWidth: 2,
+  //     draggable: false
+  //   });
+  //
+  //   const bezierLine = new Konva.Shape({
+  //     stroke: 'red',
+  //     strokeWidth: 2,
+  //     draggable: false
+  //   });
+  //
+  //   const arrow = new Konva.Arrow({
+  //     points: [0, 0, 0, 0, 0, 0],
+  //     pointerLength: 3,
+  //     pointerWidth: 2,
+  //     fill: 'red',
+  //     stroke: 'red',
+  //     strokeWidth: 3,
+  //     draggable: false,
+  //     visible: false
+  //   });
+  //
+  //   if (arrowType === ArrowType.left) {
+  //     quadraticLine.sceneFunc(((ctx, shape) => {
+  //       ctx.beginPath();
+  //       ctx.moveTo(initialX, initialY);
+  //       ctx.quadraticCurveTo(
+  //         initialX,
+  //         initialY + 40,
+  //         initialX + 20,
+  //         initialY + 40
+  //       );
+  //       ctx.fillStrokeShape(shape);
+  //     }));
+  //     arrow.x(initialX + 20);
+  //     arrow.y(initialY + 40);
+  //     arrow.visible(true);
+  //   } else if (arrowType === ArrowType.right) {
+  //     quadraticLine.sceneFunc(((ctx, shape) => {
+  //       ctx.beginPath();
+  //       ctx.moveTo(initialX, initialY);
+  //       ctx.quadraticCurveTo(
+  //         initialX,
+  //         initialY + 40,
+  //         initialX - 20,
+  //         initialY + 40
+  //       );
+  //       ctx.fillStrokeShape(shape);
+  //     }));
+  //     arrow.x(initialX - 20);
+  //     arrow.y(initialY + 40);
+  //     arrow.visible(true);
+  //     arrow.rotation(180);
+  //   } else if (arrowType === ArrowType.reverse) {
+  //     quadraticLine.sceneFunc(((ctx, shape) => {
+  //       ctx.beginPath();
+  //       ctx.moveTo(initialX, initialY);
+  //       ctx.quadraticCurveTo(
+  //         initialX,
+  //         initialY - 45,
+  //         initialX,
+  //         initialY - 45
+  //       );
+  //       ctx.fillStrokeShape(shape);
+  //     }));
+  //     arrow.x(initialX);
+  //     arrow.y(initialY - 45);
+  //     arrow.visible(true);
+  //     arrow.rotation(270);
+  //   } else if (arrowType === ArrowType.straight) {
+  //     quadraticLine.sceneFunc(((ctx, shape) => {
+  //       ctx.beginPath();
+  //       ctx.moveTo(initialX, initialY);
+  //       ctx.quadraticCurveTo(
+  //         initialX,
+  //         initialY + 45,
+  //         initialX,
+  //         initialY + 45
+  //       );
+  //       ctx.fillStrokeShape(shape);
+  //     }));
+  //     arrow.x(initialX);
+  //     arrow.y(initialY + 45);
+  //     arrow.visible(true);
+  //     arrow.rotation(90);
+  //   } else if (arrowType === ArrowType.straightLeft) {
+  //     bezierLine.sceneFunc(((ctx, shape) => {
+  //       ctx.beginPath();
+  //       ctx.moveTo(initialX, initialY);
+  //       ctx.bezierCurveTo(
+  //         initialX,
+  //         initialY + 50,
+  //         initialX + 20,
+  //         initialY + 20,
+  //         initialX + 20,
+  //         initialY + 70
+  //       );
+  //       ctx.fillStrokeShape(shape);
+  //     }));
+  //     arrow.x(initialX + 20);
+  //     arrow.y(initialY + 70);
+  //     arrow.visible(true);
+  //     arrow.rotation(90);
+  //   } else if (arrowType === ArrowType.straightRight) {
+  //     bezierLine.sceneFunc(((ctx, shape) => {
+  //       ctx.beginPath();
+  //       ctx.moveTo(initialX, initialY);
+  //       ctx.bezierCurveTo(
+  //         initialX,
+  //         initialY + 50,
+  //         initialX - 20,
+  //         initialY + 20,
+  //         initialX - 20,
+  //         initialY + 70
+  //       );
+  //       ctx.fillStrokeShape(shape);
+  //     }));
+  //     arrow.x(initialX - 20);
+  //     arrow.y(initialY + 70);
+  //     arrow.visible(true);
+  //     arrow.rotation(90);
+  //   }
+  //
+  //   group.add(quadraticLine);
+  //   group.add(bezierLine);
+  //   group.add(arrow);
+  //   return group;
+  //
+  //
+  //   // const arrow = new Konva.Arrow({
+  //   //   x: -(carImage.width() * carImage.scaleX()) / 4,
+  //   //   y: (carImage.height() * carImage.scaleX()),
+  //   //   points: [0, 0, 0, 40],
+  //   //   pointerLength: 5,
+  //   //   pointerWidth: 6,
+  //   //   fill: 'red',
+  //   //   stroke: 'red',
+  //   //   strokeWidth: 2,
+  //   // });
+  //   //
+  //   // if (arrowType === ArrowType.reverse) {
+  //   //   arrow.rotation(180);
+  //   // }
+  //   //
+  //   // return arrow;
+  // }
 
 
   dragBoundFunc = (pos: Vector2d) => {
