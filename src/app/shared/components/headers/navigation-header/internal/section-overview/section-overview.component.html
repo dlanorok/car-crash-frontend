@@ -19,7 +19,7 @@
           {{ section.name }}
 
           <div *ngIf="section.id === SectionId.confirmation && !(questionnaires | areAllCompleted)" class="not-finished">
-            {{ 'car-crash.confirmation.questionnaires-no-finished' | transloco }}
+            {{ 'car-crash.confirmation.questionnaires-not-finished' | transloco }}
           </div>
         </div>
         <!--      <span-->
