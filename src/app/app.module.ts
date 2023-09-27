@@ -29,9 +29,15 @@ import { FooterButtonsModule } from "@app/shared/components/footer-buttons/foote
 import { AppLoadService } from "@app/app-load.service";
 import { IconSpriteModule } from "ng-svg-icon-sprite";
 import { NavigationHeaderModule } from "@app/shared/components/headers/navigation-header/navigation-header.module";
+import { LottieModule } from "ngx-lottie";
+import player from "lottie-web";
 
 export function initApp(appLoadService: AppLoadService): () => void {
   return () => appLoadService.initApp();
+}
+
+export function playerFactory() {
+  return player;
 }
 
 @NgModule({
@@ -57,7 +63,8 @@ export function initApp(appLoadService: AppLoadService): () => void {
       preventDuplicates: true
     }),
     FooterButtonsModule,
-    IconSpriteModule
+    IconSpriteModule,
+    LottieModule.forRoot({ player: playerFactory })
   ],
   providers: [
     AppLoadService,

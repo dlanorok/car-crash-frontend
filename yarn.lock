@@ -1860,6 +1860,11 @@
   resolved "https://registry.npmjs.org/@regulaforensics/vp-frontend-document-components/-/vp-frontend-document-components-2.5.0.tgz"
   integrity sha512-IUT3ovDHCicfqAJ45zYJq6mdVi28bekmZ9wnln/el6dORDKzenf2LfFys65XSLZflvmmvk4HY7GD6Qwr3pOLyg==
 
+"@scarf/scarf@^1.1.1":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-1.3.0.tgz#f8c75560d0dace4452dee1e31995e6396e61f3ee"
+  integrity sha512-lHKK8M5CTcpFj2hZDB3wIjb0KAbEOgDmiJGDv1WBRfQgRm/a8/XMEkG/N1iM01xgbUDsPQwi42D+dFo1XPAKew==
+
 "@schematics/angular@16.2.1":
   version "16.2.1"
   resolved "https://registry.npmjs.org/@schematics/angular/-/angular-16.2.1.tgz"
@@ -6056,6 +6061,11 @@ log4js@^6.4.1:
     rfdc "^1.3.0"
     streamroller "^3.1.5"
 
+lottie-web@^5.12.2:
+  version "5.12.2"
+  resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.12.2.tgz#579ca9fe6d3fd9e352571edd3c0be162492f68e5"
+  integrity sha512-uvhvYPC8kGPjXT3MyKMrL3JitEAmDMp30lVkuq/590Mw9ok6pWcFCwXJveo0t5uqYw1UREQHofD+jVpdjBv8wg==
+
 loud-rejection@^1.0.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/loud-rejection/-/loud-rejection-1.6.0.tgz#5b46f80147edee578870f086d04821cf998e551f"
@@ -6558,6 +6568,14 @@ ngx-intl-tel-input@^3.2.0:
   resolved "https://registry.npmjs.org/ngx-intl-tel-input/-/ngx-intl-tel-input-3.2.0.tgz"
   integrity sha512-TM3R0Az+F63eNCBj+NpR6UzJYg4FkHxDrS2hfeFoHJymMc4+DlqB581g4tPil4IkMetlR+jaAtEcqKiqmYGYlw==
   dependencies:
+    tslib "^2.3.0"
+
+ngx-lottie@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-lottie/-/ngx-lottie-10.0.0.tgz#5061975b31638b1ab7e153c2f13073edcb6a8b68"
+  integrity sha512-8a0ufv13+o1cLR25SQ4N731rxD9nIA7F1jyo3l/jbUlRnrlcF5heFqWyTYnRf4BG0LQ4URuybN/nr+xbGT1W9Q==
+  dependencies:
+    "@scarf/scarf" "^1.1.1"
     tslib "^2.3.0"
 
 ngx-scanner-qrcode@^1.4.2:

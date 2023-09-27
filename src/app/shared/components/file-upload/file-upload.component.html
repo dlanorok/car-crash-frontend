@@ -1,8 +1,4 @@
 <div class="flex-1 form-layout">
-  <div class="progress" *ngIf="progress">
-    <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
-  </div>
-
   <ng-container *ngIf="fileListRenderer; else defaultRendererTpl">
     <ng-container
       *ngTemplateOutlet="fileListRenderer"
@@ -10,7 +6,7 @@
   </ng-container>
 
   <ng-template #defaultRendererTpl>
-    <app-file-list-renderer [fileIds]="uploadedFileIds" (removeFile)="removeFile($event)"></app-file-list-renderer>
+    <app-file-list-renderer [fileIds]="uploadedFileIds" [files]="uploadedFiles" (removeFile)="removeFile($event)"></app-file-list-renderer>
   </ng-template>
 
   <div class="file-input-wrapper flex-1">

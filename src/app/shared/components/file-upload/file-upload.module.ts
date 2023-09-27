@@ -8,6 +8,7 @@ import { ButtonModule } from "@app/shared/components/ui/button/button.module";
 import { FileListRendererComponent } from "@app/shared/components/file-upload/internal/file-list-renderer/file-list-renderer.component";
 import { SizeToBytesPipe } from "@app/shared/components/file-upload/internal/file-list-renderer/size-to-bytes.pipe";
 import { TranslocoModule } from "@ngneat/transloco";
+import { LottieModule } from "ngx-lottie";
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { TranslocoModule } from "@ngneat/transloco";
     ImagesModule,
     SvgIconModule,
     ButtonModule,
-    TranslocoModule
+    TranslocoModule,
+    LottieModule,
   ],
   exports: [
     FileUploadComponent

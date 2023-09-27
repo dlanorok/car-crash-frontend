@@ -45,6 +45,7 @@
     "google-libphonenumber": "^3.2.32",
     "intl-tel-input": "17.0.3",
     "konva": "^9.2.0",
+    "lottie-web": "^5.12.2",
     "nanoid": "^4.0.2",
     "nanoid-dictionary": "^4.3.0",
     "ng-svg-icon-sprite": "^1.12.0",
@@ -52,6 +53,7 @@
     "ngx-cookie-service": "^15.0.0",
     "ngx-extended-pdf-viewer": "^17.4.6",
     "ngx-intl-tel-input": "^3.2.0",
+    "ngx-lottie": "^10.0.0",
     "ngx-scanner-qrcode": "^1.4.2",
     "ngx-toastr": "^16.2.0",
     "pako": "^2.1.0",
@@ -60,7 +62,6 @@
     "zone.js": "~0.12.0"
   },
   "devDependencies": {
-    "svg2sprite-cli": "^2.0.1",
     "@angular-builders/custom-webpack": "^15.0.0",
     "@angular-devkit/build-angular": "^15.2.7",
     "@angular-eslint/builder": "16.0.2",
@@ -82,6 +83,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "svg-sprite-loader": "^6.0.11",
+    "svg2sprite-cli": "^2.0.1",
     "typescript": "~4.9.4",
     "webpack": "^5.83.1",
     "webpack-bundle-analyzer": "^4.8.0"

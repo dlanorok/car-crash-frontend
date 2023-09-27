@@ -1,18 +1,26 @@
 <div class="image-container">
   <ng-container *ngFor="let file of files; let i = index">
     <div class="flex gap">
-      <img appImagePreview [src]="file.file" alt="Preview">
-      <div class="flex flex-1 align-items-center">
-        <div class="flex flex-1 flex-column" style="width: 0">
-          <div class="text-overflow">
-            <strong>{{ file.file_name }}</strong>
-          </div>
-          <div>
-            {{ file.file_size | sizeToBytes }}
-          </div>
-        </div>
-        <app-svg-comp width="1.5rem" [name]="'trash'" (click)="removeFileFromList(file.id)"></app-svg-comp>
-      </div>
+      <img *ngIf="file.id" appImagePreview [src]="file.file" alt="Preview">
+      <ng-lottie *ngIf="!file.id" [options]="options"></ng-lottie>
+      <ng-container
+        [ngTemplateOutlet]="fileRenderTpl"
+        [ngTemplateOutletContext]="{ name: file.file_name, size: file.file_size, id: file.id }">
+      </ng-container>
     </div>
   </ng-container>
 </div>
+
+<ng-template let-name="name" let-size="size" let-id="id" #fileRenderTpl>
+  <div class="flex flex-1 align-items-center">
+    <div class="flex flex-1 flex-column" style="width: 0">
+      <div class="text-overflow">
+        <strong>{{ name }}</strong>
+      </div>
+      <div>
+        {{ size | sizeToBytes }}
+      </div>
+    </div>
+    <app-svg-comp *ngIf="id" width="1.5rem" [name]="'trash'" (click)="removeFileFromList(id)"></app-svg-comp>
+  </div>
+</ng-template>

@@ -3,12 +3,13 @@ import { BehaviorSubject, distinctUntilChanged, Observable, zip, switchMap, of }
 import { FileModel } from "@app/shared/models/fileModel";
 import { FilesApiService } from "@app/shared/api/files/files-api.service";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { AnimationOptions } from "ngx-lottie";
 
 @UntilDestroy()
 @Component({
   selector: 'app-file-list-renderer',
   templateUrl: './file-list-renderer.component.html',
-  styleUrls: ['./file-list-renderer.component.scss']
+  styleUrls: ['./file-list-renderer.component.scss'],
 })
 export class FileListRendererComponent implements OnInit {
   private readonly filesApiService: FilesApiService = inject(FilesApiService);
@@ -18,14 +19,17 @@ export class FileListRendererComponent implements OnInit {
   @Input() set fileIds(fileIds: number[]) {
     this.fileIds$.next(fileIds);
   }
+  @Input() files: FileModel[] = [];
   @Output() removeFile: EventEmitter<number> = new EventEmitter<number>();
 
-  files: FileModel[] = [];
+  options: AnimationOptions = {
+    path: '/assets/animations/loading.json',
+  };
 
   private readonly files$: Observable<(FileModel | undefined)[]> = this.fileIds$.pipe(
     distinctUntilChanged(),
     switchMap((fileIds) => {
-      const currentFiles = this.files.map(file => file.id);
+      const currentFiles = this.files.filter(file => !!file.file).map(file => file.id);
       return zip(fileIds.map(fileId => {
         return currentFiles.includes(fileId)
           ? of(undefined)
