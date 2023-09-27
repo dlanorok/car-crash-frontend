@@ -116,5 +116,6 @@
   "shared.yes": "Da",
   "shared.no": "Ne",
   "car-crash.copy-driver-data.description": "Ali je voznik isti kot zavarovalec na polici?",
-  "car-crash.copy-driver-data.title": "Title that has to be changed"
+  "car-crash.copy-driver-data.title": "Isti voznik",
+  "car-crash.joining-crash.title": "Pridužujem se nesreči"
 }
