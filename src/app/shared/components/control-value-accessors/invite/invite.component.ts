@@ -9,6 +9,7 @@ import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { ChangeData } from "ngx-intl-tel-input/lib/interfaces/change-data";
 import { Observable, of, switchMap } from "rxjs";
 import { map } from "rxjs/operators";
+import { TranslocoService } from "@ngneat/transloco";
 
 @Component({
   selector: 'app-invite',
@@ -18,6 +19,7 @@ import { map } from "rxjs/operators";
 })
 export class InviteComponent extends BaseFormControlComponent<ChangeData> implements OnInit {
   private readonly commonApiService: CommonApiService = inject(CommonApiService);
+  private readonly traslateService: TranslocoService = inject(TranslocoService);
 
   @Input() step!: Step;
 
@@ -31,7 +33,7 @@ export class InviteComponent extends BaseFormControlComponent<ChangeData> implem
       switchMap(value => {
         if (value && value.internationalNumber) {
           return this.commonApiService.sendSms(
-            this.location,
+            `${this.traslateService.translate('car-crash.invite.sms-content')}\n${this.location}`,
             value?.internationalNumber
           ).pipe(map(() => true));
         }

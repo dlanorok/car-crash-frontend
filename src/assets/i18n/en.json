@@ -36,6 +36,7 @@
   "car-crash.navigation-header.co-participant": "Soudeleženec",
 
   "car-crash.invite.with-sms": "ali pošljite vabilo preko sms",
+  "car-crash.invite.sms-content": "Povabljeni ste bili, da izpolnete Evropsko poročilo o nezgodi.\n\nKliknite na spodnji link za začetek",
 
   "car-crash.confirmation.confirm": "Potrdite",
   "car-crash.confirmation.questionnaires-not-finished": "Oba udeleženca morata zaključiti vse sekcije.",
@@ -110,14 +111,11 @@
   "shared.ocr_ID_card": "Poslikajte osebno izkaznico.",
   "shared.ocr_driver_license": "Poslikajte vozniško dovoljenje.",
 
-
-
-
-
   "shared.yes": "Da",
   "shared.no": "Ne",
 
   "car-crash.copy-driver-data.description": "Ali je voznik isti kot zavarovalec na polici?",
   "car-crash.copy-driver-data.title": "Podatki o vozniku",
   "car-crash.joining-crash.title": "Pridužujem se nesreči"
+
 }
