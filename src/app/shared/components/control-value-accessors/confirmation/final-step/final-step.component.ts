@@ -44,7 +44,7 @@ export class FinalStepComponent extends BaseFormControlComponent<boolean> implem
   confirmCrash(crash: CrashModel) {
     this.handleModelChange(true);
     this.crashesApiService.confirmCrash(crash).pipe(take(1)).subscribe(() => {
-      this.next.emit();
+      this.router.navigate(['/final']);
     });
   }
 }

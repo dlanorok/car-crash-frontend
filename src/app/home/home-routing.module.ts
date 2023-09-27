@@ -22,6 +22,10 @@ const routes: Routes = [
     path: 'crash/:sessionId/questionnaires/:questionnaireId/sections/:sectionId/steps/:stepType',
     loadChildren: () => import('./pages/step/step.module').then(mod => mod.StepModule),
   },
+  {
+    path: 'final',
+    loadChildren: () => import('./pages/final/final.module').then(mod => mod.FinalModule),
+  },
 ];
 
 @NgModule({

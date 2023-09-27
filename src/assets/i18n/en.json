@@ -108,5 +108,11 @@
 
 
   "shared.ocr_ID_card": "Scan your ID card",
-  "shared.ocr_driver_license": "Scan your driver license"
+  "shared.ocr_driver_license": "Scan your driver license",
+
+
+
+
+  "car-crash.joining-crash.title": "Joining"
+
 }

@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import {
-  distinctUntilChanged,
+  distinctUntilChanged, merge,
   mergeMap,
   Observable,
   of,
@@ -70,7 +70,8 @@ export class StepComponent implements OnInit, OnDestroy {
   readonly back$: Subject<void> = new Subject<void>();
   @ViewChildren(DynamicControlDirective) private readonly dynamicControlDirectives?: QueryList<DynamicControlDirective<any>>;
 
-  readonly questionnaires$: Observable<QuestionnaireModel[]> = this.questionnaireService.questionnaireUpdates$.pipe(
+  readonly questionnaires$: Observable<QuestionnaireModel[]> = merge(this.questionnaireService.questionnaireUpdates$,
+    this.questionnaireService.questionnairesUpdates$).pipe(
     startWith(undefined),
     switchMap(() => {
       return this.questionnaireService.getOrFetchQuestionnaires();
