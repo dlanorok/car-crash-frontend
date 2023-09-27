@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, OnDestroy, ViewChild } from '@angular/core';
 import {
   BaseFormControlComponent,
   provideControlValueAccessor
@@ -13,10 +13,15 @@ import {
   tap,
   combineLatest,
   BehaviorSubject,
-  filter, switchMap
+  filter, switchMap, Observable, of
 } from "rxjs";
 import { ValidatorsErrors } from "@app/shared/components/forms/common/enumerators/validators-errors";
 import { LCID } from "@regulaforensics/document-reader-webclient";
+import { ConfirmService } from "@app/shared/services/confirm/confirm.service";
+import { TranslocoService } from "@ngneat/transloco";
+import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
+import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
+import { map } from "rxjs/operators";
 
 @Component({
   selector: 'app-driver-control',
@@ -26,10 +31,15 @@ import { LCID } from "@regulaforensics/document-reader-webclient";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DriverControlComponent extends BaseFormControlComponent<DriverModel> implements AfterViewInit, OnDestroy {
+  private readonly confirmService: ConfirmService = inject(ConfirmService);
+  private readonly translateService: TranslocoService = inject(TranslocoService);
+  private readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
+
   protected destroy$: Subject<void> = new Subject<void>();
   protected driverInitialized$: Subject<void> = new Subject<void>();
   protected driverForm$: BehaviorSubject<DriverFormComponent | null> = new BehaviorSubject<DriverFormComponent | null>(null);
   loading = false;
+  showOcr = true;
 
   @ViewChild('driverForm', {static: false}) set driverForm(driverForm: DriverFormComponent) {
     if (driverForm) {
@@ -115,6 +125,41 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
     }
 
     return localeValue ? localeValue.getValue() : (latinValue?.getValue() || '');
+  }
+
+  toggleOcr($event: boolean) {
+    this.showOcr = $event;
+    this.driverForm$.getValue()?.form.enable();
+  }
+
+  beforeSubmit(questionnaire: QuestionnaireModel): Observable<boolean> {
+    return of(this.formControl.value).pipe(
+      switchMap(value => {
+        const driverPhoneNumberInput = questionnaire.data.inputs["34"];
+        if (driverPhoneNumberInput.value !== null) {
+          return of(true);
+        }
+
+        return this.confirmService.confirmOrDecline({
+          confirmMessage: this.translateService.translate('shared.yes'),
+          declineMessage: this.translateService.translate('shared.no'),
+          description: this.translateService.translate('car-crash.copy-driver-data.description'),
+          message: this.translateService.translate('car-crash.copy-driver-data.title'),
+        }).pipe(
+          map((value) => {
+
+            if (value) {
+              const insurancePhoneNumberInput = questionnaire.data.inputs["45"];
+              const insuranceEmailInput = questionnaire.data.inputs["48"];
+              this.questionnaireService.updateInputs({
+                34: insurancePhoneNumberInput.value,
+                33: insuranceEmailInput.value
+              }, questionnaire);
+            }
+            return true;
+          }));
+      })
+    );
   }
 
   ngOnDestroy() {

@@ -1,6 +1,7 @@
 <app-ocr-component
-  *ngIf="(value$ | async) === null && !loading && (isDisabled$ | async) === false"
+  *ngIf="((value$ | async) === null && !loading && (isDisabled$ | async) === false) && showOcr"
   [showOCRComponent]="true"
+  (OCRToggle)="toggleOcr($event)"
   (OCRResponse)="processOCRResponse($event)">
 </app-ocr-component>
 
@@ -8,7 +9,7 @@
 <div *ngIf="loading">
   Loading ...
 </div>
-<div *ngIf="(!loading && (value$ | async) !== null) || (isDisabled$ | async) === true">
+<div *ngIf="(!loading && (value$ | async) !== null) || (isDisabled$ | async) === true || !showOcr">
   <app-driver-form #driverForm>
   </app-driver-form>
 </div>

@@ -50,7 +50,7 @@ export class QuestionnaireService implements OnDestroy {
     this.questionnairesApiService.put(questionnaire).pipe(take(1)).subscribe();
   }
 
-  updateInputs(inputs: Record<string, any>, questionnaire: QuestionnaireModel, step: Step) {
+  updateInputs(inputs: Record<string, any>, questionnaire: QuestionnaireModel, step?: Step) {
     this.questionnaires = this.questionnaires.map(_questionnaire => {
       if (_questionnaire.id === questionnaire.id) {
         const inputIds = Object.keys(inputs);
@@ -68,7 +68,7 @@ export class QuestionnaireService implements OnDestroy {
     this.questionnairesApiService.updateInputs(questionnaire.id, inputs).pipe(
       take(1),
       tap((_questionnaire: QuestionnaireModel) => {
-        if (step.updated_inputs) {
+        if (step && step.updated_inputs) {
           this.updateQuestionnaireInputs(_questionnaire, step.updated_inputs);
           this.questionnairesUpdates$.next(this.questionnaires);
         }

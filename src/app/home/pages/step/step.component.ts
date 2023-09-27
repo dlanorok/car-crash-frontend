@@ -284,7 +284,7 @@ export class StepComponent implements OnInit, OnDestroy {
     const observables = this.dynamicControlDirectives?.map(dynamicControlDirective => {
       const componentRef = dynamicControlDirective?.controlComponentRef;
       if (componentRef && typeof componentRef.instance.beforeSubmit === 'function') {
-        return componentRef.instance.beforeSubmit().pipe(take(1));
+        return componentRef.instance.beforeSubmit(this.questionnaire).pipe(take(1));
       } else {
         return of(true);
       }

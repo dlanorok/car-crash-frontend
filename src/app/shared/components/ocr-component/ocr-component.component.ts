@@ -48,6 +48,7 @@ export class OcrComponentComponent implements AfterViewInit, OnInit {
     this.reader.nativeElement.settings = {
       startScreen: true,
       changeCameraButton: true,
+      regulaLogo: false,
       devLicense: 'AAEAAJfR0Kw2vm6AgfHgWU5evWJiH9WDEldyfLLSmGjaKKOX08mhg3/MVmH7F6eWI+p3b44Q3Ob6xcMv62E7dgIv1gLj34tSi0qK1mnqK2VDVBtk0Ts65VSNRU8q+kjHl1LCkY2apSV/Vm8WLi0b2B/xPF7DN/PRdmZDYfBhsH7w4mqxJoS5PjsCwfl2CZkji8TlBGYlTze90B09uuVGUGqMCoKf7G0eDpYpiJ1/vN23VOC+AkMh9PIMJdbmd69qGC+7IWpT+ISDxzR9fEApWgjut0E9Ma2COzu+6SQg99No5ecNUejQkDYohEu38G2zQh61Yvoh9idalFHlLo9/3zQAuxMkAQAAAAAAEImsKmwHcPTt7AmEzq9P42Xv66kukzs0Nzs6m6mpJxHA/z05tUMcn+IEBvw7qdBkJQQZX24gZ3gsvTwBoMiO+XqxHf6gObdU62HwOypj7zFbRmQEGdft2xTr23QcIOHT4cePK07mWGSU81Om8XqhZcfCiSj51J+GEW99EwdIN99vmwcoXu7K1B9rChGjX9twVH8jzqn7ZCgcJtY4mzWmyU+MnZ632AAsy2frqdY77enR42L3xkunr7WRHQR4qfXtDN2CaLOypbenuUkg0wsrlbjciOMm1hiw6sCl0aHsOiFNAOTfu11dJbKM7Dh9d98et9VyrqrHD0OdV3ChEY7HPwbIegHYwpnY60wGglhbEj8GdZKvTmkIvOp/fZG0RQ0Lmg=='
     };
   }

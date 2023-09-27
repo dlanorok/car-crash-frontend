@@ -1,0 +1,12 @@
+<div class="dialog-container">
+  <div class="content-container">
+    <p class="description">{{ params?.description | transloco : params?.translationVariables }}</p>
+    <p class="hint">{{ params?.hint | transloco : params?.translationVariables }}</p>
+  </div>
+  <div class="buttons-container">
+    <app-button (click)="abort()" [buttonText]="params?.declineMessage || ''" [outline]="true">
+    </app-button>
+    <app-button (click)="confirm()" [buttonText]="params?.confirmMessage || ''">
+    </app-button>
+  </div>
+</div>

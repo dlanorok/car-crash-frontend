@@ -1,0 +1,25 @@
+.dialog-container {
+  padding: var(--theme-spacing);
+  .content-container {
+    padding-bottom: var(--theme-spacing-half);
+    .description {
+      color: var(--theme-color-dark);
+      font-weight: 500;
+      font-size: var(--font-size-default);
+      line-height: var(--line-height-text);
+      padding-bottom: var(--theme-spacing-half);
+    }
+    .hint {
+      color: var(--theme-color-medium);
+      font-size: var(--font-size-default);
+      line-height: var(--line-height-text);
+    }
+  }
+  .buttons-container {
+    display: flex;
+    gap: var(--theme-spacing-half);
+    eos-button {
+      width: 100%;
+    }
+  }
+}

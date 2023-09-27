@@ -28,7 +28,7 @@ export class DriverFormComponent extends BaseFormComponent<DriverModel> {
         address: [this.driver?.address || '', Validators.required],
         driving_licence_number: [this.driver?.driving_licence_number || '', Validators.required],
         driving_licence_valid_to: [this.driver?.driving_licence_valid_to ? new Date(this.driver?.driving_licence_valid_to) : null, Validators.required],
-        country: [this.driver?.country || '', Validators.required],
+        country: [this.driver?.country || ''],
       }
     );
   }
@@ -40,7 +40,7 @@ export class DriverFormComponent extends BaseFormComponent<DriverModel> {
       surname: value.surname,
       address: value.address,
       driving_licence_number: value.driving_licence_number,
-      driving_licence_valid_to: new Date(value.driving_licence_valid_to ?? ''),
+      driving_licence_valid_to: value.driving_licence_valid_to ? new Date(value.driving_licence_valid_to) : null,
       country: value.country,
     }, {emitEvent: false});
   }

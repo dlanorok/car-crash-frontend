@@ -113,6 +113,9 @@
 
 
 
-  "car-crash.joining-crash.title": "Joining"
 
+  "shared.yes": "Yes",
+  "shared.no": "No",
+  "car-crash.copy-driver-data.description": "Is driver=== policy holder?",
+  "car-crash.copy-driver-data.title": "Title that has to be changed"
 }
