@@ -94,9 +94,11 @@ export class StepComponent implements OnInit, OnDestroy {
     this.questionnaireService.questionnaireUpdates$.pipe(
       untilDestroyed(this)
     ).subscribe((questionnaire) => {
-      this.questionnaire = questionnaire;
-      if (questionnaire && questionnaire.id === this.questionnaire?.id && this.section?.id === SectionId.accidentSketch) {
-        this.updateControls(true);
+      if (questionnaire && questionnaire.id === this.questionnaire?.id) {
+        this.questionnaire = questionnaire;
+        if (this.section?.id === SectionId.accidentSketch) {
+          this.updateControls(true);
+        }
       }
     });
   }
