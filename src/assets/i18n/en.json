@@ -1,16 +1,17 @@
 {
   "car-crash.name": "AKSI",
-  "car-crash.description": "Enostavno in hitro do priprave evropskega poročila v primeru nesreče.",
-  "car-crash.welcome.scan-qr-code": "Poskeniraj QR kodo",
+  "car-crash.description": "Enostavno in hitro do izpolnjenega evropskega poročila v primeru nesreče.",
+  "car-crash.welcome.scan-qr-code": "Poskenirajte QR kodo",
   "car-crash.welcome.get-help": "Dodatne informacije",
   "car-crash.welcome.start-editing": "Začnite postopek",
 
   "car-crash.overview.currently-editing": "TRENUTNO ODGOVARJATE",
 
 
-  "car-crash.place-selector.title": "Izberite lokacijo",
+  "car-crash.place-selector.title": "Določite lokacijo nesreče",
   "car-crash.place-selector.info": "Informacija o lokaciji",
   "car-crash.place-selector.confirm": "Potrdite lokacijo",
+  "car-crash.place-selector.search": "Išči",
 
   "car-crash.initial-impact.direction": "Onzačite smer naleta",
   "car-crash.initial-impact.info": "Informacija glede smeri naleta",
@@ -104,7 +105,7 @@
   "shared.forms/validators.labels.control_required.val": "To polje je obvezno.",
   "shared.forms/validators.labels.date_invalid.val": "Oblika datuma je DD.MM.YYYY",
   "shared.forms/validators.labels.email_format.val": "Email mora biti v ustreznem formatu.",
-  "shared.forms/validators.labels.phone_number.val": "Tel.številka mora biti v ustreznem formatu.",
+  "shared.forms/validators.labels.phone_number.val": "Telefonska številka mora biti v ustrezni obliki",
 
   "shared.ocr_ID_card": "Poslikajte osebno izkaznico.",
   "shared.ocr_driver_license": "Poslikajte vozniško dovoljenje.",
@@ -115,7 +116,8 @@
 
   "shared.yes": "Da",
   "shared.no": "Ne",
+
   "car-crash.copy-driver-data.description": "Ali je voznik isti kot zavarovalec na polici?",
-  "car-crash.copy-driver-data.title": "Isti voznik",
+  "car-crash.copy-driver-data.title": "Podatki o vozniku",
   "car-crash.joining-crash.title": "Pridužujem se nesreči"
 }
