@@ -1,5 +1,6 @@
 <ng-container *ngIf="crash$ | async; let crash">
   <app-chapter
+    class="flex-container non-scrollable"
     [step]="step"
     (back)="back.emit()"
     (next)="confirmCrash(crash)"
