@@ -14,7 +14,12 @@ export class GetStepInputsPipe implements PipeTransform {
         if (input.value) {
           input.value = new Date(input.value);
         } else {
-          input.value = new Date();
+          const today = new Date();
+          if (input.after_months) {
+            input.value = new Date(today.setMonth(today.getMonth() + input.after_months));
+          } else {
+            input.value = today;
+          }
         }
       }
       acc.push(input);

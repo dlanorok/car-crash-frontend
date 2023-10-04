@@ -106,4 +106,5 @@ export interface Input {
   input_type?: string;
   on_change_action?: string;
   label?: string;
+  after_months?: number;
 }

@@ -10,6 +10,7 @@ import { ChangeData } from "ngx-intl-tel-input/lib/interfaces/change-data";
 import { Observable, of, switchMap } from "rxjs";
 import { map } from "rxjs/operators";
 import { TranslocoService } from "@ngneat/transloco";
+import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 
 @Component({
   selector: 'app-invite',
@@ -20,6 +21,9 @@ import { TranslocoService } from "@ngneat/transloco";
 export class InviteComponent extends BaseFormControlComponent<ChangeData> implements OnInit {
   private readonly commonApiService: CommonApiService = inject(CommonApiService);
   private readonly traslateService: TranslocoService = inject(TranslocoService);
+  private readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
+
+  questionnaires$ = this.questionnaireService.getOrFetchQuestionnaires();
 
   @Input() step!: Step;
 

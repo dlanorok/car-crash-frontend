@@ -155,10 +155,17 @@ export abstract class BaseSvgHoverComponent extends BaseFormControlComponent<Bas
 
     if (clickedElement.classList.contains(this.selectedClass)) {
       clickedElement.classList.remove(this.selectedClass);
-      this.selectedParts.splice(this.selectedParts.indexOf(clickedElement.id), 1);
+      this.selectedParts = this.selectedParts.filter((part => part !== clickedElement.id));
     } else {
       clickedElement.classList.add(this.selectedClass);
       this.selectedParts = [...this.selectedParts, clickedElement.id];
+    }
+
+    if (this.svgImage) {
+      window.parent.document.body.style.transform = "scale(2)";
+      window.parent.document.body.style.transform = "scale(1)";
+      this.svgImage.nativeElement.style.transform = "scale(1.1)";
+      this.svgImage.nativeElement.style.transform = "scale(1)";
     }
     this.afterSvgItemClicked();
   }

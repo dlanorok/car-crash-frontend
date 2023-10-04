@@ -13,11 +13,14 @@
   #damaged-parts {
     width: 70%;
     max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
     path {
       cursor: pointer;
-      &.selected {
-        opacity: 1;
-      }
     }
+  }
+
+  .svg-wrapper {
+    width: 100%;
   }
 }

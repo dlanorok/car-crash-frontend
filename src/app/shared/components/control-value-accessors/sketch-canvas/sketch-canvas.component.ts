@@ -352,9 +352,10 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     ).subscribe();
   }
 
-  private onDragStart() {
+  private onDragStart($event: any) {
     const value = this.value$.getValue();
     const editor = this.cookieService.get(CookieName.sessionId);
+    this.tr.nodes([$event.target]);
 
     if (value && !value.editing) {
       this.handleModelChange({
@@ -419,6 +420,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
       const touch2 = $event.touches[1];
 
       if (touch1 && touch2) {
+        this.cars.forEach(car => car.group.setDraggable(false));
         // if the stage was under Konva's drag&drop
         // we need to stop it, and implement our own pan logic with two pointers
         if (this.layer.isDragging()) {
@@ -474,6 +476,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
         this.lastDist = dist;
         this.lastCenter = newCenter;
       }
+    this.cars.forEach(car => car.group.setDraggable(true));
 
   }
 

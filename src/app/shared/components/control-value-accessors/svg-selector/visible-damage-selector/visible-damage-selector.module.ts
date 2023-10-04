@@ -5,6 +5,7 @@ import { FileUploadModule } from "@app/shared/components/file-upload/file-upload
 import { FormErrorsModule } from "@app/shared/components/forms/shell/form-errors/form-errors.module";
 import { InputSectionModule } from "@app/shared/components/input-section/input-section.module";
 import { TranslocoModule } from "@ngneat/transloco";
+import { IncludesModule } from "@app/shared/common/pipes/includes/includes.module";
 
 
 
@@ -20,7 +21,8 @@ import { TranslocoModule } from "@ngneat/transloco";
     FileUploadModule,
     FormErrorsModule,
     InputSectionModule,
-    TranslocoModule
+    TranslocoModule,
+    IncludesModule
   ]
 })
 export class VisibleDamageSelectorModule { }

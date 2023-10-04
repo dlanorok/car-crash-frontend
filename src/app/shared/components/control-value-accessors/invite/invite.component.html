@@ -13,7 +13,12 @@
     </app-info-section>
   </div>
 
-  <app-input-section (back)="back.emit()" (next)="next.emit()" [buttonName]="'car-crash.shared.next' | transloco" [title]="'car-crash.invite.with-sms' | transloco">
+  <app-input-section
+    (back)="back.emit()"
+    (next)="next.emit()"
+    [buttonName]="'car-crash.shared.next' | transloco"
+    [title]="'car-crash.invite.with-sms' | transloco"
+    [disabledButton]="((questionnaires$ | async) || []).length < 2">
     <app-phone-number-control [formControl]="formControl" [submitted]="submitted"></app-phone-number-control>
   </app-input-section>
 </div>
