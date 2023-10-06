@@ -5,7 +5,7 @@ import {
 } from "@app/shared/form-controls/base-form-control.component";
 import { CountryISO, SearchCountryField } from 'ngx-intl-tel-input';
 import { ChangeData } from "ngx-intl-tel-input/lib/interfaces/change-data";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Observable, of, takeUntil, filter } from "rxjs";
 import { updateEntireFormValidity } from '@app/shared/forms/helpers/update-entire-form-validity';
 import { map, take } from "rxjs/operators";
@@ -21,7 +21,7 @@ export class PhoneNumberControlComponent extends BaseFormControlComponent<Change
   readonly SearchCountryField = SearchCountryField;
 
   phoneForm = new FormGroup({
-    phone: new FormControl({})
+    phone: new FormControl({}, Validators.required)
   });
 
   override handleModelChange(value: ChangeData) {

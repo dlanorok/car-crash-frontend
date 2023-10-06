@@ -1,5 +1,4 @@
 <div class="flex-container non-scrollable">
-
   <div class="scrollable flex">
     <app-info-section [step]="step" [isSmall]="true">
       <qrcode
@@ -15,10 +14,10 @@
 
   <app-input-section
     (back)="back.emit()"
-    (next)="next.emit()"
-    [buttonName]="'car-crash.shared.next' | transloco"
+    (next)="submit()"
+    [buttonName]="(phoneNumberControlComponent?.phoneForm?.valid && ((questionnaires$ | async) || []).length < 2) ? ('car-crash.invite.send-invite' | transloco) : ('car-crash.shared.next' | transloco)"
     [title]="'car-crash.invite.with-sms' | transloco"
-    [disabledButton]="((questionnaires$ | async) || []).length < 2">
-    <app-phone-number-control [formControl]="formControl" [submitted]="submitted"></app-phone-number-control>
+    [disabledButton]="((questionnaires$ | async) || []).length < 2 && !phoneNumberControlComponent?.phoneForm?.valid">
+    <app-phone-number-control #phoneNumberControlComponent [formControl]="formControl" [submitted]="submitted"></app-phone-number-control>
   </app-input-section>
 </div>

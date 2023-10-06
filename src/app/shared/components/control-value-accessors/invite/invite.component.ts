@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import {
   BaseFormControlComponent,
   provideControlValueAccessor
@@ -7,10 +7,11 @@ import { CommonApiService } from "@app/shared/api/common/common-api.service";
 import { Step } from "@app/home/pages/crash/flow.definition";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { ChangeData } from "ngx-intl-tel-input/lib/interfaces/change-data";
-import { Observable, of, switchMap } from "rxjs";
+import { of, switchMap, take } from "rxjs";
 import { map } from "rxjs/operators";
 import { TranslocoService } from "@ngneat/transloco";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
+import { PhoneNumberControlComponent } from "@app/shared/form-controls/phone-number-control/phone-number-control.component";
 
 @Component({
   selector: 'app-invite',
@@ -32,18 +33,29 @@ export class InviteComponent extends BaseFormControlComponent<ChangeData> implem
 
   location = `${window.origin}/crash/${localStorage.getItem(StorageItem.sessionId)}/join`;
 
-  afterSubmit(): Observable<boolean> {
-    return of(this.formControl.value).pipe(
-      switchMap(value => {
-        if (value && value.internationalNumber) {
+  @ViewChild('phoneNumberControlComponent') phoneNumberControlComponent!: PhoneNumberControlComponent;
+  lastInviteNumber?: ChangeData | null;
+
+  submit() {
+    this.questionnaires$.pipe(
+      map((questsionnaires) => {
+        if (questsionnaires.length >= 2) {
+          this.next.emit();
+          return true;
+        }
+        return false;
+      }),
+      switchMap((nextStep) => {
+        if (!nextStep && this.phoneNumberControlComponent?.phoneForm?.valid) {
+          this.lastInviteNumber = this.phoneNumberControlComponent.phoneForm.controls.phone.value;
           return this.commonApiService.sendSms(
             `${this.traslateService.translate('car-crash.invite.sms-content')}\n${this.location}`,
-            value?.internationalNumber
-          ).pipe(map(() => true));
+            this.formControl.value?.internationalNumber
+          );
         }
-
-        return of(false);
-      })
-    );
+        return of(undefined);
+      }),
+      take(1)
+    ).subscribe();
   }
 }
