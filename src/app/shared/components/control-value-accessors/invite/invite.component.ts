@@ -7,11 +7,12 @@ import { CommonApiService } from "@app/shared/api/common/common-api.service";
 import { Step } from "@app/home/pages/crash/flow.definition";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { ChangeData } from "ngx-intl-tel-input/lib/interfaces/change-data";
-import { of, switchMap, take } from "rxjs";
+import { merge, Observable, of, startWith, switchMap, take } from "rxjs";
 import { map } from "rxjs/operators";
 import { TranslocoService } from "@ngneat/transloco";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 import { PhoneNumberControlComponent } from "@app/shared/form-controls/phone-number-control/phone-number-control.component";
+import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
 
 @Component({
   selector: 'app-invite',
@@ -24,7 +25,13 @@ export class InviteComponent extends BaseFormControlComponent<ChangeData> implem
   private readonly traslateService: TranslocoService = inject(TranslocoService);
   private readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
 
-  questionnaires$ = this.questionnaireService.getOrFetchQuestionnaires();
+  readonly questionnaires$: Observable<QuestionnaireModel[]> = merge(this.questionnaireService.questionnaireUpdates$,
+    this.questionnaireService.questionnairesUpdates$).pipe(
+    startWith(undefined),
+    switchMap(() => {
+      return this.questionnaireService.getOrFetchQuestionnaires();
+    })
+  );
 
   @Input() step!: Step;
 

@@ -120,6 +120,7 @@ export class QuestionnaireService implements OnDestroy {
       this.toastr.success(this.translateService.translate('car-crash.questionnaire.vehicle.joined'));
     } else {
       this.questionnaires[index] = new QuestionnaireModel({...questionnaire});
+      this.questionnaires = [...this.questionnaires];
       this.questionnaireUpdates$.next(questionnaire);
     }
   }

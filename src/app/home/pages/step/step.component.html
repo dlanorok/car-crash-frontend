@@ -1,3 +1,7 @@
+<ng-container *ngFor="let q of questionnaires$ | async">
+  {{ q.completed }}
+</ng-container>
+
 <div style="height: 100%; display: flex; flex-direction: column; justify-content: space-between">
   <ng-container *ngIf="questionnaire && step && section && form">
     <app-navigation-header
