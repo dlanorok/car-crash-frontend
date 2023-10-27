@@ -675,7 +675,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     newKonva.width(1000);
     newKonva.height(1000);
     const layer = newKonva.getLayers()[0];
-    layer.scale({x: 1.5, y: 1.5});
+    layer.scale({x: 1, y: 1});
 
     if (sketch) {
       const car = this.cars[0];

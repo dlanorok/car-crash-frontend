@@ -48,6 +48,7 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
         if (driverForm.form.valid) {
           return null;
         }
+
         return {
           [ValidatorsErrors.required]: true
         };
@@ -90,14 +91,16 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
   processOCRResponse(response: Response | undefined): void {
     let driverModel = new DriverModel({});
     if (response) {
-      const dateOfExpiry: string | undefined = this.findLocaleFieldValue(response, TextFieldType.DATE_OF_EXPIRY);
+      const dateOfExpiry: string | undefined = this.findLocaleFieldValue(response, TextFieldType.DATE_OF_EXPIRY, true);
+      const dateOfBirth: string | undefined = this.findLocaleFieldValue(response, TextFieldType.DATE_OF_BIRTH, true);
       const driver = {
         name: this.findLocaleFieldValue(response, TextFieldType.FIRST_NAME) || this.findLocaleFieldValue(response, TextFieldType.GIVEN_NAMES) || '',
         surname: this.findLocaleFieldValue(response, TextFieldType.SURNAME) || '',
         address: this.findLocaleFieldValue(response, TextFieldType.ADDRESS)?.replace("^", "\n"),
         country: this.findLocaleFieldValue(response, TextFieldType.ISSUING_STATE_CODE),
         driving_licence_number: this.findLocaleFieldValue(response, TextFieldType.DOCUMENT_NUMBER),
-        driving_licence_valid_to: dateOfExpiry ? new Date(dateOfExpiry) : ''
+        driving_licence_valid_to: dateOfExpiry ? new Date(dateOfExpiry) : '',
+        date_of_birth: dateOfBirth ? new Date(dateOfBirth) : ''
       };
 
       driver.name = driver.name.length > 1 ? driver.name.charAt(0).toUpperCase() + driver.name.slice(1) : driver.name;
@@ -109,7 +112,7 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
     this.handleModelChange(driverModel);
   }
 
-  private findLocaleFieldValue(response: Response, type: TextFieldType) {
+  private findLocaleFieldValue(response: Response, type: TextFieldType, returnLatin = false) {
     let latinValue = undefined;
     let localeValue = undefined;
     for (const field of (response.text?.fieldList || [])) {
@@ -124,7 +127,7 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
       }
     }
 
-    return localeValue ? localeValue.getValue() : (latinValue?.getValue() || '');
+    return localeValue && !returnLatin ? localeValue.getValue() : (latinValue?.getValue() || '');
   }
 
   toggleOcr($event: boolean) {
@@ -133,6 +136,11 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
   }
 
   beforeSubmit(questionnaire: QuestionnaireModel): Observable<boolean> {
+    this.driverForm$.getValue()?.submitForm();
+    if (!this.driverForm$.getValue()?.form.valid) {
+      return of(false);
+    }
+
     return of(this.formControl.value).pipe(
       switchMap(value => {
         const driverPhoneNumberInput = questionnaire.data.inputs["34"];

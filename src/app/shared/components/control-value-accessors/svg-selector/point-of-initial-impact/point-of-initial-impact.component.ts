@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { BaseSvgHoverComponent } from "../base-svg-hover/base-svg-hover.component";
 import { provideControlValueAccessor } from "@app/shared/form-controls/base-form-control.component";
 import { Observable, of, take } from "rxjs";
+import { StorageItem } from "@app/shared/common/enumerators/storage";
+import { nanoid } from "nanoid";
 
 @Component({
   selector: 'app-point-of-initial-impact',
@@ -34,19 +36,16 @@ export class PointOfInitialImpactComponent extends BaseSvgHoverComponent {
     const element = this.svgImage?.nativeElement.cloneNode(true) as HTMLElement;
 
     if (element) {
-      element.querySelectorAll("path").forEach(g => g.setAttribute("style", "fill: transparent; stroke: #9D9BA0FF;"));
-
-      element.querySelectorAll("line").forEach(line => line.setAttribute("style", "stroke-width: 3px; stroke: #9D9BA0FF"));
-      element.querySelectorAll("polygon").forEach(line => line.setAttribute("style", "stroke-width: 3px; fill: #9D9BA0FF"));
-      element.querySelectorAll("g.selected").forEach(g => g.querySelectorAll("line").forEach(
-        line => line.setAttribute("style", "stroke: #dc3545; stroke-width: 3px;"))
-      );
-      element.querySelectorAll("g.selected").forEach(g => g.querySelectorAll("polygon").forEach(
-        polygon => polygon.setAttribute("style", "fill: #dc3545;"))
-      );
+      element.querySelectorAll("path").forEach(g => g.setAttribute("style", "fill: #9D9BA0FF;"));
+      element.querySelectorAll("g.selected").forEach(g => {
+        g.querySelectorAll("g.arrow-wrapper .cls-4").forEach(g => g.setAttribute("style", "fill: #dc3545;"));
+        g.querySelectorAll("g.arrow-wrapper .cls-2").forEach(g => g.setAttribute("style", "fill: #dc3545;"));
+        g.querySelectorAll("g.arrow path").forEach(g => g.setAttribute("style", "fill: #fff;"));
+      });
 
       const blob = new Blob([element.outerHTML]);
-      return this.filesApiService.uploadFile(new File([blob], 'initial-impact.svg')).pipe(take(1));
+      const sessionId = localStorage.getItem(StorageItem.sessionId);
+      return this.filesApiService.uploadFile(new File([blob], `initial-impact-${sessionId}-${nanoid()}.svg`)).pipe(take(1));
     }
 
     return of({id: null});

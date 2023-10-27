@@ -4,6 +4,7 @@ import { BaseFormComponent } from "../base-form.component";
 import { DriverModel } from "../../../models/driver.model";
 import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
 import { TextFieldType } from "@regulaforensics/document-reader-webclient";
+import { updateEntireFormValidity } from "@app/shared/forms/helpers/update-entire-form-validity";
 
 @Component({
   selector: 'app-driver-form',
@@ -27,6 +28,8 @@ export class DriverFormComponent extends BaseFormComponent<DriverModel> {
         surname: [this.driver?.surname || '', Validators.required],
         address: [this.driver?.address || '', Validators.required],
         driving_licence_number: [this.driver?.driving_licence_number || '', Validators.required],
+        driving_licence_category: [this.driver?.driving_licence_category || '', Validators.required],
+        date_of_birth: [this.driver?.date_of_birth || '', Validators.required],
         driving_licence_valid_to: [this.driver?.driving_licence_valid_to ? new Date(this.driver?.driving_licence_valid_to) : null, Validators.required],
         country: [this.driver?.country || ''],
       }
@@ -42,6 +45,8 @@ export class DriverFormComponent extends BaseFormComponent<DriverModel> {
       driving_licence_number: value.driving_licence_number,
       driving_licence_valid_to: value.driving_licence_valid_to ? new Date(value.driving_licence_valid_to) : null,
       country: value.country,
+      date_of_birth: value.date_of_birth ? new Date(value.date_of_birth) : null,
+      driving_licence_category: value.driving_licence_category,
     }, {emitEvent: false});
   }
 
@@ -51,6 +56,11 @@ export class DriverFormComponent extends BaseFormComponent<DriverModel> {
       ...this.form.value
     });
     this.emitValue(driver);
+  }
+
+  submitForm() {
+    this.submitted = true;
+    updateEntireFormValidity(this.form);
   }
 
   override setFromOCRResponse(response: Response): void {

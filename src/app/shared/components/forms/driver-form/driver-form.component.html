@@ -26,6 +26,19 @@
     [submitted]="submitted">
   </app-text-control>
 
+  <app-text-control
+    [formControl]="$any(form.controls['driving_licence_category'])"
+    [label]="'car-crash.driver.driving-licence-category.label' | transloco"
+    [submitted]="submitted">
+  </app-text-control>
+
+  <app-date-control
+    *ngIf="form.get('date_of_birth')"
+    [label]="'car-crash.driver.driving-licence-date_of_birth.label' | transloco"
+    [formControl]="$any(form.controls['date_of_birth'])"
+    [submitted]="submitted">
+  </app-date-control>
+
   <app-date-control
     *ngIf="form.get('driving_licence_valid_to')"
     [label]="'car-crash.driver.driving-licence-valid-to.label' | transloco"

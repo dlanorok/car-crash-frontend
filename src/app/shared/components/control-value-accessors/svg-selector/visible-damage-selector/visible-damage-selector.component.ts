@@ -3,6 +3,8 @@ import { BaseSvgHoverComponent } from "../base-svg-hover/base-svg-hover.componen
 import { provideControlValueAccessor } from "@app/shared/form-controls/base-form-control.component";
 import { Observable, of, take, tap } from "rxjs";
 import {  map } from "rxjs/operators";
+import { StorageItem } from "@app/shared/common/enumerators/storage";
+import { nanoid } from 'nanoid';
 
 @Component({
   selector: 'app-visible-damage-selector',
@@ -51,7 +53,8 @@ export class VisibleDamageSelectorComponent extends BaseSvgHoverComponent implem
       element.querySelectorAll("path.selected").forEach(path => path.setAttribute("style", "fill: #dc3545;"));
 
       const blob = new Blob([element.outerHTML]);
-      return this.filesApiService.uploadFile(new File([blob], 'visible-damage.svg')).pipe(take(1));
+      const sessionId = localStorage.getItem(StorageItem.sessionId);
+      return this.filesApiService.uploadFile(new File([blob], `visible-damage.svg-${sessionId}-${nanoid()}.svg`)).pipe(take(1));
     }
 
     return of({id: null});

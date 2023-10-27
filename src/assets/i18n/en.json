@@ -63,7 +63,9 @@
   "car-crash.driver.surname.label": "Priimek",
   "car-crash.driver.address.label": "Naslov",
   "car-crash.driver.driving-licence-number.label": "Št. vozniškega dokumenta",
+  "car-crash.driver.driving-licence-category.label": "Kategorija (A, B, ...)",
   "car-crash.driver.driving-licence-valid-to.label": "Veljavno do",
+  "car-crash.driver.driving-licence-date_of_birth.label": "Datum rojstva",
   "car-crash.driver.country.label": "Država",
 
   "car-crash.date-picker.weekday.week-label" : "Teden",

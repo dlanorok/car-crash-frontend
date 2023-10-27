@@ -6,6 +6,8 @@ export class DriverModel extends BaseModel {
   address?: string;
   country?: string;
   driving_licence_number?: string;
+  driving_licence_category?: string;
+  date_of_birth?: string;
   driving_licence_valid_to?: string;
   phone_number?: string;
   email?: string;
