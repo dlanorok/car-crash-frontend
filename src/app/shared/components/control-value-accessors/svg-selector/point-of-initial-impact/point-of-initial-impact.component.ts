@@ -36,7 +36,7 @@ export class PointOfInitialImpactComponent extends BaseSvgHoverComponent {
     const element = this.svgImage?.nativeElement.cloneNode(true) as HTMLElement;
 
     if (element) {
-      element.querySelectorAll("path").forEach(g => g.setAttribute("style", "fill: #9D9BA0FF;"));
+      element.querySelectorAll("path:not(.cls-4)").forEach(g => g.setAttribute("style", "fill: #9D9BA0FF;"));
       element.querySelectorAll("g.selected").forEach(g => {
         g.querySelectorAll("g.arrow-wrapper .cls-4").forEach(g => g.setAttribute("style", "fill: #dc3545;"));
         g.querySelectorAll("g.arrow-wrapper .cls-2").forEach(g => g.setAttribute("style", "fill: #dc3545;"));
