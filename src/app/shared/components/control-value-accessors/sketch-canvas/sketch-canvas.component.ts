@@ -324,18 +324,12 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
           draggable: false,
           height: carHeight,
           width: carWidth,
-          scaleX: 1,
-          scaleY: 1,
-          x: 0,
-          y: 0,
           id: car.id
         });
         const group = new Konva.Group({
           x: x,
           y: y,
           draggable: true,
-          scaleX: (car?.scaleX || 1),
-          scaleY: (car?.scaleY || 1),
           rotation: car?.rotation,
           id: car.id
         });
