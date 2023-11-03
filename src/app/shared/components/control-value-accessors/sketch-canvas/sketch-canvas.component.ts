@@ -86,6 +86,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
   stage!: Konva.Stage;
   layer!: Konva.Layer;
   image!: Konva.Image;
+  rotateIcon!: Konva.Path;
   tr!: Konva.Transformer;
   cars: {group: Konva.Group, carData: CarData}[] = [];
   scale = 0;
@@ -176,7 +177,33 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
             this.layer.draw();
           }),
           map(() => {
-            this.tr = new Konva.Transformer({enabledAnchors: []});
+            this.tr = new Konva.Transformer({
+              enabledAnchors: [],
+              anchorFill:"#29A9E5",
+              keepRatio:false,
+              borderDash: [4, 3],
+              anchorCornerRadius: 50,
+              anchorStrokeWidth: 5,
+              anchorSize: 15,
+              rotateAnchorCursor: 'grab'
+            });
+            this.tr.anchorStyleFunc(anchor => {
+              if (anchor.hasName('rotater')) {
+                if (!this.rotateIcon) {
+                  const icon = '<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><title>box-configurator-rotate</title><circle cx="8" cy="8" r="8" style="fill:#fff"/><path d="M0.9,0.5c0.1,0,0.3,0.1,0.3,0.3L1.1,2.9c1-1.4,2.6-2.4,4.5-2.4c2.9,0,5.3,2.4,5.3,5.3c0,2.9-2.4,5.3-5.3,5.3c-1.4,0-2.6-0.5-3.6-1.4c-0.1-0.1-0.1-0.3,0-0.4L2.3,9c0.1-0.1,0.3-0.1,0.4,0c0.7,0.7,1.7,1.1,2.8,1.1c2.3,0,4.2-1.9,4.2-4.2S7.8,1.7,5.5,1.7c-1.7,0-3.2,1-3.8,2.5l2.7-0.1c0.1,0,0.3,0.1,0.3,0.3v0.6c0,0.1-0.1,0.3-0.3,0.3H0.3C0.1,5.2,0,5.1,0,4.9V0.8c0-0.1,0.1-0.3,0.3-0.3H0.9z"/></svg>';
+                  this.rotateIcon = new Konva.Path({
+                    fill: "white",
+                    data: icon,
+                    name: 'rotation-icon'
+                  });
+                  this.tr.add(this.rotateIcon);
+                }
+
+                this.rotateIcon.position(anchor.position());
+                this.rotateIcon.x(this.rotateIcon.x() - 5.25);
+                this.rotateIcon.y(this.rotateIcon.y() - 5.25);}
+            });
+
             this.layer.add(this.tr);
             this.tr.nodes([]);
 

@@ -5866,10 +5866,10 @@
   "resolved" "https://registry.npmjs.org/klona/-/klona-2.0.6.tgz"
   "version" "2.0.6"
 
-"konva@^9.2.0":
-  "integrity" "sha512-+woI76Sk+VFVl9z7zPkuTnN2zFpEYg27YWz8BCdQXpt5IS3pdnSPAPQVPPMidcbDi9/G5b/IOIp35/KqMGiYPA=="
-  "resolved" "https://registry.npmjs.org/konva/-/konva-9.2.0.tgz"
-  "version" "9.2.0"
+"konva@^9.2.3":
+  "integrity" "sha512-oQ6VQ6kUL9IlhOGuEKKhxqnv6g/t8jZpVuWahQQ6hCqAsO8Ydi1zFGv7ef4EOq5GoPNq/d6Fyj/3i5Y/a5NooA=="
+  "resolved" "https://registry.npmjs.org/konva/-/konva-9.2.3.tgz"
+  "version" "9.2.3"
 
 "less-loader@11.1.0":
   "integrity" "sha512-C+uDBV7kS7W5fJlUjq5mPBeBVhYpTIm5gB09APT9o3n/ILeaXVsiSFTbZpTJCJwQ/Crczfn3DmfQFwxYusWFug=="
