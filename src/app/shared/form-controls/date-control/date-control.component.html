@@ -5,6 +5,8 @@
     name="dp"
     ngbDatepicker
     (click)="d.toggle()"
+    [minDate]="{year: 1920, month: 1, day: 1}"
+    [maxDate]="{year: 2100, month: 1, day: 1}"
     #d="ngbDatepicker"
     [disabled]="(isDisabled$ | async) === true"
     [ngModel]="value$ | async"
