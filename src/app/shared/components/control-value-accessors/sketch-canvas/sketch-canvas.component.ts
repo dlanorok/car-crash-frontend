@@ -187,6 +187,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
               anchorSize: 15,
               rotateAnchorCursor: 'grab'
             });
+            this.tr.moveToTop();
             this.tr.anchorStyleFunc(anchor => {
               if (anchor.hasName('rotater')) {
                 if (!this.rotateIcon) {
@@ -194,7 +195,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
                   this.rotateIcon = new Konva.Path({
                     fill: "white",
                     data: icon,
-                    name: 'rotation-icon'
+                    name: 'rotation-icon',
                   });
                   this.tr.add(this.rotateIcon);
                 }
@@ -377,6 +378,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     const value = this.value$.getValue();
     const editor = this.cookieService.get(CookieName.sessionId);
     this.tr.nodes([$event.target]);
+    this.tr.moveToTop();
 
     if (value && !value.editing) {
       this.handleModelChange({
