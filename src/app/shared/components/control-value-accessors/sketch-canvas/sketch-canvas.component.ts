@@ -409,6 +409,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
         const parent = $event.target.parent.attrs.id === 'arrow' ? $event.target.parent.parent : $event.target.parent;
         if (parent) {
           this.tr.nodes([parent]);
+          this.tr.moveToTop();
           this.layer.draw();
         }
       }
