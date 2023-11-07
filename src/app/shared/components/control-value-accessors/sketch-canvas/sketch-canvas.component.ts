@@ -121,7 +121,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     filter((markerPosition: LatLngLiteral | undefined): markerPosition is LatLngLiteral => !!markerPosition),
     map((markerPosition: LatLngLiteral) => {
       const imageSize = `${imageWidth}x${imageHeight}`;
-      return `${environment.googleApiUrl}/staticmap?center=${markerPosition?.lat},${markerPosition.lng}&zoom=18&size=${imageSize}&key=${environment.googleApiKey}&scale=2&maptype=map`;
+      return `${environment.googleApiUrl}/staticmap?center=${markerPosition?.lat},${markerPosition.lng}&zoom=18&size=${imageSize}&key=${environment.googleApiKey}&scale=2&maptype=map&style=feature:poi|element:labels|visibility:off`;
     }),
   );
 
