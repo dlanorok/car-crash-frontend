@@ -2,10 +2,10 @@
   <img class="logo-img" src="./assets/images/car-bot.png" alt="car-crash" />
   <div class="gap-half flex flex-column z-index-1">
     <h1>
-      {{ 'car-crash.name' | transloco }}
+      <span [innerHTML]="'car-crash.name' | transloco"></span>
     </h1>
     <p>
-      {{ 'car-crash.description' | transloco }}
+       <span [innerHTML]="'car-crash.description' | transloco"></span>
     </p>
   </div>
 </div>
@@ -15,7 +15,7 @@
     <div class="padding scan flex flex-column gap">
       <app-svg-comp class="main-icon" name="qr-code" width="2.5rem"></app-svg-comp>
       <div class="flex flex-column">
-        {{ 'car-crash.welcome.scan-qr-code' | transloco }}
+        <span [innerHTML]="'car-crash.welcome.scan-qr-code' | transloco"></span>
         <div class="flex justify-content-end">
           <app-svg-comp name="next" width="20px" class="next-icon"></app-svg-comp>
         </div>
@@ -25,7 +25,7 @@
     <div class="padding scan flex flex-column gap">
       <app-svg-comp class="main-icon" name="info" width="2.5rem"></app-svg-comp>
       <div class="flex flex-column">
-        {{ 'car-crash.welcome.get-help' | transloco }}
+        <span [innerHTML]="'car-crash.welcome.get-help' | transloco"></span>
         <div class="flex justify-content-end">
           <app-svg-comp name="next" width="20px" class="next-icon"></app-svg-comp>
         </div>
@@ -37,7 +37,7 @@
     <div class="padding flex flex-column justify-content-space-between flex-1">
       <app-svg-comp class="main-icon" name="ballot-check" width="2.5rem"></app-svg-comp>
       <div>
-        {{ 'car-crash.welcome.start-editing' | transloco }}
+        <span [innerHTML]="'car-crash.welcome.start-editing' | transloco"></span>
         <div class="flex justify-content-end">
           <app-svg-comp name="next" width="20px" class="next-icon"></app-svg-comp>
         </div>

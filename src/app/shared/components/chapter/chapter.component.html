@@ -6,9 +6,9 @@
     </div>
     <div class="chapter-info">
       <ng-container *ngIf="step">
-        <h1> {{ step.question }} </h1>
+        <h1> <span [innerHTML]="step.question"></span> </h1>
         <div class="help-text">
-          {{ step.help_text }}
+          <span [innerHTML]="step.help_text"></span>
         </div>
       </ng-container>
     </div>
@@ -16,7 +16,7 @@
 
   <app-input-section (back)="back.emit()" (next)="next.emit()" [disabledButton]="!!errorText" [buttonName]="nextButtonName || ('car-crash.shared.next' | transloco)">
     <div *ngIf="errorText" class="warning-text">
-      {{ errorText }}
+      <span [innerHTML]="errorText"></span>
     </div>
   </app-input-section>
 </div>

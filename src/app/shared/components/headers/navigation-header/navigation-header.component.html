@@ -43,7 +43,7 @@
             <div class="car-identifier smaller" [class.creator]="crash.creator === questionnaire.creator">
               {{ crash.creator === questionnaire.creator ? 'A' : 'B' }}
             </div>
-            {{ (questionnaire.creator | amICreator) ? ('car-crash.navigation-header.me' | transloco) : ('car-crash.navigation-header.co-participant' | transloco) }}
+            <span [innerHTML]="(questionnaire.creator | amICreator) ? ('car-crash.navigation-header.me' | transloco) : ('car-crash.navigation-header.co-participant' | transloco)"></span>
           </div>
         </ng-container>
       </div>

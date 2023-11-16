@@ -25,7 +25,6 @@ import { CookieName } from "@app/shared/common/enumerators/cookies";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { ToastrService } from "ngx-toastr";
 import { DynamicControlDirective } from "@app/shared/common/directives/dynamic-control.directive";
-import { PageDataService } from "@app/shared/services/page-data.service";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { CrashModel } from "@app/shared/models/crash.model";
 import { selectCrash } from "@app/app-state/crash/crash-selector";
@@ -44,7 +43,6 @@ export class StepComponent implements OnInit, OnDestroy {
   protected readonly store: Store = inject(Store);
   protected readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
   protected readonly location: Location = inject(Location);
-  protected readonly pageDataService: PageDataService = inject(PageDataService);
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
   protected readonly getStepInputsPipe: GetStepInputsPipe = inject(GetStepInputsPipe);
   protected readonly cookieService: CookieService = inject(CookieService);

@@ -140,7 +140,7 @@
       </svg>
     </div>
     <div *ngIf="step === 1" class="flex justify-content-center align-items-center flex-1">
-      {{ 'car-crash.damaged-parts.upload-images.info' | transloco }}
+      <span [innerHTML]="'car-crash.damaged-parts.upload-images.info' | transloco"></span>
     </div>
   </div>
 
