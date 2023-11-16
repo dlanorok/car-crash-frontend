@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, inject, Injector, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import {
   distinctUntilChanged, merge,
@@ -30,6 +30,9 @@ import { CrashModel } from "@app/shared/models/crash.model";
 import { selectCrash } from "@app/app-state/crash/crash-selector";
 import { loadCrash } from "@app/app-state/crash/crash-action";
 import { TranslocoService } from "@ngneat/transloco";
+import { HelpTextComponent } from "@app/shared/components/ui/help-text/help-text.component";
+import { HelpTextModule } from "@app/shared/components/ui/help-text/help-text.module";
+import { DialogService } from "@app/shared/services/dialog/dialog.service";
 
 @UntilDestroy()
 @Component({
@@ -48,6 +51,8 @@ export class StepComponent implements OnInit, OnDestroy {
   protected readonly cookieService: CookieService = inject(CookieService);
   protected readonly toastr: ToastrService = inject(ToastrService);
   protected readonly translateService: TranslocoService = inject(TranslocoService);
+  protected readonly injector: Injector = inject(Injector);
+  protected readonly dialogService: DialogService = inject(DialogService);
 
   crash$: Observable<CrashModel> = this.store.select(selectCrash);
   protected destroy$: Subject<void> = new Subject<void>();
@@ -111,6 +116,25 @@ export class StepComponent implements OnInit, OnDestroy {
     this.back$.pipe(untilDestroyed(this)).subscribe(() => {
       this.previous();
     });
+  }
+
+  openInfoModal(step: Step) {
+    this.dialogService.openDialog({
+      componentData: {
+        component: HelpTextComponent,
+        module: HelpTextModule,
+        parentInjector: this.injector
+      },
+      componentParams: {
+        infoText: step.help_text
+      },
+      options: {
+        size: 'xl',
+        centered: true
+      },
+      isClosable: true,
+      title$: this.translateService.selectTranslate('car-crash.info-section.modal.title')
+    }).pipe(take(1)).subscribe();
   }
 
   getData(): void {

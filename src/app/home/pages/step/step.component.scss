@@ -2,4 +2,12 @@
   display: flex;
   flex: 1;
   flex-direction: column;
+
+  .main-icon {
+    position: absolute;
+    top: -40px;
+    right: var(--theme-spacing);
+    cursor: pointer;
+    color: var(--theme-color-light)
+  }
 }

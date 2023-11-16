@@ -30,59 +30,24 @@
       <div class="scrollable">
         <app-info-section [step]="step"></app-info-section>
       </div>
-      <app-input-section
-        *ngIf="!step.main_screen && !step.chapter"
-        (back)="previous()"
-        (next)="next()"
-        [disabledButton]="form.invalid || (section.id === SectionId.confirmation && !questionnaire.completed)"
-        [buttonName]="'car-crash.shared.next' | transloco">
-        <div>
-          <form [formGroup]="form" class="form-layout">
-            <ng-container *ngFor="let input of inputs">
-              <ng-container *appDynamicControl="input | dynamicControlFromInput : submitted : step : next$: back$; name: input.id"></ng-container>
-            </ng-container>
-          </form>
-        </div>
-      </app-input-section>
+      <div class="position-relative">
+        <app-svg-comp class="main-icon" name="info" width="2rem" (click)="openInfoModal(step)"></app-svg-comp>
+        <app-input-section
+          *ngIf="!step.main_screen && !step.chapter"
+          (back)="previous()"
+          (next)="next()"
+          [disabledButton]="form.invalid || (section.id === SectionId.confirmation && !questionnaire.completed)"
+          [buttonName]="'car-crash.shared.next' | transloco">
+          <div>
+            <form [formGroup]="form" class="form-layout">
+              <ng-container *ngFor="let input of inputs">
+                <ng-container *appDynamicControl="input | dynamicControlFromInput : submitted : step : next$: back$; name: input.id"></ng-container>
+              </ng-container>
+            </form>
+          </div>
+        </app-input-section>
+      </div>
     </ng-template>
-
-<!--    <div class="flex flex-column flex-1">-->
-<!--      <ng-container *ngIf="step.chapter; else inputTpl">-->
-<!--        <app-chapter (next)="next()" (back)="previous()" [step]="step"></app-chapter>-->
-<!--      </ng-container>-->
-
-<!--      <ng-template #inputTpl>-->
-<!--        <ng-container *ngIf="step.main_screen; else baseScreenTpl">-->
-<!--          <form [formGroup]="form" class="form-layout flex-1">-->
-<!--            <ng-container *ngFor="let input of inputs">-->
-<!--              <ng-container *appDynamicControl="input | dynamicControlFromInput : submitted : step : next$ : back$; name: input.id"></ng-container>-->
-<!--            </ng-container>-->
-<!--          </form>-->
-<!--        </ng-container>-->
-<!--        <ng-template #baseScreenTpl>-->
-<!--          <app-info-section [step]="step"></app-info-section>-->
-<!--          <app-input-section (back)="previous()" (next)="next()" [disabledButton]="form.invalid" [buttonName]="'§§Next'">-->
-<!--            <div>-->
-<!--              <form [formGroup]="form" class="form-layout">-->
-<!--                <ng-container *ngFor="let input of inputs">-->
-<!--                  <ng-container *appDynamicControl="input | dynamicControlFromInput : submitted : step : next$: back$; name: input.id"></ng-container>-->
-<!--                </ng-container>-->
-<!--              </form>-->
-<!--            </div>-->
-<!--          </app-input-section>-->
-<!--        </ng-template>-->
-<!--      </ng-template>-->
-<!--    </div>-->
-
-    <!--  <div class="p-3 h-100">-->
-    <!--    <form [formGroup]="form" class="h-100 form-layout">-->
-    <!--      <small *ngIf="step.help_text">{{ step.help_text }}</small>-->
-    <!--      <i *ngIf="step.additional_help" (click)="openInfoModal(step)" class="bi bi-info-circle"></i>-->
-    <!--      <ng-container *ngFor="let input of inputs">-->
-    <!--        <ng-container *appDynamicControl="input | dynamicControlFromInput : submitted : step; name: input.id"></ng-container>-->
-    <!--      </ng-container>-->
-    <!--    </form>-->
-    <!--  </div>-->
   </ng-container>
 </div>
 
