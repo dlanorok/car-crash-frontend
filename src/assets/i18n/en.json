@@ -43,6 +43,11 @@
   "car-crash.confirmation.summary.participated-driver-data.phone.label": "Telefonska številka",
   "car-crash.confirmation.summary.participated-driver-data.email.label": "Ime in priimek",
 
+  "car-crash.confirmation.summary.participated-driver-data.responsibility-type.label": "Odgovornost za nesrečo",
+  "car-crash.confirmation.summary.participated-driver-data.responsibility-type-ME.label": "Jaz",
+  "car-crash.confirmation.summary.participated-driver-data.responsibility-type-UNKNOWN.label": "Ne vem",
+  "car-crash.confirmation.summary.participated-driver-data.responsibility-type-ANOTHER.label": "Drugo vozilo",
+
   "car-crash.confirmation.summary.participated-vehicle-data.title": "Znamka in tip vozila",
   "car-crash.confirmation.summary.participated-vehicle-data.type.label": "Znamka in tip vozila",
   "car-crash.confirmation.summary.participated-vehicle-data.registration-number.label": "Registrska številka",

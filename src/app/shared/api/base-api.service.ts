@@ -43,14 +43,14 @@ export abstract class BaseApiService<T extends BaseModel> {
   }
 
   getList(): Observable<T[]> {
-    return this.httpClient.get(`${this.endpoint}`)
+    return this.httpClient.get<any>(`${this.endpoint}`)
       .pipe(
         map((models) => {
-          if (!Array.isArray(models)) {
+          if (!Array.isArray(models.results)) {
             return [];
           }
 
-          return models.map(model => {
+          return models.results.map((model: Record<string, any>) => {
             return new this.model(model);
           });
         })

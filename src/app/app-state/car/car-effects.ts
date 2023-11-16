@@ -48,6 +48,7 @@ export class CarEffects {
       filter(([action, cars]) => !cars || cars.length === 0),
       exhaustMap(() => this.carApiService.getList()
         .pipe(
+          tap((cars: CarModel[]) => this.store.dispatch(loadCarsSuccessful({cars: cars}))),
           map(cars => ({type: loadCarsSuccessful.type, cars})),
           catchError(() => EMPTY)
         ))

@@ -19,6 +19,7 @@ export class CarModel extends BaseModel {
   circumstances?: CircumstanceModel;
   damaged_parts?: string[];
   initial_impact?: string[];
+  responsibility_type?: string;
 
   rotation?: number;
   lat_lng_bounds_literal?: string;
