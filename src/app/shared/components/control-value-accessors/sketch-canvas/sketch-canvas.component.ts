@@ -90,6 +90,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
   tr!: Konva.Transformer;
   cars: {group: Konva.Group, carData: CarData}[] = [];
   scale = 0;
+  a: any;
   private lastCenter: PointData | null = null;
   private lastDist = 0;
   private isDragging = false;
@@ -495,7 +496,7 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
           y: newCenter.y - pointTo.y * scale + dy,
         };
 
-        this.layer.position(newPos);
+        this.layer.position(this.boundFunc(newPos, scale));
 
         this.lastDist = dist;
         this.lastCenter = newCenter;
