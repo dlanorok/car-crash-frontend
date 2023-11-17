@@ -31,9 +31,15 @@
   "car-crash.navigation-header.me": "Moji podatki",
   "car-crash.navigation-header.co-participant": "Soudeleženec",
 
-  "car-crash.invite.with-sms": "ali pošljite vabilo preko sms",
-  "car-crash.invite.send-invite": "Pošljite povabilo",
+  "car-crash.invite.with-qr-code.label": "Generirarj QR kodo z vabilom",
+  "car-crash.invite.with-sms.label": "Pošlji vabilo preko SMS sporočila",
+  "car-crash.invite.options.content": "Sedaj povabite soudeleženca, da lahko povežeta ugotovitve na istem poročilu in nadaljujeta s postopkom. <br><br> Povabite ga lahko preko skeniranja QR kode ali preko SMS vabila z povezavo.",
+  "car-crash.invite.QR-code-invite.content": "Prosite udeleženca da poskenira QR kodo in sledi povezavi. <br><br> Šele nato boste lahko nadaljevali s postopkom.",
+  "car-crash.invite.sms-invite": "Povabite udeleženca nesreče in počakajte da se prijavi v aplikacijo",
+  "car-crash.invite.sms-invite-send": "Vabilo je bilo poslano {{phoneNumber}} <br><br> Prosite prejemnika, da klikne na povezavo v sporočilu. Šele nato boste lahko nadaljevali s postpokom.",
+  "car-crash.invite.send-invite": "Pošljite SMS",
   "car-crash.invite.sms-content": "Povabljeni ste bili, da izpolnete Evropsko porocilo o nezgodi.\n\nKliknite na spodnji link za zacetek",
+  "car-crash.invite.phone-number.label": "Telefonska številka soudeleženca",
 
   "car-crash.confirmation.confirm": "Potrdite",
   "car-crash.confirmation.questionnaires-not-finished": "Oba udeleženca morata zaključiti vse sekcije.",

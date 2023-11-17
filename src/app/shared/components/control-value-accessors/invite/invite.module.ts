@@ -7,12 +7,16 @@ import { PhoneNumberControlModule } from "@app/shared/form-controls/phone-number
 import { InfoSectionModule } from "@app/shared/components/info-section/info-section.module";
 import { QRCodeModule } from "angularx-qrcode";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { ButtonModule } from "@app/shared/components/ui/button/button.module";
+import { StackedSelectControlModule } from "@app/shared/form-controls/stacked-select-control/stacked-select-control.module";
+import { IsInviteButtonDisabledPipe } from "@app/shared/components/control-value-accessors/invite/is-invite-button-disabled.pipe";
 
 
 
 @NgModule({
   declarations: [
-    InviteComponent
+    InviteComponent,
+    IsInviteButtonDisabledPipe
   ],
   imports: [
     CommonModule,
@@ -22,7 +26,9 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     InfoSectionModule,
     QRCodeModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ButtonModule,
+    StackedSelectControlModule
   ]
 })
 export class InviteModule { }

@@ -1,23 +1,47 @@
 <div class="flex-container non-scrollable">
   <div class="scrollable flex">
-    <app-info-section [step]="step" [isSmall]="true">
-      <qrcode
-        *ngIf="location"
-        [qrdata]="location"
-        [width]="150"
-        [cssClass]="'custom-qr'"
-        [errorCorrectionLevel]="'M'"
-        class="margin-top">
-      </qrcode>
+    <app-info-section>
+      <ng-container *ngIf="step === 0 else inviteTpl">
+        <h3>
+        <span [innerHTML]="'car-crash.invite.options.content' | transloco">
+        </span>
+        </h3>
+      </ng-container>
+      <ng-template #inviteTpl>
+        <ng-container *ngIf="selectedOption === InviteOption.qr; else smsInviteTpl">
+          <h3>
+            <span [innerHTML]="'car-crash.invite.QR-code-invite.content' | transloco">
+            </span>
+          </h3>
+
+          <qrcode
+            *ngIf="location && true"
+            [qrdata]="location"
+            [width]="150"
+            [cssClass]="'custom-qr'"
+            [errorCorrectionLevel]="'M'"
+            class="margin-top">
+          </qrcode>
+        </ng-container>
+
+        <ng-template #smsInviteTpl>
+          <h3>
+            <span [innerHTML]="step === 1 ? ('car-crash.invite.sms-invite' | transloco) : ('car-crash.invite.sms-invite-send' | transloco : {phoneNumber: lastInviteNumber?.internationalNumber})">
+            </span>
+          </h3>
+        </ng-template>
+      </ng-template>
     </app-info-section>
   </div>
 
   <app-input-section
-    (back)="back.emit()"
+    (back)="previous()"
     (next)="submit()"
-    [buttonName]="(phoneNumberControlComponent?.phoneForm?.valid && ((questionnaires$ | async) || []).length < 2) ? ('car-crash.invite.send-invite' | transloco) : ('car-crash.shared.next' | transloco)"
-    [title]="'car-crash.invite.with-sms' | transloco"
-    [disabledButton]="((questionnaires$ | async) || []).length < 2 && !phoneNumberControlComponent?.phoneForm?.valid">
-    <app-phone-number-control #phoneNumberControlComponent [formControl]="formControl" [submitted]="submitted"></app-phone-number-control>
-  </app-input-section>
+    [buttonName]="buttonName | transloco"
+    [title]="step === 1 && selectedOption === InviteOption.sms ? ('car-crash.invite.phone-number.label' | transloco) : undefined"
+    [disabledButton]="((questionnaires$ | async) || []) | isInviteButtonDisabled : step : selectedOption: formControl">
+    <app-stacked-select-control *ngIf="step === 0" [(ngModel)]="selectedOption" [options]="options"></app-stacked-select-control>
+
+    <app-phone-number-control *ngIf="step === 1 && selectedOption === InviteOption.sms" #phoneNumberControlComponent [formControl]="formControl" [submitted]="submitted"></app-phone-number-control>
+    </app-input-section>
 </div>

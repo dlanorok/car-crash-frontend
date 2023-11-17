@@ -122,7 +122,6 @@ export class DynamicControlFromInputPipe implements PipeTransform {
       case InputType.invite:
         component = InviteComponent;
         module = InviteModule;
-        additionalOptions = { step: step };
         componentReactiveOutputs = {
           next: (save: boolean) => next.next(save),
           back: () => back.next()

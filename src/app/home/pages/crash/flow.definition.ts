@@ -1,4 +1,5 @@
 import { ModelState } from "@app/shared/models/base.model";
+import { Observable } from "rxjs";
 
 export enum SupportedModels {
   CRASH = 'crash'
@@ -37,7 +38,7 @@ export interface Step {
 }
 
 export interface Option {
-  label: string;
+  label: string | Observable<string>;
   value: any;
   action?: string;
   action_property?: any;
@@ -93,7 +94,8 @@ export enum InputType {
 export enum StepType {
   injuries = 'injuries',
   registration_number = 'registration_number',
-  accident_sketch = 'accident_sketch'
+  accident_sketch = 'accident_sketch',
+  invite = 'accident_sketch'
 }
 
 export interface Input {

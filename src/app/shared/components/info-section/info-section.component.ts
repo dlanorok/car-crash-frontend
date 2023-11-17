@@ -7,6 +7,6 @@ import { Step } from "@app/home/pages/crash/flow.definition";
   styleUrls: ['./info-section.component.scss']
 })
 export class InfoSectionComponent {
-  @Input() step!: Step;
+  @Input() step?: Step;
   @Input() isSmall?: boolean;
 }

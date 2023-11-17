@@ -12,7 +12,7 @@
         <div
           [class.is-invalid]="submitted && formControl && formControl.errors"
           [class.disabled]="(isDisabled$ | async) === true">
-          {{ option.label }}
+          {{ (option.label) | asAsync$ | async | transloco }}
         </div>
       </div>
       <app-svg-comp *ngIf="(value$ | async) === option.value" class="tick" name="tick" width="1.3rem"></app-svg-comp>
