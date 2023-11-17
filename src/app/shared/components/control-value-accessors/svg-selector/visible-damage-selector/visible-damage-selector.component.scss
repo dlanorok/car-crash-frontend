@@ -4,6 +4,10 @@
   align-items: center;
   justify-content: center;
 
+  .info-content {
+    color: var(--theme-color-light);
+  }
+
   .smaller {
     width: 40% !important;
     align-items: center;

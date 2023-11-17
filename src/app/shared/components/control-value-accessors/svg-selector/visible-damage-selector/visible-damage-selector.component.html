@@ -1,6 +1,9 @@
 <div></div>
 <div class="scrollable w-100 h-100">
-  <div class="flex h-100 justify-content-center">
+  <div class="flex h-100 justify-content-center flex-column gap">
+    <div *ngIf="step === 1" class="flex justify-content-center align-items-center padding info-content">
+      <h3><span [innerHTML]="'car-crash.damaged-parts.upload-images.info' | transloco"></span></h3>
+    </div>
     <div class="w-100" style="align-self: center">
       <svg
         [class.smaller]="step !== 0"
@@ -138,9 +141,6 @@
                 d="m30.47,208.06c-13.1,0-23.72,10.62-23.72,23.72s10.62,23.72,23.72,23.72,23.72-10.62,23.72-23.72-10.62-23.72-23.72-23.72Zm0,36.11c-6.83,0-12.39-5.56-12.39-12.39s5.56-12.39,12.39-12.39,12.39,5.56,12.39,12.39-5.56,12.39-12.39,12.39Z"/>
         </g>
       </svg>
-    </div>
-    <div *ngIf="step === 1" class="flex justify-content-center align-items-center flex-1">
-      <span [innerHTML]="'car-crash.damaged-parts.upload-images.info' | transloco"></span>
     </div>
   </div>
 
