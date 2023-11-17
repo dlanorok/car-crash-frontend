@@ -59,6 +59,7 @@ export class DynamicControlFromInputPipe implements PipeTransform {
       case InputType.textarea:
         component = TextAreaControlComponent;
         module = TextAreaControlModule;
+        additionalOptions = { rows: input.rows };
         break;
       case InputType.date:
         component = DateControlComponent;

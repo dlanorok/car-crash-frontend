@@ -109,4 +109,5 @@ export interface Input {
   on_change_action?: string;
   label?: string;
   after_months?: number;
+  rows?: number;
 }
