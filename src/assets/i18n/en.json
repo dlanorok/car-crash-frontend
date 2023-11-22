@@ -3,7 +3,7 @@
   "car-crash.description": "Enostavno in hitro do izpolnjenega evropskega poročila v primeru nesreče.",
   "car-crash.welcome.scan-qr-code": "Poskenirajte QR kodo",
   "car-crash.welcome.get-help": "Dodatne informacije",
-  "car-crash.welcome.start-editing": "ZAČNITE. Začne eden izmed udeležencev. Aplikacija v nadaljevanju ponudi, da k postopku povabite še ostale soudeležence." ,
+  "car-crash.welcome.start-editing": "<b>ZAČNITE TU</b> <br> Začne eden izmed udeležencev. Aplikacija v nadaljevanju ponudi, da povabite še ostale soudeležence." ,
 
   "car-crash.overview.currently-editing": "TRENUTNO ODGOVARJATE",
   "car-crash.place-selector.confirm": "Potrdite lokacijo",
