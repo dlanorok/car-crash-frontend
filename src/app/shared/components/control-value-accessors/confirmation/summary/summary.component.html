@@ -9,15 +9,16 @@
       <ng-container *ngFor="let group of groups">
         <div class="section-summary">
           <h3>
-            {{ group.name }}
+            <span [innerHTML]="group.name">
+            </span>
           </h3>
           <ng-container *ngFor="let item of group.items">
             <div class="flex">
               <div class="half label">
-                {{ item.label }}
+                <span [innerHTML]="item.label"></span>
               </div>
               <div class="half">
-                {{ item.value }}
+                <span [innerHTML]="item.value"></span>
               </div>
             </div>
           </ng-container>
