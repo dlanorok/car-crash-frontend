@@ -50,10 +50,10 @@
   "car-crash.confirmation.summary.participated-driver-data.email.label": "Ime in priimek",
 
   "car-crash.confirmation.summary.participated-driver-data.responsibility-type.label": "Odgovornost za nesrečo",
-  "car-crash.confirmation.summary.participated-driver-data.responsibility-type-ME.label": "<b>Soudeleženec je priznal krivdo</b>",
-  "car-crash.confirmation.summary.participated-driver-data.responsibility-type-UNKNOWN.label": "<b>Krivda ni jasna</b>",
-  "car-crash.confirmation.summary.participated-driver-data.responsibility-type-ANOTHER.label": "<b>Povzročitelj ste vi</b>",
-  "car-crash.confirmation.summary.participated-driver-data.responsibility-type-not-yet-answered.label": "<b>Soudeleženec še ni odgovoril</b>",
+  "car-crash.confirmation.summary.participated-driver-data.responsibility-type-ME.label": "Soudeleženec je priznal krivdo",
+  "car-crash.confirmation.summary.participated-driver-data.responsibility-type-UNKNOWN.label": "Krivda ni jasna",
+  "car-crash.confirmation.summary.participated-driver-data.responsibility-type-ANOTHER.label": "Povzročitelj ste vi",
+  "car-crash.confirmation.summary.participated-driver-data.responsibility-type-not-yet-answered.label": "Soudeleženec še ni odgovoril",
 
   "car-crash.confirmation.summary.participated-vehicle-data.title": "Znamka in tip vozila",
   "car-crash.confirmation.summary.participated-vehicle-data.type.label": "Znamka in tip vozila",
