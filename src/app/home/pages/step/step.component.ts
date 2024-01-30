@@ -1,12 +1,15 @@
 import { Component, inject, Injector, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import {
-  distinctUntilChanged, merge,
+  distinctUntilChanged,
+  merge,
   mergeMap,
   Observable,
   of,
-  skip, startWith,
-  Subject, switchMap,
+  skip,
+  startWith,
+  Subject,
+  switchMap,
   take,
   takeUntil,
   tap,
@@ -15,7 +18,16 @@ import {
 import { Store } from "@ngrx/store";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
 import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
-import { Action, Input, InputType, Option, Section, SectionId, Step, StepType } from "@app/home/pages/crash/flow.definition";
+import {
+  Action,
+  Input,
+  InputType,
+  Option,
+  Section,
+  SectionId,
+  Step,
+  StepType
+} from "@app/home/pages/crash/flow.definition";
 import { Location } from '@angular/common';
 import { AbstractControl, FormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { GetStepInputsPipe } from "@app/home/pages/step/pipes/get-step-inputs.pipe";
@@ -185,6 +197,10 @@ export class StepComponent implements OnInit, OnDestroy {
             value: input.value,
             disabled: this.questionnaire?.creator !== this.cookieService.get(CookieName.sessionId)
           });
+
+          if (input.type === InputType.checkbox && input.required) {
+              control.addValidators(Validators.requiredTrue)
+          }
 
           if (input.required) {
             control.addValidators(Validators.required);

@@ -1,4 +1,4 @@
-<div class="form-group form-check mt-3">
+<div class="form-check">
   <input
     [id]="_id"
     [disabled]="(isDisabled$ | async) === true"
@@ -6,8 +6,7 @@
     (ngModelChange)="handleModelChange($event)"
     [class.is-invalid]="submitted && formControl.errors"
     class="form-check-input"
-    type="checkbox"
-    role="switch">
+    type="checkbox">
 
   <label [htmlFor]="_id" class="form-check-label">{{ label }}</label>
 

@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic,700,700italic,800,800italic');
+
 html, body {
   height: 100%;
   color: var(--theme-color-type);
@@ -20,6 +21,7 @@ app-root {
 .d-block {
   display: block !important;
 }
+
 @import "styles/variables";
 
 @import "node_modules/bootstrap/scss/bootstrap";
@@ -73,18 +75,20 @@ app-root {
     font-size: 1rem;
   }
 }
+
 @media screen and (max-width: 1440px) {
   html {
     font-size: 1rem;
   }
 }
+
 @media screen and (max-width: 479px) {
   html {
     font-size: calc(0.7494769874476988rem + 0.8368200836820083vw);
   }
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
   select,
   textarea,
   input {
@@ -144,19 +148,21 @@ input {
 }
 
 input, textarea {
-  border-radius: var(--border-radius-normal);
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  padding: 0.5rem 1rem;
-  border: unset;
-  border: var(--border-small) var(--theme-color-strokes);
-  width: 100%;
+  &:not(.form-check-input) {
+    border-radius: var(--border-radius-normal);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 0.5rem 1rem;
+    border: unset;
+    border: var(--border-small) var(--theme-color-strokes);
+    width: 100%;
 
-  &:focus {
-    border: var(--border-small) var(--theme-color-primary) !important;
-    box-shadow: unset !important;
-    outline: unset !important;
+    &:focus {
+      border: var(--border-small) var(--theme-color-primary) !important;
+      box-shadow: unset !important;
+      outline: unset !important;
+    }
   }
 }
 
@@ -169,7 +175,7 @@ input, textarea {
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
   border-color: #c7cace;
-  margin: 0!important;
+  margin: 0 !important;
   transform: translateY(-262px) !important;
 }
 
@@ -252,12 +258,12 @@ ngx-intl-tel-input input[disabled] {
   }
 
   input:focus + label, input:not(:placeholder-shown) + label, .floating-label {
-    opacity:1;
+    opacity: 1;
     transform: translateY(-80%) translateX(-8px);
   }
 
   textarea:focus + label, textarea:not(:placeholder-shown) + label, .floating-label {
-    opacity:1;
+    opacity: 1;
     transform: translateY(-80%) translateX(-8px);
   }
 }

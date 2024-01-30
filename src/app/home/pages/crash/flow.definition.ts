@@ -71,6 +71,7 @@ export enum InputType {
   select = 'select',
   input = 'input',
   boolean = 'boolean',
+  checkbox = 'checkbox',
   text = 'text',
   multiChoiceQuestion = 'multiChoiceQuestion',
   dateTime = 'datetime',

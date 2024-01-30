@@ -35,6 +35,8 @@ import { FinalStepComponent } from "@app/shared/components/control-value-accesso
 import { FinalStepModule } from "@app/shared/components/control-value-accessors/confirmation/final-step/final-step.module";
 import { SummaryComponent } from "@app/shared/components/control-value-accessors/confirmation/summary/summary.component";
 import { SummaryModule } from "@app/shared/components/control-value-accessors/confirmation/summary/summary.module";
+import { CheckboxControlComponent } from "@app/shared/form-controls/checkbox-control/checkbox-control.component";
+import { CheckboxControlModule } from "@app/shared/form-controls/checkbox-control/checkbox-control.module";
 
 @Pipe({
   name: 'dynamicControlFromInput',
@@ -98,6 +100,10 @@ export class DynamicControlFromInputPipe implements PipeTransform {
       case InputType.boolean:
         component = YesNoCheckboxComponent;
         module = YesNoCheckboxModule;
+        break;
+      case InputType.checkbox:
+        component = CheckboxControlComponent;
+        module = CheckboxControlModule;
         break;
       case InputType.phone_picker:
         component = PhoneNumberControlComponent;
