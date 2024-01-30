@@ -8,7 +8,10 @@
       (click)="onOptionClick(option.value)"
     >
       <div class="gap flex-1 flex flex-column">
-        <app-svg-comp *ngIf="option.icon" [name]="option.icon" width="1.5rem"></app-svg-comp>
+        <div class="flex justify-content-between">
+          <app-svg-comp *ngIf="option.icon" [name]="option.icon" width="1.5rem"></app-svg-comp>
+          <app-svg-comp *ngIf="(value$ | async) === option.value" class="tick" name="tick" width="1.3rem"></app-svg-comp>
+        </div>
         <div
           [class.is-invalid]="submitted && formControl && formControl.errors"
           [class.disabled]="(isDisabled$ | async) === true">
@@ -16,7 +19,6 @@
           </span>
         </div>
       </div>
-      <app-svg-comp *ngIf="(value$ | async) === option.value" class="tick" name="tick" width="1.3rem"></app-svg-comp>
     </div>
   </div>
 
