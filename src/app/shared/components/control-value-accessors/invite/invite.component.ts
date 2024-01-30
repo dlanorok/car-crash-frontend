@@ -45,11 +45,13 @@ export class InviteComponent extends BaseFormControlComponent<ChangeData> {
   options: Option[] = [
     {
       label: this.traslateService.translate('car-crash.invite.with-qr-code.label'),
-      value: InviteOption.qr
+      value: InviteOption.qr,
+      icon: 'qr-code'
     },
     {
       label: this.traslateService.translate('car-crash.invite.with-sms.label'),
-      value: InviteOption.sms
+      value: InviteOption.sms,
+      icon: 'car'
     },
   ];
   step: 0 | 1 | 2 = 0;
