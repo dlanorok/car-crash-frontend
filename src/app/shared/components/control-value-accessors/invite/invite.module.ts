@@ -9,14 +9,14 @@ import { QRCodeModule } from "angularx-qrcode";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ButtonModule } from "@app/shared/components/ui/button/button.module";
 import { StackedSelectControlModule } from "@app/shared/form-controls/stacked-select-control/stacked-select-control.module";
-import { IsInviteButtonDisabledPipe } from "@app/shared/components/control-value-accessors/invite/is-invite-button-disabled.pipe";
+import { HasCarJoinedPipe } from "@app/shared/components/control-value-accessors/invite/has-car-joined.pipe";
 
 
 
 @NgModule({
   declarations: [
     InviteComponent,
-    IsInviteButtonDisabledPipe
+    HasCarJoinedPipe
   ],
   imports: [
     CommonModule,

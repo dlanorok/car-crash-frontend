@@ -39,7 +39,7 @@
     (next)="submit()"
     [buttonName]="buttonName | transloco"
     [title]="step === 1 && selectedOption === InviteOption.sms ? ('car-crash.invite.phone-number.label' | transloco) : undefined"
-    [disabledButton]="!selectedOption || (((questionnaires$ | async) || []) | isInviteButtonDisabled : step : selectedOption: formControl)">
+    [disabledButton]="!selectedOption || (((questionnaires$ | async) || []) | hasCarJoined : step : selectedOption) || (step > 0 && (phoneNumberControlComponent?.phoneForm?.invalid))">
     <app-stacked-select-control *ngIf="step === 0" [(ngModel)]="selectedOption" [options]="options"></app-stacked-select-control>
 
     <app-phone-number-control *ngIf="step === 1 && selectedOption === InviteOption.sms" #phoneNumberControlComponent [formControl]="formControl" [submitted]="submitted"></app-phone-number-control>
