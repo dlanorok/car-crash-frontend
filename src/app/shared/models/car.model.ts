@@ -20,6 +20,7 @@ export class CarModel extends BaseModel {
   damaged_parts?: string[];
   initial_impact?: string[];
   responsibility_type?: string;
+  tos_compliance?: boolean;
 
   rotation?: number;
   lat_lng_bounds_literal?: string;

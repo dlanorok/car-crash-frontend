@@ -1,5 +1,6 @@
 import { BaseModel } from "./base.model";
 import { QuestionnaireData } from "@app/home/pages/crash/flow.definition";
+import { CarModel } from "@app/shared/models/car.model";
 
 
 export class QuestionnaireModel extends BaseModel {
@@ -7,4 +8,5 @@ export class QuestionnaireModel extends BaseModel {
   data!: QuestionnaireData;
   crash_confirmed?: boolean;
   completed?: boolean;
+  car?: CarModel;
 }

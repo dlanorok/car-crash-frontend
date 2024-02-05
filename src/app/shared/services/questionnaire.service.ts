@@ -117,8 +117,12 @@ export class QuestionnaireService implements OnDestroy {
     if (index < 0) {
       this.questionnaires.push({...questionnaire});
       this.questionnairesUpdates$.next(this.questionnaires);
-      this.toastr.success(this.translateService.translate('car-crash.questionnaire.vehicle.joined'));
     } else {
+      const previousQuestionnaire = this.questionnaires[index];
+      if (questionnaire.creator !== this.cookieService.get(CookieName.sessionId) && !previousQuestionnaire.car?.tos_compliance && questionnaire.car?.tos_compliance) {
+        this.toastr.success(this.translateService.translate('car-crash.questionnaire.vehicle.joined'));
+      }
+
       this.questionnaires[index] = new QuestionnaireModel({...questionnaire});
       this.questionnaires = [...this.questionnaires];
       this.questionnaireUpdates$.next(questionnaire);
