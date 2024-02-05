@@ -8,8 +8,8 @@
       (click)="onOptionClick(option.value)"
     >
       <div class="gap flex-1 flex flex-column">
-        <div class="flex justify-content-between">
-          <app-svg-comp *ngIf="option.icon" [name]="option.icon" width="1.5rem"></app-svg-comp>
+        <div *ngIf="option.icon" class="flex justify-content-between">
+          <app-svg-comp [name]="option.icon" width="1.5rem"></app-svg-comp>
           <app-svg-comp *ngIf="(value$ | async) === option.value" class="tick" name="tick" width="1.3rem"></app-svg-comp>
         </div>
         <div
@@ -19,6 +19,7 @@
           </span>
         </div>
       </div>
+      <app-svg-comp *ngIf="!option.icon && (value$ | async) === option.value" class="tick" name="tick" width="1.3rem"></app-svg-comp>
     </div>
   </div>
 
