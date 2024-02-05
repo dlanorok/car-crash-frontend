@@ -89,6 +89,18 @@ export class SummaryComponent extends BaseFormControlComponent<boolean> implemen
               },
 
               {
+                name: this.translateService.translate('car-crash.confirmation.summary.participated-driver-data.responsibility-type.label'),
+                items: [
+                  {
+                    label: car.responsibility_type
+                      ? this.translateService.translate(`car-crash.confirmation.summary.participated-driver-data.responsibility-type-${car.responsibility_type}.label`)
+                      : "",
+                    value: ''
+                  }
+                ]
+              },
+
+              {
                 name: this.translateService.translate('car-crash.confirmation.summary.participated-vehicle-data.title'),
                 items: [
                   {
