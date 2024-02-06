@@ -1,5 +1,5 @@
 <div class="form-group">
-  <label [class.floating-label]="value$ | async" [htmlFor]="_id">{{ label }}</label>
+  <label [class.floating-label]="value$ | async" [htmlFor]="_id"><span [innerHTML]="label"></span></label>
 
   <ng-select
     [disabled]="(isDisabled$ | async) === true"
@@ -12,7 +12,7 @@
         [ngTemplateOutletContext]="{ $implicit: item }"
       ></ng-container>
       <ng-template #labelTpl>
-        {{ item.label }} <!-- Default option display -->
+        <span [innerHTML]="item.label"></span>
       </ng-template>
     </ng-option>
   </ng-select>
