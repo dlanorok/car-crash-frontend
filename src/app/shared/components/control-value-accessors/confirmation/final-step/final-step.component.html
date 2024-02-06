@@ -13,12 +13,12 @@
       (back)="back.emit()"
       (next)="confirmCrash(crash)"
       [disabledButton]="!internalForm.controls['is_data_correct'].value"
-      [buttonName]="'car-crash.shared.next' | transloco">
+      [buttonName]="'car-crash.confirmation.finish' | transloco">
       <div>
         <form [formGroup]="internalForm" class="form-layout">
           <app-checkbox-control
             [formControl]="$any(internalForm.controls['is_data_correct'])"
-            [label]="'Potrjujem, da so vnešeni podatki pravilni'| transloco">
+            [label]="'car-crash.confirmation.is_data_correct'| transloco">
           </app-checkbox-control>
         </form>
       </div>
