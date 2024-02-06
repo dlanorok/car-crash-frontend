@@ -90,6 +90,7 @@ export enum InputType {
   invite = 'invite',
   confirmation = 'confirmation',
   final_step = 'final_step',
+  download_pdf = 'download_pdf'
 }
 
 export enum StepType {

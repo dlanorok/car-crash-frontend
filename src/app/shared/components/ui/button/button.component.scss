@@ -25,4 +25,15 @@
       opacity: 0.36;
     }
   }
+
+  .loading {
+    opacity: 0.1;
+  }
+
+  app-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }

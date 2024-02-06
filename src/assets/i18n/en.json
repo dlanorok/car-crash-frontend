@@ -64,6 +64,7 @@
   "car-crash.confirmation.summary.participated-insurance-data.policy-valid-to.label": "Veljavnost do",
   "car-crash.confirmation.finish": "Podpiši in zaključi",
   "car-crash.confirmation.is_data_correct": "Potrjujem, da so vnešeni podatki pravilni",
+  "car-crash.confirmation.open_pdf": "Odpri PDF",
 
   "car-crash.shared.next": "Nadaljujte",
   "car-crash.info-section.modal.title": "Dodatne informacije",

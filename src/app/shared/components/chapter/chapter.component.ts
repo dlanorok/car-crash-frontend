@@ -11,6 +11,8 @@ export class ChapterComponent {
   @Input() nextButtonName?: string;
   @Input() errorText?: string;
   @Input() inputSectionTpl?: TemplateRef<void>;
+  @Input() showBack = true;
+  @Input() loadingButton?: boolean;
 
   @Output() back: EventEmitter<void> = new EventEmitter<void>();
   @Output() next: EventEmitter<void> = new EventEmitter<void>();

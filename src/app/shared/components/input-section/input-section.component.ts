@@ -19,6 +19,8 @@ export class InputSectionComponent {
   @Input() buttonName!: string;
   @Input() title?: string;
   @Input() info?: string;
+  @Input() showBack = true;
+  @Input() loadingButton?: boolean;
 
   @Output() back: EventEmitter<void> = new EventEmitter<void>();
   @Output() next: EventEmitter<void> = new EventEmitter<void>();

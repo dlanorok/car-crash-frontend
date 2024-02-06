@@ -6,9 +6,9 @@
   <ng-content></ng-content>
 
   <div class="flex gap justify-content-center align-items-center">
-    <div class="arrow">
+    <div *ngIf="showBack" class="arrow">
       <app-svg-comp name="back" width="1.5rem" (click)="back.next()"></app-svg-comp>
     </div>
-    <app-button class="next-button" [buttonText]="buttonName" [disabled]="disabledButton" (click)="handleNext()"></app-button>
+    <app-button class="next-button" [loading]="loadingButton" [buttonText]="buttonName" [disabled]="disabledButton" (click)="handleNext()"></app-button>
   </div>
 </div>

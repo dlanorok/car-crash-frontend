@@ -37,6 +37,12 @@ import { SummaryComponent } from "@app/shared/components/control-value-accessors
 import { SummaryModule } from "@app/shared/components/control-value-accessors/confirmation/summary/summary.module";
 import { CheckboxControlComponent } from "@app/shared/form-controls/checkbox-control/checkbox-control.component";
 import { CheckboxControlModule } from "@app/shared/form-controls/checkbox-control/checkbox-control.module";
+import {
+  DownloadPdfComponent
+} from "@app/shared/components/control-value-accessors/confirmation/download-pdf/download-pdf.component";
+import {
+  DownloadPdfModule
+} from "@app/shared/components/control-value-accessors/confirmation/download-pdf/download-pdf.module";
 
 @Pipe({
   name: 'dynamicControlFromInput',
@@ -151,6 +157,11 @@ export class DynamicControlFromInputPipe implements PipeTransform {
           next: (save: boolean) => next.next(save),
           back: () => back.next()
         };
+        break;
+      case InputType.download_pdf:
+        component = DownloadPdfComponent;
+        module = DownloadPdfModule;
+        additionalOptions = { step: step };
         break;
     }
 

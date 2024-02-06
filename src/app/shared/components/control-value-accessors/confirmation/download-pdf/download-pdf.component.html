@@ -1,0 +1,10 @@
+<ng-container>
+  <app-chapter
+    class="flex-container non-scrollable"
+    [step]="step"
+    [showBack]="false"
+    [loadingButton]="(pdfLink$ | async) === null"
+    (next)="downloadPdf()"
+    [nextButtonName]="'car-crash.confirmation.open_pdf' | transloco">
+  </app-chapter>
+</ng-container>

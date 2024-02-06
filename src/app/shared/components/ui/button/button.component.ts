@@ -9,4 +9,5 @@ export class ButtonComponent {
   @Input() buttonText!: string;
   @Input() disabled?: boolean;
   @Input() outline?: boolean;
+  @Input() loading?: boolean;
 }
