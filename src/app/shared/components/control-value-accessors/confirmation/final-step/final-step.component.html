@@ -4,6 +4,24 @@
     [step]="step"
     (back)="back.emit()"
     (next)="confirmCrash(crash)"
-    [nextButtonName]="'car-crash.confirmation.finish' | transloco">
+    [nextButtonName]="'car-crash.confirmation.finish' | transloco"
+    [inputSectionTpl]="inputSectionTpl">
   </app-chapter>
+
+  <ng-template #inputSectionTpl>
+    <app-input-section
+      (back)="back.emit()"
+      (next)="confirmCrash(crash)"
+      [disabledButton]="!internalForm.controls['is_data_correct'].value"
+      [buttonName]="'car-crash.shared.next' | transloco">
+      <div>
+        <form [formGroup]="internalForm" class="form-layout">
+          <app-checkbox-control
+            [formControl]="$any(internalForm.controls['is_data_correct'])"
+            [label]="'Potrjujem, da so vnešeni podatki pravilni'| transloco">
+          </app-checkbox-control>
+        </form>
+      </div>
+    </app-input-section>
+  </ng-template>
 </ng-container>

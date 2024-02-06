@@ -12,6 +12,7 @@ import { Store } from "@ngrx/store";
 import { StorageItem } from "@app/shared/common/enumerators/storage";
 import { loadCrash } from "@app/app-state/crash/crash-action";
 import { Router } from "@angular/router";
+import { FormBuilder, UntypedFormGroup } from "@angular/forms";
 
 @Component({
   selector: 'app-final-step',
@@ -24,12 +25,17 @@ export class FinalStepComponent extends BaseFormControlComponent<boolean> implem
   private readonly crashesApiService: CrashesApiService = inject(CrashesApiService);
   private readonly store: Store = inject(Store);
   private readonly router: Router = inject(Router);
+  private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   @Input() step?: Step;
 
   @Output() back: EventEmitter<void> = new EventEmitter<void>();
   @Output() next: EventEmitter<void> = new EventEmitter<void>();
   crash$: Observable<CrashModel> = this.store.select(selectCrash);
+
+  internalForm: UntypedFormGroup = this.formBuilder.group({
+    is_data_correct: false
+  });
 
   ngOnInit() {
     super.ngOnInit();

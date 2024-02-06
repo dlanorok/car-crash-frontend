@@ -14,9 +14,14 @@
     </div>
   </div>
 
-  <app-input-section (back)="back.emit()" (next)="next.emit()" [disabledButton]="!!errorText" [buttonName]="nextButtonName || ('car-crash.shared.next' | transloco)">
-    <div *ngIf="errorText" class="warning-text">
-      <span [innerHTML]="errorText"></span>
-    </div>
-  </app-input-section>
+  <ng-container *ngIf="inputSectionTpl; else defaultInputSectionTpl">
+    <ng-container *ngTemplateOutlet="inputSectionTpl"></ng-container>
+  </ng-container>
+  <ng-template #defaultInputSectionTpl>
+    <app-input-section (back)="back.emit()" (next)="next.emit()" [disabledButton]="!!errorText" [buttonName]="nextButtonName || ('car-crash.shared.next' | transloco)">
+      <div *ngIf="errorText" class="warning-text">
+        <span [innerHTML]="errorText"></span>
+      </div>
+    </app-input-section>
+  </ng-template>
 </div>

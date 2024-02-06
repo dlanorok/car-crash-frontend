@@ -5,6 +5,9 @@ import { InputSectionModule } from "@app/shared/components/input-section/input-s
 import { TranslocoModule } from "@ngneat/transloco";
 import { ChapterModule } from "@app/shared/components/chapter/chapter.module";
 
+import { ReactiveFormsModule } from "@angular/forms";
+import { CheckboxControlModule } from "@app/shared/form-controls/checkbox-control/checkbox-control.module";
+
 
 
 @NgModule({
@@ -15,7 +18,9 @@ import { ChapterModule } from "@app/shared/components/chapter/chapter.module";
     CommonModule,
     InputSectionModule,
     TranslocoModule,
-    ChapterModule
+    ChapterModule,
+    ReactiveFormsModule,
+    CheckboxControlModule
   ]
 })
 export class FinalStepModule { }
