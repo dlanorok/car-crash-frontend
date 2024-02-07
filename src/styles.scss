@@ -307,3 +307,11 @@ ng-select {
   background-color: #ffbd70;
   font-weight: 600;
 }
+
+a {
+  color: var(--theme-color-basic);
+  border-bottom: var(--border-large) var(--theme-color-basic);
+  line-height: 1.4;
+  text-decoration: none;
+  display: inline-block;
+}
