@@ -1,7 +1,7 @@
 <div class="flex flex-1 information-panel flex-column padding justify-content-center gap-half" [class.small]="isSmall">
   <h2 *ngIf="step && step?.question">{{ step.question }}</h2>
-  <div *ngIf="step && step.help_text" class="help-text">
-    <span [innerHTML]="step.help_text"></span>
+  <div *ngIf="step && step.question_explanation" class="help-text">
+    <span [innerHTML]="step.question_explanation"></span>
   </div>
   <ng-content></ng-content>
 </div>
