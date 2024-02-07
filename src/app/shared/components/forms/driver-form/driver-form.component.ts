@@ -2,8 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormBuilder, Validators } from "@angular/forms";
 import { BaseFormComponent } from "../base-form.component";
 import { DriverModel } from "../../../models/driver.model";
-import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
-import { TextFieldType } from "@regulaforensics/document-reader-webclient";
+import { TextFieldType, Response } from "@regulaforensics/document-reader-webclient";
 import { updateEntireFormValidity } from "@app/shared/forms/helpers/update-entire-form-validity";
 
 @Component({
@@ -66,7 +65,7 @@ export class DriverFormComponent extends BaseFormComponent<DriverModel> {
   override setFromOCRResponse(response: Response): void {
     const dateOfExpiry: string | undefined = response.text?.getFieldValue(TextFieldType.DATE_OF_EXPIRY);
     this.form.patchValue({
-      name: response.text?.getFieldValue(TextFieldType.FIRST_NAME) || response.text?.getFieldValue(TextFieldType.GIVEN_NAMES) ,
+      name: response.text?.getFieldValue(TextFieldType.FIRST_NAME) || response.text?.getFieldValue(TextFieldType.GIVEN_NAME) ,
       surname: response.text?.getFieldValue(TextFieldType.SURNAME),
       address: response.text?.getFieldValue(TextFieldType.ADDRESS),
       driving_licence_number: response.text?.getFieldValue(TextFieldType.DOCUMENT_NUMBER),

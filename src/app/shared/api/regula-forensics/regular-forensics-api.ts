@@ -3,9 +3,8 @@ import { ApiModule } from "../api.module";
 import { HttpClient } from "@angular/common/http";
 import {
   DocumentReaderApi,
-  Configuration,
+  Configuration, ProcessRequest,
 } from '@regulaforensics/document-reader-webclient';
-import { ProcessRequest } from "@regulaforensics/document-reader-webclient/src/ext/process-request";
 import { environment } from "../../../../environments/environment";
 
 

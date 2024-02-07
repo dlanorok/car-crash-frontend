@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from "@angular/cor
 import { HttpErrorResponse } from "@angular/common/http";
 import { ValidatorsErrors } from "./common/enumerators/validators-errors";
 import { debounceTime, distinctUntilChanged, Subscription, tap } from "rxjs";
-import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
+import { Response } from "@regulaforensics/document-reader-webclient";
 
 @Component({
   template: '',

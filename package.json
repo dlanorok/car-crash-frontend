@@ -32,7 +32,7 @@
     "@ngrx/effects": "^15.4.0",
     "@ngrx/store": "^15.4.0",
     "@popperjs/core": "^2.11.7",
-    "@regulaforensics/document-reader-webclient": "^6.8.1",
+    "@regulaforensics/document-reader-webclient": "6.8.1",
     "@regulaforensics/vp-frontend-document-components": "^2.4.0",
     "@types/google.maps": "^3.53.4",
     "@types/node": "^20.2.3",

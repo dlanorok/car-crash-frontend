@@ -4,8 +4,7 @@ import {
   provideControlValueAccessor
 } from "@app/shared/form-controls/base-form-control.component";
 import { DriverModel } from "@app/shared/models/driver.model";
-import { TextFieldType } from "@regulaforensics/document-reader-webclient";
-import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
+import { TextFieldType, Response } from "@regulaforensics/document-reader-webclient";
 import { DriverFormComponent } from "@app/shared/components/forms/driver-form/driver-form.component";
 import {
   Subject,
@@ -94,7 +93,7 @@ export class DriverControlComponent extends BaseFormControlComponent<DriverModel
       const dateOfExpiry: string | undefined = this.findLocaleFieldValue(response, TextFieldType.DATE_OF_EXPIRY, true);
       const dateOfBirth: string | undefined = this.findLocaleFieldValue(response, TextFieldType.DATE_OF_BIRTH, true);
       const driver = {
-        name: this.findLocaleFieldValue(response, TextFieldType.FIRST_NAME) || this.findLocaleFieldValue(response, TextFieldType.GIVEN_NAMES) || '',
+        name: this.findLocaleFieldValue(response, TextFieldType.FIRST_NAME) || this.findLocaleFieldValue(response, TextFieldType.GIVEN_NAME) || '',
         surname: this.findLocaleFieldValue(response, TextFieldType.SURNAME) || '',
         address: this.findLocaleFieldValue(response, TextFieldType.ADDRESS)?.replace("^", "\n"),
         country: this.findLocaleFieldValue(response, TextFieldType.ISSUING_STATE_CODE),

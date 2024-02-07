@@ -6,10 +6,8 @@ import {
   DocumentReaderWebComponent
 } from '@regulaforensics/vp-frontend-document-components';
 import { RegularForensicsApi } from "../../api/regula-forensics/regular-forensics-api";
-import { ProcessRequest } from "@regulaforensics/document-reader-webclient/src/ext/process-request";
 import { finalize, from, take, tap, throwError } from "rxjs";
-import { GraphicFieldType, Scenario } from '@regulaforensics/document-reader-webclient';
-import { Response } from "@regulaforensics/document-reader-webclient/src/ext/process-response";
+import { GraphicFieldType, Scenario, Response, ProcessRequest } from '@regulaforensics/document-reader-webclient';
 import { catchError } from "rxjs/operators";
 
 
