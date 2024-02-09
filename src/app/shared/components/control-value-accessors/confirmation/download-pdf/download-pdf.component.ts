@@ -22,16 +22,16 @@ export class DownloadPdfComponent extends BaseFormControlComponent<boolean> {
 
   @Input() step?: Step;
 
-  pdfLink$: Observable<string | undefined> = interval(1000).pipe(
+  pdfLink$: Observable<string | null> = interval(1000).pipe(
     concatMap(() => {
       const sessionId: string | null = localStorage.getItem(StorageItem.sessionId);
       if (!sessionId) {
-        return of(undefined);
+        return of(null);
       }
       return this.crashesApiService.getSingle(sessionId).pipe(
         switchMap(crash => {
           if (!crash?.pdf) {
-            return of(undefined);
+            return of(null);
           }
           return this.filesApiService.getFileData(crash.pdf).pipe(
             map(data => data.file)

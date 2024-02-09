@@ -126,12 +126,6 @@ export class SketchCanvasComponent extends BaseFormControlComponent<Sketch> impl
     }),
   );
 
-  get devicePixelRatio() {
-    const realWidth = this.container.nativeElement.clientWidth;
-    const realHeight = this.container.nativeElement.clientHeight;
-    return realWidth  + " " + realHeight;
-  }
-
   ngAfterViewInit(): void {
     this.setStageAndLayer();
     this.drawGoogleImageAndAddCars();

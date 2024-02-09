@@ -26,7 +26,10 @@ export class HttpApiInterceptor implements HttpInterceptor {
 
   private setAuthHeader(headers: HttpHeaders): HttpHeaders {
     const token = localStorage.getItem(StorageItem.sessionId);
-    headers = headers.set(this.authHeaderName, `${this.authTokenType} ${token}`);
+    if (token) {
+      headers = headers.set(this.authHeaderName, `${this.authTokenType} ${token}`);
+    }
+
     headers = headers.set(this.acceptLanguage, 'sl');
     headers = headers.set(this.timeZoneHeader, Intl.DateTimeFormat().resolvedOptions().timeZone);
 

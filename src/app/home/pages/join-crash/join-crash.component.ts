@@ -1,13 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { take, tap } from "rxjs";
+import { Component, inject, OnInit } from '@angular/core';
+import { take } from "rxjs";
 import { Router } from "@angular/router";
-import { CookieName } from "@app/shared/common/enumerators/cookies";
-import { StorageItem } from "@app/shared/common/enumerators/storage";
-import { UrlParamService } from "@app/shared/services/url-param-service";
-import { WebSocketService } from "@app/shared/services/web-socket.service";
-import { SwUpdate } from "@angular/service-worker";
 import { QuestionnaireService } from "@app/shared/services/questionnaire.service";
-import { CookieService } from "ngx-cookie-service";
+import { QuestionnaireModel } from "@app/shared/models/questionnaire.model";
+import { getStartingLink } from "@app/shared/common/helpers/get-starting-link";
+import { QuestionnairesApiService } from "@app/shared/api/questionnaires/questionnaires-api.service";
 
 @Component({
   selector: 'app-join-crash',
@@ -15,25 +12,14 @@ import { CookieService } from "ngx-cookie-service";
   styleUrls: ['./join-crash.component.scss']
 })
 export class JoinCrashComponent implements OnInit {
-  constructor(
-    private urlParamService: UrlParamService,
-    private router: Router,
-    private webSocketService: WebSocketService,
-    private swUpdate: SwUpdate,
-    private questionnaireService: QuestionnaireService,
-    private cookieService: CookieService
-  ) {
-  }
+  private readonly questionnairesApiService: QuestionnairesApiService = inject(QuestionnairesApiService);
+  private readonly questionnaireService: QuestionnaireService = inject(QuestionnaireService);
+  private readonly router: Router = inject(Router);
 
   ngOnInit() {
-    return this.questionnaireService.getOrFetchQuestionnaires().pipe(
-      tap(questionnaires => {
-        const myQuestionnaire = questionnaires.find(q => q.creator === this.cookieService.get(CookieName.sessionId));
-        if (myQuestionnaire) {
-          this.router.navigate([`/crash/${localStorage.getItem(StorageItem.sessionId)}/questionnaires/${myQuestionnaire.id}/sections/${myQuestionnaire.data.sections[0].id}/steps/${myQuestionnaire.data.sections[0].starting_step}`]);
-        }
-      }),
-      take(1)
-    ).subscribe();
+    this.questionnairesApiService.create(new QuestionnaireModel()).pipe(take(1)).subscribe((questionnaireModel) => {
+      this.questionnaireService.updateQuestionnaire(questionnaireModel);
+      this.router.navigate([getStartingLink(questionnaireModel)]);
+    });
   }
 }
